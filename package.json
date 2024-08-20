@@ -39,7 +39,8 @@
     "src/**/*.{ts,tsx}": [
       "cspell --no-progress",
       "prettier --write",
-      "eslint --fix"
+      "eslint --fix",
+      "tsc --noEmit"
     ],
     "src/**/*.scss": [
       "cspell",
