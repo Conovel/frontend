@@ -1,3 +1,29 @@
+# frontend
+
+## dockerで起動する場合
+
+[environment](https://github.com/Conovel/environment)リポジトリのサブモジュールになっているのでenvironmentでDcokerを起動するとfrontendも一緒に起動します
+
+## 単独で使う場合
+
+リモートからリポジトリをクローン
+```
+$ git clone https://github.com/Conovel/frontend.git
+```
+
+パッケージのインストール
+```
+$ npm install
+```
+packege-lock.jsonと/node_modulesが生成される
+
+ローカルサーバー起動
+```
+$ npm run dev
+```
+
+----
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
