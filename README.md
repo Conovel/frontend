@@ -6,18 +6,27 @@
 
 ## 単独で使う場合
 
-リモートからリポジトリをクローン
+### リモートからリポジトリをクローン
 ```
 $ git clone https://github.com/Conovel/frontend.git
 ```
 
-パッケージのインストール
+### nodeとnpmのバージョン確認
+```
+node -v
+npm -v
+```
+ない場合はnodeのインストールが必要
+nodeのバージョンは20.16.0想定
+（ない場合はnvmでインストールと切り替えが必要）
+
+### パッケージのインストール
 ```
 $ npm install
 ```
 packege-lock.jsonと/node_modulesが生成される
 
-ローカルサーバー起動
+### ローカルサーバー起動
 ```
 $ npm run dev
 ```
