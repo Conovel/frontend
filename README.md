@@ -8,21 +8,21 @@
 
 ### リモートからリポジトリをクローン
 
-```
+```sh
 $ git clone https://github.com/Conovel/frontend.git
 ```
 
 ※Windows環境だと改行コードが変換されてしまう可能性があります。その場合は`git clone`を実行する前に下記のコマンドを実行してください。
 
-```
+```sh
 $ git config --global core.autocrlf input
 ```
 
 ### nodeとnpmのバージョン確認
 
-```
-node -v
-npm -v
+```sh
+$ node -v
+$ npm -v
 ```
 
 - ない場合はnodeのインストールが必要
@@ -30,7 +30,7 @@ npm -v
 
 ### パッケージのインストール
 
-```
+```sh
 $ npm install
 ```
 
@@ -38,6 +38,6 @@ $ npm install
 
 ### ローカルサーバー起動
 
-```
+```sh
 $ npm run dev
 ```
