@@ -13,7 +13,6 @@ https://techno-kuro-novel.atlassian.net/wiki/spaces/Conovel/pages/3145744
 
 　例　テーブル定義Miroやその他資料
 
-
 - 機能要件1
 - 機能要件2
 - 機能要件3
@@ -22,7 +21,6 @@ https://techno-kuro-novel.atlassian.net/wiki/spaces/Conovel/pages/3145744
 
 [] 要件漏れがないことを確認済み
 [] 一部懸念あり
-
 
 ### 非機能要件
 
@@ -43,9 +41,14 @@ https://techno-kuro-novel.atlassian.net/wiki/spaces/Conovel/pages/1376286/_PJ
 
 ---
 
-## テスト
+## 自身で確認した動作のエビデンス（スクショ等）
 
-[] テストコード作成済み（C1レベル確認済み）
+### 動作確認エビデンス1
+例　未読通知を複数ページに渡って閲覧して、既読になる様子
+
+### 動作確認エビデンス2
+
+---
 
 ## 結合テスト・受入テストに持ち越すテスト項目（必ず1つ以上作成）
 本PullReqで洗い出し記載して、Mergeしたら、以下に整理転記する
