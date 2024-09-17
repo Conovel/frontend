@@ -1,7 +1,8 @@
-apis/PetsApi.ts
-apis/index.ts
+.gitignore
+.npmignore
+api.ts
+base.ts
+common.ts
+configuration.ts
+git_push.sh
 index.ts
-models/ModelError.ts
-models/Pet.ts
-models/index.ts
-runtime.ts
