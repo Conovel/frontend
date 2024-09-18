@@ -1,5 +1,5 @@
 import js from "@eslint/js";
-const prettier = require("eslint-config-prettier");
+import prettier from "eslint-config-prettier";
 import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
@@ -16,7 +16,7 @@ export default new ESLint({
       "plugin:react/recommended",
       "plugin:react-hooks/recommended",
       "plugin:react-refresh/recommended",
-      "prettier",
+      "prettier"
     ],
     files: ["**/*.{ts,tsx}"],
     parser: tsParser,
@@ -43,9 +43,12 @@ export default new ESLint({
         "warn",
         { allowConstantExport: true },
       ],
-      "no-var": "error", // Added
-      camelcase: "error", // Added
+      "no-var": "error",
+      camelcase: "error",
+      'no-unused-vars': ['error', { 'varsIgnorePattern': '^React$' }],
+    },
+    env: {
+      jest: true,
     },
   },
-  prettier,
 });
