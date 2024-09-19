@@ -41,3 +41,17 @@ $ npm install
 ```sh
 $ npm run dev
 ```
+
+### フォーマット
+
+prettierによるフォーマット（コミットプッシュ時にも実行される）
+```sh
+npm run format
+```
+
+### テスト
+
+jestによるテスト実行（コミットプッシュ時にも実行される）
+```sh
+$ npm test
+```
