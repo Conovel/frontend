@@ -41,3 +41,19 @@ $ npm install
 ```sh
 $ npm run dev
 ```
+
+### フォーマット
+
+prettierによるフォーマット
+```sh
+$ npm run format
+```
+- コミットプッシュ時にも実行されます（husky）
+
+### テスト
+
+jestによるテスト実行
+```sh
+$ npm test
+```
+- コミットプッシュ時には実行されないため、手動で実行してください
