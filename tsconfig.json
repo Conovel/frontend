@@ -3,5 +3,12 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "compilerOptions": {
+    "jsx": "react", // JSXのサポートを追加
+    "esModuleInterop": true, // モジュールインポートの互換性
+    "lib": ["es2015", "dom"], // 必要なライブラリを指定
+    "target": "es6", // ES6以降の機能をターゲットにする
+    "moduleResolution": "node" // Nodeモジュール解決方式
+  }
 }
