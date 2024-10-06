@@ -1,10 +1,9 @@
-import React from 'react';
 import { useState } from 'react';
-import reactLogo from './assets logo.svg';
-import viteLogo from '/@vite/client/assets/logo.svg';
+import reactLogo from './assets/react.svg';
+import viteLogo from '../public/vite.svg';
 import './App.css';
 import Button from '@mui/material/Button';
-import HeadMenuBar from './components';
+import HeadMenuBar from './components/header';
 
 function App() {
   const [count, setCount] = useState(0);
