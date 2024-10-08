@@ -6,7 +6,7 @@ import App from "../App";
 // Mock the SentencesApi
 jest.mock("../api/api", () => ({
   SentencesApi: jest.fn().mockImplementation(() => ({
-    v1SentencesSentenceIdGet: jest.fn().mockResolvedValue({
+    sentencesSentenceIdGet : jest.fn().mockResolvedValue({
       data: {
         main: {
           sentence_id: 1,

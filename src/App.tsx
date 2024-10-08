@@ -3,22 +3,22 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import Button from "@mui/material/Button";
-import { SentencesApi, V1SentencesSentenceIdGet200ResponseMain } from "./api/api"; 
+import { SentencesApi, SentencesSentenceIdGet200ResponseMain } from "./api/api"; 
 import { Configuration } from "./api/configuration";
 
 const config = new Configuration({
-  basePath: 'http://localhost:3001/',
+  basePath: 'http://localhost:3001/v1',
   // apiKey: 'your-api-key',
 });
 const api = new SentencesApi(config);
 
 function App() {
   const [count, setCount] = useState(0);
-  const [sentences, setSentences] = useState<V1SentencesSentenceIdGet200ResponseMain[]>([]);
+  const [sentences, setSentences] = useState<SentencesSentenceIdGet200ResponseMain[]>([]);
 
   const fetchSentences = async () => {
     try {
-      const response = await api.v1SentencesSentenceIdGet(1); // 1は取得したいsentenceのIDです
+      const response = await api.sentencesSentenceIdGet(1);
       setSentences(response.data.main ? [response.data.main] : []);
     } catch (error) {
       console.error('Error fetching sentences:', error);
@@ -53,7 +53,7 @@ function App() {
       <p>Sentence List</p>
       <button onClick={fetchSentences}>Fetch Sentences</button>
       <ul>
-        {sentences.map((main: V1SentencesSentenceIdGet200ResponseMain) => (
+        {sentences.map((main: SentencesSentenceIdGet200ResponseMain) => (
           <li key={main.sentence_id}>{main.sentence}</li>
         ))}
       </ul>
