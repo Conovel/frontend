@@ -12,12 +12,53 @@ import PersonIcon from '@mui/icons-material/Person';
 import BusinessIcon from '@mui/icons-material/Business';
 import BalanceIcon from '@mui/icons-material/Balance';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { Typography } from '@mui/material';
 
-interface MenuButtonProps {
-  pages: ('Home' | 'Account' | 'Administer' | 'Policy' | 'logout')[];
-}
+const MenuButtonItems = [
+  { name: 'ホーム', icon: <HomeIcon /> },
+  { name: 'アカウント', icon: <PersonIcon /> },
+  { name: '運営会社', icon: <BusinessIcon /> },
+  { name: 'ポリシー', icon: <BalanceIcon /> },
+  { name: 'ログアウト', icon: <LogoutIcon /> },
+];
 
-export const MenuButton: React.FC<MenuButtonProps> = ({ pages }) => {
+const ListComponent: React.FC = () => (
+  <Box
+    sx={{ width: 80 }}
+    role='presentation'
+    // onClick={toggleDrawer(false)}
+    // onKeyDown={toggleDrawer(false)}
+  >
+    <List sx={{ pt: 16 }}>
+      {MenuButtonItems.map(({ name, icon }) => (
+        <ListItem key={name} disablePadding>
+          <ListItemButton>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              {React.cloneElement(icon, {
+                sx: { fontSize: 40 },
+                alt: name,
+              })}
+              <Typography
+                variant='caption'
+                sx={{ textAlign: 'center', fontSize: 8, fontWeight: 'bold' }}
+              >
+                {name}
+              </Typography>
+            </Box>
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
+  </Box>
+);
+
+export const MenuButton: React.FC = () => {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer =
@@ -33,35 +74,9 @@ export const MenuButton: React.FC<MenuButtonProps> = ({ pages }) => {
       setOpen(open);
     };
 
-  const icons = {
-    Home: <HomeIcon />,
-    Account: <PersonIcon />,
-    Administer: <BusinessIcon />,
-    Policy: <BalanceIcon />,
-    logout: <LogoutIcon />,
+  const handleMenuButtonClick = () => {
+    setOpen((prev) => !prev);
   };
-
-  const list = () => (
-    <Box
-      sx={{ width: 80 }}
-      role='presentation'
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List sx={{ pt: 16 }}>
-        {pages.map((page) => (
-          <ListItem key={page} disablePadding>
-            <ListItemButton>
-              {React.cloneElement(icons[page], {
-                sx: { fontSize: 50 },
-                alt: `${page}`,
-              })}
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
 
   return (
     <>
@@ -70,13 +85,13 @@ export const MenuButton: React.FC<MenuButtonProps> = ({ pages }) => {
         aria-label='account of current user'
         aria-controls='menu-appbar'
         aria-haspopup='true'
-        onClick={toggleDrawer(true)}
+        onClick={handleMenuButtonClick}
         color='inherit'
       >
         <MenuIcon />
       </IconButton>
       <Drawer anchor='left' open={open} onClose={toggleDrawer(false)}>
-        {list()}
+        <ListComponent />
       </Drawer>
     </>
   );

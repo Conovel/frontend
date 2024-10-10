@@ -3,14 +3,14 @@ import reactLogo from './assets/react.svg';
 import viteLogo from '../public/vite.svg';
 import './App.css';
 import Button from '@mui/material/Button';
-import HeadMenuBar from './components/header';
+import HeaderBar from './components/header';
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <div className='App'>
-      <HeadMenuBar />
+      <HeaderBar />
       <header className='App-header'>
         <img src={reactLogo} className='App-logo' alt='logo' />
         <img src={viteLogo} className='App-logo' alt='logo' />
