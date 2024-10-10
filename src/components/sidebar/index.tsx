@@ -23,13 +23,8 @@ const MenuButtonItems = [
 ];
 
 const ListComponent: React.FC = () => (
-  <Box
-    sx={{ width: 80 }}
-    role='presentation'
-    // onClick={toggleDrawer(false)}
-    // onKeyDown={toggleDrawer(false)}
-  >
-    <List sx={{ pt: 16 }}>
+  <Box sx={{ width: 80 }} role='presentation'>
+    <List sx={{ pt: 8 }}>
       {MenuButtonItems.map(({ name, icon }) => (
         <ListItem key={name} disablePadding>
           <ListItemButton>
