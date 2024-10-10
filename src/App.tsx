@@ -5,8 +5,19 @@ import './App.css';
 import Button from '@mui/material/Button';
 import HeaderBar from './components/header';
 
+
 function App() {
   const [count, setCount] = useState(0);
+  const [pets, setPets] = useState<Pet[]>([]); 
+
+  const fetchPets = async () => {
+    try {
+      const response = await api.listPets();
+      setPets(response.data);
+    } catch (error) {
+      console.error('Error fetching pets:', error);
+    }
+  };
 
   return (
     <div className='App'>
@@ -43,6 +54,7 @@ function App() {
         </p>
       </header>
     </div>
+
   );
 }
 
