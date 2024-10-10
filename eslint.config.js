@@ -16,8 +16,7 @@ export default new ESLint({
       "plugin:react/recommended",
       "plugin:react-hooks/recommended",
       "plugin:react-refresh/recommended",
-      "prettier"
-
+      "prettier", // ここに追加済み
     ],
     files: ["**/*.{ts,tsx}"],
     parser: tsParser,
@@ -49,4 +48,3 @@ export default new ESLint({
     },
   },
 });
-
