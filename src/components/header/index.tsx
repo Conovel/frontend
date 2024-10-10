@@ -7,7 +7,6 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useState } from 'react';
 
 import logo from './image/conovel_header_logo.webp';
-import { MenuButton } from '../sidebar';
 
 function HeaderBar() {
   const [] = useState<HTMLElement | null>(null);
@@ -25,9 +24,7 @@ function HeaderBar() {
                 alignItems: 'center',
                 justifyContent: 'flex-start',
               }}
-            >
-              <MenuButton />
-            </Box>
+            ></Box>
             {/* ロゴ */}
             <Box
               sx={{
