@@ -16,10 +16,12 @@
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "axios": "^1.7.7",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -27,16 +29,16 @@
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@eslint/js": "^9.9.0",
-    "@testing-library/jest-dom": "^6.5.0",
-    "@testing-library/react": "^16.0.1",
-    "@testing-library/user-event": "^14.5.2",
-    "@types/jest": "^29.5.13",
-    "@types/react": "^18.3.3",
+    "@types/node": "^22.7.4",
+    "@types/prop-types": "^15.7.13",
+    "@types/react": "^18.3.11",
+
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "babel-jest": "^29.7.0",
     "cspell": "^8.14.2",
-    "eslint": "^9.10.0",
+    "eslint": "^9.9.0",
+
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
@@ -46,7 +48,8 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^15.2.9",
-    "ts-jest": "^29.2.5",
+    "prettier": "^3.3.3",
+
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1"
@@ -56,7 +59,8 @@
       "cspell --no-progress",
       "prettier --write",
       "eslint --fix",
-      "tsc --noEmit"
+      "npm run lint",
+      "npm run format"
     ],
     "src/**/*.scss": [
       "cspell",

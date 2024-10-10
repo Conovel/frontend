@@ -1,7 +1,7 @@
 ## JIRAチケットURL
 
-
 ---
+
 ## 実装内容
 
 ### 機能要件
@@ -11,7 +11,7 @@ https://techno-kuro-novel.atlassian.net/wiki/spaces/Conovel/pages/3145744
 なお、上記URLに含まれない実装をしている場合は、適宜参照先URLを付して、記載を引用して記載してください。
 必ず製造タスクの根拠を示してください。
 
-　例　テーブル定義Miroやその他資料
+例　テーブル定義Miroやその他資料
 
 - 機能要件1
 - 機能要件2
@@ -44,6 +44,7 @@ https://techno-kuro-novel.atlassian.net/wiki/spaces/Conovel/pages/1376286/_PJ
 ## 自身で確認した動作のエビデンス（スクショ等）
 
 ### 動作確認エビデンス1
+
 例　未読通知を複数ページに渡って閲覧して、既読になる様子
 
 ### 動作確認エビデンス2
@@ -51,6 +52,7 @@ https://techno-kuro-novel.atlassian.net/wiki/spaces/Conovel/pages/1376286/_PJ
 ---
 
 ## 結合テスト・受入テストに持ち越すテスト項目（必ず1つ以上作成）
+
 本PullReqで洗い出し記載して、Mergeしたら、以下に整理転記する
 https://techno-kuro-novel.atlassian.net/wiki/spaces/Conovel/pages/38567991
 

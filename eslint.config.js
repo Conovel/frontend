@@ -3,9 +3,9 @@ import prettier from "eslint-config-prettier";
 import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
-import { ESLint } from "eslint"; // Added
-import tseslint from "@typescript-eslint/eslint-plugin"; // Corrected
-import tsParser from "@typescript-eslint/parser"; // Added
+import { ESLint } from "eslint";
+import tseslint from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
 
 export default new ESLint({
   baseConfig: {
@@ -17,6 +17,7 @@ export default new ESLint({
       "plugin:react-hooks/recommended",
       "plugin:react-refresh/recommended",
       "prettier"
+
     ],
     files: ["**/*.{ts,tsx}"],
     parser: tsParser,
@@ -45,10 +46,7 @@ export default new ESLint({
       ],
       "no-var": "error",
       camelcase: "error",
-      'no-unused-vars': ['error', { 'varsIgnorePattern': '^React$' }],
-    },
-    env: {
-      jest: true,
     },
   },
 });
+
