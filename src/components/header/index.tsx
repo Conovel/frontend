@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 
-import AdbIcon from '@mui/icons-material/Adb';
 import { useState } from 'react';
 
 import logo from './image/conovel_header_logo.webp';
@@ -36,7 +35,6 @@ function HeaderBar() {
                 flexGrow: 1,
               }}
             >
-              <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
               <Box
                 component='img'
                 src={logo}
@@ -54,7 +52,7 @@ function HeaderBar() {
                 src={logo}
                 alt='Conovel Logo'
                 sx={{
-                  mr: 2,
+                  mr: 4,
                   display: { xs: 'flex', md: 'none' },
                   height: 40,
                 }}
