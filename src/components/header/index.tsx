@@ -7,6 +7,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useState } from 'react';
 
 import logo from './image/conovel_header_logo.webp';
+import MenuIcon from '@mui/icons-material/Menu';
 
 function HeaderBar() {
   const [] = useState<HTMLElement | null>(null);
@@ -14,9 +15,8 @@ function HeaderBar() {
   return (
     <AppBar position='fixed' color='default' sx={{ zIndex: 1201 }}>
       <Container maxWidth='xl' sx={{ px: { xs: 0, md: 3 } }}>
-        {' '}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Toolbar>
+        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          <Toolbar sx={{ justifyContent: 'space-between', width: '100%' }}>
             {/* メニュー */}
             <Box
               sx={{
@@ -24,7 +24,9 @@ function HeaderBar() {
                 alignItems: 'center',
                 justifyContent: 'flex-start',
               }}
-            ></Box>
+            >
+              <MenuIcon />
+            </Box>
             {/* ロゴ */}
             <Box
               sx={{

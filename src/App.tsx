@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import reactLogo from './assets/react.svg';
-import viteLogo from '../public/vite.svg';
+import viteLogo from '/vite.svg'; // Updated import statement
 import './App.css';
 import Button from '@mui/material/Button';
 import HeaderBar from './components/header';
