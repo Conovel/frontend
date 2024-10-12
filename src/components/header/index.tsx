@@ -3,11 +3,10 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 
-import AdbIcon from '@mui/icons-material/Adb';
 import { useState } from 'react';
 
 import logo from './image/conovel_header_logo.webp';
-import { MenuButton } from '../sidebar';
+import MenuIcon from '@mui/icons-material/Menu';
 
 function HeaderBar() {
   const [] = useState<HTMLElement | null>(null);
@@ -15,9 +14,8 @@ function HeaderBar() {
   return (
     <AppBar position='fixed' color='default' sx={{ zIndex: 1201 }}>
       <Container maxWidth='xl' sx={{ px: { xs: 0, md: 3 } }}>
-        {' '}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Toolbar>
+        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          <Toolbar sx={{ justifyContent: 'space-between', width: '100%' }}>
             {/* メニュー */}
             <Box
               sx={{
@@ -26,7 +24,7 @@ function HeaderBar() {
                 justifyContent: 'flex-start',
               }}
             >
-              <MenuButton />
+              <MenuIcon />
             </Box>
             {/* ロゴ */}
             <Box
@@ -37,7 +35,6 @@ function HeaderBar() {
                 flexGrow: 1,
               }}
             >
-              <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
               <Box
                 component='img'
                 src={logo}
@@ -55,7 +52,7 @@ function HeaderBar() {
                 src={logo}
                 alt='Conovel Logo'
                 sx={{
-                  mr: 2,
+                  mr: 4,
                   display: { xs: 'flex', md: 'none' },
                   height: 40,
                 }}
