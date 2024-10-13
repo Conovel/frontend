@@ -22,12 +22,22 @@ const MenuButtonItems = [
   { name: 'ログアウト', icon: <LogoutIcon /> },
 ];
 
-const ListComponent: React.FC = () => (
+const ListComponent: React.FC<{
+  selectedIndex: number;
+  onSelect: (index: number) => void;
+}> = ({ selectedIndex, onSelect }) => (
   <Box sx={{ width: 80 }} role='presentation'>
     <List sx={{ pt: 8 }}>
-      {MenuButtonItems.map(({ name, icon }) => (
+      {MenuButtonItems.map(({ name, icon }, index) => (
         <ListItem key={name} disablePadding>
-          <ListItemButton>
+          <ListItemButton
+            onClick={() => onSelect(index)}
+            sx={{
+              position: 'relative',
+              backgroundColor:
+                selectedIndex === index ? 'rgba(0, 0, 0, 0.1)' : 'transparent',
+            }}
+          >
             <Box
               sx={{
                 display: 'flex',
@@ -46,6 +56,18 @@ const ListComponent: React.FC = () => (
                 {name}
               </Typography>
             </Box>
+            {selectedIndex === index && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: 8,
+                  backgroundColor: '#467DCC',
+                }}
+              />
+            )}
           </ListItemButton>
         </ListItem>
       ))}
@@ -55,6 +77,7 @@ const ListComponent: React.FC = () => (
 
 export const MenuButton: React.FC = () => {
   const [open, setOpen] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -86,7 +109,10 @@ export const MenuButton: React.FC = () => {
         <MenuIcon />
       </IconButton>
       <Drawer anchor='left' open={open} onClose={toggleDrawer(false)}>
-        <ListComponent />
+        <ListComponent
+          selectedIndex={selectedIndex ?? 0}
+          onSelect={setSelectedIndex}
+        />
       </Drawer>
     </>
   );
