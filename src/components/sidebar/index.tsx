@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useState } from 'react';
+
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -43,12 +45,12 @@ const ListComponent: React.FC<{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+                width: '100%',
               }}
             >
-              {React.cloneElement(icon, {
-                sx: { fontSize: 40 },
-                alt: name,
-              })}
+              <Box sx={{ fontSize: 20 }}>{icon}</Box>
               <Typography
                 variant='caption'
                 sx={{ textAlign: 'center', fontSize: 8, fontWeight: 'bold' }}
@@ -76,11 +78,11 @@ const ListComponent: React.FC<{
 );
 
 export const MenuButton: React.FC = () => {
-  const [open, setOpen] = React.useState(false);
-  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const toggleDrawer =
-    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    (isOpen: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event.type === 'keydown' &&
         ((event as React.KeyboardEvent).key === 'Tab' ||
@@ -89,11 +91,11 @@ export const MenuButton: React.FC = () => {
         return;
       }
 
-      setOpen(open);
+      setIsOpen(isOpen);
     };
 
   const handleMenuButtonClick = () => {
-    setOpen((prev) => !prev);
+    setIsOpen((prev) => !prev);
   };
 
   return (
@@ -108,7 +110,7 @@ export const MenuButton: React.FC = () => {
       >
         <MenuIcon />
       </IconButton>
-      <Drawer anchor='left' open={open} onClose={toggleDrawer(false)}>
+      <Drawer anchor='left' open={isOpen} onClose={toggleDrawer(false)}>
         <ListComponent
           selectedIndex={selectedIndex ?? 0}
           onSelect={setSelectedIndex}
