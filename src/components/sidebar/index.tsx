@@ -78,7 +78,7 @@ const ListComponent: React.FC<{
 );
 
 export const MenuButton: React.FC = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const toggleDrawer =
@@ -95,7 +95,7 @@ export const MenuButton: React.FC = () => {
     };
 
   const handleMenuButtonClick = () => {
-    setIsOpen((prev) => !prev);
+    setIsOpen(!isOpen);
   };
 
   return (
