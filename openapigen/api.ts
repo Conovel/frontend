@@ -81,9 +81,9 @@ export const SentencesApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sentencesSentenceIdGet: async (sentenceId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getSentenceById: async (sentenceId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'sentenceId' is not null or undefined
-            assertParamExists('sentencesSentenceIdGet', 'sentenceId', sentenceId)
+            assertParamExists('getSentenceById', 'sentenceId', sentenceId)
             const localVarPath = `/sentences/{sentence_id}`
                 .replace(`{${"sentence_id"}}`, encodeURIComponent(String(sentenceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -125,10 +125,10 @@ export const SentencesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sentencesSentenceIdGet(sentenceId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ViewSentence>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sentencesSentenceIdGet(sentenceId, options);
+        async getSentenceById(sentenceId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ViewSentence>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSentenceById(sentenceId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SentencesApi.sentencesSentenceIdGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['SentencesApi.getSentenceById']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -148,8 +148,8 @@ export const SentencesApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sentencesSentenceIdGet(sentenceId: number, options?: RawAxiosRequestConfig): AxiosPromise<ViewSentence> {
-            return localVarFp.sentencesSentenceIdGet(sentenceId, options).then((request) => request(axios, basePath));
+        getSentenceById(sentenceId: number, options?: RawAxiosRequestConfig): AxiosPromise<ViewSentence> {
+            return localVarFp.getSentenceById(sentenceId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -169,8 +169,8 @@ export class SentencesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SentencesApi
      */
-    public sentencesSentenceIdGet(sentenceId: number, options?: RawAxiosRequestConfig) {
-        return SentencesApiFp(this.configuration).sentencesSentenceIdGet(sentenceId, options).then((request) => request(this.axios, this.basePath));
+    public getSentenceById(sentenceId: number, options?: RawAxiosRequestConfig) {
+        return SentencesApiFp(this.configuration).getSentenceById(sentenceId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

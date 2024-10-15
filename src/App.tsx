@@ -18,7 +18,7 @@ function App() {
 
   const fetchSentences = async () => {
     try {
-      const response = await api.sentencesSentenceIdGet(1);
+      const response = await api.getSentenceById(1);
       setSentences(response.data.main ? [response.data.main] : []);
     } catch (error) {
       console.error('Error fetching sentences:', error);
