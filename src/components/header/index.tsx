@@ -6,7 +6,8 @@ import Container from '@mui/material/Container';
 import { useState } from 'react';
 
 import logo from './image/conovel_header_logo.webp';
-import MenuIcon from '@mui/icons-material/Menu';
+
+import { MenuButton } from '../sidebar';
 
 function HeaderBar() {
   const [] = useState<HTMLElement | null>(null); // 修正: useStateの初期値を設定
@@ -24,7 +25,7 @@ function HeaderBar() {
                 justifyContent: 'flex-start',
               }}
             >
-              <MenuIcon />
+              <MenuButton />
             </Box>
             {/* ロゴ */}
             <Box
