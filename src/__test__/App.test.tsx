@@ -3,22 +3,31 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import '@testing-library/jest-dom';
 import App from "../App";
 
-// Mock the PetsApi
+// Mock the SentencesApi
 jest.mock("../api/api", () => ({
-  PetsApi: jest.fn().mockImplementation(() => ({
-    listPets: jest.fn().mockResolvedValue({ data: [{ id: 1, name: "コノベル太郎" }] }),
+  SentencesApi: jest.fn().mockImplementation(() => ({
+    getSentenceById : jest.fn().mockResolvedValue({
+      data: {
+        main: {
+          sentence_id: 1,
+          sentence: "吾輩は猫である。",
+          created_at: "2024-10-02T23:03:57.431Z",
+          updated_at: "2024-10-02T23:03:57.431Z"
+        }
+      }
+    }),
   })),
 }));
 
-test("fetches and displays pets", async () => {
+test("fetches and displays sentences", async () => {
   render(<App />);
 
   // Verify initial state
-  expect(screen.getByText("Fetch Pets")).toBeInTheDocument();
+  expect(screen.getByText("Fetch Sentences")).toBeInTheDocument();
 
   // Click the fetch button
-  fireEvent.click(screen.getByText("Fetch Pets"));
+  fireEvent.click(screen.getByText("Fetch Sentences"));
 
-  // Wait for the pets to be displayed
-  await waitFor(() => expect(screen.getByText("コノベル太郎")).toBeInTheDocument());
+  // Wait for the sentences to be displayed
+  await waitFor(() => expect(screen.getByText("吾輩は猫である。")).toBeInTheDocument());
 });

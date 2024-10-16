@@ -1,28 +1,27 @@
-import React from 'react';
-import { useState } from "react";
+import React, { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import Button from "@mui/material/Button";
-import { PetsApi, Pet } from "./api/api"; 
+import { SentencesApi, Sentence } from "./api/api"; 
 import { Configuration } from "./api/configuration";
 
 const config = new Configuration({
   basePath: 'http://localhost:3001/v1',
   // apiKey: 'your-api-key',
 });
-const api = new PetsApi(config);
+const api = new SentencesApi(config);
 
 function App() {
   const [count, setCount] = useState(0);
-  const [pets, setPets] = useState<Pet[]>([]); 
+  const [sentences, setSentences] = useState<Sentence[]>([]);
 
-  const fetchPets = async () => {
+  const fetchSentences = async () => {
     try {
-      const response = await api.listPets();
-      setPets(response.data);
+      const response = await api.getSentenceById(1);
+      setSentences(response.data.main ? [response.data.main] : []);
     } catch (error) {
-      console.error('Error fetching pets:', error);
+      console.error('Error fetching sentences:', error);
     }
   };
 
@@ -51,11 +50,11 @@ function App() {
 
       <Button variant="contained">Hello world</Button>
       
-      <p>Pet List</p>
-      <button onClick={fetchPets}>Fetch Pets</button>
+      <p>Sentence List</p>
+      <button onClick={fetchSentences}>Fetch Sentences</button>
       <ul>
-        {pets.map((pet: Pet) => (
-          <li key={pet.id}>{pet.name}</li>
+        {sentences.map((main: Sentence) => (
+          <li key={main.sentence_id}>{main.sentence}</li>
         ))}
       </ul>
     </>
