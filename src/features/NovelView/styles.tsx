@@ -1,4 +1,4 @@
-export const styles = {
+export const styles: { [key: string]: React.CSSProperties } = {
   postCard: {
     position: 'absolute',
     border: '1px solid #000',
@@ -6,8 +6,8 @@ export const styles = {
     top: '40px',
   },
   contentWrapper: {
-    display: 'flex' as const,
-    justifyContent: 'space-between' as const,
+    display: 'flex',
+    justifyContent: 'space-between',
     width: '100%',
   },
   postBox: {
@@ -16,17 +16,19 @@ export const styles = {
     margin: '0 10px',
   },
   reactionWrapper: {
-    display: 'flex' as const,
+    display: 'flex',
   },
   icon: {
     marginRight: '5px',
   },
   mainText: {
-    textAlign: 'center' as const,
+    textAlign: 'left',
+    border: '1px solid #000',
     margin: '10px 0',
+    alignItems: 'center',
   },
   footer: {
-    display: 'flex' as const,
+    display: 'flex',
   },
   button: {
     padding: '5px 10px',
@@ -36,11 +38,11 @@ export const styles = {
     borderRadius: '5px',
   },
   footerReactions: {
-    display: 'flex' as const,
-    alignItems: 'center' as const,
+    display: 'flex',
+    alignItems: 'center',
   },
   commentCount: {
-    display: 'flex' as const,
-    alignItems: 'center' as const,
+    display: 'flex',
+    alignItems: 'center',
   },
 };

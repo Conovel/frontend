@@ -1,14 +1,13 @@
-import React from 'react';
 import { FaThumbsUp, FaComment } from 'react-icons/fa';
 import { styles } from './styles';
 
 export const NovelView = function () {
   return (
-    <div style={styles.postCard as React.CSSProperties}>
-      <div style={styles.contentWrapper as React.CSSProperties}>
-        <div style={styles.postBox as React.CSSProperties}>
+    <div style={styles.postCard}>
+      <div style={styles.contentWrapper}>
+        <div style={styles.postBox}>
           <p>ああ、あの若い頃気づいていれば...</p>
-          <div style={styles.reactionWrapper as React.CSSProperties}>
+          <div style={styles.reactionWrapper}>
             <FaThumbsUp style={styles.icon} />
             <span>120</span>
           </div>
@@ -30,10 +29,10 @@ export const NovelView = function () {
       </div>
 
       <div style={styles.footer}>
-        <div style={styles.contentWrapper as React.CSSProperties}>
-          <div style={styles.postBox as React.CSSProperties}>
+        <div style={styles.contentWrapper}>
+          <div style={styles.postBox}>
             <button style={styles.button}>続きを自分で書く</button>
-            <div style={styles.reactionWrapper as React.CSSProperties}>
+            <div style={styles.reactionWrapper}>
               <FaThumbsUp style={styles.icon} />
               <span>120</span>
               <FaComment style={styles.icon} />
