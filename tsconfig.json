@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2023", "dom", "dom.iterable", "esnext"],
-    "module": "ESNext",
+    "target": "es2022",
+    "lib": ["es2023", "dom", "dom.iterable", "esnext", "es6"],
+    "module": "es2022",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "declaration": true,
@@ -18,7 +18,7 @@
     "esModuleInterop": true, // Ensure this is set to true
     "jsx": "react-jsx", // Ensure this is set to "react-jsx"
     "types": ["node"],
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
   },
   "include": ["vite.config.ts", "./src/**/*", "src/custom.d.ts"]
 }
