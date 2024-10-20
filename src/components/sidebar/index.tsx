@@ -17,12 +17,11 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-// TODO：各ページ実装時にリンク実装する
 const MenuButtonItems = [
   { name: 'ホーム', icon: <HomeIcon />, link: '/' },
-  { name: 'アカウント', icon: <PersonIcon />, link: '/' },
+  { name: 'アカウント', icon: <PersonIcon />, link: '/account' },
   { name: '運営会社', icon: <BusinessIcon />, link: '/company' },
-  { name: 'ポリシー', icon: <BalanceIcon />, link: '/' },
+  { name: 'ポリシー', icon: <BalanceIcon />, link: '/terms' },
   { name: 'ログアウト', icon: <LogoutIcon />, link: '/' },
 ];
 
