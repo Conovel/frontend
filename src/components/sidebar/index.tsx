@@ -15,13 +15,15 @@ import BusinessIcon from '@mui/icons-material/Business';
 import BalanceIcon from '@mui/icons-material/Balance';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
+// TODO：各ページ実装時にリンク実装する
 const MenuButtonItems = [
-  { name: 'ホーム', icon: <HomeIcon /> },
-  { name: 'アカウント', icon: <PersonIcon /> },
-  { name: '運営会社', icon: <BusinessIcon /> },
-  { name: 'ポリシー', icon: <BalanceIcon /> },
-  { name: 'ログアウト', icon: <LogoutIcon /> },
+  { name: 'ホーム', icon: <HomeIcon />, link: '/' },
+  { name: 'アカウント', icon: <PersonIcon />, link: '/' },
+  { name: '運営会社', icon: <BusinessIcon />, link: '/' },
+  { name: 'ポリシー', icon: <BalanceIcon />, link: '/' },
+  { name: 'ログアウト', icon: <LogoutIcon />, link: '/' },
 ];
 
 const ListComponent: React.FC<{
@@ -30,47 +32,55 @@ const ListComponent: React.FC<{
 }> = ({ selectedIndex, onSelect }) => (
   <Box sx={{ width: 80 }} role='presentation'>
     <List sx={{ pt: 8 }}>
-      {MenuButtonItems.map(({ name, icon }, index) => (
+      {MenuButtonItems.map(({ name, icon, link }, index) => (
         <ListItem key={name} disablePadding>
-          <ListItemButton
-            onClick={() => onSelect(index)}
-            sx={{
-              position: 'relative',
-              backgroundColor:
-                selectedIndex === index ? 'rgba(0, 0, 0, 0.1)' : 'transparent',
-            }}
-          >
-            <Box
+          <Link to={link} style={{ color: 'inherit', width: '100%' }}>
+            <ListItemButton
+              onClick={() => onSelect(index)}
               sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                width: '100%',
+                position: 'relative',
+                backgroundColor:
+                  selectedIndex === index
+                    ? 'rgba(0, 0, 0, 0.1)'
+                    : 'transparent',
               }}
             >
-              <Box sx={{ fontSize: 20 }}>{icon}</Box>
-              <Typography
-                variant='caption'
-                sx={{ textAlign: 'center', fontSize: 8, fontWeight: 'bold' }}
-              >
-                {name}
-              </Typography>
-            </Box>
-            {selectedIndex === index && (
               <Box
                 sx={{
-                  position: 'absolute',
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  width: 8,
-                  backgroundColor: '#467DCC',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  width: '100%',
                 }}
-              />
-            )}
-          </ListItemButton>
+              >
+                <Box sx={{ fontSize: 20 }}>{icon}</Box>
+                <Typography
+                  variant='caption'
+                  sx={{
+                    textAlign: 'center',
+                    fontSize: 8,
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {name}
+                </Typography>
+              </Box>
+              {selectedIndex === index && (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: 8,
+                    backgroundColor: '#467DCC',
+                  }}
+                />
+              )}
+            </ListItemButton>
+          </Link>
         </ListItem>
       ))}
     </List>
