@@ -1,6 +1,7 @@
 import { Outlet, Route, Routes } from 'react-router-dom';
 import HeaderBar from '../components/header';
 import { CompanyPage } from '../pages/company';
+import Box from '@mui/material/Box';
 
 /**
  * ルーティング
@@ -25,7 +26,12 @@ const Layout = () => {
   return (
     <>
       <HeaderBar />
-      <Outlet />
+
+      <Box sx={{ paddingX: '80px', paddingY: '56px' }}>
+        <Box sx={{ paddingX: '16px' }}>
+          <Outlet />
+        </Box>
+      </Box>
     </>
   );
 };
