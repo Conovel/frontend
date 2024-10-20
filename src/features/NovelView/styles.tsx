@@ -1,9 +1,9 @@
 export const styles: { [key: string]: React.CSSProperties } = {
-  postCard: {
+  frame: {
     position: 'absolute',
-    border: '1px solid #000',
     margin: '5vw',
     top: '40px',
+    height: '90vh',
   },
   contentWrapper: {
     display: 'flex',
@@ -12,23 +12,33 @@ export const styles: { [key: string]: React.CSSProperties } = {
   },
   postBox: {
     border: '1px solid #000',
+    borderRadius: '10px',
     flex: '1 1 30%',
-    margin: '0 10px',
+    margin: '0 5px',
+    fontSize: '0.8rem',
+    height: '8vh',
   },
-  reactionWrapper: {
+  iconWrapper: {
     display: 'flex',
+    alignItems: 'center',
+    textAlign: 'center',
   },
   icon: {
     marginRight: '5px',
   },
-  mainText: {
+  mainPanel: {
     textAlign: 'left',
     border: '1px solid #000',
-    margin: '10px 0',
+    margin: '15vh 0',
+    height: '30vh',
     alignItems: 'center',
+    paddingTop: '50px',
+    fontSize: '1.2rem',
   },
   footer: {
-    display: 'flex',
+    position: 'absolute',
+    margin: '5vw',
+    top: '80vh',
   },
   button: {
     padding: '5px 10px',
