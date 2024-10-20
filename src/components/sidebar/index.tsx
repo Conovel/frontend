@@ -21,7 +21,7 @@ import { Link } from 'react-router-dom';
 const MenuButtonItems = [
   { name: 'ホーム', icon: <HomeIcon />, link: '/' },
   { name: 'アカウント', icon: <PersonIcon />, link: '/' },
-  { name: '運営会社', icon: <BusinessIcon />, link: '/' },
+  { name: '運営会社', icon: <BusinessIcon />, link: '/company' },
   { name: 'ポリシー', icon: <BalanceIcon />, link: '/' },
   { name: 'ログアウト', icon: <LogoutIcon />, link: '/' },
 ];
