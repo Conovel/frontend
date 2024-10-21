@@ -33,7 +33,10 @@ const ListComponent: React.FC<{
     <List sx={{ pt: 8 }}>
       {MenuButtonItems.map(({ name, icon, link }, index) => (
         <ListItem key={name} disablePadding>
-          <Link to={link} style={{ color: 'inherit', width: '100%' }}>
+          <Link
+            to={link}
+            style={{ color: 'inherit', width: '100%', textDecoration: 'none' }}
+          >
             <ListItemButton
               onClick={() => onSelect(index)}
               sx={{
