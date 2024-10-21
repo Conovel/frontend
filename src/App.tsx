@@ -1,5 +1,5 @@
 import HeaderBar from './components/header';
-import NovelList from './components/novel_list';
+import NovelList from './features/NovelList';
 import './App.css';
 
 export default function App() {
