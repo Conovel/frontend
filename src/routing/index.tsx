@@ -27,8 +27,8 @@ const Layout = () => {
     <>
       <HeaderBar />
 
-      <Box sx={{ paddingX: '80px', paddingY: '56px' }}>
-        <Box sx={{ paddingX: '16px' }}>
+      <Box sx={{ width: '100%', height: '100vh' }}>
+        <Box sx={{ paddingX: '16px', paddingTop: '56px' }}>
           <Outlet />
         </Box>
       </Box>
