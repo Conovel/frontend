@@ -57,6 +57,7 @@
     "typecheck",
     "Typography",
     "Unused",
-    "webp"
+    "webp",
+    "Outlet"
   ]
 }
