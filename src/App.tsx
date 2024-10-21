@@ -4,9 +4,14 @@ import viteLogo from '/vite.svg'; // Updated import statement
 import './App.css';
 import Button from '@mui/material/Button';
 import HeaderBar from './components/header';
+import TransitionsModal from './features/NovelInfo';
 
 function App() {
   const [count, setCount] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
   return (
     <div className='App'>
@@ -41,6 +46,8 @@ function App() {
             Vite Docs
           </a>
         </p>
+        <Button onClick={handleOpenModal}>Open Modal</Button>
+        <TransitionsModal open={isModalOpen} handleClose={handleCloseModal} />
       </header>
     </div>
   );
