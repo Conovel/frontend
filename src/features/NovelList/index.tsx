@@ -5,8 +5,10 @@ import { FantasyTags, LoveStoryTags } from '../../components/tags';
 
 const novels = [
   {
-    description: '目を覚ますとエンジニアに転生していた...',
-    title: 'エンジニア転生',
+    description:
+      '雪山で目を覚ますとエンジニアに転生していた.雪山ながら密林からガジェットを取り寄せて悠々生活・快適ライフを送っている',
+    title:
+      '山暮らし聖女の異世界スローライフ～聖女召喚された私，偽物だとして雪山に廃棄されるも，目が覚めるとエンジニアに転生していたことにより本当の「聖女」になる',
     popular: true,
     newArrival: true,
     avatar: {

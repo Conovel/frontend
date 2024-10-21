@@ -29,11 +29,31 @@ const NovelCard = ({ novel }: { novel: Novel }) => {
           <Typography
             variant='body2'
             gutterBottom
-            sx={{ color: 'text.secondary', fontSize: 14, minHeight: '3em' }}
+            sx={{
+              color: 'text.secondary',
+              fontSize: 14,
+              minHeight: '2em',
+              display: '-webkit-box',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: 2,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
           >
             {novel.description}
           </Typography>
-          <Typography variant='h5' component='div' sx={{ minHeight: '3em' }}>
+          <Typography
+            variant='h5'
+            component='div'
+            sx={{
+              minHeight: '2em',
+              display: '-webkit-box',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: 2,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
             {novel.title}
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
