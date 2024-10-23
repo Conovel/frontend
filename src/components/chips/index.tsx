@@ -1,18 +1,16 @@
 import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 
-export function NewArrivalsChips() {
-  return (
-    <Stack direction='row' spacing={1}>
-      <Chip label='新着' size='small' />
-    </Stack>
-  );
+interface ChipProps {
+  label: string;
 }
 
-export function PopularChips() {
+export const Chips = ({ label }: ChipProps) => {
   return (
-    <Stack direction='row' spacing={1}>
-      <Chip label='人気' size='small' />
-    </Stack>
+    <Chip
+      label={label}
+      size='small'
+      sx={{ borderRadius: '4px', border: '1px solid black' }}
+      variant='outlined'
+    />
   );
-}
+};

@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
 import NovelCard from '../../components/novelCard';
-import { PopularChips, NewArrivalsChips } from '../../components/chips';
-import { FantasyTags, LoveStoryTags } from '../../components/tags';
+import { Tags } from '../../components/tags';
+import { Chips } from '../../components/chips';
 
 const novels = [
   {
@@ -18,8 +18,8 @@ const novels = [
       text: 'RS',
     },
     author: 'Remy Sharp',
-    chips: [<PopularChips />, <NewArrivalsChips />],
-    tags: [<LoveStoryTags />, <FantasyTags />],
+    chips: [<Chips label='人気' />, <Chips label='新着' />],
+    tags: [<Tags label='ラブストーリー' />, <Tags label='ファンタジー' />],
     loveStory: true,
     fantasy: true,
     views: 100,
