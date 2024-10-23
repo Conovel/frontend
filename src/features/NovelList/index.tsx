@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
-import NovelCard from '../../components/novelCard';
-import { Tags } from '../../components/tags';
+import NovelCardContainer from '../../components/novelCard/container';
 import { Chips } from '../../components/chips';
+import { Tags } from '../../components/tags';
 
 const novels = [
   {
@@ -32,7 +32,7 @@ const NovelList = () => {
     <Grid container spacing={2}>
       {novels.map((novel) => (
         <Grid item xs={12} sm={6} md={4} key={novel.title}>
-          <NovelCard novel={novel} />
+          <NovelCardContainer novel={novel} />
         </Grid>
       ))}
     </Grid>
