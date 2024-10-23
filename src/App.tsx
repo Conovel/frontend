@@ -1,49 +1,16 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg'; // Updated import statement
-import './App.css';
-import Button from '@mui/material/Button';
 import HeaderBar from './components/header';
+import NovelList from './features/NovelList';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0);
-
+export default function App() {
   return (
     <div className='App'>
-      <HeaderBar />
-      <header className='App-header'>
-        <img src={reactLogo} className='App-logo' alt='logo' />
-        <img src={viteLogo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <Button onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </Button>
-        </p>
-        <p>
-          <a
-            className='App-link'
-            href='https://reactjs.org'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className='App-link'
-            href='https://vitejs.dev/guide/features.html'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Vite Docs
-          </a>
-        </p>
+      <header>
+        <HeaderBar />
       </header>
+      <main>
+        <NovelList />
+      </main>
     </div>
   );
 }
-
-export default App;
