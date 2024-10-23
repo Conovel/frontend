@@ -1,6 +1,6 @@
 import './App.css';
 import HeaderBar from './components/header';
-import { NovelView } from './features/NovelView';
+import { NovelViewContainer } from './features/NovelView/NovelViewContainer';
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
         <HeaderBar />
       </header>
       <main>
-        <NovelView />
+        <NovelViewContainer />
       </main>
     </div>
   );

@@ -22,6 +22,7 @@ export const styles: { [key: string]: React.CSSProperties } = {
     fontSize: '0.8rem',
     height: '8vh',
   },
+
   iconWrapper: {
     display: 'flex',
     alignItems: 'center',
