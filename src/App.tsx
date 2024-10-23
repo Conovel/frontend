@@ -5,6 +5,7 @@ import './App.css';
 import Button from '@mui/material/Button';
 import HeaderBar from './components/header';
 import TransitionsModal from './features/NovelInfo';
+import NovelList from './features/NovelList';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -49,6 +50,9 @@ function App() {
         <Button onClick={handleOpenModal}>Open Modal</Button>
         <TransitionsModal open={isModalOpen} handleClose={handleCloseModal} />
       </header>
+      <main>
+        <NovelList />
+      </main>
     </div>
   );
 }
