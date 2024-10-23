@@ -1,6 +1,4 @@
 import NovelCard from './presentation';
-import { Chips } from '../../components/chips';
-import { Tags } from '../../components/tags';
 
 interface NovelProps {
   description: string;
@@ -18,13 +16,23 @@ interface NovelProps {
   fantasy: boolean;
   views: number;
   date: string;
+  chips: React.ReactNode[];
+  tags: React.ReactNode[];
 }
 
-const NovelCardContainer = ({ novel }: { novel: NovelProps }) => {
+const NovelCardContainer = ({
+  novel,
+  chips,
+  tags,
+}: {
+  novel: NovelProps;
+  chips: React.ReactNode[];
+  tags: React.ReactNode[];
+}) => {
   const novelData = {
     ...novel,
-    chips: novel.popular ? [<Chips label='人気' />] : [],
-    tags: novel.loveStory ? [<Tags label='ラブストーリー' />] : [],
+    chips,
+    tags,
   };
 
   return <NovelCard novel={novelData} />;

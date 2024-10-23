@@ -18,12 +18,12 @@ const novels = [
       text: 'RS',
     },
     author: 'Remy Sharp',
-    chips: [<Chips label='人気' />, <Chips label='新着' />],
-    tags: [<Tags label='ラブストーリー' />, <Tags label='ファンタジー' />],
     loveStory: true,
     fantasy: true,
     views: 100,
     date: '2024/08/20',
+    chips: [<Chips label='人気' />, <Chips label='新着' />],
+    tags: [<Tags label='ラブストーリー' />, <Tags label='ファンタジー' />],
   },
 ];
 
@@ -32,7 +32,11 @@ const NovelList = () => {
     <Grid container spacing={2}>
       {novels.map((novel) => (
         <Grid item xs={12} sm={6} md={4} key={novel.title}>
-          <NovelCardContainer novel={novel} />
+          <NovelCardContainer
+            novel={novel}
+            chips={novel.chips}
+            tags={novel.tags}
+          />
         </Grid>
       ))}
     </Grid>
