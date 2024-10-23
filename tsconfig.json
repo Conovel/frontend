@@ -18,7 +18,7 @@
     "esModuleInterop": true, // Ensure this is set to true
     "jsx": "react-jsx", // Ensure this is set to "react-jsx"
     "types": ["node"],
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
   "include": ["vite.config.ts", "./src/**/*", "src/custom.d.ts"]
 }
