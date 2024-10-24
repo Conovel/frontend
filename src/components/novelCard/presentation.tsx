@@ -21,10 +21,16 @@ interface Novel {
   date: string;
 }
 
-const NovelCard = ({ novel }: { novel: Novel }) => {
+const NovelCard = ({
+  novel,
+  onClick,
+}: {
+  novel: Novel;
+  onClick: () => void;
+}) => {
   return (
     <Box sx={{ minWidth: 275 }}>
-      <Card variant='outlined' sx={{ borderColor: 'black' }}>
+      <Card variant='outlined' sx={{ borderColor: 'black' }} onClick={onClick}>
         <CardContent>
           <Typography
             variant='body2'

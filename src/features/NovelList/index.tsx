@@ -27,7 +27,8 @@ const novels = [
   },
 ];
 
-const NovelList = () => {
+const NovelList = ({ onNovelClick }: { onNovelClick: () => void }) => {
+  // Accept onNovelClick prop
   return (
     <Grid container spacing={2}>
       {novels.map((novel) => (
@@ -36,6 +37,7 @@ const NovelList = () => {
             novel={novel}
             chips={novel.chips}
             tags={novel.tags}
+            onClick={onNovelClick} // Pass the click handler
           />
         </Grid>
       ))}

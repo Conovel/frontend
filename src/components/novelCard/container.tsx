@@ -24,10 +24,12 @@ const NovelCardContainer = ({
   novel,
   chips,
   tags,
+  onClick,
 }: {
   novel: NovelProps;
   chips: React.ReactNode[];
   tags: React.ReactNode[];
+  onClick: () => void;
 }) => {
   const novelData = {
     ...novel,
@@ -35,7 +37,7 @@ const NovelCardContainer = ({
     tags,
   };
 
-  return <NovelCard novel={novelData} />;
+  return <NovelCard novel={novelData} onClick={onClick} />;
 };
 
 export default NovelCardContainer;

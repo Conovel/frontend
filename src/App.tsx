@@ -1,14 +1,10 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg'; // Updated import statement
 import './App.css';
-import Button from '@mui/material/Button';
 import HeaderBar from './components/header';
 import TransitionsModal from './features/NovelInfo';
 import NovelList from './features/NovelList';
 
 function App() {
-  const [count, setCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => setIsModalOpen(true);
@@ -18,40 +14,10 @@ function App() {
     <div className='App'>
       <HeaderBar />
       <header className='App-header'>
-        <img src={reactLogo} className='App-logo' alt='logo' />
-        <img src={viteLogo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <Button onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </Button>
-        </p>
-        <p>
-          <a
-            className='App-link'
-            href='https://reactjs.org'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className='App-link'
-            href='https://vitejs.dev/guide/features.html'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Vite Docs
-          </a>
-        </p>
-        <Button onClick={handleOpenModal}>Open Modal</Button>
         <TransitionsModal open={isModalOpen} handleClose={handleCloseModal} />
       </header>
       <main>
-        <NovelList />
+        <NovelList onNovelClick={handleOpenModal} /> {/* Pass the handler */}
       </main>
     </div>
   );
