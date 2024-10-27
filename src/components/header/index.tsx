@@ -10,7 +10,7 @@ import logo from './image/conovel_header_logo.webp';
 import { MenuButton } from '../sidebar';
 
 function HeaderBar() {
-  const [] = useState<HTMLElement | null>(null);
+  const [] = useState<HTMLElement | null>(null); // 修正: useStateの初期値を設定
 
   return (
     <AppBar position='fixed' color='default' sx={{ zIndex: 1201 }}>

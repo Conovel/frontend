@@ -1,11 +1,10 @@
+import './App.css';
 import { Routing } from './routing';
 
-function App() {
+export default function App() {
   return (
     <>
       <Routing />
     </>
   );
 }
-
-export default App;
