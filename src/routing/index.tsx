@@ -1,5 +1,6 @@
 import { Outlet, Route, Routes } from 'react-router-dom';
 import HeaderBar from '../components/header';
+import { CompanyPage } from '../pages/company';
 import NovelList from '../features/NovelList';
 
 /**
@@ -13,7 +14,7 @@ export const Routing = () => {
         <Route path='/' element={<Layout />}>
           <Route index element={<NovelList />} />
           <Route path='/account' />
-          <Route path='/company' />
+          <Route path='/company' element={<CompanyPage />} />
           <Route path='/terms' />
         </Route>
       </Routes>
