@@ -37,82 +37,6 @@ interface NovelViewPresentationProps {
   nextPanel: Panel;
 }
 
-const styles: { [key: string]: React.CSSProperties } = {
-  contentWrapper: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    zIndex: 2,
-  },
-  icon: {
-    fontSize: '18px',
-  },
-  verticalLine: {
-    position: 'absolute',
-    bottom: '10vh',
-    left: '50%',
-    width: '1px',
-    backgroundColor: '#000',
-    zIndex: 1,
-  },
-  mainPanel: {
-    backgroundColor: '#fff',
-    position: 'relative',
-    textAlign: 'left',
-    border: '1px solid #000',
-    borderRadius: '10px',
-    margin: '5vh 0',
-    height: '40vh',
-    alignItems: 'center',
-    fontSize: '1.2rem',
-    zIndex: 2,
-  },
-
-  panelItem: {
-    flex: 1,
-    textAlign: 'center',
-  },
-  buttonWrapper: {
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  button: {
-    width: '90%',
-    padding: '5px 10px',
-    backgroundColor: '#000',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-    textAlign: 'left',
-  },
-  footerReactions: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  commentCount: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  textWrapper: {
-    fontSize: '0.8rem',
-    border: '1px solid #000',
-    padding: '10px',
-    borderRadius: '5px',
-    margin: '0 5px',
-  },
-  iconContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: '5px',
-  },
-  iconWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    marginRight: '10px',
-  },
-};
-
 export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   posts,
   mainPanels,
@@ -137,29 +61,63 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
     <Container sx={{ position: 'relative', top: '8vh', alignItems: 'center' }}>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100vw' }}>
         {posts.map((post) => (
-          <Box key={post.id}>
-            <Box style={styles.postBox}>
-              <p>{post.text}</p>
-              <p>{post.main_copy}</p>
-              <Box style={styles.iconWrapper}>
-                <Box style={styles.reactionWrapper}>
-                  <FaThumbsUp style={styles.icon} />
-                  <span>{post.likes}</span>
-                </Box>
-                <Box style={styles.reactionWrapper}>
-                  <ChatIcon style={styles.icon} />
-                  <span>{post.comments}</span>
-                </Box>
+          <Box
+            key={post.id}
+            sx={{
+              backgroundColor: '#fff',
+              border: '1px solid #000',
+              borderRadius: '10px',
+              padding: '10px',
+              margin: '5vh 0',
+              width: '100%',
+              zIndex: 2,
+            }}
+          >
+            <p>{post.text}</p>
+            <p>{post.main_copy}</p>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginTop: '5px',
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <FaThumbsUp style={{ fontSize: '18px' }} />
+                <span>{post.likes}</span>
               </Box>
-              <p>投稿数: {post.sentence_user_count}</p>
-              <p>階層数: {post.sentence_hierarchy_count}</p>
-              <p>読者数: {post.reader_count}</p>
-              <p>あらすじ: {post.overview}</p>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <ChatIcon style={{ fontSize: '18px' }} />
+                <span>{post.comments}</span>
+              </Box>
             </Box>
+            <p>投稿数: {post.sentence_user_count}</p>
+            <p>階層数: {post.sentence_hierarchy_count}</p>
+            <p>読者数: {post.reader_count}</p>
+            <p>あらすじ: {post.overview}</p>
           </Box>
         ))}
       </Box>
-      <Box style={styles.verticalLine}></Box>
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: '10vh',
+          left: '50%',
+          width: '1px',
+          backgroundColor: '#000',
+          zIndex: 1,
+        }}
+      ></Box>
 
       <Prev
         startIndex={startIndexPrev}
@@ -177,7 +135,21 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       />
 
       {mainPanels.map((panel) => (
-        <Box key={panel.id} style={styles.mainPanel}>
+        <Box
+          key={panel.id}
+          sx={{
+            backgroundColor: '#fff',
+            position: 'relative',
+            textAlign: 'left',
+            border: '1px solid #000',
+            borderRadius: '10px',
+            margin: '5vh 0',
+            height: '40vh',
+            alignItems: 'center',
+            fontSize: '1.2rem',
+            zIndex: 2,
+          }}
+        >
           <p>{panel.text1}</p>
           <p>{panel.text2}</p>
           <DragIndicatorIcon
