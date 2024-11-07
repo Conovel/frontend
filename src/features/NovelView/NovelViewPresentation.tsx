@@ -1,15 +1,10 @@
 import React from 'react';
+import { Box, Container } from '@mui/material';
+import Prev from '../../components/novelview/Prev';
+import Next from '../../components/novelview/Next';
 import { FaThumbsUp } from 'react-icons/fa';
 import ChatIcon from '@mui/icons-material/Chat';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import { Box, Container } from '@mui/material';
-
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import NextPlanIcon from '@mui/icons-material/NextPlan';
 
 interface Post {
   id: number;
@@ -50,7 +45,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     zIndex: 2,
   },
   icon: {
-    fontSize: '20px',
+    fontSize: '18px',
   },
   verticalLine: {
     position: 'absolute',
@@ -59,15 +54,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: '1px',
     backgroundColor: '#000',
     zIndex: 1,
-  },
-  prevPanel: {
-    backgroundColor: '#fff',
-    display: 'flex',
-    justifyContent: 'space-between',
-    margin: '5vh 0',
-    height: '20vh',
-    alignItems: 'center',
-    zIndex: 2,
   },
   mainPanel: {
     backgroundColor: '#fff',
@@ -81,16 +67,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: '1.2rem',
     zIndex: 2,
   },
-  nextPanel: {
-    backgroundColor: '#fff',
-    display: 'flex',
-    justifyContent: 'space-between',
-    margin: '5vh 0',
-    height: '20vh',
-    alignItems: 'center',
-    fontSize: '1.2rem',
-    zIndex: 2,
-  },
+
   panelItem: {
     flex: 1,
     textAlign: 'center',
@@ -146,27 +123,15 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   const [startIndexPrev, setStartIndexPrev] = React.useState(0);
   const [startIndexNext, setStartIndexNext] = React.useState(0);
 
-  const handleScrollPrev = (direction: 'next' | 'prev') => {
-    if (
-      direction === 'next' &&
-      startIndexPrev + visibleTextCount < prevTextCount
-    ) {
-      setStartIndexPrev(startIndexPrev + visibleTextCount);
-    } else if (direction === 'prev' && startIndexPrev > 0) {
-      setStartIndexPrev(startIndexPrev - visibleTextCount);
-    }
-  };
+  const [thumbUpCountPrev, setThumbUpCountPrev] = React.useState<number>(0);
+  const [thumbDownCountPrev, setThumbDownCountPrev] = React.useState<number>(0);
+  const [commentCountPrev, setCommentCountPrev] = React.useState<number>(0);
+  const [nextPlanCountPrev, setNextPlanCountPrev] = React.useState<number>(0);
 
-  const handleScrollNext = (direction: 'next' | 'prev') => {
-    if (
-      direction === 'next' &&
-      startIndexNext + visibleTextCount < nextTextCount
-    ) {
-      setStartIndexNext(startIndexNext + visibleTextCount);
-    } else if (direction === 'prev' && startIndexNext > 0) {
-      setStartIndexNext(startIndexNext - visibleTextCount);
-    }
-  };
+  const [thumbUpCountNext, setThumbUpCountNext] = React.useState<number>(0);
+  const [thumbDownCountNext, setThumbDownCountNext] = React.useState<number>(0);
+  const [commentCountNext, setCommentCountNext] = React.useState<number>(0);
+  const [nextPlanCountNext, setNextPlanCountNext] = React.useState<number>(0);
 
   return (
     <Container sx={{ position: 'relative', top: '8vh', alignItems: 'center' }}>
@@ -196,53 +161,20 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       </Box>
       <Box style={styles.verticalLine}></Box>
 
-      <Box style={styles.prevPanel}>
-        <KeyboardArrowLeftIcon
-          onClick={() => handleScrollPrev('prev')}
-          style={{ cursor: startIndexPrev === 0 ? 'not-allowed' : 'pointer' }}
-          color={startIndexPrev === 0 ? 'disabled' : 'action'}
-        />
-        {Array.from({ length: visibleTextCount }, (_, index) => {
-          const textIndex = startIndexPrev + index;
-          return textIndex < prevTextCount ? (
-            <Box key={textIndex} style={styles.textWrapper}>
-              <p>前の階層のテキスト{textIndex + 1}</p>
-              <Box style={styles.iconContainer}>
-                <Box style={styles.iconWrapper}>
-                  <ThumbUpIcon />
-                  <span>{/* ここにいいねの数を入れる */}</span>
-                </Box>
-                <Box style={styles.iconWrapper}>
-                  <ThumbDownIcon />
-                  <span>{/* ここに嫌いの数を入れる */}</span>
-                </Box>
-                <Box style={styles.iconWrapper}>
-                  <ChatIcon />
-                  <span>{/* ここにコメントの数を入れる */}</span>
-                </Box>
-                <Box style={styles.iconWrapper}>
-                  <NextPlanIcon />
-                  <span>{/* ここに次の計画の数を入れる */}</span>
-                </Box>
-              </Box>
-            </Box>
-          ) : null;
-        })}
-        <KeyboardArrowRightIcon
-          onClick={() => handleScrollPrev('next')}
-          style={{
-            cursor:
-              startIndexPrev + visibleTextCount >= prevTextCount
-                ? 'not-allowed'
-                : 'pointer',
-          }}
-          color={
-            startIndexPrev + visibleTextCount >= prevTextCount
-              ? 'disabled'
-              : 'action'
-          }
-        />
-      </Box>
+      <Prev
+        startIndex={startIndexPrev}
+        setStartIndex={setStartIndexPrev}
+        visibleTextCount={visibleTextCount}
+        textCount={prevTextCount}
+        thumbUpCount={thumbUpCountPrev}
+        setThumbUpCount={setThumbUpCountPrev}
+        thumbDownCount={thumbDownCountPrev}
+        setThumbDownCount={setThumbDownCountPrev}
+        commentCount={commentCountPrev}
+        setCommentCount={setCommentCountPrev}
+        nextPlanCount={nextPlanCountPrev}
+        setNextPlanCount={setNextPlanCountPrev}
+      />
 
       {mainPanels.map((panel) => (
         <Box key={panel.id} style={styles.mainPanel}>
@@ -259,53 +191,20 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         </Box>
       ))}
 
-      <Box style={styles.nextPanel}>
-        <KeyboardArrowLeftIcon
-          onClick={() => handleScrollNext('prev')}
-          style={{ cursor: startIndexNext === 0 ? 'not-allowed' : 'pointer' }}
-          color={startIndexNext === 0 ? 'disabled' : 'action'}
-        />
-        {Array.from({ length: visibleTextCount }, (_, index) => {
-          const textIndex = startIndexNext + index;
-          return textIndex < nextTextCount ? (
-            <Box key={textIndex} style={styles.textWrapper}>
-              <p>次の階層のテキスト{textIndex + 1}</p>
-              <Box style={styles.iconContainer}>
-                <Box style={styles.iconWrapper}>
-                  <ThumbUpIcon />
-                  <span>{/* ここにいいねの数を入れる */}</span>
-                </Box>
-                <Box style={styles.iconWrapper}>
-                  <ThumbDownIcon />
-                  <span>{/* ここに嫌いの数を入れる */}</span>
-                </Box>
-                <Box style={styles.iconWrapper}>
-                  <ChatIcon />
-                  <span>{/* ここにコメントの数を入れる */}</span>
-                </Box>
-                <Box style={styles.iconWrapper}>
-                  <NextPlanIcon />
-                  <span>{/* ここに次の計画の数を入れる */}</span>
-                </Box>
-              </Box>
-            </Box>
-          ) : null;
-        })}
-        <KeyboardArrowRightIcon
-          onClick={() => handleScrollNext('next')}
-          style={{
-            cursor:
-              startIndexNext + visibleTextCount >= nextTextCount
-                ? 'not-allowed'
-                : 'pointer',
-          }}
-          color={
-            startIndexNext + visibleTextCount >= nextTextCount
-              ? 'disabled'
-              : 'action'
-          }
-        />
-      </Box>
+      <Next
+        startIndex={startIndexNext}
+        setStartIndex={setStartIndexNext}
+        visibleTextCount={visibleTextCount}
+        textCount={nextTextCount}
+        thumbUpCount={thumbUpCountNext}
+        setThumbUpCount={setThumbUpCountNext}
+        thumbDownCount={thumbDownCountNext}
+        setThumbDownCount={setThumbDownCountNext}
+        commentCount={commentCountNext}
+        setCommentCount={setCommentCountNext}
+        nextPlanCount={nextPlanCountNext}
+        setNextPlanCount={setNextPlanCountNext}
+      />
     </Container>
   );
 };
