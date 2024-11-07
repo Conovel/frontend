@@ -77,6 +77,12 @@ const Next: React.FC<NextProps> = ({
           >
             {index === 0 ? (
               <button
+                style={{
+                  width: '100%',
+                  border: 'none',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                }}
                 onClick={() => {
                   /* ここにボタンの処理を追加 */
                 }}
@@ -86,15 +92,17 @@ const Next: React.FC<NextProps> = ({
             ) : (
               <p>次の階層のテキスト{textIndex + 1}</p>
             )}
-            <Box
-              sx={{
-                position: 'absolute',
-                top: '5px',
-                left: '5px',
-              }}
-            >
-              <Avatar sx={{ width: 24, height: 24 }} />
-            </Box>
+            {index !== 0 && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: '5px',
+                  left: '5px',
+                }}
+              >
+                <Avatar sx={{ width: 24, height: 24 }} />
+              </Box>
+            )}
             <Box
               sx={{
                 display: 'flex',
