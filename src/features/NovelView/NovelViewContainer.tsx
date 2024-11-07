@@ -1,32 +1,5 @@
 import { NovelViewPresentation } from './NovelViewPresentation';
 
-const posts = [
-  {
-    id: 1,
-    text: 'ああ、あの若い頃気づいていれば...',
-    likes: 120,
-    comments: 120,
-  },
-  {
-    id: 2,
-    text: 'ああ、あの若い頃気づいていれば...',
-    likes: 120,
-    comments: 120,
-  },
-  {
-    id: 3,
-    text: 'ああ、あの若い頃気づいていれば...',
-    likes: 120,
-    comments: 120,
-  },
-  {
-    id: 4,
-    text: 'ああ、あの若い頃気づいていれば...',
-    likes: 120,
-    comments: 120,
-  },
-];
-
 const mainPanels = [
   {
     id: 1,
@@ -35,6 +8,25 @@ const mainPanels = [
   },
 ];
 
+const prevPanel = {
+  id: 1,
+  text1: '前の階層のテキスト1',
+  text2: '前の階層のテキスト2',
+};
+
+const nextPanel = {
+  id: 2,
+  text1: '次の階層のテキスト1',
+  text2: '次の階層のテキスト2',
+};
+
 export const NovelViewContainer = () => {
-  return <NovelViewPresentation posts={posts} mainPanels={mainPanels} />;
+  return (
+    <NovelViewPresentation
+      posts={[]}
+      mainPanels={mainPanels}
+      prevPanel={prevPanel}
+      nextPanel={nextPanel}
+    />
+  );
 };
