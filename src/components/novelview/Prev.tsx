@@ -1,11 +1,8 @@
 import React from 'react';
-import { Avatar, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import ChatIcon from '@mui/icons-material/Chat';
-import NextPlanIcon from '@mui/icons-material/NextPlan';
+import NovelCard from '../novelcard';
 
 interface PrevProps {
   startIndex: number;
@@ -64,80 +61,19 @@ const Prev: React.FC<PrevProps> = ({
       {Array.from({ length: visibleTextCount }, (_, index) => {
         const textIndex = startIndex + index;
         return textIndex < textCount ? (
-          <Box
+          <NovelCard
             key={textIndex}
-            sx={{
-              fontSize: '0.8rem',
-              border: '1px solid #000',
-              padding: '10px',
-              borderRadius: '5px',
-              margin: '0 5px',
-              position: 'relative',
-            }}
-          >
-            <Box
-              sx={{
-                position: 'absolute',
-                top: '5px',
-                left: '5px',
-              }}
-            >
-              <Avatar sx={{ width: 24, height: 24 }} />
-            </Box>
-            <p>前の階層のテキスト{textIndex + 1}</p>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: '5px',
-              }}
-            >
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginRight: '10px',
-                }}
-                onClick={() => setThumbUpCount(thumbUpCount + 1)}
-              >
-                <ThumbUpIcon />
-                <span>{thumbUpCount}</span>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginRight: '10px',
-                }}
-                onClick={() => setThumbDownCount(thumbDownCount + 1)}
-              >
-                <ThumbDownIcon />
-                <span>{thumbDownCount}</span>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginRight: '10px',
-                }}
-                onClick={() => setCommentCount(commentCount + 1)}
-              >
-                <ChatIcon />
-                <span>{commentCount}</span>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginRight: '10px',
-                }}
-                onClick={() => setNextPlanCount(nextPlanCount + 1)}
-              >
-                <NextPlanIcon />
-                <span>{nextPlanCount}</span>
-              </Box>
-            </Box>
-          </Box>
+            index={index}
+            textIndex={textIndex}
+            thumbUpCount={thumbUpCount}
+            setThumbUpCount={setThumbUpCount}
+            thumbDownCount={thumbDownCount}
+            setThumbDownCount={setThumbDownCount}
+            commentCount={commentCount}
+            setCommentCount={setCommentCount}
+            nextPlanCount={nextPlanCount}
+            setNextPlanCount={setNextPlanCount}
+          />
         ) : null;
       })}
       <KeyboardArrowRightIcon
