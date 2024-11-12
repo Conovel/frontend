@@ -1,14 +1,14 @@
 import React from 'react';
-import { Box } from '@mui/material'; //Avatar後で追加
+import { Box, TextField } from '@mui/material'; //Avatar後で追加
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import ThumbDownButton from '../buttonicon/ThumbsDownButton';
 import CommentButton from '../buttonicon/CommentButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
 
-// NovelCardProps インターフェースを定義
 interface NovelCardProps {
   index: number;
   textIndex: number;
+  text: string;
   thumbUpCount: number;
   setThumbUpCount: React.Dispatch<React.SetStateAction<number>>;
   thumbDownCount: number;
@@ -21,6 +21,7 @@ interface NovelCardProps {
 
 const NovelCard: React.FC<NovelCardProps> = ({
   index,
+  text,
   thumbUpCount,
   setThumbUpCount,
   thumbDownCount,
@@ -41,7 +42,19 @@ const NovelCard: React.FC<NovelCardProps> = ({
         position: 'relative',
       }}
     >
-      {/* ... 既存のコード ... */}
+      {/* 小説のテキストを表示するテキストボックス */}
+      <TextField
+        multiline
+        fullWidth
+        variant='outlined'
+        value={text}
+        InputProps={{
+          readOnly: true, // 読み取り専用に設定
+        }}
+        sx={{
+          marginBottom: '10px',
+        }}
+      />
       <Box
         sx={{
           display: 'flex',
