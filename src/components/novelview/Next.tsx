@@ -65,6 +65,7 @@ const Next: React.FC<NextProps> = ({
             key={textIndex}
             index={index}
             textIndex={textIndex}
+            text={`Text content for index ${textIndex}`}
             thumbUpCount={thumbUpCount}
             setThumbUpCount={setThumbUpCount}
             thumbDownCount={thumbDownCount}
