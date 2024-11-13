@@ -2,8 +2,9 @@ import React from 'react';
 import { Box, Container } from '@mui/material';
 import Prev from '../../components/novelview/PrevPanel';
 import Next from '../../components/novelview/NextPanel';
-import MainPanel from '../../components/novelview/MainPanel';
 import { FaThumbsUp } from 'react-icons/fa';
+import ChatIcon from '@mui/icons-material/Chat';
+import MainPanel from '../../components/novelview/MainPanel';
 
 interface Post {
   id: number;
