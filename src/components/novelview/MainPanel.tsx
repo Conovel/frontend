@@ -53,7 +53,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
             margin: '5vh 5vh',
             height: '40vh',
             alignItems: 'center',
-            fontSize: '1.2rem',
+            fontSize: '2.0rem',
             zIndex: 2,
           }}
         >

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, TextField } from '@mui/material'; //Avatar後で追加
+import { Avatar, Box, TextField } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import ThumbDownButton from '../buttonicon/ThumbsDownButton';
 import CommentButton from '../buttonicon/CommentButton';
@@ -39,8 +39,11 @@ const NovelCard: React.FC<NovelCardProps> = ({
         borderRadius: '5px',
         margin: '0 5px',
         position: 'relative',
+        backgroundColor: '#fff',
+        zIndex: 1,
       }}
     >
+      <Avatar sx={{ marginBottom: '5px' }}>C</Avatar>
       {/* 小説のテキストを表示するテキストボックス */}
       <TextField
         multiline
@@ -61,26 +64,24 @@ const NovelCard: React.FC<NovelCardProps> = ({
           marginTop: '5px',
         }}
       >
-        {
-          <>
-            <ThumbUpButton
-              thumbUpCount={thumbUpCount}
-              setThumbUpCount={setThumbUpCount}
-            />
-            <ThumbDownButton
-              thumbDownCount={thumbDownCount}
-              setThumbDownCount={setThumbDownCount}
-            />
-            <CommentButton
-              commentCount={commentCount}
-              setCommentCount={setCommentCount}
-            />
-            <NextPlanButton
-              nextPlanCount={nextPlanCount}
-              setNextPlanCount={setNextPlanCount}
-            />
-          </>
-        }
+        <>
+          <ThumbUpButton
+            thumbUpCount={thumbUpCount}
+            setThumbUpCount={setThumbUpCount}
+          />
+          <ThumbDownButton
+            thumbDownCount={thumbDownCount}
+            setThumbDownCount={setThumbDownCount}
+          />
+          <CommentButton
+            commentCount={commentCount}
+            setCommentCount={setCommentCount}
+          />
+          <NextPlanButton
+            nextPlanCount={nextPlanCount}
+            setNextPlanCount={setNextPlanCount}
+          />
+        </>
       </Box>
     </Box>
   );

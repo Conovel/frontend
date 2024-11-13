@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import NovelCard from '../novelcard';
+import NovelCard from '../novelcard/NovelCard';
 
 interface NextProps {
   startIndex: number;
@@ -61,30 +61,42 @@ const Next: React.FC<NextProps> = ({
       {Array.from({ length: visibleTextCount }, (_, index) => {
         const textIndex = startIndex + index;
         return textIndex < textCount ? (
-          index === 0 ? (
-            <button
-              onClick={() => {
-                /* ここにボタンのクリック処理を追加 */
-              }}
-            >
-              続きを自分で書く
-            </button>
-          ) : (
-            <NovelCard
-              key={textIndex}
-              index={index}
-              textIndex={textIndex}
-              text={`Text content for index ${textIndex}`}
-              thumbUpCount={thumbUpCount}
-              setThumbUpCount={setThumbUpCount}
-              thumbDownCount={thumbDownCount}
-              setThumbDownCount={setThumbDownCount}
-              commentCount={commentCount}
-              setCommentCount={setCommentCount}
-              nextPlanCount={nextPlanCount}
-              setNextPlanCount={setNextPlanCount}
-            />
-          )
+          <Box
+            sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+          >
+            {index === 0 ? (
+              <Box
+                sx={{
+                  padding: '10px',
+                  width: '100%',
+                  textAlign: 'center',
+                }}
+              >
+                <button
+                  onClick={() => {
+                    /* ここにボタンのクリック処理を追加 */
+                  }}
+                >
+                  続きを自分で書く
+                </button>
+              </Box>
+            ) : (
+              <NovelCard
+                key={textIndex}
+                index={index}
+                textIndex={textIndex}
+                text={`Text content for index ${textIndex}`}
+                thumbUpCount={thumbUpCount}
+                setThumbUpCount={setThumbUpCount}
+                thumbDownCount={thumbDownCount}
+                setThumbDownCount={setThumbDownCount}
+                commentCount={commentCount}
+                setCommentCount={setCommentCount}
+                nextPlanCount={nextPlanCount}
+                setNextPlanCount={setNextPlanCount}
+              />
+            )}
+          </Box>
         ) : null;
       })}
       <KeyboardArrowRightIcon

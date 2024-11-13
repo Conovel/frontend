@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import NovelCard from '../novelcard';
+import NovelCard from '../novelcard/NovelCard';
 
 interface PrevProps {
   startIndex: number;

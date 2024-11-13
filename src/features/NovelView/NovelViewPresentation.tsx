@@ -111,9 +111,10 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       <Box
         sx={{
           position: 'absolute',
-          bottom: '10vh',
+          top: '10vh',
+          bottom: '5vh',
           left: '50%',
-          width: '1px',
+          width: '2px',
           backgroundColor: '#000',
           zIndex: 1,
         }}
