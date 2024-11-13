@@ -20,7 +20,6 @@ interface NovelCardProps {
 }
 
 const NovelCard: React.FC<NovelCardProps> = ({
-  index,
   text,
   thumbUpCount,
   setThumbUpCount,

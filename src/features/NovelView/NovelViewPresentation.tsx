@@ -1,10 +1,9 @@
 import React from 'react';
 import { Box, Container } from '@mui/material';
-import Prev from '../../components/novelview/Prev';
-import Next from '../../components/novelview/Next';
+import Prev from '../../components/novelview/PrevPanel';
+import Next from '../../components/novelview/NextPanel';
+import MainPanel from '../../components/novelview/MainPanel';
 import { FaThumbsUp } from 'react-icons/fa';
-import ChatIcon from '@mui/icons-material/Chat';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
 interface Post {
   id: number;
@@ -134,34 +133,17 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         setNextPlanCount={setNextPlanCountPrev}
       />
 
-      {mainPanels.map((panel) => (
-        <Box
-          key={panel.id}
-          sx={{
-            backgroundColor: '#fff',
-            position: 'relative',
-            textAlign: 'left',
-            border: '1px solid #000',
-            borderRadius: '10px',
-            margin: '5vh 0',
-            height: '40vh',
-            alignItems: 'center',
-            fontSize: '1.2rem',
-            zIndex: 2,
-          }}
-        >
-          <p>{panel.text1}</p>
-          <p>{panel.text2}</p>
-          <DragIndicatorIcon
-            sx={{
-              position: 'absolute',
-              bottom: '10px',
-              right: '10px',
-              cursor: 'pointer',
-            }}
-          />
-        </Box>
-      ))}
+      <MainPanel
+        mainPanels={mainPanels}
+        thumbUpCount={thumbUpCountPrev}
+        setThumbUpCount={setThumbUpCountPrev}
+        thumbDownCount={thumbDownCountPrev}
+        setThumbDownCount={setThumbDownCountPrev}
+        commentCount={commentCountPrev}
+        setCommentCount={setCommentCountPrev}
+        nextPlanCount={nextPlanCountPrev}
+        setNextPlanCount={setNextPlanCountPrev}
+      />
 
       <Next
         startIndex={startIndexNext}

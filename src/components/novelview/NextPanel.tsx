@@ -61,20 +61,30 @@ const Next: React.FC<NextProps> = ({
       {Array.from({ length: visibleTextCount }, (_, index) => {
         const textIndex = startIndex + index;
         return textIndex < textCount ? (
-          <NovelCard
-            key={textIndex}
-            index={index}
-            textIndex={textIndex}
-            text={`Text content for index ${textIndex}`}
-            thumbUpCount={thumbUpCount}
-            setThumbUpCount={setThumbUpCount}
-            thumbDownCount={thumbDownCount}
-            setThumbDownCount={setThumbDownCount}
-            commentCount={commentCount}
-            setCommentCount={setCommentCount}
-            nextPlanCount={nextPlanCount}
-            setNextPlanCount={setNextPlanCount}
-          />
+          index === 0 ? (
+            <button
+              onClick={() => {
+                /* ここにボタンのクリック処理を追加 */
+              }}
+            >
+              続きを自分で書く
+            </button>
+          ) : (
+            <NovelCard
+              key={textIndex}
+              index={index}
+              textIndex={textIndex}
+              text={`Text content for index ${textIndex}`}
+              thumbUpCount={thumbUpCount}
+              setThumbUpCount={setThumbUpCount}
+              thumbDownCount={thumbDownCount}
+              setThumbDownCount={setThumbDownCount}
+              commentCount={commentCount}
+              setCommentCount={setCommentCount}
+              nextPlanCount={nextPlanCount}
+              setNextPlanCount={setNextPlanCount}
+            />
+          )
         ) : null;
       })}
       <KeyboardArrowRightIcon
