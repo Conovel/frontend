@@ -54,9 +54,14 @@ const MainPanel: React.FC<MainPanelProps> = ({
             zIndex: 2,
           }}
         >
-          <Avatar
-            sx={{ fontSize: '2.0rem', alignItems: 'left', margin: '1vh 1vh' }}
-          />
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', margin: '1vh 1vh' }}
+          >
+            <Avatar sx={{ fontSize: '2.0rem' }}>K</Avatar>
+            <Box sx={{ marginLeft: '1vh', fontSize: '2.0rem' }}>
+              {'Kanepion'}
+            </Box>
+          </Box>
           <p>{panel.text1}</p>
           <p>{panel.text2}</p>
           <DragIndicatorIcon
