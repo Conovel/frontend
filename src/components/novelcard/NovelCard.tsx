@@ -31,33 +31,48 @@ const NovelCard: React.FC<NovelCardProps> = ({
     <Box
       sx={{
         fontSize: '0.8rem',
-        border: '1px solid #000',
-        padding: '10px',
-        borderRadius: '5px',
-        margin: '0 5px',
         position: 'relative',
         backgroundColor: '#fff',
         zIndex: 1,
       }}
     >
-      <Avatar sx={{ marginBottom: '5px' }}>C</Avatar>
-      {/* 小説のテキストを表示するテキストボックス */}
-      <TextField
-        multiline
-        fullWidth
-        variant='outlined'
-        value={text}
-        InputProps={{
-          readOnly: true, // 読み取り専用に設定
-        }}
+      <Box
         sx={{
-          marginBottom: '10px',
+          border: '1px solid #000',
+          padding: '10px',
+          borderRadius: '5px',
         }}
-      />
+      >
+        <Avatar sx={{ width: 24, height: 24, marginBottom: '5px' }}>C</Avatar>
+        {/* 小説のテキストを表示するテキストボックス */}
+        <Box
+          sx={{
+            fontSize: '1.0rem',
+            height: '4rem',
+            marginBottom: '5px',
+            overflow: 'hidden',
+          }}
+        >
+          <TextField
+            multiline
+            fullWidth
+            variant='outlined'
+            value={text}
+            InputProps={{
+              readOnly: true,
+            }}
+            sx={{
+              fontSize: '1.0rem',
+              height: '100%',
+            }}
+          />
+        </Box>
+      </Box>
+
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
           marginTop: '5px',
         }}
       >

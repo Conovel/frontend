@@ -46,22 +46,25 @@ const MainPanel: React.FC<MainPanelProps> = ({
             textAlign: 'left',
             border: '1px solid #000',
             borderRadius: '10px',
-            margin: '5vh 5vh',
+            margin: '0vh 1vh',
             height: '40vh',
             alignItems: 'center',
             fontSize: '2.0rem',
             zIndex: 2,
+            overflowY: 'auto',
           }}
         >
           <Box
-            sx={{ display: 'flex', alignItems: 'center', margin: '1vh 1vh' }}
+            sx={{ display: 'flex', alignItems: 'center', margin: '2vh 2vh' }}
           >
-            <Avatar sx={{ fontSize: '2.0rem' }}>K</Avatar>
+            <Avatar sx={{ fontSize: '2.0rem', width: 32, height: 32 }}>
+              K
+            </Avatar>
             <Box sx={{ marginLeft: '1vh', fontSize: '2.0rem' }}>
               {'Kanepion'}
             </Box>
           </Box>
-          <p>{panel.sentence}</p>
+          <p style={{ margin: '2vh 2vh' }}>{panel.sentence}</p>
           <DragIndicatorIcon
             onClick={handleIconClick}
             sx={{

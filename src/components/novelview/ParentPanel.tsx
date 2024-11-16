@@ -36,7 +36,7 @@ const Prev: React.FC<PrevProps> = ({
         justifyContent: 'space-between',
         margin: '5vh auto',
         height: '20vh',
-        width: '50vw',
+        width: '70vw',
         alignItems: 'center',
         zIndex: 2,
       }}
