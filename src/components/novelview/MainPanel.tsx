@@ -7,9 +7,8 @@ import NextPlanButton from '../buttonicon/NextPlanButton';
 
 interface MainPanelProps {
   mainPanels: {
-    id: number;
-    text1: string;
-    text2: string;
+    sentence_id: number;
+    sentence: string;
   }[];
   thumbUpCount: number;
   setThumbUpCount: React.Dispatch<React.SetStateAction<number>>;
@@ -40,7 +39,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
     <Box>
       {mainPanels.map((panel) => (
         <Box
-          key={panel.id}
+          key={panel.sentence_id}
           sx={{
             backgroundColor: '#fff',
             position: 'relative',
@@ -62,8 +61,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
               {'Kanepion'}
             </Box>
           </Box>
-          <p>{panel.text1}</p>
-          <p>{panel.text2}</p>
+          <p>{panel.sentence}</p>
           <DragIndicatorIcon
             onClick={handleIconClick}
             sx={{

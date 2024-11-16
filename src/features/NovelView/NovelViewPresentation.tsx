@@ -20,22 +20,20 @@ interface Post {
 }
 
 interface MainPanel {
-  id: number;
-  text1: string;
-  text2: string;
+  sentence_id: number;
+  sentence: string;
 }
 
 interface Panel {
-  id: number;
-  text1: string;
-  text2: string;
+  sentence_id: number;
+  sentence: string;
 }
 
 interface NovelViewPresentationProps {
   posts: Post[];
   mainPanels: MainPanel[];
-  prevPanel: Panel;
-  nextPanel: Panel;
+  parentPanel: Panel;
+  childrenPanel: Panel;
 }
 
 export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
