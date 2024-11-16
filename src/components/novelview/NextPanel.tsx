@@ -58,32 +58,20 @@ const Next: React.FC<NextProps> = ({
         sx={{ cursor: startIndex === 0 ? 'not-allowed' : 'pointer' }}
         color={startIndex === 0 ? 'disabled' : 'action'}
       />
-      {Array.from({ length: visibleTextCount }, (_, index) => {
-        const textIndex = startIndex + index;
-        return textIndex < textCount ? (
-          <Box
-            sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
-          >
-            {index === 0 ? (
-              <Box
-                sx={{
-                  padding: '10px',
-                  width: '100%',
-                  textAlign: 'center',
-                }}
-              >
-                <button
-                  onClick={() => {
-                    /* ここにボタンのクリック処理を追加 */
-                  }}
-                >
-                  続きを自分で書く
-                </button>
-              </Box>
-            ) : (
+      <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        {Array.from({ length: Math.min(visibleTextCount, 3) }, (_, index) => {
+          const textIndex = startIndex + index + 1;
+          return textIndex <= textCount ? (
+            <Box
+              key={textIndex}
+              sx={{
+                width: '33.33%',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
               <NovelCard
-                key={textIndex}
-                index={index}
+                index={textIndex}
                 textIndex={textIndex}
                 text={`Text content for index ${textIndex}`}
                 thumbUpCount={thumbUpCount}
@@ -95,10 +83,10 @@ const Next: React.FC<NextProps> = ({
                 nextPlanCount={nextPlanCount}
                 setNextPlanCount={setNextPlanCount}
               />
-            )}
-          </Box>
-        ) : null;
-      })}
+            </Box>
+          ) : null;
+        })}
+      </Box>
       <KeyboardArrowRightIcon
         onClick={() => handleScroll('next')}
         sx={{

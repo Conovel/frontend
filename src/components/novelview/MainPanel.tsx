@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Avatar, Box } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import CommentButton from '../buttonicon/CommentButton';
@@ -54,6 +54,9 @@ const MainPanel: React.FC<MainPanelProps> = ({
             zIndex: 2,
           }}
         >
+          <Avatar
+            sx={{ fontSize: '2.0rem', alignItems: 'left', margin: '1vh 1vh' }}
+          />
           <p>{panel.text1}</p>
           <p>{panel.text2}</p>
           <DragIndicatorIcon

@@ -1,7 +1,5 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../novelcard/NovelCard';
 
 interface PrevProps {
@@ -21,8 +19,6 @@ interface PrevProps {
 
 const Prev: React.FC<PrevProps> = ({
   startIndex,
-  setStartIndex,
-  visibleTextCount,
   textCount,
   thumbUpCount,
   setThumbUpCount,
@@ -33,62 +29,34 @@ const Prev: React.FC<PrevProps> = ({
   nextPlanCount,
   setNextPlanCount,
 }) => {
-  const handleScroll = (direction: 'next' | 'prev') => {
-    if (direction === 'next' && startIndex + visibleTextCount < textCount) {
-      setStartIndex(startIndex + visibleTextCount);
-    } else if (direction === 'prev' && startIndex > 0) {
-      setStartIndex(startIndex - visibleTextCount);
-    }
-  };
-
   return (
     <Box
       sx={{
         backgroundColor: '#fff',
-        display: 'flex',
         justifyContent: 'space-between',
-        margin: '5vh 0',
+        margin: '5vh auto',
         height: '20vh',
+        width: '50vw',
         alignItems: 'center',
         zIndex: 2,
       }}
     >
-      <KeyboardArrowLeftIcon
-        onClick={() => handleScroll('prev')}
-        sx={{ cursor: startIndex === 0 ? 'not-allowed' : 'pointer' }}
-        color={startIndex === 0 ? 'disabled' : 'action'}
-      />
-      {Array.from({ length: visibleTextCount }, (_, index) => {
-        const textIndex = startIndex + index;
-        return textIndex < textCount ? (
-          <NovelCard
-            key={textIndex}
-            index={index}
-            textIndex={textIndex}
-            text={`Text content for index ${textIndex}`}
-            thumbUpCount={thumbUpCount}
-            setThumbUpCount={setThumbUpCount}
-            thumbDownCount={thumbDownCount}
-            setThumbDownCount={setThumbDownCount}
-            commentCount={commentCount}
-            setCommentCount={setCommentCount}
-            nextPlanCount={nextPlanCount}
-            setNextPlanCount={setNextPlanCount}
-          />
-        ) : null;
-      })}
-      <KeyboardArrowRightIcon
-        onClick={() => handleScroll('next')}
-        sx={{
-          cursor:
-            startIndex + visibleTextCount >= textCount
-              ? 'not-allowed'
-              : 'pointer',
-        }}
-        color={
-          startIndex + visibleTextCount >= textCount ? 'disabled' : 'action'
-        }
-      />
+      {startIndex < textCount ? (
+        <NovelCard
+          key={startIndex}
+          index={0}
+          textIndex={startIndex}
+          text={`Text content for index ${startIndex}`}
+          thumbUpCount={thumbUpCount}
+          setThumbUpCount={setThumbUpCount}
+          thumbDownCount={thumbDownCount}
+          setThumbDownCount={setThumbDownCount}
+          commentCount={commentCount}
+          setCommentCount={setCommentCount}
+          nextPlanCount={nextPlanCount}
+          setNextPlanCount={setNextPlanCount}
+        />
+      ) : null}
     </Box>
   );
 };
