@@ -1,7 +1,6 @@
 import React from 'react';
 import { Avatar, Box, TextField } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
-import ThumbDownButton from '../buttonicon/ThumbsDownButton';
 import CommentButton from '../buttonicon/CommentButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
 
@@ -23,8 +22,6 @@ const NovelCard: React.FC<NovelCardProps> = ({
   text,
   thumbUpCount,
   setThumbUpCount,
-  thumbDownCount,
-  setThumbDownCount,
   commentCount,
   setCommentCount,
   nextPlanCount,
@@ -68,10 +65,6 @@ const NovelCard: React.FC<NovelCardProps> = ({
           <ThumbUpButton
             thumbUpCount={thumbUpCount}
             setThumbUpCount={setThumbUpCount}
-          />
-          <ThumbDownButton
-            thumbDownCount={thumbDownCount}
-            setThumbDownCount={setThumbDownCount}
           />
           <CommentButton
             commentCount={commentCount}

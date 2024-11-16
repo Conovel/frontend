@@ -6,12 +6,13 @@ import { FaThumbsUp } from 'react-icons/fa';
 import ChatIcon from '@mui/icons-material/Chat';
 import MainPanel from '../../components/novelview/MainPanel';
 
+// TODO: サンプルデータ後で削除
 interface Post {
-  id: number;
-  text: string;
-  likes: number;
+  sentence_id: number;
+  sentence: string;
+  evaluation_good_count: number;
+  evaluation_stay_count: number;
   comments: number;
-  main_copy: string;
   sentence_user_count: number;
   sentence_hierarchy_count: number;
   reader_count: number;
@@ -62,7 +63,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100vw' }}>
         {posts.map((post) => (
           <Box
-            key={post.id}
+            key={post.sentence_id}
             sx={{
               backgroundColor: '#fff',
               border: '1px solid #000',
@@ -73,8 +74,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
               zIndex: 2,
             }}
           >
-            <p>{post.text}</p>
-            <p>{post.main_copy}</p>
+            <p>{post.sentence}</p>
             <Box
               sx={{
                 display: 'flex',
@@ -89,7 +89,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
                 }}
               >
                 <FaThumbsUp style={{ fontSize: '18px' }} />
-                <span>{post.likes}</span>
+                <span>{post.evaluation_good_count}</span>
               </Box>
               <Box
                 sx={{

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
-import ThumbDownButton from '../buttonicon/ThumbsDownButton';
 import CommentButton from '../buttonicon/CommentButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
 
@@ -26,8 +25,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
   mainPanels,
   thumbUpCount,
   setThumbUpCount,
-  thumbDownCount,
-  setThumbDownCount,
   commentCount,
   setCommentCount,
   nextPlanCount,
@@ -80,10 +77,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
               <ThumbUpButton
                 thumbUpCount={thumbUpCount}
                 setThumbUpCount={setThumbUpCount}
-              />
-              <ThumbDownButton
-                thumbDownCount={thumbDownCount}
-                setThumbDownCount={setThumbDownCount}
               />
               <CommentButton
                 commentCount={commentCount}
