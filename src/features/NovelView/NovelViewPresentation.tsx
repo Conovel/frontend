@@ -15,11 +15,13 @@ interface Post {
   sentence_hierarchy_count: number;
   reader_count: number;
   overview: string;
+  userName: string;
 }
-
 interface MainPanel {
   sentence_id: number;
   sentence: string;
+  userId: number;
+  userName: string;
 }
 
 interface Panel {

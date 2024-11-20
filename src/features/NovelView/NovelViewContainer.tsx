@@ -2,7 +2,9 @@ import { NovelViewPresentation } from './NovelViewPresentation';
 
 const main = [
   {
-    sentence_id: 2,
+    sentence_id: 1,
+    userId: 123,
+    userName: 'Kanepion',
     sentence:
       '主人の帰りが何よりも心待ちだったことを思い出す。今思えば、なんてちっぽけなことに心躍らせていたのだろう。',
   },
@@ -10,11 +12,15 @@ const main = [
 
 const parent = {
   sentence_id: 1,
+  userId: 123,
+  userName: 'Kanepion',
   sentence: '前の階層のテキスト1',
 };
 
 const children = {
-  sentence_id: 3,
+  sentence_id: 1,
+  userId: 123,
+  userName: 'Kanepion',
   sentence: '次の階層のテキスト1',
 };
 
