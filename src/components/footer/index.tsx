@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom';
+import { LINK } from '../../const/link';
 
 export const Footer = () => {
   return (
@@ -43,7 +44,7 @@ export const Footer = () => {
         }}
       >
         <Link
-          to={'/terms'}
+          to={LINK.terms}
           style={{ color: '#FFFFFF', textDecoration: 'none' }}
         >
           利用規約
@@ -55,7 +56,7 @@ export const Footer = () => {
         </Link>
         <Box>/</Box>
         <Link
-          to='/company'
+          to={LINK.company}
           style={{ color: '#FFFFFF', textDecoration: 'none' }}
         >
           運営会社
