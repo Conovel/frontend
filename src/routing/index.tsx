@@ -2,6 +2,7 @@ import { Outlet, Route, Routes } from 'react-router-dom';
 import HeaderBar from '../components/header';
 import { CompanyPage } from '../pages/company';
 import NovelList from '../features/NovelList';
+import { Footer } from '../components/footer';
 
 /**
  * ルーティング
@@ -27,9 +28,11 @@ const Layout = () => {
     <>
       <HeaderBar />
 
-      <main style={{ width: '100%', paddingTop: '80px' }}>
+      <main style={{ padding: '8px' }}>
         <Outlet />
       </main>
+
+      <Footer />
     </>
   );
 };
