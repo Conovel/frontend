@@ -18,6 +18,7 @@ export const Footer = () => {
       }}
     >
       {/** 広告エリア */}
+      {/** // TODO:Adsense未設定なので、仮実装 */}
       <Box
         sx={{
           display: 'flex',
