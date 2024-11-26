@@ -5,18 +5,6 @@ import ChildrenPanel from './ChildrenPanel';
 import MainPanel from './MainPanel';
 
 // TODO: サンプルデータ後で削除
-interface Post {
-  sentence_id: number;
-  sentence: string;
-  evaluation_good_count: number;
-  evaluation_stay_count: number;
-  comments: number;
-  sentence_user_count: number;
-  sentence_hierarchy_count: number;
-  reader_count: number;
-  overview: string;
-  userName: string;
-}
 interface MainPanel {
   sentence_id: number;
   sentence: string;
@@ -30,7 +18,6 @@ interface Panel {
 }
 
 interface NovelViewPresentationProps {
-  posts: Post[];
   mainPanels: MainPanel[];
   parentPanel: Panel;
   childrenPanel: Panel;
@@ -104,6 +91,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           gap: '20px',
         }}
       >
+        {/* 親の投稿 */}
         <ParentPanel
           startIndex={startIndexPrev}
           setStartIndex={setStartIndexPrev}
@@ -119,6 +107,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           setNextPlanCount={setNextPlanCountPrev}
         />
 
+        {/* メインの投稿 */}
         <MainPanel
           mainPanels={mainPanels}
           thumbUpCount={thumbUpCountPrev}
@@ -131,6 +120,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           setNextPlanCount={setNextPlanCountPrev}
         />
 
+        {/* 子の投稿 */}
         <ChildrenPanel
           startIndex={startIndexNext}
           setStartIndex={setStartIndexNext}

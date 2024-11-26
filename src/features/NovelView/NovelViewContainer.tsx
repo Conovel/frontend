@@ -39,7 +39,6 @@ export const NovelViewContainer = () => {
 
   return (
     <NovelViewPresentation
-      posts={[]}
       mainPanels={main}
       parentPanel={parent}
       childrenPanel={children}
