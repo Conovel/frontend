@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Container } from '@mui/material';
-import ParentPanel from '../../components/novelview/ParentPanel';
-import ChildrenPanel from '../../components/novelview/ChildrenPanel';
-import MainPanel from '../../components/novelview/MainPanel';
+import ParentPanel from './ParentPanel';
+import ChildrenPanel from './ChildrenPanel';
+import MainPanel from './MainPanel';
 
 // TODO: サンプルデータ後で削除
 interface Post {
@@ -34,26 +34,54 @@ interface NovelViewPresentationProps {
   mainPanels: MainPanel[];
   parentPanel: Panel;
   childrenPanel: Panel;
+  startIndexPrev: number;
+  setStartIndexPrev: React.Dispatch<React.SetStateAction<number>>;
+  thumbUpCountPrev: number;
+  setThumbUpCountPrev: React.Dispatch<React.SetStateAction<number>>;
+  thumbDownCountPrev: number;
+  setThumbDownCountPrev: React.Dispatch<React.SetStateAction<number>>;
+  commentCountPrev: number;
+  setCommentCountPrev: React.Dispatch<React.SetStateAction<number>>;
+  nextPlanCountPrev: number;
+  setNextPlanCountPrev: React.Dispatch<React.SetStateAction<number>>;
+  startIndexNext: number;
+  setStartIndexNext: React.Dispatch<React.SetStateAction<number>>;
+  thumbUpCountNext: number;
+  setThumbUpCountNext: React.Dispatch<React.SetStateAction<number>>;
+  thumbDownCountNext: number;
+  setThumbDownCountNext: React.Dispatch<React.SetStateAction<number>>;
+  commentCountNext: number;
+  setCommentCountNext: React.Dispatch<React.SetStateAction<number>>;
+  nextPlanCountNext: number;
+  setNextPlanCountNext: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   mainPanels,
+  startIndexPrev,
+  setStartIndexPrev,
+  thumbUpCountPrev,
+  setThumbUpCountPrev,
+  thumbDownCountPrev,
+  setThumbDownCountPrev,
+  commentCountPrev,
+  setCommentCountPrev,
+  nextPlanCountPrev,
+  setNextPlanCountPrev,
+  startIndexNext,
+  setStartIndexNext,
+  thumbUpCountNext,
+  setThumbUpCountNext,
+  thumbDownCountNext,
+  setThumbDownCountNext,
+  commentCountNext,
+  setCommentCountNext,
+  nextPlanCountNext,
+  setNextPlanCountNext,
 }) => {
   const prevTextCount = 10;
   const nextTextCount = 10;
   const visibleTextCount = 3;
-  const [startIndexPrev, setStartIndexPrev] = React.useState(0);
-  const [startIndexNext, setStartIndexNext] = React.useState(0);
-
-  const [thumbUpCountPrev, setThumbUpCountPrev] = React.useState<number>(0);
-  const [thumbDownCountPrev, setThumbDownCountPrev] = React.useState<number>(0);
-  const [commentCountPrev, setCommentCountPrev] = React.useState<number>(0);
-  const [nextPlanCountPrev, setNextPlanCountPrev] = React.useState<number>(0);
-
-  const [thumbUpCountNext, setThumbUpCountNext] = React.useState<number>(0);
-  const [thumbDownCountNext, setThumbDownCountNext] = React.useState<number>(0);
-  const [commentCountNext, setCommentCountNext] = React.useState<number>(0);
-  const [nextPlanCountNext, setNextPlanCountNext] = React.useState<number>(0);
 
   return (
     <Container sx={{ position: 'relative', top: '8vh', alignItems: 'center' }}>
