@@ -13,7 +13,7 @@ function HeaderBar() {
   const [] = useState<HTMLElement | null>(null); // 修正: useStateの初期値を設定
 
   return (
-    <AppBar position='fixed' color='default' sx={{ zIndex: 1201 }}>
+    <AppBar position='sticky' color='default' sx={{ zIndex: 1201 }}>
       <Container maxWidth='xl' sx={{ px: { xs: 0, md: 3 } }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
           <Toolbar sx={{ justifyContent: 'space-between', width: '100%' }}>
