@@ -65,7 +65,7 @@ export const Footer = () => {
 
       {/** コピーライト */}
       <Box sx={{ fontSize: '0.5rem', color: '#FFFFFF', textAlign: 'center' }}>
-        &copy;2025 合同会社Technokuro. All Rights Reserved.
+        &copy;2025 合同会社TechnoKuRo. All Rights Reserved.
       </Box>
     </Box>
   );
