@@ -43,16 +43,14 @@ const NovelCard: React.FC<NovelCardProps> = ({
           borderRadius: '5px',
         }}
       >
-        <Avatar sx={{ width: 24, height: 24, marginBottom: '5px' }}>C</Avatar>
         {/* 小説のテキストを表示するテキストボックス */}
         <Box
           sx={{
-            fontSize: '1.0rem',
-            height: '4rem',
-            marginBottom: '5px',
-            overflow: 'hidden',
+            alignItems: 'flex-start',
+            height: '15vh',
           }}
         >
+          <Avatar sx={{ width: 24, height: 24 }}>C</Avatar>
           <TextField
             multiline
             fullWidth
@@ -62,8 +60,13 @@ const NovelCard: React.FC<NovelCardProps> = ({
               readOnly: true,
             }}
             sx={{
+              textAlign: 'left',
+              alignItems: 'center',
+              position: 'absolute',
+              inset: '1vh 1vw',
               fontSize: '1.0rem',
-              height: '100%',
+              width: '95%',
+              height: '10vh',
             }}
           />
         </Box>
