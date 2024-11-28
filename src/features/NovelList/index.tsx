@@ -3,7 +3,7 @@ import NovelCardContainer from '../../components/novelCard/container';
 import { Chips } from '../../components/chips';
 import { Tags } from '../../components/tags';
 
-const novels = [
+export const novels = [
   {
     description:
       '雪山で目を覚ますとエンジニアに転生していた.雪山ながら密林からガジェットを取り寄せて悠々生活・快適ライフを送っている',

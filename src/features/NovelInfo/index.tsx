@@ -3,7 +3,9 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Typography from '@mui/material/Typography';
+import { novels } from '../NovelList';
+import { Grid } from '@mui/material';
+import NovelCardContainer from '../../components/novelCard/container';
 
 const style = {
   position: 'absolute',
@@ -20,11 +22,13 @@ const style = {
 interface TransitionsModalProps {
   open: boolean;
   handleClose: () => void;
+  onNovelClick: () => void;
 }
 
 export default function TransitionsModal({
   open,
   handleClose,
+  onNovelClick,
 }: TransitionsModalProps) {
   return (
     <Modal
@@ -42,12 +46,19 @@ export default function TransitionsModal({
     >
       <Fade in={open}>
         <Box sx={style}>
-          <Typography id='transition-modal-title' variant='h6' component='h2'>
-            Text in a modal
-          </Typography>
-          <Typography id='transition-modal-description' sx={{ mt: 2 }}>
-            エンジニア転生
-          </Typography>
+          {/* Add the Grid component to display novels */}
+          <Grid container spacing={2}>
+            {novels.map((novel) => (
+              <Grid item xs={12} sm={6} md={4} key={novel.title}>
+                <NovelCardContainer
+                  novel={novel}
+                  chips={novel.chips}
+                  tags={novel.tags}
+                  onClick={onNovelClick}
+                />
+              </Grid>
+            ))}
+          </Grid>
         </Box>
       </Fade>
     </Modal>
