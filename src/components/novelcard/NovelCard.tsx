@@ -50,7 +50,7 @@ const NovelCard: React.FC<NovelCardProps> = ({
             height: '15vh',
           }}
         >
-          <Avatar sx={{ width: 24, height: 24 }}>C</Avatar>
+          <Avatar sx={{ width: 24, height: 24, zIndex: 2 }}>C</Avatar>
           <TextField
             multiline
             fullWidth

@@ -53,21 +53,37 @@ const Next: React.FC<NextProps> = ({
         zIndex: 2,
       }}
     >
-      <KeyboardArrowLeftIcon
-        onClick={() => handleScroll('prev')}
-        sx={{ cursor: startIndex === 0 ? 'not-allowed' : 'pointer' }}
-        color={startIndex === 0 ? 'disabled' : 'action'}
-      />
-      <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-        {Array.from({ length: Math.min(visibleTextCount, 3) }, (_, index) => {
+      <Box
+        sx={{
+          position: 'absolute',
+          left: '2vw',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <KeyboardArrowLeftIcon
+          onClick={() => handleScroll('prev')}
+          sx={{ cursor: startIndex === 0 ? 'not-allowed' : 'pointer' }}
+          color={startIndex === 0 ? 'disabled' : 'action'}
+        />
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          width: '70vw',
+          overflow: 'hidden',
+        }}
+      >
+        {Array.from({ length: 1 }, (_, index) => {
           const textIndex = startIndex + index + 1;
           return textIndex <= textCount ? (
             <Box
               key={textIndex}
               sx={{
-                width: '33.33%',
                 display: 'flex',
                 justifyContent: 'center',
+                margin: '0 10px',
               }}
             >
               <NovelCard
@@ -87,18 +103,27 @@ const Next: React.FC<NextProps> = ({
           ) : null;
         })}
       </Box>
-      <KeyboardArrowRightIcon
-        onClick={() => handleScroll('next')}
+      <Box
         sx={{
-          cursor:
-            startIndex + visibleTextCount >= textCount
-              ? 'not-allowed'
-              : 'pointer',
+          position: 'absolute',
+          right: '2vw',
+          display: 'flex',
+          alignItems: 'center',
         }}
-        color={
-          startIndex + visibleTextCount >= textCount ? 'disabled' : 'action'
-        }
-      />
+      >
+        <KeyboardArrowRightIcon
+          onClick={() => handleScroll('next')}
+          sx={{
+            cursor:
+              startIndex + visibleTextCount >= textCount
+                ? 'not-allowed'
+                : 'pointer',
+          }}
+          color={
+            startIndex + visibleTextCount >= textCount ? 'disabled' : 'action'
+          }
+        />
+      </Box>
     </Box>
   );
 };
