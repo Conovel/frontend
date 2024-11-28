@@ -14,10 +14,14 @@ function App() {
     <div className='App'>
       <HeaderBar />
       <header className='App-header'>
-        <TransitionsModal open={isModalOpen} handleClose={handleCloseModal} />
+        <TransitionsModal
+          open={isModalOpen}
+          handleClose={handleCloseModal}
+          onNovelClick={handleOpenModal}
+        />
       </header>
       <main>
-        <NovelList onNovelClick={handleOpenModal} /> {/* Pass the handler */}
+        <NovelList onNovelClick={handleOpenModal} />
       </main>
     </div>
   );
