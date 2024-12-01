@@ -6,13 +6,18 @@ import { useState } from "react"; // API動作確認用
 import { SentencesApi, Sentence } from "../../api/api"; // API動作確認用
 import { Configuration } from "../../api/configuration"; // API動作確認用
 
-// API動作確認用
+/*  API動作確認用 */
+const apiBaseUrl = import.meta.env.PROD
+  ? import.meta.env.VITE_PRODUCTION_API_BASE_URL
+  : import.meta.env.VITE_DEVELOPMENT_API_BASE_URL;
+
 const config = new Configuration({
-  basePath: 'http://localhost:3001/v1',
-  // apiKey: 'your-api-key',
+  basePath: apiBaseUrl,
+  // apiKey: 'your-api-key', // APIキーが必要な場合は設定
 });
+
 const api = new SentencesApi(config);
-// API動作確認用 ここまで
+/*  API動作確認用 ここまで */
 
 const novels = [
   {
@@ -39,17 +44,18 @@ const novels = [
 ];
 
 const NovelList = () => {
-  // API動作確認用
+  /*  API動作確認用 */
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const fetchSentences = async () => {
     try {
       const response = await api.getSentenceById(1);
       setSentences(response.data.main ? [response.data.main] : []);
     } catch (error) {
+      // TODO: エラー時の対応について要検討（エラーがわかるような画面にするかなど）
       console.error('Error fetching sentences:', error);
     }
   };
-  // API動作確認用 ここまで
+  /* API動作確認用 ここまで */
 
   return (
     <Grid container spacing={2}>
