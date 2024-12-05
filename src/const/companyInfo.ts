@@ -5,6 +5,6 @@ interface CompanyInfo {
 
 // 運営会社情報
 export const COMPANY_INFO: CompanyInfo = {
-  companyName: '合同会社Technokuro',
+  companyName: '合同会社TechnoKuRo',
   link: 'https://techno-kuro.com/',
 };
