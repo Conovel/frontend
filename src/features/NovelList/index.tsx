@@ -24,6 +24,8 @@ export const novels = [
     date: '2024/08/20',
     chips: [<Chips label='人気' />, <Chips label='新着' />],
     tags: [<Tags label='ラブストーリー' />, <Tags label='ファンタジー' />],
+    sentence_user_count: 150,
+    sentence_count: 1000,
   },
 ];
 

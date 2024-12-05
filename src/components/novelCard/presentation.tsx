@@ -4,6 +4,11 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
+import GroupsIcon from '@mui/icons-material/Groups';
+import { Button, TextField } from '@mui/material';
 
 interface Novel {
   description: string;
@@ -19,6 +24,8 @@ interface Novel {
   tags: React.ReactNode[];
   views: number;
   date: string;
+  sentence_user_count: number;
+  sentence_count: number;
 }
 
 const NovelCard = ({
@@ -95,14 +102,57 @@ const NovelCard = ({
             </Box>
           </Box>
 
-          <Box
-            sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.5 }}
-          >
-            <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1.5 }}>
+            <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+              {' '}
+              {/* Add margin-right */}
               <VisibilityIcon />
               {novel.views}
             </Typography>
-            <Typography>{novel.date}</Typography>
+            <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+              {' '}
+              {/* Add margin-right */}
+              <AccessTimeFilledIcon />
+              {novel.date}
+            </Typography>
+            <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+              {' '}
+              <EditNoteIcon />
+              {novel.sentence_user_count}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 1 }}>
+            <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+              {' '}
+              <DynamicFeedIcon />
+              {novel.sentence_count}
+            </Typography>
+            <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+              {' '}
+              <GroupsIcon />
+              {novel.sentence_user_count}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant='h6'>あらすじ</Typography>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              variant='outlined'
+              value={novel.description}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+            <Button variant='contained' color='secondary'>
+              戻る
+            </Button>
+            <Button variant='contained' color='primary'>
+              本文へ
+            </Button>
           </Box>
         </CardContent>
       </Card>
