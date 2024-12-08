@@ -43,13 +43,13 @@ export interface ErrorResponse {
  */
 export interface ErrorResponseError {
     /**
-     * 
+     * エラーコード
      * @type {number}
      * @memberof ErrorResponseError
      */
     'code'?: number;
     /**
-     * 
+     * エラーメッセージ
      * @type {string}
      * @memberof ErrorResponseError
      */
