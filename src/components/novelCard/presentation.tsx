@@ -22,11 +22,11 @@ export interface NovelProps {
     color: string;
     text: string;
   };
-  author: string;
+  author_user_name: string;
   loveStory: boolean;
   fantasy: boolean;
   views: number;
-  date: string;
+  updated_at: string;
   sentence_count: number;
   sentence_user_count: number;
   chips: React.ReactNode[];
@@ -98,7 +98,6 @@ const NovelCard = ({ novel }: { novel: NovelProps }) => {
               >
                 {novel.avatar.text}
               </Avatar>
-              <Typography sx={{ ml: 1 }}>{novel.author}</Typography>
             </Box>
             <Box
               sx={{ display: 'flex', alignItems: 'center', mb: 1.5, gap: 1 }}
@@ -117,7 +116,7 @@ const NovelCard = ({ novel }: { novel: NovelProps }) => {
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <AccessTimeFilledIcon />
-              {novel.date}
+              {novel.updated_at}
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center' }}>
               <EditNoteIcon />
@@ -163,12 +162,7 @@ const NovelModal = ({
         >
           {novel.title}
         </Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
-          {novel.chips.map((chip, index) => (
-            <Box key={index}>{chip}</Box>
-          ))}
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box sx={{ border: '1px solid black', padding: 1 }}>
           <Box
             sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
             color='text.secondary'
@@ -184,68 +178,77 @@ const NovelModal = ({
             >
               {novel.avatar.text}
             </Avatar>
-            <Typography sx={{ ml: 1 }}>{novel.author}</Typography>
+            <Typography sx={{ ml: 1 }}>{novel.author_user_name}</Typography>
           </Box>
-          <Box
-            sx={{ display: 'flex', alignItems: 'center', mb: 1.5, gap: 1 }}
-            color='text.secondary'
-          >
-            {novel.tags.map((tag, index) => (
-              <Box key={index}>{tag}</Box> // TODO: indexをkeyとして使うのは避ける
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
+            {novel.chips.map((chip, index) => (
+              <Box key={index}>{chip}</Box>
             ))}
           </Box>
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1.5 }}>
-          <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
-            <VisibilityIcon />
-            {novel.views}
-          </Typography>
-          <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
-            <AccessTimeFilledIcon />
-            {novel.date}
-          </Typography>
-          <Typography sx={{ display: 'flex', alignItems: 'center' }}>
-            <EditNoteIcon />
-            {novel.sentence_user_count}
-          </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 1 }}>
-          <Typography sx={{ display: 'flex', alignItems: 'center' }}>
-            <DynamicFeedIcon />
-            {novel.sentence_count}
-          </Typography>
-          <Typography sx={{ display: 'flex', alignItems: 'center' }}>
-            <GroupsIcon />
-            {novel.sentence_user_count}
-          </Typography>
-        </Box>
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          variant='outlined'
-          value={novel.description}
-          InputProps={{
-            readOnly: true,
-          }}
-          sx={{ mt: 2 }}
-        />
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-          <Button
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box
+              sx={{ display: 'flex', alignItems: 'center', mb: 1.5, gap: 1 }}
+              color='text.secondary'
+            >
+              {novel.tags.map((tag, index) => (
+                <Box key={index}>{tag}</Box> // TODO: indexをkeyとして使うのは避ける
+              ))}
+            </Box>
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1 }}>
+            <Typography sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
+              <VisibilityIcon />
+              {novel.views}
+            </Typography>
+            <Typography sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
+              <AccessTimeFilledIcon />
+              {novel.updated_at}
+            </Typography>
+            <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+              <EditNoteIcon />
+              {novel.sentence_user_count}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 1 }}>
+            <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+              <DynamicFeedIcon />
+              {novel.sentence_count}
+            </Typography>
+            <Typography sx={{ display: 'flex', alignItems: 'center' }}>
+              <GroupsIcon />
+              {novel.sentence_user_count}
+            </Typography>
+          </Box>
+          <TextField
+            fullWidth
+            multiline
+            rows={4}
             variant='outlined'
-            color='inherit'
-            sx={{ borderColor: 'black', color: 'black' }}
-            onClick={onClose}
+            value={novel.description}
+            InputProps={{
+              readOnly: true,
+            }}
+            sx={{ mt: 2 }}
+          />
+          <Box
+            sx={{ display: 'flex', justifyContent: 'center', mt: 1, gap: 2 }}
           >
-            戻る
-          </Button>
-          <Button
-            variant='contained'
-            color='primary'
-            sx={{ ml: 1, backgroundColor: 'black', color: 'white' }}
-          >
-            本文へ
-          </Button>
+            <Button
+              variant='outlined'
+              color='inherit'
+              sx={{ borderColor: 'black', color: 'black', flex: 1 }}
+              onClick={onClose}
+            >
+              戻る
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              sx={{ backgroundColor: 'black', color: 'white', flex: 1 }}
+            >
+              本文へ
+            </Button>
+          </Box>
         </Box>
       </Box>
     </Modal>
