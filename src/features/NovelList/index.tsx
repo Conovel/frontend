@@ -18,14 +18,12 @@ export const novels = [
       text: 'RS',
     },
     author_user_name: 'Remy Sharp',
-    loveStory: true,
-    fantasy: true,
-    views: 100,
-    updated_at: '2024/08/20',
     chips: [<Chips label='人気' />, <Chips label='新着' />],
     tags: [<Tags label='ラブストーリー' />, <Tags label='ファンタジー' />],
+    reader_count: 100,
+    updated_at: '2024/08/20',
     sentence_user_count: 150,
-    sentence_count: 1000,
+    sentence_hierarchy_count: 1000,
   },
 ];
 

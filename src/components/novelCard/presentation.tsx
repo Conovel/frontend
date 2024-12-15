@@ -23,11 +23,9 @@ export interface NovelProps {
     text: string;
   };
   author_user_name: string;
-  loveStory: boolean;
-  fantasy: boolean;
-  views: number;
+  reader_count: number;
   updated_at: string;
-  sentence_count: number;
+  sentence_hierarchy_count: number;
   sentence_user_count: number;
   chips: React.ReactNode[];
   tags: React.ReactNode[];
@@ -100,11 +98,11 @@ const NovelCard = ({ novel }: { novel: NovelProps }) => {
               </Avatar>
             </Box>
             <Box
-              sx={{ display: 'flex', alignItems: 'center', mb: 1.5, gap: 1 }}
+              sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
               color='text.secondary'
             >
               {novel.tags.map((tag, index) => (
-                <Box key={index}>{tag}</Box> // TODO: indexをkeyとして使うのは避ける
+                <Box key={index}>{tag}</Box>
               ))}
             </Box>
           </Box>
@@ -112,7 +110,7 @@ const NovelCard = ({ novel }: { novel: NovelProps }) => {
           <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1.5 }}>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <VisibilityIcon />
-              {novel.views}
+              {novel.reader_count}
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <AccessTimeFilledIcon />
@@ -187,18 +185,18 @@ const NovelModal = ({
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box
-              sx={{ display: 'flex', alignItems: 'center', mb: 1.5, gap: 1 }}
+              sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
               color='text.secondary'
             >
               {novel.tags.map((tag, index) => (
-                <Box key={index}>{tag}</Box> // TODO: indexをkeyとして使うのは避ける
+                <Box key={index}>{tag}</Box>
               ))}
             </Box>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1 }}>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
               <VisibilityIcon />
-              {novel.views}
+              {novel.reader_count}
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
               <AccessTimeFilledIcon />
@@ -212,7 +210,7 @@ const NovelModal = ({
           <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 1 }}>
             <Typography sx={{ display: 'flex', alignItems: 'center' }}>
               <DynamicFeedIcon />
-              {novel.sentence_count}
+              {novel.sentence_hierarchy_count}
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center' }}>
               <GroupsIcon />
