@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import HeaderBar from '../components/header';
 //import { CompanyPage } from '../pages/company';
-// import NovelList from '../features/NovelList';
+import NovelList from '../features/NovelList';
 //import { Footer } from '../components/footer';
 
 /**
@@ -13,7 +13,7 @@ export const Routing = () => {
     <>
       <Routes>
         <Route path='/' element={<Layout />}>
-          {/* <Route index element={<NovelList />} /> */}
+          <Route path='/list' element={<NovelList />} />
           <Route path='/account' />
           {/* <Route path='/company' element={<CompanyPage />} /> */}
           <Route path='/terms' />

@@ -29,7 +29,6 @@ interface TransitionsModalProps {
 export default function TransitionsModal({
   open,
   handleClose,
-  onNovelClick,
 }: TransitionsModalProps) {
   return (
     <Modal
@@ -55,7 +54,9 @@ export default function TransitionsModal({
                   novel={novel}
                   tags={novel.tags}
                   chips={novel.chips}
-                  onClick={onNovelClick}
+                  onClick={() => {
+                    /* handle click */
+                  }}
                 />
               </Grid>
             ))}

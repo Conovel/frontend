@@ -28,8 +28,7 @@ export const novels = [
   },
 ];
 
-const NovelList = ({ onNovelClick }: { onNovelClick: () => void }) => {
-  // Accept onNovelClick prop
+const NovelList = () => {
   return (
     <Grid container spacing={2}>
       {novels.map((novel) => (
@@ -38,7 +37,9 @@ const NovelList = ({ onNovelClick }: { onNovelClick: () => void }) => {
             novel={novel}
             chips={novel.chips}
             tags={novel.tags}
-            onClick={onNovelClick} // Pass the click handler
+            onClick={() => {
+              /* handle click */
+            }}
           />
         </Grid>
       ))}
