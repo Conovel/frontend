@@ -6,6 +6,7 @@ import Fade from '@mui/material/Fade';
 import { novels } from '../NovelList';
 import { Grid } from '@mui/material';
 import NovelCardContainer from '../../components/novelCard/container';
+import { NovelProps } from '../../components/novelCard/presentation';
 
 const style = {
   position: 'absolute',
@@ -48,12 +49,12 @@ export default function TransitionsModal({
         <Box sx={style}>
           {/* Add the Grid component to display novels */}
           <Grid container spacing={2}>
-            {novels.map((novel) => (
+            {novels.map((novel: NovelProps) => (
               <Grid item xs={12} sm={6} md={4} key={novel.title}>
                 <NovelCardContainer
                   novel={novel}
-                  chips={novel.chips}
                   tags={novel.tags}
+                  chips={novel.chips}
                   onClick={onNovelClick}
                 />
               </Grid>

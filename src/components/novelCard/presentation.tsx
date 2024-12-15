@@ -12,10 +12,9 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import { Button, TextField, Modal } from '@mui/material';
 
 export interface NovelProps {
-  description: string;
+  main_copy: string;
+  overview: string;
   title: string;
-  popular: boolean;
-  newArrival: boolean;
   avatar: {
     src: string;
     alt: string;
@@ -59,7 +58,7 @@ const NovelCard = ({ novel }: { novel: NovelProps }) => {
               textOverflow: 'ellipsis',
             }}
           >
-            {novel.description}
+            {novel.main_copy}
           </Typography>
           <Typography
             variant='h5'
@@ -222,7 +221,7 @@ const NovelModal = ({
             multiline
             rows={4}
             variant='outlined'
-            value={novel.description}
+            value={novel.overview}
             InputProps={{
               readOnly: true,
             }}
