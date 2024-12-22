@@ -9,7 +9,6 @@
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": true,
     "isolatedModules": true,
     "moduleDetection": "force",
 
@@ -17,7 +16,10 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "noEmit": true,
+
+    "types": ["@testing-library/jest-dom"]
   },
   "include": ["vite.config.ts"]
 }
