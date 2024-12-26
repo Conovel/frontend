@@ -71,37 +71,51 @@ const Next: React.FC<NextProps> = ({
         sx={{
           display: 'flex',
           justifyContent: 'center',
-          width: '70vw',
-          overflow: 'hidden',
+          width: '100%',
+          overflowX: 'hidden',
         }}
       >
-        {Array.from({ length: 3 }, (_, index) => {
-          const textIndex = startIndex + index + 1;
-          return textIndex <= textCount ? (
-            <Box
-              key={textIndex}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                margin: '0 10px',
-              }}
-            >
-              <NovelCard
-                index={textIndex}
-                textIndex={textIndex}
-                text={`Text content for index ${textIndex}`}
-                thumbUpCount={thumbUpCount}
-                setThumbUpCount={setThumbUpCount}
-                thumbDownCount={thumbDownCount}
-                setThumbDownCount={setThumbDownCount}
-                commentCount={commentCount}
-                setCommentCount={setCommentCount}
-                nextPlanCount={nextPlanCount}
-                setNextPlanCount={setNextPlanCount}
-              />
-            </Box>
-          ) : null;
-        })}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%',
+            overflowX: 'auto',
+            scrollSnapType: 'x mandatory',
+            height: '100%',
+            paddingBottom: '10px',
+          }}
+        >
+          {Array.from({ length: 3 }, (_, index) => {
+            const textIndex = startIndex + index + 1;
+            return textIndex <= textCount ? (
+              <Box
+                key={textIndex}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  margin: '0 10px',
+                  width: index === 1 ? '70%' : '30%',
+                  scrollSnapAlign: 'center',
+                }}
+              >
+                <NovelCard
+                  index={textIndex}
+                  textIndex={textIndex}
+                  text={`Text content for index ${textIndex}`}
+                  thumbUpCount={thumbUpCount}
+                  setThumbUpCount={setThumbUpCount}
+                  thumbDownCount={thumbDownCount}
+                  setThumbDownCount={setThumbDownCount}
+                  commentCount={commentCount}
+                  setCommentCount={setCommentCount}
+                  nextPlanCount={nextPlanCount}
+                  setNextPlanCount={setNextPlanCount}
+                />
+              </Box>
+            ) : null;
+          })}
+        </Box>
       </Box>
       <Box
         sx={{
