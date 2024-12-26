@@ -7,10 +7,8 @@ interface PrevProps {
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
   textCount: number;
-  thumbUpCount: number;
-  setThumbUpCount: React.Dispatch<React.SetStateAction<number>>;
-  thumbDownCount: number;
-  setThumbDownCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCount: number;
+  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
   commentCount: number;
   setCommentCount: React.Dispatch<React.SetStateAction<number>>;
   nextPlanCount: number;
@@ -20,10 +18,8 @@ interface PrevProps {
 const Prev: React.FC<PrevProps> = ({
   startIndex,
   textCount,
-  thumbUpCount,
-  setThumbUpCount,
-  thumbDownCount,
-  setThumbDownCount,
+  evaluationGoodCount,
+  setEvaluationGoodCount,
   commentCount,
   setCommentCount,
   nextPlanCount,
@@ -47,10 +43,8 @@ const Prev: React.FC<PrevProps> = ({
           index={0}
           textIndex={startIndex}
           text={`Text content for index ${startIndex}`}
-          thumbUpCount={thumbUpCount}
-          setThumbUpCount={setThumbUpCount}
-          thumbDownCount={thumbDownCount}
-          setThumbDownCount={setThumbDownCount}
+          evaluationGoodCount={evaluationGoodCount}
+          setEvaluationGoodCount={setEvaluationGoodCount}
           commentCount={commentCount}
           setCommentCount={setCommentCount}
           nextPlanCount={nextPlanCount}

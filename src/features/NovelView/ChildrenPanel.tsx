@@ -9,10 +9,8 @@ interface NextProps {
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
   textCount: number;
-  thumbUpCount: number;
-  setThumbUpCount: React.Dispatch<React.SetStateAction<number>>;
-  thumbDownCount: number;
-  setThumbDownCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCount: number;
+  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
   commentCount: number;
   setCommentCount: React.Dispatch<React.SetStateAction<number>>;
   nextPlanCount: number;
@@ -24,10 +22,8 @@ const Next: React.FC<NextProps> = ({
   setStartIndex,
   visibleTextCount,
   textCount,
-  thumbUpCount,
-  setThumbUpCount,
-  thumbDownCount,
-  setThumbDownCount,
+  evaluationGoodCount,
+  setEvaluationGoodCount,
   commentCount,
   setCommentCount,
   nextPlanCount,
@@ -100,13 +96,12 @@ const Next: React.FC<NextProps> = ({
                 }}
               >
                 <NovelCard
+                  key={textIndex}
                   index={textIndex}
                   textIndex={textIndex}
                   text={`Text content for index ${textIndex}`}
-                  thumbUpCount={thumbUpCount}
-                  setThumbUpCount={setThumbUpCount}
-                  thumbDownCount={thumbDownCount}
-                  setThumbDownCount={setThumbDownCount}
+                  evaluationGoodCount={evaluationGoodCount}
+                  setEvaluationGoodCount={setEvaluationGoodCount}
                   commentCount={commentCount}
                   setCommentCount={setCommentCount}
                   nextPlanCount={nextPlanCount}

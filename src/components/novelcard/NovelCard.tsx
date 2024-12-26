@@ -5,13 +5,12 @@ import CommentButton from '../buttonicon/CommentButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
 
 interface NovelCardProps {
+  key: number;
   index: number;
   textIndex: number;
   text: string;
-  thumbUpCount: number;
-  setThumbUpCount: React.Dispatch<React.SetStateAction<number>>;
-  thumbDownCount: number;
-  setThumbDownCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCount: number;
+  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
   commentCount: number;
   setCommentCount: React.Dispatch<React.SetStateAction<number>>;
   nextPlanCount: number;
@@ -20,8 +19,8 @@ interface NovelCardProps {
 
 const NovelCard: React.FC<NovelCardProps> = ({
   text,
-  thumbUpCount,
-  setThumbUpCount,
+  evaluationGoodCount,
+  setEvaluationGoodCount,
   commentCount,
   setCommentCount,
   nextPlanCount,
@@ -82,8 +81,8 @@ const NovelCard: React.FC<NovelCardProps> = ({
       >
         <>
           <ThumbUpButton
-            thumbUpCount={thumbUpCount}
-            setThumbUpCount={setThumbUpCount}
+            evaluationGoodCount={evaluationGoodCount}
+            setEvaluationGoodCount={setEvaluationGoodCount}
           />
           <CommentButton
             commentCount={commentCount}

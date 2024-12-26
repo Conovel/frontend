@@ -2,16 +2,16 @@ import React from 'react';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 interface ThumbUpButtonProps {
-  thumbUpCount: number;
-  setThumbUpCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCount: number;
+  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ThumbUpButton: React.FC<ThumbUpButtonProps> = ({
-  thumbUpCount,
-  setThumbUpCount,
+  evaluationGoodCount,
+  setEvaluationGoodCount,
 }) => {
   const handleClick = () => {
-    setThumbUpCount(thumbUpCount + 1);
+    setEvaluationGoodCount(evaluationGoodCount + 1);
     // ここにバックエンド処理を追加
   };
 
@@ -21,7 +21,7 @@ const ThumbUpButton: React.FC<ThumbUpButtonProps> = ({
       style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}
     >
       <ThumbUpIcon />
-      <span>{thumbUpCount}</span>
+      <span>{evaluationGoodCount}</span>
     </div>
   );
 };

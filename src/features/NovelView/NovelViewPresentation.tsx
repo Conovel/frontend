@@ -23,20 +23,16 @@ interface NovelViewPresentationProps {
   childrenPanel: Panel;
   startIndexPrev: number;
   setStartIndexPrev: React.Dispatch<React.SetStateAction<number>>;
-  thumbUpCountPrev: number;
-  setThumbUpCountPrev: React.Dispatch<React.SetStateAction<number>>;
-  thumbDownCountPrev: number;
-  setThumbDownCountPrev: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCountPrev: number;
+  setEvaluationGoodCountPrev: React.Dispatch<React.SetStateAction<number>>;
   commentCountPrev: number;
   setCommentCountPrev: React.Dispatch<React.SetStateAction<number>>;
   nextPlanCountPrev: number;
   setNextPlanCountPrev: React.Dispatch<React.SetStateAction<number>>;
   startIndexNext: number;
   setStartIndexNext: React.Dispatch<React.SetStateAction<number>>;
-  thumbUpCountNext: number;
-  setThumbUpCountNext: React.Dispatch<React.SetStateAction<number>>;
-  thumbDownCountNext: number;
-  setThumbDownCountNext: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCountNext: number;
+  setEvaluationGoodCountNext: React.Dispatch<React.SetStateAction<number>>;
   commentCountNext: number;
   setCommentCountNext: React.Dispatch<React.SetStateAction<number>>;
   nextPlanCountNext: number;
@@ -47,20 +43,16 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   mainPanels,
   startIndexPrev,
   setStartIndexPrev,
-  thumbUpCountPrev,
-  setThumbUpCountPrev,
-  thumbDownCountPrev,
-  setThumbDownCountPrev,
   commentCountPrev,
   setCommentCountPrev,
   nextPlanCountPrev,
   setNextPlanCountPrev,
   startIndexNext,
   setStartIndexNext,
-  thumbUpCountNext,
-  setThumbUpCountNext,
-  thumbDownCountNext,
-  setThumbDownCountNext,
+  evaluationGoodCountPrev,
+  setEvaluationGoodCountPrev,
+  evaluationGoodCountNext,
+  setEvaluationGoodCountNext,
   commentCountNext,
   setCommentCountNext,
   nextPlanCountNext,
@@ -97,10 +89,8 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           setStartIndex={setStartIndexPrev}
           visibleTextCount={visibleTextCount}
           textCount={prevTextCount}
-          thumbUpCount={thumbUpCountPrev}
-          setThumbUpCount={setThumbUpCountPrev}
-          thumbDownCount={thumbDownCountPrev}
-          setThumbDownCount={setThumbDownCountPrev}
+          evaluationGoodCount={evaluationGoodCountPrev}
+          setEvaluationGoodCount={setEvaluationGoodCountPrev}
           commentCount={commentCountPrev}
           setCommentCount={setCommentCountPrev}
           nextPlanCount={nextPlanCountPrev}
@@ -110,10 +100,8 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         {/* メインの投稿 */}
         <MainPanel
           mainPanels={mainPanels}
-          thumbUpCount={thumbUpCountPrev}
-          setThumbUpCount={setThumbUpCountPrev}
-          thumbDownCount={thumbDownCountPrev}
-          setThumbDownCount={setThumbDownCountPrev}
+          evaluation_good_count={evaluationGoodCountPrev}
+          setEvaluation_good_count={setEvaluationGoodCountPrev}
           commentCount={commentCountPrev}
           setCommentCount={setCommentCountPrev}
           nextPlanCount={nextPlanCountPrev}
@@ -126,10 +114,8 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           setStartIndex={setStartIndexNext}
           visibleTextCount={visibleTextCount}
           textCount={nextTextCount}
-          thumbUpCount={thumbUpCountNext}
-          setThumbUpCount={setThumbUpCountNext}
-          thumbDownCount={thumbDownCountNext}
-          setThumbDownCount={setThumbDownCountNext}
+          evaluationGoodCount={evaluationGoodCountNext}
+          setEvaluationGoodCount={setEvaluationGoodCountNext}
           commentCount={commentCountNext}
           setCommentCount={setCommentCountNext}
           nextPlanCount={nextPlanCountNext}

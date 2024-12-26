@@ -14,10 +14,8 @@ interface MainPanelProps {
     userId: number;
     userName: string;
   }[];
-  thumbUpCount: number;
-  setThumbUpCount: React.Dispatch<React.SetStateAction<number>>;
-  thumbDownCount: number;
-  setThumbDownCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_good_count: number;
+  setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   commentCount: number;
   setCommentCount: React.Dispatch<React.SetStateAction<number>>;
   nextPlanCount: number;
@@ -26,8 +24,8 @@ interface MainPanelProps {
 
 const MainPanel: React.FC<MainPanelProps> = ({
   mainPanels,
-  thumbUpCount,
-  setThumbUpCount,
+  evaluation_good_count,
+  setEvaluation_good_count,
   commentCount,
   setCommentCount,
   nextPlanCount,
@@ -108,8 +106,8 @@ const MainPanel: React.FC<MainPanelProps> = ({
                 }}
               >
                 <ThumbUpButton
-                  thumbUpCount={thumbUpCount}
-                  setThumbUpCount={setThumbUpCount}
+                  evaluationGoodCount={evaluation_good_count}
+                  setEvaluationGoodCount={setEvaluation_good_count}
                 />
                 <CommentButton
                   commentCount={commentCount}
