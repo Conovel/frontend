@@ -13,8 +13,8 @@ export const Footer = () => {
         backgroundColor: '#4D4D4D',
         padding: '8px',
         justifyContent: 'space-between',
-        position: 'absolute',
-        bottom: '0',
+        position: 'sticky',
+        top: '100vh',
         boxSizing: 'border-box',
       }}
     >
