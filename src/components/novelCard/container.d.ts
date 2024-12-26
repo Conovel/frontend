@@ -1,7 +1,5 @@
-import NovelCard from './presentation';
 import { NovelProps } from './presentation';
-
-const NovelCardContainer = ({
+declare const NovelCardContainer: ({
   novel,
   chips,
   tags,
@@ -10,14 +8,5 @@ const NovelCardContainer = ({
   chips: React.ReactNode[];
   tags: React.ReactNode[];
   onClick: () => void;
-}) => {
-  const novelData = {
-    ...novel,
-    chips,
-    tags,
-  };
-
-  return <NovelCard novel={novelData} />;
-};
-
+}) => import('react/jsx-runtime').JSX.Element;
 export default NovelCardContainer;

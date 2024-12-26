@@ -1,5 +1,4 @@
-import './App.css';
-import { Routing } from './routing';
+import { Routing } from './rooting';
 
 export default function App() {
   return (

@@ -15,7 +15,9 @@ function HeaderBar() {
   return (
     <AppBar position='sticky' color='default' sx={{ zIndex: 1201 }}>
       <Container maxWidth='xl' sx={{ px: { xs: 0, md: 3 } }}>
-        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <Box
+          sx={{ display: 'sticky', justifyContent: 'center', width: '100%' }}
+        >
           <Toolbar sx={{ justifyContent: 'space-between', width: '100%' }}>
             {/* メニュー */}
             <Box

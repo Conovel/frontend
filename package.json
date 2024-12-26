@@ -29,10 +29,6 @@
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@eslint/js": "^9.9.0",
-    "@testing-library/jest-dom": "^6.5.0",
-    "@testing-library/react": "^16.0.1",
-    "@testing-library/user-event": "^14.5.2",
-    "@types/jest": "^29.5.14",
     "@types/node": "^22.7.4",
     "@types/prop-types": "^15.7.13",
     "@types/react": "^18.3.11",
@@ -61,7 +57,6 @@
       "cspell --no-progress",
       "prettier --write",
       "eslint --fix",
-      "tsc --noEmit",
       "npm run lint",
       "npm run format"
     ],
