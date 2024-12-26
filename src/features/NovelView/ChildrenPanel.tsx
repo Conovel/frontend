@@ -56,7 +56,7 @@ const Next: React.FC<NextProps> = ({
       <Box
         sx={{
           position: 'absolute',
-          left: '2vw',
+          left: '1vw',
           display: 'flex',
           alignItems: 'center',
         }}
@@ -75,7 +75,7 @@ const Next: React.FC<NextProps> = ({
           overflow: 'hidden',
         }}
       >
-        {Array.from({ length: 1 }, (_, index) => {
+        {Array.from({ length: 3 }, (_, index) => {
           const textIndex = startIndex + index + 1;
           return textIndex <= textCount ? (
             <Box

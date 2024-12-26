@@ -45,7 +45,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
         sx={{
           cursor: 'pointer',
           position: 'absolute',
-          left: '10px',
+          left: '1vw',
           top: '50%',
           transform: 'translateY(-50%)',
           zIndex: 3,
@@ -64,7 +64,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
               textAlign: 'left',
               border: '1px solid #000',
               borderRadius: '10px',
-              height: '35vh',
+              height: '30vh',
               alignItems: 'center',
               zIndex: 2,
               overflowY: 'auto',
@@ -79,10 +79,10 @@ const MainPanel: React.FC<MainPanelProps> = ({
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Avatar sx={{ fontSize: '1.0rem', width: 32, height: 32 }}>
+                <Avatar sx={{ fontSize: '1.2rem', width: 32, height: 32 }}>
                   {panel.userName.charAt(0)}
                 </Avatar>
-                <Box sx={{ marginLeft: '1vh', fontSize: '1.0rem' }}>
+                <Box sx={{ marginLeft: '1vh', fontSize: '1.2rem' }}>
                   {panel.userName}
                 </Box>
               </Box>
@@ -94,7 +94,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
                 }}
               />
             </Box>
-            <p style={{ margin: '1vh 1vh', fontSize: '1.5rem' }}>
+            <p style={{ margin: '1vh 1vh', fontSize: '1.6rem' }}>
               {panel.sentence}
             </p>
             {showIcons && (

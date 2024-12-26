@@ -39,8 +39,8 @@ const NovelCard: React.FC<NovelCardProps> = ({
       <Box
         sx={{
           border: '1px solid #000',
-          padding: '10px',
-          borderRadius: '5px',
+          padding: '1vh 1vw',
+          borderRadius: '1vh',
         }}
       >
         {/* 小説のテキストを表示するテキストボックス */}
@@ -60,6 +60,7 @@ const NovelCard: React.FC<NovelCardProps> = ({
               readOnly: true,
             }}
             sx={{
+              marginTop: '0.5vh',
               textAlign: 'left',
               alignItems: 'center',
               position: 'absolute',
@@ -76,7 +77,7 @@ const NovelCard: React.FC<NovelCardProps> = ({
         sx={{
           display: 'flex',
           justifyContent: 'flex-start',
-          marginTop: '5px',
+          marginTop: '0.2vh',
         }}
       >
         <>
