@@ -9,8 +9,8 @@ interface NovelCardProps {
   index: number;
   textIndex: number;
   text: string;
-  evaluationGoodCount: number;
-  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_good_count: number;
+  setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   commentCount: number;
   setCommentCount: React.Dispatch<React.SetStateAction<number>>;
   nextPlanCount: number;
@@ -19,8 +19,8 @@ interface NovelCardProps {
 
 const NovelCard: React.FC<NovelCardProps> = ({
   text,
-  evaluationGoodCount,
-  setEvaluationGoodCount,
+  evaluation_good_count,
+  setEvaluation_good_count,
   commentCount,
   setCommentCount,
   nextPlanCount,
@@ -81,8 +81,8 @@ const NovelCard: React.FC<NovelCardProps> = ({
       >
         <>
           <ThumbUpButton
-            evaluationGoodCount={evaluationGoodCount}
-            setEvaluationGoodCount={setEvaluationGoodCount}
+            evaluation_good_count={evaluation_good_count}
+            setEvaluation_good_count={setEvaluation_good_count}
           />
           <CommentButton
             commentCount={commentCount}

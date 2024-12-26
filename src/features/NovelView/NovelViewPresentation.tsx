@@ -23,16 +23,16 @@ interface NovelViewPresentationProps {
   childrenPanel: Panel;
   startIndexPrev: number;
   setStartIndexPrev: React.Dispatch<React.SetStateAction<number>>;
-  evaluationGoodCountPrev: number;
-  setEvaluationGoodCountPrev: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_good_countPrev: number;
+  setEvaluation_good_countPrev: React.Dispatch<React.SetStateAction<number>>;
   commentCountPrev: number;
   setCommentCountPrev: React.Dispatch<React.SetStateAction<number>>;
   nextPlanCountPrev: number;
   setNextPlanCountPrev: React.Dispatch<React.SetStateAction<number>>;
   startIndexNext: number;
   setStartIndexNext: React.Dispatch<React.SetStateAction<number>>;
-  evaluationGoodCountNext: number;
-  setEvaluationGoodCountNext: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_good_countNext: number;
+  setEvaluation_good_countNext: React.Dispatch<React.SetStateAction<number>>;
   commentCountNext: number;
   setCommentCountNext: React.Dispatch<React.SetStateAction<number>>;
   nextPlanCountNext: number;
@@ -49,10 +49,10 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setNextPlanCountPrev,
   startIndexNext,
   setStartIndexNext,
-  evaluationGoodCountPrev,
-  setEvaluationGoodCountPrev,
-  evaluationGoodCountNext,
-  setEvaluationGoodCountNext,
+  evaluation_good_countPrev,
+  setEvaluation_good_countPrev,
+  evaluation_good_countNext,
+  setEvaluation_good_countNext,
   commentCountNext,
   setCommentCountNext,
   nextPlanCountNext,
@@ -89,8 +89,8 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           setStartIndex={setStartIndexPrev}
           visibleTextCount={visibleTextCount}
           textCount={prevTextCount}
-          evaluationGoodCount={evaluationGoodCountPrev}
-          setEvaluationGoodCount={setEvaluationGoodCountPrev}
+          evaluation_good_count={evaluation_good_countPrev}
+          setEvaluation_good_count={setEvaluation_good_countPrev}
           commentCount={commentCountPrev}
           setCommentCount={setCommentCountPrev}
           nextPlanCount={nextPlanCountPrev}
@@ -100,8 +100,8 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         {/* メインの投稿 */}
         <MainPanel
           mainPanels={mainPanels}
-          evaluation_good_count={evaluationGoodCountPrev}
-          setEvaluation_good_count={setEvaluationGoodCountPrev}
+          evaluation_good_count={evaluation_good_countPrev}
+          setEvaluation_good_count={setEvaluation_good_countPrev}
           commentCount={commentCountPrev}
           setCommentCount={setCommentCountPrev}
           nextPlanCount={nextPlanCountPrev}
@@ -114,8 +114,8 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           setStartIndex={setStartIndexNext}
           visibleTextCount={visibleTextCount}
           textCount={nextTextCount}
-          evaluationGoodCount={evaluationGoodCountNext}
-          setEvaluationGoodCount={setEvaluationGoodCountNext}
+          evaluation_good_count={evaluation_good_countNext}
+          setEvaluation_good_count={setEvaluation_good_countNext}
           commentCount={commentCountNext}
           setCommentCount={setCommentCountNext}
           nextPlanCount={nextPlanCountNext}

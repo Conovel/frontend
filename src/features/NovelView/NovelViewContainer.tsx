@@ -28,11 +28,11 @@ const children = {
 export const NovelViewContainer = () => {
   const [startIndexPrev, setStartIndexPrev] = useState(0);
   const [startIndexNext, setStartIndexNext] = useState(0);
-  const [evaluationGoodCountPrev, setEvaluationGoodCountPrev] =
+  const [evaluation_good_countPrev, setEvaluation_good_countPrev] =
     useState<number>(0);
   const [commentCountPrev, setCommentCountPrev] = useState<number>(0);
   const [nextPlanCountPrev, setNextPlanCountPrev] = useState<number>(0);
-  const [evaluationGoodCountNext, setEvaluationGoodCountNext] =
+  const [evaluation_good_countNext, setEvaluation_good_countNext] =
     useState<number>(0);
   const [commentCountNext, setCommentCountNext] = useState<number>(0);
   const [nextPlanCountNext, setNextPlanCountNext] = useState<number>(0);
@@ -44,16 +44,16 @@ export const NovelViewContainer = () => {
       childrenPanel={children}
       startIndexPrev={startIndexPrev}
       setStartIndexPrev={setStartIndexPrev}
-      evaluationGoodCountPrev={evaluationGoodCountPrev}
-      setEvaluationGoodCountPrev={setEvaluationGoodCountPrev}
+      evaluation_good_countPrev={evaluation_good_countPrev}
+      setEvaluation_good_countPrev={setEvaluation_good_countPrev}
       commentCountPrev={commentCountPrev}
       setCommentCountPrev={setCommentCountPrev}
       nextPlanCountPrev={nextPlanCountPrev}
       setNextPlanCountPrev={setNextPlanCountPrev}
       startIndexNext={startIndexNext}
       setStartIndexNext={setStartIndexNext}
-      evaluationGoodCountNext={evaluationGoodCountNext}
-      setEvaluationGoodCountNext={setEvaluationGoodCountNext}
+      evaluation_good_countNext={evaluation_good_countNext}
+      setEvaluation_good_countNext={setEvaluation_good_countNext}
       commentCountNext={commentCountNext}
       setCommentCountNext={setCommentCountNext}
       nextPlanCountNext={nextPlanCountNext}

@@ -106,8 +106,8 @@ const MainPanel: React.FC<MainPanelProps> = ({
                 }}
               >
                 <ThumbUpButton
-                  evaluationGoodCount={evaluation_good_count}
-                  setEvaluationGoodCount={setEvaluation_good_count}
+                  evaluation_good_count={evaluation_good_count}
+                  setEvaluation_good_count={setEvaluation_good_count}
                 />
                 <CommentButton
                   commentCount={commentCount}
