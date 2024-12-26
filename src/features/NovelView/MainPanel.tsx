@@ -16,8 +16,8 @@ interface MainPanelProps {
   }[];
   evaluation_good_count: number;
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
-  commentCount: number;
-  setCommentCount: React.Dispatch<React.SetStateAction<number>>;
+  comment_count: number;
+  setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -26,8 +26,8 @@ const MainPanel: React.FC<MainPanelProps> = ({
   mainPanels,
   evaluation_good_count,
   setEvaluation_good_count,
-  commentCount,
-  setCommentCount,
+  comment_count,
+  setComment_count,
   evaluation_stay_count,
   setEvaluation_stay_count,
 }) => {
@@ -110,8 +110,8 @@ const MainPanel: React.FC<MainPanelProps> = ({
                   setEvaluation_good_count={setEvaluation_good_count}
                 />
                 <CommentButton
-                  commentCount={commentCount}
-                  setCommentCount={setCommentCount}
+                  comment_count={comment_count}
+                  setComment_count={setComment_count}
                 />
                 <NextPlanButton
                   evaluation_stay_count={evaluation_stay_count}

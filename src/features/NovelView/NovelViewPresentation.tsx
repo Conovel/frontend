@@ -25,16 +25,16 @@ interface NovelViewPresentationProps {
   setStartIndexPrev: React.Dispatch<React.SetStateAction<number>>;
   evaluation_good_countPrev: number;
   setEvaluation_good_countPrev: React.Dispatch<React.SetStateAction<number>>;
-  commentCountPrev: number;
-  setCommentCountPrev: React.Dispatch<React.SetStateAction<number>>;
+  comment_countPrev: number;
+  setComment_countPrev: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_countPrev: number;
   setEvaluation_stay_countPrev: React.Dispatch<React.SetStateAction<number>>;
   startIndexNext: number;
   setStartIndexNext: React.Dispatch<React.SetStateAction<number>>;
   evaluation_good_countNext: number;
   setEvaluation_good_countNext: React.Dispatch<React.SetStateAction<number>>;
-  commentCountNext: number;
-  setCommentCountNext: React.Dispatch<React.SetStateAction<number>>;
+  comment_countNext: number;
+  setComment_countNext: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_countNext: number;
   setEvaluation_stay_countNext: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -43,8 +43,8 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   mainPanels,
   startIndexPrev,
   setStartIndexPrev,
-  commentCountPrev,
-  setCommentCountPrev,
+  comment_countPrev,
+  setComment_countPrev,
   evaluation_stay_countPrev,
   setEvaluation_stay_countPrev,
   startIndexNext,
@@ -53,8 +53,8 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setEvaluation_good_countPrev,
   evaluation_good_countNext,
   setEvaluation_good_countNext,
-  commentCountNext,
-  setCommentCountNext,
+  comment_countNext,
+  setComment_countNext,
   evaluation_stay_countNext,
   setEvaluation_stay_countNext,
 }) => {
@@ -91,8 +91,8 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           textCount={prevTextCount}
           evaluation_good_count={evaluation_good_countPrev}
           setEvaluation_good_count={setEvaluation_good_countPrev}
-          commentCount={commentCountPrev}
-          setCommentCount={setCommentCountPrev}
+          comment_count={comment_countPrev}
+          setComment_count={setComment_countPrev}
           evaluation_stay_count={evaluation_stay_countPrev}
           setEvaluation_stay_count={setEvaluation_stay_countPrev}
         />
@@ -102,8 +102,8 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           mainPanels={mainPanels}
           evaluation_good_count={evaluation_good_countPrev}
           setEvaluation_good_count={setEvaluation_good_countPrev}
-          commentCount={commentCountPrev}
-          setCommentCount={setCommentCountPrev}
+          comment_count={comment_countPrev}
+          setComment_count={setComment_countPrev}
           evaluation_stay_count={evaluation_stay_countPrev}
           setEvaluation_stay_count={setEvaluation_stay_countPrev}
         />
@@ -116,8 +116,8 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           textCount={nextTextCount}
           evaluation_good_count={evaluation_good_countNext}
           setEvaluation_good_count={setEvaluation_good_countNext}
-          commentCount={commentCountNext}
-          setCommentCount={setCommentCountNext}
+          comment_count={comment_countNext}
+          setComment_count={setComment_countNext}
           evaluation_stay_count={evaluation_stay_countNext}
           setEvaluation_stay_count={setEvaluation_stay_countNext}
         />

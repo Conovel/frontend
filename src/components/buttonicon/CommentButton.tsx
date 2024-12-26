@@ -2,16 +2,16 @@ import React from 'react';
 import ChatIcon from '@mui/icons-material/Chat';
 
 interface CommentButtonProps {
-  commentCount: number;
-  setCommentCount: React.Dispatch<React.SetStateAction<number>>;
+  comment_count: number;
+  setComment_count: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const CommentButton: React.FC<CommentButtonProps> = ({
-  commentCount,
-  setCommentCount,
+  comment_count,
+  setComment_count,
 }) => {
   const handleClick = () => {
-    setCommentCount(commentCount + 1);
+    setComment_count(comment_count + 1);
     // ここにバックエンド処理を追加
   };
 
@@ -21,7 +21,7 @@ const CommentButton: React.FC<CommentButtonProps> = ({
       style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}
     >
       <ChatIcon />
-      <span>{commentCount}</span>
+      <span>{comment_count}</span>
     </div>
   );
 };

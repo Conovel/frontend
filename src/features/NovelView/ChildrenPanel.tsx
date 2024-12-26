@@ -11,8 +11,8 @@ interface NextProps {
   textCount: number;
   evaluation_good_count: number;
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
-  commentCount: number;
-  setCommentCount: React.Dispatch<React.SetStateAction<number>>;
+  comment_count: number;
+  setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -24,8 +24,8 @@ const Next: React.FC<NextProps> = ({
   textCount,
   evaluation_good_count,
   setEvaluation_good_count,
-  commentCount,
-  setCommentCount,
+  comment_count,
+  setComment_count,
   evaluation_stay_count,
   setEvaluation_stay_count,
 }) => {
@@ -102,8 +102,8 @@ const Next: React.FC<NextProps> = ({
                   text={`Text content for index ${textIndex}`}
                   evaluation_good_count={evaluation_good_count}
                   setEvaluation_good_count={setEvaluation_good_count}
-                  commentCount={commentCount}
-                  setCommentCount={setCommentCount}
+                  comment_count={comment_count}
+                  setComment_count={setComment_count}
                   evaluation_stay_count={evaluation_stay_count}
                   setEvaluation_stay_count={setEvaluation_stay_count}
                 />

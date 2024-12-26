@@ -30,12 +30,12 @@ export const NovelViewContainer = () => {
   const [startIndexNext, setStartIndexNext] = useState(0);
   const [evaluation_good_countPrev, setEvaluation_good_countPrev] =
     useState<number>(0);
-  const [commentCountPrev, setCommentCountPrev] = useState<number>(0);
+  const [comment_countPrev, setComment_countPrev] = useState<number>(0);
   const [evaluation_stay_countPrev, setEvaluation_stay_countPrev] =
     useState<number>(0);
   const [evaluation_good_countNext, setEvaluation_good_countNext] =
     useState<number>(0);
-  const [commentCountNext, setCommentCountNext] = useState<number>(0);
+  const [comment_countNext, setComment_countNext] = useState<number>(0);
   const [evaluation_stay_countNext, setEvaluation_stay_countNext] =
     useState<number>(0);
 
@@ -48,16 +48,16 @@ export const NovelViewContainer = () => {
       setStartIndexPrev={setStartIndexPrev}
       evaluation_good_countPrev={evaluation_good_countPrev}
       setEvaluation_good_countPrev={setEvaluation_good_countPrev}
-      commentCountPrev={commentCountPrev}
-      setCommentCountPrev={setCommentCountPrev}
+      comment_countPrev={comment_countPrev}
+      setComment_countPrev={setComment_countPrev}
       evaluation_stay_countPrev={evaluation_stay_countPrev}
       setEvaluation_stay_countPrev={setEvaluation_stay_countPrev}
       startIndexNext={startIndexNext}
       setStartIndexNext={setStartIndexNext}
       evaluation_good_countNext={evaluation_good_countNext}
       setEvaluation_good_countNext={setEvaluation_good_countNext}
-      commentCountNext={commentCountNext}
-      setCommentCountNext={setCommentCountNext}
+      comment_countNext={comment_countNext}
+      setComment_countNext={setComment_countNext}
       evaluation_stay_countNext={evaluation_stay_countNext}
       setEvaluation_stay_countNext={setEvaluation_stay_countNext}
     />
