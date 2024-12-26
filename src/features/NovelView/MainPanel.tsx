@@ -40,9 +40,16 @@ const MainPanel: React.FC<MainPanelProps> = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
       <KeyboardArrowBackIcon
-        sx={{ cursor: 'pointer', marginRight: '1vh' }}
+        sx={{
+          cursor: 'pointer',
+          position: 'absolute',
+          left: '10px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          zIndex: 3,
+        }}
         onClick={() => {
           /* Handle left arrow click */
         }}
@@ -57,41 +64,47 @@ const MainPanel: React.FC<MainPanelProps> = ({
               textAlign: 'left',
               border: '1px solid #000',
               borderRadius: '10px',
-              margin: '0vh 1vh',
-              height: '40vh',
+              height: '35vh',
               alignItems: 'center',
-              fontSize: '2.0rem',
               zIndex: 2,
               overflowY: 'auto',
             }}
           >
             <Box
-              sx={{ display: 'flex', alignItems: 'center', margin: '2vh 2vh' }}
-            >
-              <Avatar sx={{ fontSize: '2.0rem', width: 32, height: 32 }}>
-                {panel.userName.charAt(0)}
-              </Avatar>
-              <Box sx={{ marginLeft: '1vh', fontSize: '2.0rem' }}>
-                {panel.userName}
-              </Box>
-            </Box>
-            <p style={{ margin: '2vh 2vh' }}>{panel.sentence}</p>
-            <DragIndicatorIcon
-              onClick={handleIconClick}
               sx={{
-                position: 'absolute',
-                bottom: '10px',
-                right: '10px',
-                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                margin: '2vh 2vh',
+                justifyContent: 'space-between',
               }}
-            />
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Avatar sx={{ fontSize: '1.0rem', width: 32, height: 32 }}>
+                  {panel.userName.charAt(0)}
+                </Avatar>
+                <Box sx={{ marginLeft: '1vh', fontSize: '1.0rem' }}>
+                  {panel.userName}
+                </Box>
+              </Box>
+              <DragIndicatorIcon
+                onClick={handleIconClick}
+                sx={{
+                  cursor: 'pointer',
+                  marginLeft: '1vh',
+                }}
+              />
+            </Box>
+            <p style={{ margin: '1vh 1vh', fontSize: '1.5rem' }}>
+              {panel.sentence}
+            </p>
             {showIcons && (
               <Box
                 sx={{
                   display: 'flex',
                   position: 'absolute',
-                  bottom: '40px',
+                  top: '0',
                   right: '10px',
+                  zIndex: 4,
                 }}
               >
                 <ThumbUpButton
@@ -112,7 +125,14 @@ const MainPanel: React.FC<MainPanelProps> = ({
         ))}
       </Box>
       <KeyboardArrowForwardIcon
-        sx={{ cursor: 'pointer', marginLeft: '1vh' }}
+        sx={{
+          cursor: 'pointer',
+          position: 'absolute',
+          right: '10px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          zIndex: 3,
+        }}
         onClick={() => {
           /* Handle right arrow click */
         }}
