@@ -18,8 +18,8 @@ interface MainPanelProps {
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   commentCount: number;
   setCommentCount: React.Dispatch<React.SetStateAction<number>>;
-  nextPlanCount: number;
-  setNextPlanCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_stay_count: number;
+  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
@@ -28,8 +28,8 @@ const MainPanel: React.FC<MainPanelProps> = ({
   setEvaluation_good_count,
   commentCount,
   setCommentCount,
-  nextPlanCount,
-  setNextPlanCount,
+  evaluation_stay_count,
+  setEvaluation_stay_count,
 }) => {
   const [showIcons, setShowIcons] = useState(false);
 
@@ -114,8 +114,8 @@ const MainPanel: React.FC<MainPanelProps> = ({
                   setCommentCount={setCommentCount}
                 />
                 <NextPlanButton
-                  nextPlanCount={nextPlanCount}
-                  setNextPlanCount={setNextPlanCount}
+                  evaluation_stay_count={evaluation_stay_count}
+                  setEvaluation_stay_count={setEvaluation_stay_count}
                 />
               </Box>
             )}

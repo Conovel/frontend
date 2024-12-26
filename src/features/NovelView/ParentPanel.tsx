@@ -11,8 +11,8 @@ interface PrevProps {
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   commentCount: number;
   setCommentCount: React.Dispatch<React.SetStateAction<number>>;
-  nextPlanCount: number;
-  setNextPlanCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_stay_count: number;
+  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const Prev: React.FC<PrevProps> = ({
@@ -22,8 +22,8 @@ const Prev: React.FC<PrevProps> = ({
   setEvaluation_good_count,
   commentCount,
   setCommentCount,
-  nextPlanCount,
-  setNextPlanCount,
+  evaluation_stay_count,
+  setEvaluation_stay_count,
 }) => {
   return (
     <Box
@@ -47,8 +47,8 @@ const Prev: React.FC<PrevProps> = ({
           setEvaluation_good_count={setEvaluation_good_count}
           commentCount={commentCount}
           setCommentCount={setCommentCount}
-          nextPlanCount={nextPlanCount}
-          setNextPlanCount={setNextPlanCount}
+          evaluation_stay_count={evaluation_stay_count}
+          setEvaluation_stay_count={setEvaluation_stay_count}
         />
       ) : null}
     </Box>

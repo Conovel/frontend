@@ -13,8 +13,8 @@ interface NovelCardProps {
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   commentCount: number;
   setCommentCount: React.Dispatch<React.SetStateAction<number>>;
-  nextPlanCount: number;
-  setNextPlanCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_stay_count: number;
+  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const NovelCard: React.FC<NovelCardProps> = ({
@@ -23,8 +23,8 @@ const NovelCard: React.FC<NovelCardProps> = ({
   setEvaluation_good_count,
   commentCount,
   setCommentCount,
-  nextPlanCount,
-  setNextPlanCount,
+  evaluation_stay_count,
+  setEvaluation_stay_count,
 }) => {
   return (
     <Box
@@ -89,8 +89,8 @@ const NovelCard: React.FC<NovelCardProps> = ({
             setCommentCount={setCommentCount}
           />
           <NextPlanButton
-            nextPlanCount={nextPlanCount}
-            setNextPlanCount={setNextPlanCount}
+            evaluation_stay_count={evaluation_stay_count}
+            setEvaluation_stay_count={setEvaluation_stay_count}
           />
         </>
       </Box>

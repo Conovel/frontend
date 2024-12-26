@@ -2,16 +2,16 @@ import React from 'react';
 import NextPlanIcon from '@mui/icons-material/NextPlan';
 
 interface NextPlanButtonProps {
-  nextPlanCount: number;
-  setNextPlanCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_stay_count: number;
+  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const NextPlanButton: React.FC<NextPlanButtonProps> = ({
-  nextPlanCount,
-  setNextPlanCount,
+  evaluation_stay_count,
+  setEvaluation_stay_count,
 }) => {
   const handleClick = () => {
-    setNextPlanCount(nextPlanCount + 1);
+    setEvaluation_stay_count(evaluation_stay_count + 1);
     // ここにバックエンド処理を追加
   };
 
@@ -21,7 +21,7 @@ const NextPlanButton: React.FC<NextPlanButtonProps> = ({
       style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}
     >
       <NextPlanIcon />
-      <span>{nextPlanCount}</span>
+      <span>{evaluation_stay_count}</span>
     </div>
   );
 };

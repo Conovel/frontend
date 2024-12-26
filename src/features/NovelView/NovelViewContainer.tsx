@@ -31,11 +31,13 @@ export const NovelViewContainer = () => {
   const [evaluation_good_countPrev, setEvaluation_good_countPrev] =
     useState<number>(0);
   const [commentCountPrev, setCommentCountPrev] = useState<number>(0);
-  const [nextPlanCountPrev, setNextPlanCountPrev] = useState<number>(0);
+  const [evaluation_stay_countPrev, setEvaluation_stay_countPrev] =
+    useState<number>(0);
   const [evaluation_good_countNext, setEvaluation_good_countNext] =
     useState<number>(0);
   const [commentCountNext, setCommentCountNext] = useState<number>(0);
-  const [nextPlanCountNext, setNextPlanCountNext] = useState<number>(0);
+  const [evaluation_stay_countNext, setEvaluation_stay_countNext] =
+    useState<number>(0);
 
   return (
     <NovelViewPresentation
@@ -48,16 +50,16 @@ export const NovelViewContainer = () => {
       setEvaluation_good_countPrev={setEvaluation_good_countPrev}
       commentCountPrev={commentCountPrev}
       setCommentCountPrev={setCommentCountPrev}
-      nextPlanCountPrev={nextPlanCountPrev}
-      setNextPlanCountPrev={setNextPlanCountPrev}
+      evaluation_stay_countPrev={evaluation_stay_countPrev}
+      setEvaluation_stay_countPrev={setEvaluation_stay_countPrev}
       startIndexNext={startIndexNext}
       setStartIndexNext={setStartIndexNext}
       evaluation_good_countNext={evaluation_good_countNext}
       setEvaluation_good_countNext={setEvaluation_good_countNext}
       commentCountNext={commentCountNext}
       setCommentCountNext={setCommentCountNext}
-      nextPlanCountNext={nextPlanCountNext}
-      setNextPlanCountNext={setNextPlanCountNext}
+      evaluation_stay_countNext={evaluation_stay_countNext}
+      setEvaluation_stay_countNext={setEvaluation_stay_countNext}
     />
   );
 };
