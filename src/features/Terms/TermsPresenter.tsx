@@ -13,7 +13,7 @@ export const TermsPresenter = () => {
       <Typography variant='h4'>利用規約</Typography>
       <Box flex={1}>
         <iframe
-          src='/terms.pdf#toolbar=0&navpanes=0'
+          src='/terms.pdf#toolbar=0&navpanes=0&view=FitH'
           width='100%'
           height='100%'
           style={{ border: 'none' }}
