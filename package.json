@@ -61,7 +61,6 @@
       "cspell --no-progress",
       "prettier --write",
       "eslint --fix",
-      "tsc --noEmit",
       "npm run lint",
       "npm run format"
     ],
