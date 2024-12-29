@@ -3,6 +3,9 @@ import Button from '@mui/material/Button';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
+import IconButton from '@mui/material/IconButton';
+import { InfoOutlined } from '@mui/icons-material';
+import Tooltip from '@mui/material/Tooltip';
 
 export const AccountSettingsPresenter = () => {
   return (
@@ -20,7 +23,15 @@ export const AccountSettingsPresenter = () => {
             justifyContent: 'space-between',
           }}
         >
-          <Typography>ペンネーム</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Typography>ペンネーム</Typography>
+            <Tooltip title='ペンネーム'>
+              <IconButton>
+                <InfoOutlined />
+              </IconButton>
+            </Tooltip>
+          </Box>
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Typography>花子</Typography>
             <Button sx={{ padding: 0, width: 'fit-content' }}>
@@ -36,7 +47,15 @@ export const AccountSettingsPresenter = () => {
             justifyContent: 'space-between',
           }}
         >
-          <Typography>ニックネーム</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Typography>ニックネーム</Typography>
+            <Tooltip title='ニックネーム'>
+              <IconButton>
+                <InfoOutlined />
+              </IconButton>
+            </Tooltip>
+          </Box>
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Typography>HANA</Typography>
             <Button sx={{ padding: 0, width: 'fit-content' }}>
@@ -52,7 +71,15 @@ export const AccountSettingsPresenter = () => {
             justifyContent: 'space-between',
           }}
         >
-          <Typography>生年月</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Typography>生年月</Typography>
+            <Tooltip title='生年月'>
+              <IconButton>
+                <InfoOutlined />
+              </IconButton>
+            </Tooltip>
+          </Box>
+
           <Typography>1998/2</Typography>
         </Box>
 
@@ -63,7 +90,15 @@ export const AccountSettingsPresenter = () => {
             justifyContent: 'space-between',
           }}
         >
-          <Typography>匿名設定</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Typography>匿名設定</Typography>
+            <Tooltip title='匿名設定'>
+              <IconButton>
+                <InfoOutlined />
+              </IconButton>
+            </Tooltip>
+          </Box>
+
           <Switch />
         </Box>
       </Box>
