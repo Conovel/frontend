@@ -7,7 +7,14 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import { LabelWithTooltip } from '../../components/labelWithTooltip';
 
-export const AccountSettingsPresenter = () => {
+interface AccountSettingsPresenterProps {
+  /** 編集モードかどうか */
+  isEdit: boolean;
+  /** 編集モードとの切り替え */
+  onChangeEditMode: () => void;
+}
+
+export const AccountSettingsPresenter = ({}: AccountSettingsPresenterProps) => {
   return (
     <>
       <Typography variant='h4' sx={{ marginBottom: '16px' }}>
