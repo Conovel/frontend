@@ -3,10 +3,9 @@ import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
-import { InfoOutlined } from '@mui/icons-material';
-import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import { LabelWithTooltip } from '../../components/labelWithTooltip';
 
 export const AccountSettingsPresenter = () => {
   return (
@@ -45,21 +44,11 @@ export const AccountSettingsPresenter = () => {
               gap: '16px',
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                flexShrink: 0,
-              }}
-            >
-              <Typography>ペンネーム</Typography>
-              <Tooltip title='ペンネームはストーリー投稿時に表示します'>
-                <IconButton sx={{ padding: 0 }}>
-                  <InfoOutlined />
-                </IconButton>
-              </Tooltip>
-            </Box>
+            <LabelWithTooltip
+              label='ペンネーム'
+              hasTooltip
+              tooltipText='ペンネームはストーリー投稿時に表示します'
+            />
 
             <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
               <Typography sx={{ wordBreak: 'break-word' }}>
@@ -80,22 +69,12 @@ export const AccountSettingsPresenter = () => {
               gap: '16px',
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                flexShrink: 0,
-              }}
-            >
-              <Typography>ニックネーム</Typography>
-              {/** // TODO：tooltipの内容は、コメント投稿機能実装時に修正 */}
-              <Tooltip title='ニックネーム'>
-                <IconButton sx={{ padding: 0 }}>
-                  <InfoOutlined />
-                </IconButton>
-              </Tooltip>
-            </Box>
+            {/** // TODO：tooltipの内容は、コメント投稿機能実装時に修正 */}
+            <LabelWithTooltip
+              label='ニックネーム'
+              hasTooltip
+              tooltipText='ニックネーム'
+            />
 
             <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
               <Typography sx={{ wordBreak: 'break-word' }}>
@@ -116,14 +95,11 @@ export const AccountSettingsPresenter = () => {
               gap: '16px',
             }}
           >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Typography>生年月</Typography>
-              <Tooltip title='生年月は一度登録したら変更できません'>
-                <IconButton sx={{ padding: 0 }}>
-                  <InfoOutlined />
-                </IconButton>
-              </Tooltip>
-            </Box>
+            <LabelWithTooltip
+              label='生年月'
+              hasTooltip
+              tooltipText='生年月は一度登録したら変更できません'
+            />
 
             <Typography>1998/2</Typography>
           </Box>
@@ -137,14 +113,11 @@ export const AccountSettingsPresenter = () => {
               gap: '16px',
             }}
           >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Typography>匿名設定</Typography>
-              <Tooltip title='匿名設定をONにすると投稿は匿名で表示されます'>
-                <IconButton sx={{ padding: 0 }}>
-                  <InfoOutlined />
-                </IconButton>
-              </Tooltip>
-            </Box>
+            <LabelWithTooltip
+              label='匿名設定'
+              hasTooltip
+              tooltipText='匿名設定をONにすると投稿は匿名で表示されます'
+            />
 
             <Switch />
           </Box>
@@ -159,26 +132,20 @@ export const AccountSettingsPresenter = () => {
 
         {/** 投稿小説 */}
         <Box>
-          <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <Typography>投稿小説</Typography>
-            <Tooltip title='自分が投稿した小説です'>
-              <IconButton sx={{ padding: 0 }}>
-                <InfoOutlined />
-              </IconButton>
-            </Tooltip>
-          </Box>
+          <LabelWithTooltip
+            label='投稿小説'
+            hasTooltip
+            tooltipText='自分が投稿した小説の一覧です'
+          />
         </Box>
 
         {/** 読者登録小説（閲覧小説とかの表現の方がベターかも） */}
         <Box>
-          <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <Typography>閲覧小説</Typography>
-            <Tooltip title='自分が読んだ小説です'>
-              <IconButton sx={{ padding: 0 }}>
-                <InfoOutlined />
-              </IconButton>
-            </Tooltip>
-          </Box>
+          <LabelWithTooltip
+            label='閲覧小説'
+            hasTooltip
+            tooltipText='自分が読んだ小説の一覧です'
+          />
         </Box>
       </Box>
     </>
