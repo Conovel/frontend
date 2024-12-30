@@ -1,11 +1,11 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { InfoOutlined } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
+import Avatar from '@mui/material/Avatar';
 
 export const AccountSettingsPresenter = () => {
   return (
@@ -15,6 +15,22 @@ export const AccountSettingsPresenter = () => {
       {/** アカウント情報 */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {/** アバター */}
+        <Box sx={{ margin: '0 auto' }}>
+          <Box sx={{ position: 'relative' }}>
+            <Avatar sx={{ bgcolor: 'magenta' }}>HN</Avatar>
+            <IconButton
+              sx={{
+                padding: 0,
+                width: 'fit-content',
+                position: 'absolute',
+                bottom: -4,
+                right: -8,
+              }}
+            >
+              <EditIcon sx={{ color: 'black' }} />
+            </IconButton>
+          </Box>
+        </Box>
 
         <Box
           sx={{
@@ -34,9 +50,9 @@ export const AccountSettingsPresenter = () => {
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Typography>花子</Typography>
-            <Button sx={{ padding: 0, width: 'fit-content' }}>
+            <IconButton sx={{ padding: 0, width: 'fit-content' }}>
               <EditIcon sx={{ color: 'black' }} />
-            </Button>
+            </IconButton>
           </Box>
         </Box>
 
@@ -58,9 +74,9 @@ export const AccountSettingsPresenter = () => {
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Typography>HANA</Typography>
-            <Button sx={{ padding: 0, width: 'fit-content' }}>
+            <IconButton sx={{ padding: 0, width: 'fit-content' }}>
               <EditIcon sx={{ color: 'black' }} />
-            </Button>
+            </IconButton>
           </Box>
         </Box>
 
