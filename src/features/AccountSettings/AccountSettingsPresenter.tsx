@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import { LabelWithTooltip } from '../../components/labelWithTooltip';
+import { AccountSettingFormType } from './AccountSettings.schema';
 
 interface AccountSettingsPresenterProps {
   /** 編集モードかどうか */
@@ -13,7 +14,7 @@ interface AccountSettingsPresenterProps {
   /** 編集モードとの切り替え */
   onChangeEditMode: () => void;
   /** アカウント情報更新処理 */
-  onClickUpdateAccountInfo: () => void;
+  onClickUpdateAccountInfo: (input: AccountSettingFormType) => void;
   /** 投稿小説画面遷移 */
   onClickGoToMyPostedNovels: () => void;
   /** 閲覧小説画面遷移 */
