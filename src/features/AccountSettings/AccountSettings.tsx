@@ -27,6 +27,10 @@ export const AccountSettings = () => {
         onClickOpenDeleteAccountModal={() => {
           // TODO：あとで実装
         }}
+        isOpenDeleteAccountModal={false}
+        onCloseDeleteAccountModal={() => {
+          // TODO：あとで実装
+        }}
       />
     </FormProvider>
   );

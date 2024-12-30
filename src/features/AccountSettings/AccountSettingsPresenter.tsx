@@ -19,8 +19,12 @@ interface AccountSettingsPresenterProps {
   onClickGoToMyPostedNovels: () => void;
   /** 閲覧小説画面遷移 */
   onClickGoToMyReadingNovels: () => void;
+  /** 削除モーダルの開閉状態 */
+  isOpenDeleteAccountModal: boolean;
   /** 削除モーダル開く */
   onClickOpenDeleteAccountModal: () => void;
+  /** 削除モーダル閉じる */
+  onCloseDeleteAccountModal: () => void;
 }
 
 export const AccountSettingsPresenter = ({}: AccountSettingsPresenterProps) => {
