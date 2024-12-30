@@ -59,7 +59,7 @@ export const AccountSettingsPresenter = ({}: AccountSettingsPresenterProps) => {
 
             <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
               <Typography sx={{ wordBreak: 'break-word' }}>
-                花子花花花花花花花花花花花花花花花花花花花花花花花花花花花花花花
+                花子花花花花花花花花花花花花花花花花花花花花花花花花花花３２文字
               </Typography>
               <IconButton sx={{ padding: 0, width: 'fit-content' }}>
                 <EditIcon sx={{ color: 'black' }} />
@@ -85,7 +85,7 @@ export const AccountSettingsPresenter = ({}: AccountSettingsPresenterProps) => {
 
             <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
               <Typography sx={{ wordBreak: 'break-word' }}>
-                HANAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                HANAAAAAAAAAAAAAAAAAAAAAAAAA32文字
               </Typography>
               <IconButton sx={{ padding: 0, width: 'fit-content' }}>
                 <EditIcon sx={{ color: 'black' }} />
