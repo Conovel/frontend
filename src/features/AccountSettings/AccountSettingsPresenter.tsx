@@ -49,7 +49,7 @@ export const AccountSettingsPresenter = () => {
             }}
           >
             <Typography>ペンネーム</Typography>
-            <Tooltip title='ペンネーム'>
+            <Tooltip title='ペンネームはストーリー投稿時に表示します'>
               <IconButton sx={{ padding: 0 }}>
                 <InfoOutlined />
               </IconButton>
@@ -83,6 +83,7 @@ export const AccountSettingsPresenter = () => {
             }}
           >
             <Typography>ニックネーム</Typography>
+            {/** // TODO：tooltipの内容は、コメント投稿機能実装時に修正 */}
             <Tooltip title='ニックネーム'>
               <IconButton sx={{ padding: 0 }}>
                 <InfoOutlined />
@@ -110,7 +111,7 @@ export const AccountSettingsPresenter = () => {
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Typography>生年月</Typography>
-            <Tooltip title='生年月'>
+            <Tooltip title='生年月は一度登録したら変更できません'>
               <IconButton sx={{ padding: 0 }}>
                 <InfoOutlined />
               </IconButton>
@@ -130,7 +131,7 @@ export const AccountSettingsPresenter = () => {
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Typography>匿名設定</Typography>
-            <Tooltip title='匿名設定'>
+            <Tooltip title='匿名設定をONにすると投稿は匿名で表示されます'>
               <IconButton sx={{ padding: 0 }}>
                 <InfoOutlined />
               </IconButton>
