@@ -12,6 +12,14 @@ interface AccountSettingsPresenterProps {
   isEdit: boolean;
   /** 編集モードとの切り替え */
   onChangeEditMode: () => void;
+  /** アカウント情報更新処理 */
+  onClickUpdateAccountInfo: () => void;
+  /** 投稿小説画面遷移 */
+  onClickGoToMyPostedNovels: () => void;
+  /** 閲覧小説画面遷移 */
+  onClickGoToMyReadingNovels: () => void;
+  /** 削除モーダル開く */
+  onClickOpenDeleteAccountModal: () => void;
 }
 
 export const AccountSettingsPresenter = ({}: AccountSettingsPresenterProps) => {
