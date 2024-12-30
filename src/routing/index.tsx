@@ -3,6 +3,8 @@ import HeaderBar from '../components/header';
 import { CompanyPage } from '../pages/company';
 import NovelList from '../features/NovelList';
 import { Footer } from '../components/footer';
+import { TermsPage } from '../pages/terms';
+import { Box } from '@mui/material';
 
 /**
  * ルーティング
@@ -16,7 +18,7 @@ export const Routing = () => {
           <Route index element={<NovelList />} />
           <Route path='/account' />
           <Route path='/company' element={<CompanyPage />} />
-          <Route path='/terms' />
+          <Route path='/terms' element={<TermsPage />} />
         </Route>
       </Routes>
     </>
@@ -25,14 +27,14 @@ export const Routing = () => {
 
 const Layout = () => {
   return (
-    <>
+    <Box display='flex' flexDirection='column' height='100%'>
       <HeaderBar />
 
-      <main style={{ padding: '8px' }}>
+      <main style={{ padding: '8px', flex: 1 }}>
         <Outlet />
       </main>
 
       <Footer />
-    </>
+    </Box>
   );
 };

@@ -1,8 +1,12 @@
 {
   "files": [],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
   ],
   "compilerOptions": {
     "target": "ES2022",
@@ -25,5 +29,5 @@
     "types": ["node"],
     "resolveJsonModule": true
   },
-  "include": ["vite.config.ts", "./src/**/*", "src/types/custom.d.ts"]
+  "include": ["vite.config.ts", "src/**/*", "src/types/types/custom.d.ts"]
 }

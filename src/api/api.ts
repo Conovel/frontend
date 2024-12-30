@@ -33,12 +33,44 @@ import type { RequestArgs } from './base';
 // @ts-ignore
 import {
   BASE_PATH,
-  // COLLECTION_FORMATS,
+  //COLLECTION_FORMATS,
   BaseAPI,
-  // RequiredError,
+  //RequiredError,
   operationServerMap,
 } from './base';
 
+/**
+ *
+ * @export
+ * @interface ErrorResponse
+ */
+export interface ErrorResponse {
+  /**
+   *
+   * @type {ErrorResponseError}
+   * @memberof ErrorResponse
+   */
+  error?: ErrorResponseError;
+}
+/**
+ *
+ * @export
+ * @interface ErrorResponseError
+ */
+export interface ErrorResponseError {
+  /**
+   * エラーコード
+   * @type {number}
+   * @memberof ErrorResponseError
+   */
+  code?: number;
+  /**
+   * エラーメッセージ
+   * @type {string}
+   * @memberof ErrorResponseError
+   */
+  message?: string;
+}
 /**
  *
  * @export
@@ -292,6 +324,43 @@ export interface PostSentence {
    * @memberof PostSentence
    */
   sentence?: string;
+}
+/**
+ *
+ * @export
+ * @interface PostSentence409Response
+ */
+export interface PostSentence409Response {
+  /**
+   *
+   * @type {ErrorResponseError}
+   * @memberof PostSentence409Response
+   */
+  error?: ErrorResponseError;
+  /**
+   *
+   * @type {Sentence}
+   * @memberof PostSentence409Response
+   */
+  main?: Sentence;
+  /**
+   *
+   * @type {Sentence}
+   * @memberof PostSentence409Response
+   */
+  parent?: Sentence;
+  /**
+   *
+   * @type {Array<Sentence>}
+   * @memberof PostSentence409Response
+   */
+  parallels?: Array<Sentence>;
+  /**
+   *
+   * @type {Array<Sentence>}
+   * @memberof PostSentence409Response
+   */
+  children?: Array<Sentence>;
 }
 /**
  *
