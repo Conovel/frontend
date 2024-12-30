@@ -5,8 +5,11 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 interface LabelWithTooltipProps {
+  /** ラベル */
   label: string;
+  /** Tooltip必要か */
   hasTooltip?: boolean;
+  /** Tooltipのテキスト */
   tooltipText?: React.ReactNode;
 }
 
