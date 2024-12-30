@@ -42,7 +42,7 @@ export const AccountSettingsPresenter = () => {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Typography>ペンネーム</Typography>
             <Tooltip title='ペンネーム'>
-              <IconButton>
+              <IconButton sx={{ padding: 0 }}>
                 <InfoOutlined />
               </IconButton>
             </Tooltip>
@@ -66,7 +66,7 @@ export const AccountSettingsPresenter = () => {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Typography>ニックネーム</Typography>
             <Tooltip title='ニックネーム'>
-              <IconButton>
+              <IconButton sx={{ padding: 0 }}>
                 <InfoOutlined />
               </IconButton>
             </Tooltip>
@@ -90,7 +90,7 @@ export const AccountSettingsPresenter = () => {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Typography>生年月</Typography>
             <Tooltip title='生年月'>
-              <IconButton>
+              <IconButton sx={{ padding: 0 }}>
                 <InfoOutlined />
               </IconButton>
             </Tooltip>
@@ -109,7 +109,7 @@ export const AccountSettingsPresenter = () => {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Typography>匿名設定</Typography>
             <Tooltip title='匿名設定'>
-              <IconButton>
+              <IconButton sx={{ padding: 0 }}>
                 <InfoOutlined />
               </IconButton>
             </Tooltip>
