@@ -11,7 +11,9 @@ import Button from '@mui/material/Button';
 export const AccountSettingsPresenter = () => {
   return (
     <>
-      <Typography variant='h4'>アカウント情報</Typography>
+      <Typography variant='h4' sx={{ marginBottom: '16px' }}>
+        アカウント情報
+      </Typography>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {/** アカウント情報 */}
