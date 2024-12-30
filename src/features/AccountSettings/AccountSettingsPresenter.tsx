@@ -7,6 +7,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import { LabelWithTooltip } from '../../components/labelWithTooltip';
 import { AccountSettingFormType } from './AccountSettings.schema';
+import { ThumbUpAltOutlined } from '@mui/icons-material';
 
 export interface AccountInfo {
   userId: number;
@@ -155,6 +156,19 @@ export const AccountSettingsPresenter = ({
             />
 
             <Switch defaultChecked={accountInfo.isAnonymous} />
+          </Box>
+
+          {/** いいね数 */}
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '8px',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <ThumbUpAltOutlined />
+            <Typography>{accountInfo.evaluationGoodCount}</Typography>
           </Box>
         </Box>
 
