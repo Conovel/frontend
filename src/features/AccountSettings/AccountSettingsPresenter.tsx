@@ -35,11 +35,19 @@ export const AccountSettingsPresenter = () => {
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'baseline',
             justifyContent: 'space-between',
+            gap: '16px',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              flexShrink: 0,
+            }}
+          >
             <Typography>ペンネーム</Typography>
             <Tooltip title='ペンネーム'>
               <IconButton sx={{ padding: 0 }}>
@@ -48,8 +56,10 @@ export const AccountSettingsPresenter = () => {
             </Tooltip>
           </Box>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Typography>花子</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
+            <Typography sx={{ wordBreak: 'break-word' }}>
+              花子花花花花花花花花花花花花花花花花花花花花花花花花花花花花花花
+            </Typography>
             <IconButton sx={{ padding: 0, width: 'fit-content' }}>
               <EditIcon sx={{ color: 'black' }} />
             </IconButton>
@@ -59,11 +69,19 @@ export const AccountSettingsPresenter = () => {
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'baseline',
             justifyContent: 'space-between',
+            gap: '16px',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              flexShrink: 0,
+            }}
+          >
             <Typography>ニックネーム</Typography>
             <Tooltip title='ニックネーム'>
               <IconButton sx={{ padding: 0 }}>
@@ -72,8 +90,10 @@ export const AccountSettingsPresenter = () => {
             </Tooltip>
           </Box>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Typography>HANA</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
+            <Typography sx={{ wordBreak: 'break-word' }}>
+              HANAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            </Typography>
             <IconButton sx={{ padding: 0, width: 'fit-content' }}>
               <EditIcon sx={{ color: 'black' }} />
             </IconButton>
@@ -85,6 +105,7 @@ export const AccountSettingsPresenter = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            gap: '16px',
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -104,6 +125,7 @@ export const AccountSettingsPresenter = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            gap: '16px',
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
