@@ -8,7 +8,19 @@ import Button from '@mui/material/Button';
 import { LabelWithTooltip } from '../../components/labelWithTooltip';
 import { AccountSettingFormType } from './AccountSettings.schema';
 
+export interface AccountInfo {
+  userId: number;
+  penName: string;
+  nickName: string;
+  profileIconImage: string;
+  evaluationGoodCount: number;
+  birthYearAndMonth: Date;
+  isAnonymous: boolean;
+}
+
 interface AccountSettingsPresenterProps {
+  /** アカウント情報 */
+  accountInfo: AccountInfo;
   /** 編集モードかどうか */
   isEdit: boolean;
   /** 編集モードとの切り替え */
@@ -27,7 +39,9 @@ interface AccountSettingsPresenterProps {
   onCloseDeleteAccountModal: () => void;
 }
 
-export const AccountSettingsPresenter = ({}: AccountSettingsPresenterProps) => {
+export const AccountSettingsPresenter = ({
+  accountInfo,
+}: AccountSettingsPresenterProps) => {
   return (
     <>
       <Typography variant='h4' sx={{ marginBottom: '16px' }}>
@@ -72,7 +86,7 @@ export const AccountSettingsPresenter = ({}: AccountSettingsPresenterProps) => {
 
             <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
               <Typography sx={{ wordBreak: 'break-word' }}>
-                花子花花花花花花花花花花花花花花花花花花花花花花花花花花３２文字
+                {accountInfo.penName}
               </Typography>
               <IconButton sx={{ padding: 0, width: 'fit-content' }}>
                 <EditIcon sx={{ color: 'black' }} />
@@ -98,7 +112,7 @@ export const AccountSettingsPresenter = ({}: AccountSettingsPresenterProps) => {
 
             <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
               <Typography sx={{ wordBreak: 'break-word' }}>
-                HANAAAAAAAAAAAAAAAAAAAAAAAAA32文字
+                {accountInfo.nickName}
               </Typography>
               <IconButton sx={{ padding: 0, width: 'fit-content' }}>
                 <EditIcon sx={{ color: 'black' }} />
@@ -121,7 +135,8 @@ export const AccountSettingsPresenter = ({}: AccountSettingsPresenterProps) => {
               tooltipText='生年月は一度登録したら変更できません'
             />
 
-            <Typography>1998/2</Typography>
+            {/** // TODO：Dayjs入れた方が扱いやすいよ */}
+            <Typography>{`${accountInfo.birthYearAndMonth.getFullYear()}/${accountInfo.birthYearAndMonth.getMonth() + 1}`}</Typography>
           </Box>
 
           {/** 匿名設定 */}
@@ -139,7 +154,7 @@ export const AccountSettingsPresenter = ({}: AccountSettingsPresenterProps) => {
               tooltipText='匿名設定をONにすると投稿は匿名で表示されます'
             />
 
-            <Switch />
+            <Switch defaultChecked={accountInfo.isAnonymous} />
           </Box>
         </Box>
 
