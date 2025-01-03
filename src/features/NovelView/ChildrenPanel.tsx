@@ -68,49 +68,40 @@ const ChildrenPanel: React.FC<NextProps> = ({
           display: 'flex',
           justifyContent: 'center',
           width: '100%',
-          overflowX: 'hidden',
+          overflowX: 'auto',
+          scrollSnapType: 'x mandatory',
+          height: '100%',
+          paddingBottom: '10px',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100%',
-            overflowX: 'auto',
-            scrollSnapType: 'x mandatory',
-            height: '100%',
-            paddingBottom: '10px',
-          }}
-        >
-          {Array.from({ length: 3 }, (_, index) => {
-            const textIndex = startIndex + index + 1;
-            return textIndex <= textCount ? (
-              <Box
+        {Array.from({ length: 3 }, (_, index) => {
+          const textIndex = startIndex + index + 1;
+          return textIndex <= textCount ? (
+            <Box
+              key={textIndex}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                margin: '0 2vw',
+                width: index === 1 ? '70%' : '30%',
+                scrollSnapAlign: 'center',
+              }}
+            >
+              <NovelCard
                 key={textIndex}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  margin: '0 2vw',
-                  width: index === 1 ? '70%' : '30%',
-                  scrollSnapAlign: 'center',
-                }}
-              >
-                <NovelCard
-                  key={textIndex}
-                  index={textIndex}
-                  textIndex={textIndex}
-                  text={`Text content for index ${textIndex}`}
-                  evaluation_good_count={evaluation_good_count}
-                  setEvaluation_good_count={setEvaluation_good_count}
-                  comment_count={comment_count}
-                  setComment_count={setComment_count}
-                  evaluation_stay_count={evaluation_stay_count}
-                  setEvaluation_stay_count={setEvaluation_stay_count}
-                />
-              </Box>
-            ) : null;
-          })}
-        </Box>
+                index={textIndex}
+                textIndex={textIndex}
+                text={`Text content for index ${textIndex}`}
+                evaluation_good_count={evaluation_good_count}
+                setEvaluation_good_count={setEvaluation_good_count}
+                comment_count={comment_count}
+                setComment_count={setComment_count}
+                evaluation_stay_count={evaluation_stay_count}
+                setEvaluation_stay_count={setEvaluation_stay_count}
+              />
+            </Box>
+          ) : null;
+        })}
       </Box>
       <Box
         sx={{
