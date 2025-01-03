@@ -155,7 +155,34 @@ export const AccountSettingsPresenter = ({
               tooltipText='匿名設定をONにすると投稿は匿名で表示されます'
             />
 
-            <Switch defaultChecked={accountInfo.isAnonymous} />
+            <Switch
+              defaultChecked={accountInfo.isAnonymous}
+              sx={{
+                width: '150px',
+                height: '50px',
+                padding: '0',
+                '.MuiSwitch-switchBase': {
+                  padding: '0',
+                },
+                '.MuiSwitch-track': {
+                  borderRadius: '0px',
+                  height: '50px',
+                  backgroundColor: '#F24726',
+                },
+                '.MuiSwitch-thumb': {
+                  borderRadius: '0px',
+                  width: 'calc(150px * 0.5)',
+                  height: '50px',
+                },
+                '.MuiSwitch-switchBase.Mui-checked': {
+                  color: 'white',
+                  transform: 'translateX(calc(150px * 0.5))',
+                },
+                '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
+                  backgroundColor: '#F24726',
+                },
+              }}
+            />
           </Box>
 
           {/** いいね数 */}
