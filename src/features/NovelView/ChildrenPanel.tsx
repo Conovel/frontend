@@ -17,7 +17,7 @@ interface NextProps {
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Next: React.FC<NextProps> = ({
+const ChildrenPanel: React.FC<NextProps> = ({
   startIndex,
   setStartIndex,
   visibleTextCount,
@@ -90,7 +90,7 @@ const Next: React.FC<NextProps> = ({
                 sx={{
                   display: 'flex',
                   justifyContent: 'center',
-                  margin: '0 10px',
+                  margin: '0 2vw',
                   width: index === 1 ? '70%' : '30%',
                   scrollSnapAlign: 'center',
                 }}
@@ -137,4 +137,4 @@ const Next: React.FC<NextProps> = ({
   );
 };
 
-export default Next;
+export default ChildrenPanel;
