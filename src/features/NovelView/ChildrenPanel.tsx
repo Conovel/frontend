@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import Carousel from 'react-material-ui-carousel';
+import { Box, Button } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelcard/NovelCard';
@@ -37,61 +38,75 @@ const ChildrenPanel: React.FC<NextProps> = ({
     }
   };
 
+  const items = Array.from({ length: textCount }, (_, i) => ({
+    index: i + 1,
+    text: `Text content for index ${i + 1}`,
+  }));
+
   return (
     <Box
       sx={{
         backgroundColor: '#fff',
-        display: 'flex',
         justifyContent: 'space-between',
-        margin: '5vh 0',
+        margin: '5vh auto',
         height: '20vh',
+        width: '70vw',
         alignItems: 'center',
         zIndex: 2,
       }}
     >
       <Box
         sx={{
-          position: 'absolute',
-          left: '1vw',
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <KeyboardArrowLeftIcon
-          onClick={() => handleScroll('prev')}
-          sx={{ cursor: startIndex === 0 ? 'not-allowed' : 'pointer' }}
-          color={startIndex === 0 ? 'disabled' : 'action'}
-        />
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
           justifyContent: 'center',
-          width: '100%',
-          overflowX: 'auto',
-          scrollSnapType: 'x mandatory',
-          height: '100%',
-          paddingBottom: '10px',
+          overflow: 'hidden',
         }}
       >
-        {Array.from({ length: 3 }, (_, index) => {
-          const textIndex = startIndex + index + 1;
-          return textIndex <= textCount ? (
+        <Carousel
+          autoPlay={false}
+          next={() => handleScroll('next')}
+          prev={() => handleScroll('prev')}
+          fullHeightHover={false}
+          navButtonsProps={{
+            style: {
+              backgroundColor: 'gray',
+              opacity: 0.5,
+              width: '0.5vw',
+              color: 'white',
+              borderRadius: 5,
+            },
+          }}
+          navButtonsWrapperProps={{
+            style: {
+              position: 'absolute',
+              top: '7vh',
+              padding: '0 1vw',
+            },
+          }}
+          NavButton={({ onClick, className, style, next, prev }) => (
+            <Button
+              onClick={onClick as React.MouseEventHandler<HTMLButtonElement>}
+              className={className}
+              style={style}
+            >
+              {next && <KeyboardArrowRightIcon />}
+              {prev && <KeyboardArrowLeftIcon />}
+            </Button>
+          )}
+        >
+          {items.map((item) => (
             <Box
-              key={textIndex}
+              key={item.index}
               sx={{
-                display: 'flex',
                 justifyContent: 'center',
-                margin: '0 2vw',
-                width: index === 1 ? '70%' : '30%',
-                scrollSnapAlign: 'center',
+                margin: '0 1vw',
+                width: 'calc(100% - 2vw)',
               }}
             >
               <NovelCard
-                key={textIndex}
-                index={textIndex}
-                textIndex={textIndex}
-                text={`Text content for index ${textIndex}`}
+                key={item.index}
+                index={item.index}
+                textIndex={item.index}
+                text={item.text}
                 evaluation_good_count={evaluation_good_count}
                 setEvaluation_good_count={setEvaluation_good_count}
                 comment_count={comment_count}
@@ -100,29 +115,8 @@ const ChildrenPanel: React.FC<NextProps> = ({
                 setEvaluation_stay_count={setEvaluation_stay_count}
               />
             </Box>
-          ) : null;
-        })}
-      </Box>
-      <Box
-        sx={{
-          position: 'absolute',
-          right: '2vw',
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <KeyboardArrowRightIcon
-          onClick={() => handleScroll('next')}
-          sx={{
-            cursor:
-              startIndex + visibleTextCount >= textCount
-                ? 'not-allowed'
-                : 'pointer',
-          }}
-          color={
-            startIndex + visibleTextCount >= textCount ? 'disabled' : 'action'
-          }
-        />
+          ))}
+        </Carousel>
       </Box>
     </Box>
   );
