@@ -155,36 +155,7 @@ export const AccountSettingsPresenter = ({
               tooltipText='匿名設定をONにすると投稿は匿名で表示されます'
             />
 
-            <Switch
-              defaultChecked={accountInfo.isAnonymous}
-              sx={{
-                width: '150px',
-                height: '50px',
-                padding: '0',
-                '.MuiSwitch-switchBase': {
-                  padding: '0',
-                },
-                '.MuiSwitch-track': {
-                  borderRadius: '0px',
-                  height: '50px',
-                  backgroundColor: '#F24726',
-                  opacity: '100%',
-                },
-                '.MuiSwitch-thumb': {
-                  borderRadius: '0px',
-                  width: 'calc(150px * 0.5)',
-                  height: '50px',
-                },
-                '.MuiSwitch-switchBase.Mui-checked': {
-                  color: 'white',
-                  transform: 'translateX(calc(150px * 0.5))',
-                },
-                '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
-                  backgroundColor: '#F24726',
-                  opacity: '100%',
-                },
-              }}
-            />
+            <AnonymousSwitchToggle isAnonymous={accountInfo.isAnonymous} />
           </Box>
 
           {/** いいね数 */}
@@ -227,5 +198,49 @@ export const AccountSettingsPresenter = ({
         </Box>
       </Box>
     </>
+  );
+};
+
+/**
+ * 匿名かどうか切り替えるトグルコンポーネント
+ * スタイルの指定が複雑なので、切り出して可読性向上
+ */
+interface AnonymousSwitchToggleProps {
+  isAnonymous: boolean;
+}
+
+const AnonymousSwitchToggle = ({ isAnonymous }: AnonymousSwitchToggleProps) => {
+  return (
+    <Switch
+      // TODO：defaultChecked使わなくなるかも
+      defaultChecked={isAnonymous}
+      sx={{
+        width: '150px',
+        height: '50px',
+        padding: '0',
+        '.MuiSwitch-switchBase': {
+          padding: '0',
+        },
+        '.MuiSwitch-track': {
+          borderRadius: '0px',
+          height: '50px',
+          backgroundColor: '#F24726',
+          opacity: '100%',
+        },
+        '.MuiSwitch-thumb': {
+          borderRadius: '0px',
+          width: 'calc(150px * 0.5)',
+          height: '50px',
+        },
+        '.MuiSwitch-switchBase.Mui-checked': {
+          color: 'white',
+          transform: 'translateX(calc(150px * 0.5))',
+        },
+        '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
+          backgroundColor: '#F24726',
+          opacity: '100%',
+        },
+      }}
+    />
   );
 };
