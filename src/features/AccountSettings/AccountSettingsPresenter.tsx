@@ -168,6 +168,7 @@ export const AccountSettingsPresenter = ({
                   borderRadius: '0px',
                   height: '50px',
                   backgroundColor: '#F24726',
+                  opacity: '100%',
                 },
                 '.MuiSwitch-thumb': {
                   borderRadius: '0px',
@@ -180,6 +181,7 @@ export const AccountSettingsPresenter = ({
                 },
                 '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
                   backgroundColor: '#F24726',
+                  opacity: '100%',
                 },
               }}
             />
