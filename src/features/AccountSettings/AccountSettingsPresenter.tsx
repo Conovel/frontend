@@ -231,6 +231,7 @@ const AnonymousSwitchToggle = ({ isAnonymous }: AnonymousSwitchToggleProps) => {
           borderRadius: '0px',
           width: 'calc(150px * 0.5)',
           height: '50px',
+          // TODO：匿名記名のbackground-image設定
         },
         '.MuiSwitch-switchBase.Mui-checked': {
           color: 'white',
