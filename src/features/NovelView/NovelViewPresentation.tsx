@@ -63,7 +63,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   const visibleTextCount = 3;
 
   return (
-    <Container sx={{ position: 'relative', top: '8vh', alignItems: 'center' }}>
+    <Container sx={{ position: 'relative', alignItems: 'center' }}>
       <Box
         sx={{
           position: 'absolute',
