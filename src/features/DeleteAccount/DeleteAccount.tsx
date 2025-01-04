@@ -4,8 +4,10 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const DeleteAccount = () => {
+  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false); // モーダルの開閉状態を管理
   const [isChecked, setIsChecked] = useState(false); // チェックボックスの状態を管理
 
@@ -14,7 +16,7 @@ export const DeleteAccount = () => {
   };
 
   const handleGoBack = () => {
-    // 戻る処理をここに追加
+    navigate('/account');
   };
 
   const handleOpenModal = () => setOpenModal(true); // モーダルを開く
