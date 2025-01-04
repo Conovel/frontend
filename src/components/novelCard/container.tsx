@@ -1,23 +1,13 @@
-import NovelCard from './presentation';
-import { NovelProps } from './presentation';
+import NovelCard, { NovelProps } from './presentation';
 
 const NovelCardContainer = ({
   novel,
-  chips,
-  tags,
+  onClick,
 }: {
   novel: NovelProps;
-  chips: React.ReactNode[];
-  tags: React.ReactNode[];
   onClick: () => void;
 }) => {
-  const novelData = {
-    ...novel,
-    chips,
-    tags,
-  };
-
-  return <NovelCard novel={novelData} />;
+  return <NovelCard novel={novel} onClick={onClick} />;
 };
 
 export default NovelCardContainer;

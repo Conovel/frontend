@@ -30,7 +30,7 @@ export interface NovelProps {
   tags: React.ReactNode[];
 }
 
-const NovelCard = ({ novel }: { novel: NovelProps }) => {
+const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
   const [openModal, setOpenModal] = React.useState(false);
 
   const handleOpenModal = () => setOpenModal(true);

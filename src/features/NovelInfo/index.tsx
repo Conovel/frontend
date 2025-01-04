@@ -52,8 +52,6 @@ export default function TransitionsModal({
               <Grid item xs={12} sm={6} md={4} key={novel.title}>
                 <NovelCardContainer
                   novel={novel}
-                  tags={novel.tags}
-                  chips={novel.chips}
                   onClick={() => {
                     /* handle click */
                   }}
