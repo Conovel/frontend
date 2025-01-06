@@ -5,6 +5,7 @@ import NovelList from '../features/NovelList';
 import { Footer } from '../components/footer';
 import { TermsPage } from '../pages/terms';
 import { Box } from '@mui/material';
+import { AccountSettings } from '../features/AccountSettings/AccountSettings';
 
 /**
  * ルーティング
@@ -16,7 +17,7 @@ export const Routing = () => {
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<NovelList />} />
-          <Route path='/account' />
+          <Route path='/account' element={<AccountSettings />} />
           <Route path='/company' element={<CompanyPage />} />
           <Route path='/terms' element={<TermsPage />} />
         </Route>
