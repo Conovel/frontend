@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
@@ -8,6 +10,13 @@ import Button from '@mui/material/Button';
 import { LabelWithTooltip } from '../../components/labelWithTooltip';
 import { AccountSettingFormType } from './AccountSettings.schema';
 import { ThumbUpAltOutlined } from '@mui/icons-material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
 
 export interface AccountInfo {
   userId: number;
@@ -43,6 +52,17 @@ interface AccountSettingsPresenterProps {
 export const AccountSettingsPresenter = ({
   accountInfo,
 }: AccountSettingsPresenterProps) => {
+  const [isOpenDeleteAccountModal, setIsOpenDeleteAccountModal] =
+    useState(false); // モーダルの状態を管理
+
+  const onClickOpenDeleteAccountModal = () => {
+    setIsOpenDeleteAccountModal(true); // モーダルを開く
+  };
+
+  const onCloseDeleteAccountModal = () => {
+    setIsOpenDeleteAccountModal(false); // モーダルを閉じる
+  };
+
   return (
     <>
       <Typography variant='h4' sx={{ marginBottom: '16px' }}>
@@ -174,10 +194,39 @@ export const AccountSettingsPresenter = ({
 
         {/** アカウント削除ボタン */}
         <Box sx={{ textAlign: 'center' }}>
-          <Button variant='contained' sx={{ backgroundColor: '#F24726' }}>
+          <Button
+            onClick={onClickOpenDeleteAccountModal}
+            variant='contained'
+            sx={{ backgroundColor: '#F24726' }}
+          >
             アカウント削除
           </Button>
         </Box>
+
+        {/* 削除モーダル */}
+        <Dialog
+          open={isOpenDeleteAccountModal}
+          onClose={onCloseDeleteAccountModal}
+        >
+          <DialogTitle>アカウント削除確認</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              本当にアカウントを削除しますか？この操作は元に戻せません。
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onCloseDeleteAccountModal}>キャンセル</Button>
+            <Button
+              onClick={() => {
+                // アカウント削除処理をここに追加
+                onCloseDeleteAccountModal();
+              }}
+              color='error'
+            >
+              削除
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         {/** 投稿小説 */}
         <Box>
