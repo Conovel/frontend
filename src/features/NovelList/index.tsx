@@ -1,10 +1,10 @@
 import Grid from '@mui/material/Grid';
 import NovelCardContainer from '../../components/novelCard/container';
-import { Chips } from '../../components/chips';
-import { Tags } from '../../components/tags';
 import { useState } from 'react'; // API動作確認用
 import { SentencesApi, Sentence } from '../../api/api'; // API動作確認用
 import { Configuration } from '../../api/configuration'; // API動作確認用
+import { Chips } from '../../components/chips';
+import { Tags } from '../../components/tags';
 
 /*  API動作確認用 */
 const apiBaseUrl = import.meta.env.PROD
@@ -63,8 +63,6 @@ const NovelList = () => {
         <Grid item xs={12} sm={6} md={4} key={novel.title}>
           <NovelCardContainer
             novel={novel}
-            chips={novel.chips}
-            tags={novel.tags}
             onClick={() => {
               /* handle click */
             }}
