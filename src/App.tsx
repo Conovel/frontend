@@ -1,3 +1,4 @@
+import './App.css';
 import { Routing } from './routing';
 
 export default function App() {
