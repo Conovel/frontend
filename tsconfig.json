@@ -29,5 +29,5 @@
     "types": ["node"],
     "resolveJsonModule": true
   },
-  "include": ["vite.config.ts", "src/**/*", "src/types/types/custom.d.ts"]
+  "include": ["vite.config.ts", "src/**/*", "src/types/custom.d.ts"]
 }

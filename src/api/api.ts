@@ -20,10 +20,6 @@ import globalAxios from 'axios';
 import {
   DUMMY_BASE_URL,
   assertParamExists,
-  // setApiKeyToObject,
-  // setBasicAuthToObject,
-  // setBearerAuthToObject,
-  // setOAuthToObject,
   setSearchParams,
   serializeDataIfNeeded,
   toPathString,
@@ -31,13 +27,7 @@ import {
 } from './common';
 import type { RequestArgs } from './base';
 // @ts-ignore
-import {
-  BASE_PATH,
-  //COLLECTION_FORMATS,
-  BaseAPI,
-  //RequiredError,
-  operationServerMap,
-} from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
  *
@@ -324,43 +314,6 @@ export interface PostSentence {
    * @memberof PostSentence
    */
   sentence?: string;
-}
-/**
- *
- * @export
- * @interface PostSentence409Response
- */
-export interface PostSentence409Response {
-  /**
-   *
-   * @type {ErrorResponseError}
-   * @memberof PostSentence409Response
-   */
-  error?: ErrorResponseError;
-  /**
-   *
-   * @type {Sentence}
-   * @memberof PostSentence409Response
-   */
-  main?: Sentence;
-  /**
-   *
-   * @type {Sentence}
-   * @memberof PostSentence409Response
-   */
-  parent?: Sentence;
-  /**
-   *
-   * @type {Array<Sentence>}
-   * @memberof PostSentence409Response
-   */
-  parallels?: Array<Sentence>;
-  /**
-   *
-   * @type {Array<Sentence>}
-   * @memberof PostSentence409Response
-   */
-  children?: Array<Sentence>;
 }
 /**
  *
