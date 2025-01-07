@@ -1,8 +1,5 @@
 import Grid from '@mui/material/Grid';
 import NovelCardContainer from '../../components/novelCard/container';
-import { useState } from 'react'; // API動作確認用
-import { SentencesApi, Sentence } from '../../api/api'; // API動作確認用
-import { Configuration } from '../../api/configuration'; // API動作確認用
 import { Chips } from '../../components/chips';
 import { Tags } from '../../components/tags';
 import { useState } from 'react'; // API動作確認用
