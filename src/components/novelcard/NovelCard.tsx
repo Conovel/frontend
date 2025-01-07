@@ -32,7 +32,6 @@ const NovelCard: React.FC<NovelCardProps> = ({
         fontSize: '0.8rem',
         position: 'relative',
         backgroundColor: '#fff',
-        zIndex: 1,
       }}
     >
       <Box
@@ -77,6 +76,7 @@ const NovelCard: React.FC<NovelCardProps> = ({
           display: 'flex',
           justifyContent: 'flex-start',
           marginTop: '0.2vh',
+          backgroundColor: 'transparent',
         }}
       >
         <>

@@ -68,10 +68,10 @@ const ChildrenPanel: React.FC<NextProps> = ({
           fullHeightHover={false}
           navButtonsProps={{
             style: {
-              backgroundColor: 'gray',
+              backgroundColor: '#BDBDBD',
               opacity: 0.5,
               width: '0.5vw',
-              color: 'white',
+              color: '#fff',
               borderRadius: 5,
             },
           }}
@@ -82,10 +82,9 @@ const ChildrenPanel: React.FC<NextProps> = ({
               padding: '0 1vw',
             },
           }}
-          NavButton={({ onClick, className, style, next, prev }) => (
+          NavButton={({ onClick, style, next, prev }) => (
             <Button
               onClick={onClick as React.MouseEventHandler<HTMLButtonElement>}
-              className={className}
               style={style}
             >
               {next && <KeyboardArrowRightIcon />}
