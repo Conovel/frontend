@@ -1,8 +1,12 @@
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Modal } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CloseIcon from '@mui/icons-material/Close';
+import { useState } from 'react';
 
 export const DeleteAccount = () => {
+  const [openModal, setOpenModal] = useState(false); // モーダルの開閉状態を管理
+
   const handleDeleteAccount = () => {
     // アカウント削除処理をここに追加
   };
@@ -10,6 +14,9 @@ export const DeleteAccount = () => {
   const handleGoBack = () => {
     // 戻る処理をここに追加
   };
+
+  const handleOpenModal = () => setOpenModal(true); // モーダルを開く
+  const handleCloseModal = () => setOpenModal(false); // モーダルを閉じる
 
   return (
     <Box
@@ -45,7 +52,14 @@ export const DeleteAccount = () => {
           justifyContent='center'
           marginTop='2vh'
         >
-          <Typography variant='h6'>利用規約を確認</Typography>
+          <Typography
+            variant='h6'
+            component='a'
+            onClick={handleOpenModal}
+            sx={{ textDecoration: 'underline' }}
+          >
+            利用規約を確認
+          </Typography>
           <LaunchIcon />
         </Box>
         <Box
@@ -58,6 +72,48 @@ export const DeleteAccount = () => {
           <Typography variant='h6'>同意します</Typography>
         </Box>
       </Box>
+      {/* モーダルの追加 */}
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '2vh',
+            width: '80%',
+            height: '80%',
+            maxWidth: '600px',
+          }}
+        >
+          <Box
+            display='flex'
+            justifyContent='space-between'
+            alignItems='center'
+          >
+            <Typography variant='h5' sx={{ margin: '2vh' }}>
+              利用規約
+            </Typography>
+            <CloseIcon
+              onClick={handleCloseModal}
+              sx={{ cursor: 'pointer', margin: '2vh' }}
+            />
+          </Box>
+
+          <Box flex={1}>
+            <iframe
+              src='/terms.pdf#toolbar=0&navpanes=0&view=FitH'
+              width='100%'
+              height='100%'
+              style={{ border: 'none' }}
+            />
+          </Box>
+        </Box>
+      </Modal>
+
       <Box
         sx={{
           padding: '2vh 0',
