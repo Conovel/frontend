@@ -1,6 +1,9 @@
 interface LabelWithTooltipProps {
+  /** ラベル */
   label: string;
+  /** Tooltip必要か */
   hasTooltip?: boolean;
+  /** Tooltipのテキスト */
   tooltipText?: React.ReactNode;
 }
 /**

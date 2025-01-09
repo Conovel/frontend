@@ -6,6 +6,7 @@ import { Footer } from '../components/footer';
 import { TermsPage } from '../pages/terms';
 import { Box } from '@mui/material';
 import { AccountSettings } from '../features/AccountSettings/AccountSettings';
+import { DeleteAccountPage } from '../pages/deleteacounts';
 
 /**
  * ルーティング
@@ -20,6 +21,7 @@ export const Routing = () => {
           <Route path='/account' element={<AccountSettings />} />
           <Route path='/company' element={<CompanyPage />} />
           <Route path='/terms' element={<TermsPage />} />
+          <Route path='/deleteaccount' element={<DeleteAccountPage />} />
         </Route>
       </Routes>
     </>

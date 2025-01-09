@@ -229,6 +229,7 @@ export const AccountSettingsPresenter = ({
               onClick={() => {
                 // アカウント削除処理をここに追加
                 onCloseDeleteAccountModal();
+                window.location.href = '/deleteaccount';
               }}
               color='error'
             >

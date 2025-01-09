@@ -3,22 +3,25 @@ export declare const AccountSettingFormSchema: z.ZodObject<
   {
     penName: z.ZodString;
     nickName: z.ZodString;
-    birth: z.ZodDate;
+    birthYearAndMonth: z.ZodDate;
     isAnonymous: z.ZodBoolean;
+    profileIconImage: z.ZodString;
   },
   'strip',
   z.ZodTypeAny,
   {
     penName: string;
     nickName: string;
-    birth: Date;
+    birthYearAndMonth: Date;
     isAnonymous: boolean;
+    profileIconImage: string;
   },
   {
     penName: string;
     nickName: string;
-    birth: Date;
+    birthYearAndMonth: Date;
     isAnonymous: boolean;
+    profileIconImage: string;
   }
 >;
 export type AccountSettingFormType = z.infer<typeof AccountSettingFormSchema>;
