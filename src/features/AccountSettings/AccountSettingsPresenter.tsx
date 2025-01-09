@@ -211,12 +211,21 @@ export const AccountSettingsPresenter = ({
           <DialogTitle>アカウント削除確認</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              本当にアカウントを削除しますか？この操作は元に戻せません。
+              本当にアカウントを削除しますか？
+              <br />
+              アカウントを削除した場合、これまでの投稿はすべて匿名になります。
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={onCloseDeleteAccountModal}>キャンセル</Button>
             <Button
+              variant='outlined'
+              onClick={onCloseDeleteAccountModal}
+              sx={{ color: 'black', borderColor: 'black' }}
+            >
+              キャンセル
+            </Button>
+            <Button
+              variant='contained'
               onClick={() => {
                 // アカウント削除処理をここに追加
                 onCloseDeleteAccountModal();
