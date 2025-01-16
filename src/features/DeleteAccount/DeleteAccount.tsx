@@ -1,11 +1,13 @@
 import { Box, Typography, Button, Modal } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 
 export const DeleteAccount = () => {
   const [openModal, setOpenModal] = useState(false); // モーダルの開閉状態を管理
+  const [isChecked, setIsChecked] = useState(false); // チェックボックスの状態を管理
 
   const handleDeleteAccount = () => {
     // アカウント削除処理をここに追加
@@ -17,6 +19,7 @@ export const DeleteAccount = () => {
 
   const handleOpenModal = () => setOpenModal(true); // モーダルを開く
   const handleCloseModal = () => setOpenModal(false); // モーダルを閉じる
+  const handleToggleCheckbox = () => setIsChecked(!isChecked); // チェックボックスの状態を切り替える
 
   return (
     <Box
@@ -67,8 +70,10 @@ export const DeleteAccount = () => {
           alignItems='center'
           justifyContent='center'
           marginTop='4vh'
+          onClick={handleToggleCheckbox}
+          sx={{ cursor: 'pointer' }}
         >
-          <CheckBoxOutlineBlankIcon />
+          {isChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
           <Typography variant='h6'>同意します</Typography>
         </Box>
       </Box>
@@ -131,6 +136,7 @@ export const DeleteAccount = () => {
           variant='contained'
           onClick={handleDeleteAccount}
           sx={{ backgroundColor: '#F24726', color: 'white', width: '100%' }} // 赤色塗りつぶし
+          disabled={!isChecked} // チェックボックスがチェックされていないときは非活性
         >
           アカウント削除
         </Button>
