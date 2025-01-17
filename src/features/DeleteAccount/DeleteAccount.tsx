@@ -19,7 +19,12 @@ export const DeleteAccount = () => {
 
   const handleOpenModal = () => setOpenModal(true); // モーダルを開く
   const handleCloseModal = () => setOpenModal(false); // モーダルを閉じる
-  const handleToggleCheckbox = () => setIsChecked(!isChecked); // チェックボックスの状態を切り替える
+  const handleToggleCheckbox = () => {
+    setIsChecked(!isChecked);
+    if (!isChecked) {
+      handleCloseModal();
+    }
+  }; // チェックボックスの状態を切り替える
 
   return (
     <Box
@@ -70,7 +75,6 @@ export const DeleteAccount = () => {
           alignItems='center'
           justifyContent='center'
           marginTop='4vh'
-          onClick={handleToggleCheckbox}
           sx={{ cursor: 'pointer' }}
         >
           {isChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
@@ -115,6 +119,17 @@ export const DeleteAccount = () => {
               height='100%'
               style={{ border: 'none' }}
             />
+          </Box>
+          <Box
+            display='flex'
+            alignItems='center'
+            justifyContent='center'
+            marginBottom='2vh'
+            onClick={handleToggleCheckbox}
+            sx={{ cursor: 'pointer' }}
+          >
+            {isChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+            <Typography variant='h6'>同意します</Typography>
           </Box>
         </Box>
       </Modal>
