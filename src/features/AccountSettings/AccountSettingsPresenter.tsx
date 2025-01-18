@@ -8,6 +8,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
 import { LabelWithTooltip } from '../../components/labelWithTooltip';
 import { AccountSettingFormType } from './AccountSettings.schema';
 import { ThumbUpAltOutlined } from '@mui/icons-material';
@@ -33,6 +34,45 @@ interface AccountSettingsPresenterProps {
   onClickOpenDeleteAccountModal: () => void;
   onCloseDeleteAccountModal: () => void;
 }
+
+const AnonymousSwitch = styled(Switch)(({ theme }) => ({
+  padding: 8,
+  '& .MuiSwitch-track': {
+    borderRadius: 22 / 2,
+    '&::before, &::after': {
+      content: '""',
+      position: 'absolute',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      width: 16,
+      height: 16,
+    },
+    '&::before': {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText('#F24726'),
+      )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+      left: 12,
+    },
+    '&::after': {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText('#F24726'),
+      )}" d="M19,13H5V11H19V13Z" /></svg>')`,
+      right: 12,
+    },
+  },
+  '& .MuiSwitch-thumb': {
+    boxShadow: 'none',
+    width: 16,
+    height: 16,
+    margin: 2,
+  },
+  '& .Mui-checked + .MuiSwitch-track': {
+    backgroundColor: '#F24726', // Red background color when checked
+  },
+  '& .Mui-checked': {
+    color: '#F24726', // Red color for the thumb when checked
+  },
+}));
 
 export const AccountSettingsPresenter = ({
   accountInfo,
@@ -194,7 +234,7 @@ export const AccountSettingsPresenter = ({
               hasTooltip
               tooltipText='匿名設定をONにすると投稿は匿名で表示されます'
             />
-            <AnonymousSwitchToggle isAnonymous={accountInfo.isAnonymous} />
+            <AnonymousSwitch defaultChecked={accountInfo.isAnonymous} />
           </Box>
 
           <Box
@@ -233,44 +273,5 @@ export const AccountSettingsPresenter = ({
         </Box>
       </Box>
     </>
-  );
-};
-
-interface AnonymousSwitchToggleProps {
-  isAnonymous: boolean;
-}
-
-const AnonymousSwitchToggle = ({ isAnonymous }: AnonymousSwitchToggleProps) => {
-  return (
-    <Switch
-      defaultChecked={isAnonymous}
-      sx={{
-        width: '150px',
-        height: '50px',
-        padding: '0',
-        '.MuiSwitch-switchBase': {
-          padding: '0',
-        },
-        '.MuiSwitch-track': {
-          borderRadius: '0px',
-          height: '50px',
-          backgroundColor: '#F24726',
-          opacity: '100%',
-        },
-        '.MuiSwitch-thumb': {
-          borderRadius: '0px',
-          width: 'calc(150px * 0.5)',
-          height: '50px',
-        },
-        '.MuiSwitch-switchBase.Mui-checked': {
-          color: 'white',
-          transform: 'translateX(calc(150px * 0.5))',
-        },
-        '.MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
-          backgroundColor: '#F24726',
-          opacity: '100%',
-        },
-      }}
-    />
   );
 };
