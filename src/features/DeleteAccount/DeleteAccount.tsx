@@ -12,7 +12,7 @@ export const DeleteAccount = () => {
   const [isChecked, setIsChecked] = useState(false); // チェックボックスの状態を管理
 
   const handleDeleteAccount = () => {
-    // アカウント削除処理をここに追加
+    navigate('/account-deleted');
   };
 
   const handleGoBack = () => {
