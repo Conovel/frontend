@@ -1,4 +1,13 @@
 {
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
   "compilerOptions": {
     "target": "es2022",
     "lib": ["es2023", "dom", "dom.iterable", "esnext", "es6"],
@@ -20,5 +29,5 @@
     "types": ["node"],
     "resolveJsonModule": true
   },
-  "include": ["vite.config.ts", "./src/**/*", "src/custom.d.ts"]
+  "include": ["vite.config.ts", "src/**/*", "src/types/custom.d.ts"]
 }

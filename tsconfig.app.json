@@ -6,7 +6,6 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "composite": true,
-
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -17,12 +16,13 @@
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    /* Jest and Testing Library */
+    "types": ["jest", "node"]
   },
-  "include": ["src"]
+  "include": ["src", "src/__test__"]
 }
