@@ -84,24 +84,26 @@ const MainPanel: React.FC<MainPanelProps> = ({
                   {panel.userName}
                 </Box>
               </Box>
-              <DragIndicatorIcon
-                onClick={handleIconClick}
-                sx={{
-                  cursor: 'pointer',
-                  marginLeft: '1vh',
-                }}
-              />
             </Box>
             <p style={{ margin: '1vh 1vh', fontSize: '1.6rem' }}>
               {panel.sentence}
             </p>
+            <DragIndicatorIcon
+              onClick={handleIconClick}
+              sx={{
+                cursor: 'pointer',
+                position: 'absolute',
+                bottom: '10px',
+                right: '10px',
+              }}
+            />
             {showIcons && (
               <Box
                 sx={{
                   display: 'flex',
                   position: 'absolute',
-                  top: '0',
-                  right: '10px',
+                  bottom: '10px',
+                  right: '25px',
                   zIndex: 4,
                 }}
               >
