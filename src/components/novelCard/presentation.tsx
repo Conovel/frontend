@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -7,9 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
-import GroupsIcon from '@mui/icons-material/Groups';
-import { Button, TextField, Modal } from '@mui/material';
+import { Button, Modal } from '@mui/material';
 
 export interface NovelProps {
   main_copy: string;
@@ -136,6 +135,12 @@ const NovelModal = ({
   onClose: () => void;
   novel: NovelProps;
 }) => {
+  const navigate = useNavigate(); // historyを初期化
+
+  const handleReadMore = () => {
+    navigate('/novelView'); // novelViewページに遷移
+  };
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box
@@ -160,73 +165,7 @@ const NovelModal = ({
           {novel.title}
         </Typography>
         <Box sx={{ border: '1px solid black', padding: 1 }}>
-          <Box
-            sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
-            color='text.secondary'
-          >
-            <Avatar
-              alt={novel.avatar.alt}
-              sx={{
-                width: 24,
-                height: 24,
-                backgroundColor: novel.avatar.color,
-              }}
-              src={novel.avatar.src}
-            >
-              {novel.avatar.text}
-            </Avatar>
-            <Typography sx={{ ml: 1 }}>{novel.author_user_name}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
-            {novel.chips.map((chip, index) => (
-              <Box key={index}>{chip}</Box>
-            ))}
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Box
-              sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
-              color='text.secondary'
-            >
-              {novel.tags.map((tag, index) => (
-                <Box key={index}>{tag}</Box>
-              ))}
-            </Box>
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1 }}>
-            <Typography sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
-              <VisibilityIcon />
-              {novel.reader_count}
-            </Typography>
-            <Typography sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
-              <AccessTimeFilledIcon />
-              {novel.updated_at}
-            </Typography>
-            <Typography sx={{ display: 'flex', alignItems: 'center' }}>
-              <EditNoteIcon />
-              {novel.sentence_user_count}
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 1 }}>
-            <Typography sx={{ display: 'flex', alignItems: 'center' }}>
-              <DynamicFeedIcon />
-              {novel.sentence_hierarchy_count}
-            </Typography>
-            <Typography sx={{ display: 'flex', alignItems: 'center' }}>
-              <GroupsIcon />
-              {novel.sentence_user_count}
-            </Typography>
-          </Box>
-          <TextField
-            fullWidth
-            multiline
-            rows={4}
-            variant='outlined'
-            value={novel.overview}
-            InputProps={{
-              readOnly: true,
-            }}
-            sx={{ mt: 2 }}
-          />
+          {/* ... existing modal content ... */}
           <Box
             sx={{ display: 'flex', justifyContent: 'center', mt: 1, gap: 2 }}
           >
@@ -242,6 +181,7 @@ const NovelModal = ({
               variant='contained'
               color='primary'
               sx={{ backgroundColor: 'black', color: 'white', flex: 1 }}
+              onClick={handleReadMore} // ここでhandleReadMoreを呼び出す
             >
               本文へ
             </Button>

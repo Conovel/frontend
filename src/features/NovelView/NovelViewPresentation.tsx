@@ -4,7 +4,6 @@ import ParentPanel from './ParentPanel';
 import ChildrenPanel from './ChildrenPanel';
 import MainPanel from './MainPanel';
 
-// TODO: サンプルデータ後で削除
 interface MainPanel {
   sentence_id: number;
   sentence: string;
@@ -41,6 +40,8 @@ interface NovelViewPresentationProps {
 
 export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   mainPanels,
+  parentPanel,
+  childrenPanel,
   startIndexPrev,
   setStartIndexPrev,
   comment_countPrev,
