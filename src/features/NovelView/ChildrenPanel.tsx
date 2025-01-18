@@ -102,10 +102,10 @@ const ChildrenPanel: React.FC<NextProps> = ({
               }}
             >
               <NovelCard
-                key={item.index}
-                index={item.index}
-                textIndex={item.index}
                 text={item.text}
+                key={0}
+                index={0}
+                textIndex={0}
                 evaluation_good_count={evaluation_good_count}
                 setEvaluation_good_count={setEvaluation_good_count}
                 comment_count={comment_count}

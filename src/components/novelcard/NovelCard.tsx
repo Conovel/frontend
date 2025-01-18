@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, Box, TextField } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import CommentButton from '../buttonicon/CommentButton';
@@ -17,15 +17,12 @@ interface NovelCardProps {
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const NovelCard: React.FC<NovelCardProps> = ({
-  text,
-  evaluation_good_count,
-  setEvaluation_good_count,
-  comment_count,
-  setComment_count,
-  evaluation_stay_count,
-  setEvaluation_stay_count,
-}) => {
+const NovelCard: React.FC<NovelCardProps> = ({ text }) => {
+  // Local state for counts
+  const [evaluation_good_count, setEvaluation_good_count] = useState(0);
+  const [comment_count, setComment_count] = useState(0);
+  const [evaluation_stay_count, setEvaluation_stay_count] = useState(0);
+
   return (
     <Box
       sx={{
