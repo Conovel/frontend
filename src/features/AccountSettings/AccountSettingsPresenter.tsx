@@ -195,8 +195,7 @@ export const AccountSettingsPresenter = ({
                 component='label'
                 variant='contained'
                 startIcon={<CloudUploadIcon />}
-                sx={{ width: 'fit-content' }}
-                sx={{ backgroundColor: 'gray' }}
+                sx={{ width: 'fit-content', backgroundColor: 'gray' }}
               >
                 アップロード
                 <input
