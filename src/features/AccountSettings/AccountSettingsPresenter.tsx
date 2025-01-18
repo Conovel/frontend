@@ -8,6 +8,9 @@ import CheckIcon from '@mui/icons-material/Check';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Modal from '@mui/material/Modal';
+import CloseIcon from '@mui/icons-material/Close';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 import { LabelWithTooltip } from '../../components/labelWithTooltip';
 import { AccountSettingFormType } from './AccountSettings.schema';
@@ -82,6 +85,10 @@ export const AccountSettingsPresenter = ({
   const [isEditingNickName, setIsEditingNickName] = useState(false);
   const [penName, setPenName] = useState(accountInfo.penName);
   const [nickName, setNickName] = useState(accountInfo.nickName);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [profileIconImage, setProfileIconImage] = useState(
+    accountInfo.profileIconImage,
+  );
 
   const handlePenNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPenName(event.target.value);
@@ -92,9 +99,26 @@ export const AccountSettingsPresenter = ({
   };
 
   const handleSave = () => {
-    onClickUpdateAccountInfo({ ...accountInfo, penName, nickName });
+    onClickUpdateAccountInfo({
+      ...accountInfo,
+      penName,
+      nickName,
+      profileIconImage,
+    });
     setIsEditingPenName(false);
     setIsEditingNickName(false);
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          setProfileIconImage(e.target.result as string);
+        }
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
   };
 
   return (
@@ -110,7 +134,10 @@ export const AccountSettingsPresenter = ({
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <Box sx={{ margin: '0 auto' }}>
             <Box sx={{ position: 'relative' }}>
-              <Avatar sx={{ bgcolor: 'magenta', width: 56, height: 56 }}>
+              <Avatar
+                src={profileIconImage}
+                sx={{ bgcolor: 'magenta', width: 56, height: 56 }}
+              >
                 HN
               </Avatar>
               <IconButton
@@ -121,11 +148,66 @@ export const AccountSettingsPresenter = ({
                   bottom: -4,
                   right: -8,
                 }}
+                onClick={() => setIsModalOpen(true)}
               >
                 <EditIcon sx={{ color: 'black' }} />
               </IconButton>
             </Box>
           </Box>
+
+          <Modal
+            open={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            aria-labelledby='modal-modal-title'
+            aria-describedby='modal-modal-description'
+          >
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '80vw',
+                bgcolor: 'background.paper',
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <Box sx={{ position: 'absolute', top: 8, right: 8 }}>
+                <IconButton onClick={() => setIsModalOpen(false)}>
+                  <CloseIcon sx={{ color: 'black' }} />
+                </IconButton>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  mb: 2,
+                }}
+              >
+                <Typography id='modal-modal-title' variant='h6' component='h2'>
+                  プロフィール写真をアップロード
+                </Typography>
+              </Box>
+
+              <Button
+                component='label'
+                variant='contained'
+                startIcon={<CloudUploadIcon />}
+                sx={{ width: 'fit-content' }}
+                sx={{ backgroundColor: 'gray' }}
+              >
+                アップロード
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={handleFileChange}
+                  style={{ display: 'none' }}
+                />
+              </Button>
+            </Box>
+          </Modal>
 
           <Box
             sx={{
