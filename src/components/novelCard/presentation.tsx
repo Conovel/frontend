@@ -247,7 +247,15 @@ const NovelModal = ({
             <Button
               variant='contained'
               color='primary'
-              sx={{ backgroundColor: 'black', color: 'white', flex: 1 }}
+              sx={{
+                backgroundColor: 'black',
+                color: 'white',
+                flex: 1,
+                '&:hover': {
+                  backgroundColor: 'white',
+                  color: 'black',
+                },
+              }}
               onClick={handleReadMore}
             >
               本文へ
