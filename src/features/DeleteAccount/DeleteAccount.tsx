@@ -152,7 +152,14 @@ export const DeleteAccount = () => {
           size='large'
           variant='contained'
           onClick={handleDeleteAccount}
-          sx={{ backgroundColor: '#F24726', color: 'white', width: '100%' }} // 赤色塗りつぶし
+          sx={{
+            backgroundColor: '#F24726',
+            '&:hover': {
+              backgroundColor: '#F24726',
+            },
+            color: 'white',
+            width: '100%',
+          }} // 赤色塗りつぶし
           disabled={!isChecked} // チェックボックスがチェックされていないときは非活性
         >
           アカウント削除

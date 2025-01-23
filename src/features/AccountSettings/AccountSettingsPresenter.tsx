@@ -349,7 +349,12 @@ export const AccountSettingsPresenter = ({
           <Button
             onClick={toggleDeleteAccountModal}
             variant='contained'
-            sx={{ backgroundColor: '#F24726' }}
+            sx={{
+              backgroundColor: '#F24726',
+              '&:hover': {
+                backgroundColor: '#F24726',
+              },
+            }}
           >
             アカウント削除
           </Button>
