@@ -26,8 +26,18 @@ export const Routing = () => {
             element={
               <NovelViewPresentation
                 mainPanels={[]}
-                parentPanel={{ sentence_id: 0, sentence: '' }}
-                childrenPanel={{ sentence_id: 0, sentence: '' }}
+                parentPanel={{
+                  sentence_id: 0,
+                  sentence: '',
+                  userId: 0,
+                  userName: '',
+                }}
+                childrenPanel={{
+                  sentence_id: 0,
+                  sentence: '',
+                  userId: 0,
+                  userName: '',
+                }}
                 startIndexPrev={0}
                 setStartIndexPrev={() => {}}
                 evaluation_good_countPrev={0}

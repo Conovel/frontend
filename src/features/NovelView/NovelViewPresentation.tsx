@@ -11,15 +11,24 @@ interface MainPanel {
   userName: string;
 }
 
-interface Panel {
+interface ParentPanel {
   sentence_id: number;
   sentence: string;
+  userId: number;
+  userName: string;
+}
+
+interface ChildrenPanel {
+  sentence_id: number;
+  sentence: string;
+  userId: number;
+  userName: string;
 }
 
 interface NovelViewPresentationProps {
   mainPanels: MainPanel[];
-  parentPanel: Panel;
-  childrenPanel: Panel;
+  parentPanel: ParentPanel;
+  childrenPanel: ChildrenPanel;
   startIndexPrev: number;
   setStartIndexPrev: React.Dispatch<React.SetStateAction<number>>;
   evaluation_good_countPrev: number;
@@ -111,6 +120,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
 
         {/* 子の投稿 */}
         <ChildrenPanel
+          nextPanel={childrenPanel}
           startIndex={startIndexNext}
           setStartIndex={setStartIndexNext}
           visibleTextCount={visibleTextCount}

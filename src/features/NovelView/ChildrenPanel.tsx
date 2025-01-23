@@ -5,7 +5,13 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelcard/NovelCard';
 
-interface NextProps {
+interface NextPanelProps {
+  nextPanel: {
+    sentence_id: number;
+    sentence: string;
+    userId: number;
+    userName: string;
+  };
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
@@ -18,7 +24,7 @@ interface NextProps {
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const ChildrenPanel: React.FC<NextProps> = ({
+const ChildrenPanel: React.FC<NextPanelProps> = ({
   startIndex,
   setStartIndex,
   visibleTextCount,
