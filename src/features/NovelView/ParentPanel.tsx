@@ -2,7 +2,13 @@ import React from 'react';
 import { Box } from '@mui/material';
 import NovelCard from '../../components/novelcard/NovelCard';
 
-interface PrevProps {
+interface PrevPanelProps {
+  prevPanel: {
+    sentence_id: number;
+    sentence: string;
+    userId: number;
+    userName: string;
+  };
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
@@ -15,7 +21,7 @@ interface PrevProps {
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Prev: React.FC<PrevProps> = ({
+const ParentPanel: React.FC<PrevPanelProps> = ({
   startIndex,
   textCount,
   evaluation_good_count,
@@ -55,4 +61,4 @@ const Prev: React.FC<PrevProps> = ({
   );
 };
 
-export default Prev;
+export default ParentPanel;

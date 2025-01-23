@@ -95,6 +95,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       >
         {/* 親の投稿 */}
         <ParentPanel
+          prevPanel={parentPanel}
           startIndex={startIndexPrev}
           setStartIndex={setStartIndexPrev}
           visibleTextCount={visibleTextCount}
