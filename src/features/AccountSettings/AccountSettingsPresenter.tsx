@@ -55,12 +55,8 @@ export const AccountSettingsPresenter = ({
   const [isOpenDeleteAccountModal, setIsOpenDeleteAccountModal] =
     useState(false); // モーダルの状態を管理
 
-  const onClickOpenDeleteAccountModal = () => {
-    setIsOpenDeleteAccountModal(true); // モーダルを開く
-  };
-
-  const onCloseDeleteAccountModal = () => {
-    setIsOpenDeleteAccountModal(false); // モーダルを閉じる
+  const toggleDeleteAccountModal = () => {
+    setIsOpenDeleteAccountModal(!isOpenDeleteAccountModal); // モーダルの開閉を切り替える
   };
 
   return (
@@ -195,7 +191,7 @@ export const AccountSettingsPresenter = ({
         {/** アカウント削除ボタン */}
         <Box sx={{ textAlign: 'center' }}>
           <Button
-            onClick={onClickOpenDeleteAccountModal}
+            onClick={toggleDeleteAccountModal}
             variant='contained'
             sx={{ backgroundColor: '#F24726' }}
           >
@@ -206,7 +202,7 @@ export const AccountSettingsPresenter = ({
         {/* 削除モーダル */}
         <Dialog
           open={isOpenDeleteAccountModal}
-          onClose={onCloseDeleteAccountModal}
+          onClose={toggleDeleteAccountModal}
         >
           <DialogTitle>アカウント削除確認</DialogTitle>
           <DialogContent>
@@ -219,7 +215,7 @@ export const AccountSettingsPresenter = ({
           <DialogActions>
             <Button
               variant='outlined'
-              onClick={onCloseDeleteAccountModal}
+              onClick={toggleDeleteAccountModal}
               sx={{ color: 'black', borderColor: 'black' }}
             >
               キャンセル
@@ -228,7 +224,7 @@ export const AccountSettingsPresenter = ({
               variant='contained'
               onClick={() => {
                 // アカウント削除処理をここに追加
-                onCloseDeleteAccountModal();
+                toggleDeleteAccountModal();
                 window.location.href = '/deleteaccount';
               }}
               color='error'

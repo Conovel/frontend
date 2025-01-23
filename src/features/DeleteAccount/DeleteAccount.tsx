@@ -19,12 +19,12 @@ export const DeleteAccount = () => {
     navigate('/account');
   };
 
-  const handleOpenModal = () => setOpenModal(true); // モーダルを開く
-  const handleCloseModal = () => setOpenModal(false); // モーダルを閉じる
+  const toggleModal = () => setOpenModal(!openModal); // モーダルの開閉を切り替える
+
   const handleToggleCheckbox = () => {
     setIsChecked(!isChecked);
     if (!isChecked) {
-      handleCloseModal();
+      toggleModal();
     }
   }; // チェックボックスの状態を切り替える
 
@@ -65,7 +65,7 @@ export const DeleteAccount = () => {
           <Typography
             variant='h6'
             component='a'
-            onClick={handleOpenModal}
+            onClick={toggleModal}
             sx={{ textDecoration: 'underline' }}
           >
             利用規約を確認
@@ -84,7 +84,7 @@ export const DeleteAccount = () => {
         </Box>
       </Box>
       {/* モーダルの追加 */}
-      <Modal open={openModal} onClose={handleCloseModal}>
+      <Modal open={openModal} onClose={toggleModal}>
         <Box
           sx={{
             position: 'absolute',
@@ -109,7 +109,7 @@ export const DeleteAccount = () => {
               利用規約
             </Typography>
             <CloseIcon
-              onClick={handleCloseModal}
+              onClick={toggleModal}
               sx={{ cursor: 'pointer', margin: '2vh' }}
             />
           </Box>
