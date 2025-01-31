@@ -15,6 +15,13 @@ import { styled } from '@mui/material/styles';
 import { LabelWithTooltip } from '../../components/labelWithTooltip';
 import { AccountSettingFormType } from './AccountSettings.schema';
 import { ThumbUpAltOutlined } from '@mui/icons-material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
 
 export interface AccountInfo {
   userId: number;
@@ -81,6 +88,13 @@ export const AccountSettingsPresenter = ({
   accountInfo,
   onClickUpdateAccountInfo,
 }: AccountSettingsPresenterProps) => {
+  const [isOpenDeleteAccountModal, setIsOpenDeleteAccountModal] =
+    useState(false); // モーダルの状態を管理
+
+  const toggleDeleteAccountModal = () => {
+    setIsOpenDeleteAccountModal(!isOpenDeleteAccountModal); // モーダルの開閉を切り替える
+  };
+
   const [isEditingPenName, setIsEditingPenName] = useState(false);
   const [isEditingNickName, setIsEditingNickName] = useState(false);
   const [penName, setPenName] = useState(accountInfo.penName);
@@ -332,10 +346,54 @@ export const AccountSettingsPresenter = ({
         </Box>
 
         <Box sx={{ textAlign: 'center' }}>
-          <Button variant='contained' sx={{ backgroundColor: '#F24726' }}>
+          <Button
+            onClick={toggleDeleteAccountModal}
+            variant='contained'
+            sx={{
+              backgroundColor: '#F24726',
+              '&:hover': {
+                backgroundColor: '#F24726',
+              },
+            }}
+          >
             アカウント削除
           </Button>
         </Box>
+
+        {/* 削除モーダル */}
+        <Dialog
+          open={isOpenDeleteAccountModal}
+          onClose={toggleDeleteAccountModal}
+        >
+          <DialogTitle>アカウント削除確認</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              本当にアカウントを削除しますか？
+              <br />
+              アカウントを削除した場合、これまでの投稿はすべて匿名になります。
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant='outlined'
+              onClick={toggleDeleteAccountModal}
+              sx={{ color: 'black', borderColor: 'black' }}
+            >
+              キャンセル
+            </Button>
+            <Button
+              variant='contained'
+              onClick={() => {
+                // アカウント削除処理をここに追加
+                toggleDeleteAccountModal();
+                window.location.href = '/deleteaccount';
+              }}
+              color='error'
+            >
+              削除
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         <Box>
           <LabelWithTooltip
