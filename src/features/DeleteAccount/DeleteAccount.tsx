@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const DeleteAccount = () => {
   const navigate = useNavigate();
-  const [openModal, setOpenModal] = useState(false); // モーダルの開閉状態を管理
+  const [isOpenModal, setIsOpenModal] = useState(false); // モーダルの開閉状態を管理
   const [isChecked, setIsChecked] = useState(false); // チェックボックスの状態を管理
 
   const handleDeleteAccount = () => {
@@ -19,7 +19,7 @@ export const DeleteAccount = () => {
     navigate('/account');
   };
 
-  const toggleModal = () => setOpenModal(!openModal); // モーダルの開閉を切り替える
+  const toggleModal = () => setIsOpenModal(!isOpenModal); // モーダルの開閉を切り替える
 
   const handleToggleCheckbox = () => {
     setIsChecked(!isChecked);
@@ -84,7 +84,7 @@ export const DeleteAccount = () => {
         </Box>
       </Box>
       {/* モーダルの追加 */}
-      <Modal open={openModal} onClose={toggleModal}>
+      <Modal open={isOpenModal} onClose={toggleModal}>
         <Box
           sx={{
             position: 'absolute',
