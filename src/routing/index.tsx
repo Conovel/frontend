@@ -7,6 +7,14 @@ import { NovelViewPresentation } from '../features/NovelView/NovelViewPresentati
 import { TermsPage } from '../pages/terms';
 import { Box } from '@mui/material';
 
+// Define the MainPanel type to include sentence_id
+interface mainPanel {
+  sentence_id: number;
+  sentence: string;
+  userId: number;
+  userName: string;
+}
+
 /**
  * ルーティング
  * TODO：URLは別途定義でも良いかも
@@ -25,7 +33,12 @@ export const Routing = () => {
             path='/novelView'
             element={
               <NovelViewPresentation
-                mainPanels={[]}
+                mainPanel={{
+                  sentence_id: 0,
+                  sentence: '',
+                  userId: 0,
+                  userName: '',
+                }}
                 parentPanel={{
                   sentence_id: 0,
                   sentence: '',
@@ -38,22 +51,32 @@ export const Routing = () => {
                   userId: 0,
                   userName: '',
                 }}
-                startIndexPrev={0}
-                setStartIndexPrev={() => {}}
-                evaluation_good_countPrev={0}
-                setEvaluation_good_countPrev={() => {}}
-                comment_countPrev={0}
-                setComment_countPrev={() => {}}
-                evaluation_stay_countPrev={0}
-                setEvaluation_stay_countPrev={() => {}}
-                startIndexNext={0}
-                setStartIndexNext={() => {}}
-                evaluation_good_countNext={0}
-                setEvaluation_good_countNext={() => {}}
-                comment_countNext={0}
-                setComment_countNext={() => {}}
-                evaluation_stay_countNext={0}
-                setEvaluation_stay_countNext={() => {}}
+                start_index_parent={0}
+                setStart_index_parent={() => {}}
+                evaluation_good_count_parent={0}
+                setEvaluation_good_count_parent={() => {}}
+                comment_count_parent={0}
+                setComment_count_parent={() => {}}
+                evaluation_stay_count_parent={0}
+                setEvaluation_stay_count_parent={() => {}}
+                setStart_index_main={() => {}}
+                start_index_main={0}
+                visibleTextCount={0}
+                textCount={0}
+                evaluation_good_count_main={0}
+                setEvaluation_good_count_main={() => {}}
+                comment_count_main={0}
+                setComment_count_main={() => {}}
+                evaluation_stay_count_main={0}
+                setEvaluation_stay_count_main={() => {}}
+                start_index_children={0}
+                setStart_index_children={() => {}}
+                evaluation_good_count_children={0}
+                setEvaluation_good_count_children={() => {}}
+                comment_count_children={0}
+                setComment_count_children={() => {}}
+                evaluation_stay_count_children={0}
+                setEvaluation_stay_count_children={() => {}}
               />
             }
           />

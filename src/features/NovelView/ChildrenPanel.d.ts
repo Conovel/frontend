@@ -1,5 +1,11 @@
 import React from 'react';
-interface NextProps {
+interface ChildrenPanelProps {
+  childrenPanel: {
+    sentence_id: number;
+    sentence: string;
+    userId: number;
+    userName: string;
+  };
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
@@ -11,5 +17,5 @@ interface NextProps {
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
-declare const ChildrenPanel: React.FC<NextProps>;
+declare const ChildrenPanel: React.FC<ChildrenPanelProps>;
 export default ChildrenPanel;

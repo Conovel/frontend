@@ -1,5 +1,11 @@
 import React from 'react';
-interface PrevProps {
+interface ParentPanelProps {
+  parentPanel: {
+    sentence_id: number;
+    sentence: string;
+    userId: number;
+    userName: string;
+  };
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
@@ -11,5 +17,5 @@ interface PrevProps {
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
-declare const Prev: React.FC<PrevProps>;
-export default Prev;
+declare const ParentPanel: React.FC<ParentPanelProps>;
+export default ParentPanel;

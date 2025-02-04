@@ -8,7 +8,7 @@ import KeyboardArrowForwardIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowBackIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 interface MainPanelProps {
-  mainPanels: {
+  mainPanel: {
     sentence_id: number;
     sentence: string;
     userId: number;
@@ -23,7 +23,7 @@ interface MainPanelProps {
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
-  mainPanels,
+  mainPanel,
   evaluation_good_count,
   setEvaluation_good_count,
   comment_count,
@@ -53,7 +53,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
         }}
       />
       <Box>
-        {mainPanels.map((panel) => (
+        {mainPanel.map((panel) => (
           <Box
             key={panel.sentence_id}
             sx={{

@@ -26,62 +26,69 @@ interface ChildrenPanel {
 }
 
 interface NovelViewPresentationProps {
-  mainPanels: MainPanel[];
+  mainPanel: MainPanel;
   parentPanel: ParentPanel;
   childrenPanel: ChildrenPanel;
-  startIndexPrev: number;
-  setStartIndexPrev: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_countPrev: number;
-  setEvaluation_good_countPrev: React.Dispatch<React.SetStateAction<number>>;
-  comment_countPrev: number;
-  setComment_countPrev: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_countPrev: number;
-  setEvaluation_stay_countPrev: React.Dispatch<React.SetStateAction<number>>;
-  startIndexNext: number;
-  setStartIndexNext: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_countNext: number;
-  setEvaluation_good_countNext: React.Dispatch<React.SetStateAction<number>>;
-  comment_countNext: number;
-  setComment_countNext: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_countNext: number;
-  setEvaluation_stay_countNext: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_countMain: number;
-  setEvaluation_good_countMain: React.Dispatch<React.SetStateAction<number>>;
-  comment_countMain: number;
-  setComment_countMain: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_countMain: number;
-  setEvaluation_stay_countMain: React.Dispatch<React.SetStateAction<number>>;
+  start_index_parent: number;
+  setStart_index_parent: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_good_count_parent: number;
+  setEvaluation_good_count_parent: React.Dispatch<React.SetStateAction<number>>;
+  comment_count_parent: number;
+  setComment_count_parent: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_stay_count_parent: number;
+  setEvaluation_stay_count_parent: React.Dispatch<React.SetStateAction<number>>;
+  start_index_children: number;
+  setStart_index_children: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_good_count_children: number;
+  setEvaluation_good_count_children: React.Dispatch<
+    React.SetStateAction<number>
+  >;
+  comment_count_children: number;
+  setComment_count_children: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_stay_count_children: number;
+  setEvaluation_stay_count_children: React.Dispatch<
+    React.SetStateAction<number>
+  >;
+  start_index_main: number;
+  setStart_index_main: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_good_count_main: number;
+  setEvaluation_good_count_main: React.Dispatch<React.SetStateAction<number>>;
+  comment_count_main: number;
+  setComment_count_main: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_stay_count_main: number;
+  setEvaluation_stay_count_main: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
-  mainPanels,
+  mainPanel,
   parentPanel,
   childrenPanel,
-  startIndexPrev,
-  setStartIndexPrev,
-  comment_countPrev,
-  setComment_countPrev,
-  evaluation_stay_countPrev,
-  setEvaluation_stay_countPrev,
-  startIndexNext,
-  setStartIndexNext,
-  evaluation_good_countPrev,
-  setEvaluation_good_countPrev,
-  evaluation_good_countNext,
-  setEvaluation_good_countNext,
-  comment_countNext,
-  setComment_countNext,
-  evaluation_stay_countNext,
-  setEvaluation_stay_countNext,
-  evaluation_good_countMain,
-  setEvaluation_good_countMain,
-  comment_countMain,
-  setComment_countMain,
-  evaluation_stay_countMain,
-  setEvaluation_stay_countMain,
+  start_index_parent,
+  setStart_index_parent,
+  comment_count_parent,
+  setComment_count_parent,
+  evaluation_stay_count_parent,
+  setEvaluation_stay_count_parent,
+  start_index_children,
+  setStart_index_children,
+  evaluation_good_count_parent,
+  setEvaluation_good_count_parent,
+  evaluation_good_count_children,
+  setEvaluation_good_count_children,
+  comment_count_children,
+  setComment_count_children,
+  evaluation_stay_count_children,
+  setEvaluation_stay_count_children,
+  evaluation_good_count_main,
+  setEvaluation_good_count_main,
+  comment_count_main,
+  setComment_count_main,
+  evaluation_stay_count_main,
+  setEvaluation_stay_count_main,
 }) => {
-  const prevTextCount = 10;
-  const nextTextCount = 10;
+  const parentTextCount = 10;
+  const mainTextCount = 10;
+  const childrenTextCount = 10;
   const visibleTextCount = 3;
 
   return (
@@ -107,43 +114,47 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       >
         {/* 親の投稿 */}
         <ParentPanel
-          prevPanel={parentPanel}
-          startIndex={startIndexPrev}
-          setStartIndex={setStartIndexPrev}
+          parentPanel={parentPanel}
+          startIndex={start_index_parent}
+          setStartIndex={setStart_index_parent}
           visibleTextCount={visibleTextCount}
-          textCount={prevTextCount}
-          evaluation_good_count={evaluation_good_countPrev}
-          setEvaluation_good_count={setEvaluation_good_countPrev}
-          comment_count={comment_countPrev}
-          setComment_count={setComment_countPrev}
-          evaluation_stay_count={evaluation_stay_countPrev}
-          setEvaluation_stay_count={setEvaluation_stay_countPrev}
+          textCount={parentTextCount}
+          evaluation_good_count={evaluation_good_count_parent}
+          setEvaluation_good_count={setEvaluation_good_count_parent}
+          comment_count={comment_count_parent}
+          setComment_count={setComment_count_parent}
+          evaluation_stay_count={evaluation_stay_count_parent}
+          setEvaluation_stay_count={setEvaluation_stay_count_parent}
         />
 
         {/* メインの投稿 */}
         <MainPanel
-          mainPanels={mainPanels}
-          evaluation_good_count={evaluation_good_countMain}
-          setEvaluation_good_count={setEvaluation_good_countMain}
-          comment_count={comment_countMain}
-          setComment_count={setComment_countMain}
-          evaluation_stay_count={evaluation_stay_countMain}
-          setEvaluation_stay_count={setEvaluation_stay_countMain}
+          mainPanel={mainPanel}
+          startIndex={start_index_main}
+          setStartIndex={setStart_index_main}
+          visibleTextCount={visibleTextCount}
+          textCount={mainTextCount}
+          evaluation_good_count={evaluation_good_count_main}
+          setEvaluation_good_count={setEvaluation_good_count_main}
+          comment_count={comment_count_main}
+          setComment_count={setComment_count_main}
+          evaluation_stay_count={evaluation_stay_count_main}
+          setEvaluation_stay_count={setEvaluation_stay_count_main}
         />
 
         {/* 子の投稿 */}
         <ChildrenPanel
-          nextPanel={childrenPanel}
-          startIndex={startIndexNext}
-          setStartIndex={setStartIndexNext}
+          childrenPanel={childrenPanel}
+          startIndex={start_index_children}
+          setStartIndex={setStart_index_children}
           visibleTextCount={visibleTextCount}
-          textCount={nextTextCount}
-          evaluation_good_count={evaluation_good_countNext}
-          setEvaluation_good_count={setEvaluation_good_countNext}
-          comment_count={comment_countNext}
-          setComment_count={setComment_countNext}
-          evaluation_stay_count={evaluation_stay_countNext}
-          setEvaluation_stay_count={setEvaluation_stay_countNext}
+          textCount={childrenTextCount}
+          evaluation_good_count={evaluation_good_count_children}
+          setEvaluation_good_count={setEvaluation_good_count_children}
+          comment_count={comment_count_children}
+          setComment_count={setComment_count_children}
+          evaluation_stay_count={evaluation_stay_count_children}
+          setEvaluation_stay_count={setEvaluation_stay_count_children}
         />
       </Box>
     </Container>

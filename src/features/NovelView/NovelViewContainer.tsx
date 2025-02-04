@@ -26,53 +26,54 @@ const children = {
 };
 
 export const NovelViewContainer = () => {
-  const [startIndexPrev, setStartIndexPrev] = useState(0);
-  const [startIndexNext, setStartIndexNext] = useState(0);
-  const [evaluation_good_countPrev, setEvaluation_good_countPrev] =
+  const [start_index_parent, setStart_index_parent] = useState(0);
+  const [start_index_children, setStart_index_children] = useState(0);
+  const [evaluation_good_count_parent, setEvaluation_good_count_parent] =
     useState<number>(0);
-  const [comment_countPrev, setComment_countPrev] = useState<number>(0);
-  const [evaluation_stay_countPrev, setEvaluation_stay_countPrev] =
+  const [comment_count_parent, setComment_count_parent] = useState<number>(0);
+  const [evaluation_stay_count_parent, setEvaluation_stay_count_parent] =
     useState<number>(0);
-  const [evaluation_good_countNext, setEvaluation_good_countNext] =
+  const [evaluation_good_count_children, setEvaluation_good_count_children] =
     useState<number>(0);
-  const [comment_countNext, setComment_countNext] = useState<number>(0);
-  const [evaluation_stay_countNext, setEvaluation_stay_countNext] =
+  const [comment_count_children, setComment_count_children] =
+    useState<number>(0);
+  const [evaluation_stay_count_children, setEvaluation_stay_count_children] =
     useState<number>(0);
 
   // MainPanelに関する状態を定義
-  const [evaluation_good_countMain, setEvaluation_good_countMain] =
+  const [evaluation_good_count_main, setEvaluation_good_count_main] =
     useState<number>(0);
-  const [comment_countMain, setComment_countMain] = useState<number>(0);
-  const [evaluation_stay_countMain, setEvaluation_stay_countMain] =
+  const [comment_count_main, setComment_count_main] = useState<number>(0);
+  const [evaluation_stay_count_main, setEvaluation_stay_count_main] =
     useState<number>(0);
 
   return (
     <NovelViewPresentation
-      mainPanels={main}
+      mainPanel={main}
       parentPanel={parent}
       childrenPanel={children}
-      startIndexPrev={startIndexPrev}
-      setStartIndexPrev={setStartIndexPrev}
-      evaluation_good_countPrev={evaluation_good_countPrev}
-      setEvaluation_good_countPrev={setEvaluation_good_countPrev}
-      comment_countPrev={comment_countPrev}
-      setComment_countPrev={setComment_countPrev}
-      evaluation_stay_countPrev={evaluation_stay_countPrev}
-      setEvaluation_stay_countPrev={setEvaluation_stay_countPrev}
-      startIndexNext={startIndexNext}
-      setStartIndexNext={setStartIndexNext}
-      evaluation_good_countNext={evaluation_good_countNext}
-      setEvaluation_good_countNext={setEvaluation_good_countNext}
-      comment_countNext={comment_countNext}
-      setComment_countNext={setComment_countNext}
-      evaluation_stay_countNext={evaluation_stay_countNext}
-      setEvaluation_stay_countNext={setEvaluation_stay_countNext}
-      evaluation_good_countMain={evaluation_good_countMain}
-      setEvaluation_good_countMain={setEvaluation_good_countMain}
-      comment_countMain={comment_countMain}
-      setComment_countMain={setComment_countMain}
-      evaluation_stay_countMain={evaluation_stay_countMain}
-      setEvaluation_stay_countMain={setEvaluation_stay_countMain}
+      start_index_parent={start_index_parent}
+      setStart_index_parent={setStart_index_parent}
+      evaluation_good_count_parent={evaluation_good_count_parent}
+      setEvaluation_good_count_parent={setEvaluation_good_count_parent}
+      comment_count_parent={comment_count_parent}
+      setComment_count_parent={setComment_count_parent}
+      evaluation_stay_count_parent={evaluation_stay_count_parent}
+      setEvaluation_stay_count_parent={setEvaluation_stay_count_parent}
+      start_index_children={start_index_children}
+      setStart_index_children={setStart_index_children}
+      evaluation_good_count_children={evaluation_good_count_children}
+      setEvaluation_good_count_children={setEvaluation_good_count_children}
+      comment_count_children={comment_count_children}
+      setComment_count_children={setComment_count_children}
+      evaluation_stay_count_children={evaluation_stay_count_children}
+      setEvaluation_stay_count_children={setEvaluation_stay_count_children}
+      evaluation_good_count_main={evaluation_good_count_main}
+      setEvaluation_good_count_main={setEvaluation_good_count_main}
+      comment_count_main={comment_count_main}
+      setComment_count_main={setComment_count_main}
+      evaluation_stay_count_main={evaluation_stay_count_main}
+      setEvaluation_stay_count_main={setEvaluation_stay_count_main}
     />
   );
 };

@@ -2,8 +2,8 @@ import React from 'react';
 import { Box } from '@mui/material';
 import NovelCard from '../../components/novelcard/NovelCard';
 
-interface PrevPanelProps {
-  prevPanel: {
+interface ParentPanelProps {
+  parentPanel: {
     sentence_id: number;
     sentence: string;
     userId: number;
@@ -21,7 +21,7 @@ interface PrevPanelProps {
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const ParentPanel: React.FC<PrevPanelProps> = ({
+const ParentPanel: React.FC<ParentPanelProps> = ({
   startIndex,
   textCount,
   evaluation_good_count,

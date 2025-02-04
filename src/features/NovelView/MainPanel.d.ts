@@ -1,6 +1,6 @@
 import React from 'react';
 interface MainPanelProps {
-  mainPanels: {
+  mainPanel: {
     sentence_id: number;
     sentence: string;
     userId: number;
