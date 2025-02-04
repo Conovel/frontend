@@ -39,6 +39,13 @@ export const NovelViewContainer = () => {
   const [evaluation_stay_countNext, setEvaluation_stay_countNext] =
     useState<number>(0);
 
+  // MainPanelに関する状態を定義
+  const [evaluation_good_countMain, setEvaluation_good_countMain] =
+    useState<number>(0);
+  const [comment_countMain, setComment_countMain] = useState<number>(0);
+  const [evaluation_stay_countMain, setEvaluation_stay_countMain] =
+    useState<number>(0);
+
   return (
     <NovelViewPresentation
       mainPanels={main}
@@ -60,6 +67,12 @@ export const NovelViewContainer = () => {
       setComment_countNext={setComment_countNext}
       evaluation_stay_countNext={evaluation_stay_countNext}
       setEvaluation_stay_countNext={setEvaluation_stay_countNext}
+      evaluation_good_countMain={evaluation_good_countMain}
+      setEvaluation_good_countMain={setEvaluation_good_countMain}
+      comment_countMain={comment_countMain}
+      setComment_countMain={setComment_countMain}
+      evaluation_stay_countMain={evaluation_stay_countMain}
+      setEvaluation_stay_countMain={setEvaluation_stay_countMain}
     />
   );
 };

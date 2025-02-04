@@ -45,6 +45,12 @@ interface NovelViewPresentationProps {
   setComment_countNext: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_countNext: number;
   setEvaluation_stay_countNext: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_good_countMain: number;
+  setEvaluation_good_countMain: React.Dispatch<React.SetStateAction<number>>;
+  comment_countMain: number;
+  setComment_countMain: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_stay_countMain: number;
+  setEvaluation_stay_countMain: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -67,6 +73,12 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setComment_countNext,
   evaluation_stay_countNext,
   setEvaluation_stay_countNext,
+  evaluation_good_countMain,
+  setEvaluation_good_countMain,
+  comment_countMain,
+  setComment_countMain,
+  evaluation_stay_countMain,
+  setEvaluation_stay_countMain,
 }) => {
   const prevTextCount = 10;
   const nextTextCount = 10;
@@ -94,7 +106,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         }}
       >
         {/* 親の投稿 */}
-        <ParentPanel
+        {/* <ParentPanel
           prevPanel={parentPanel}
           startIndex={startIndexPrev}
           setStartIndex={setStartIndexPrev}
@@ -106,21 +118,21 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           setComment_count={setComment_countPrev}
           evaluation_stay_count={evaluation_stay_countPrev}
           setEvaluation_stay_count={setEvaluation_stay_countPrev}
-        />
+        /> */}
 
         {/* メインの投稿 */}
         <MainPanel
           mainPanels={mainPanels}
-          evaluation_good_count={evaluation_good_countPrev}
-          setEvaluation_good_count={setEvaluation_good_countPrev}
-          comment_count={comment_countPrev}
-          setComment_count={setComment_countPrev}
-          evaluation_stay_count={evaluation_stay_countPrev}
-          setEvaluation_stay_count={setEvaluation_stay_countPrev}
+          evaluation_good_count={evaluation_good_countMain}
+          setEvaluation_good_count={setEvaluation_good_countMain}
+          comment_count={comment_countMain}
+          setComment_count={setComment_countMain}
+          evaluation_stay_count={evaluation_stay_countMain}
+          setEvaluation_stay_count={setEvaluation_stay_countMain}
         />
 
         {/* 子の投稿 */}
-        <ChildrenPanel
+        {/* <ChildrenPanel
           nextPanel={childrenPanel}
           startIndex={startIndexNext}
           setStartIndex={setStartIndexNext}
@@ -132,7 +144,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           setComment_count={setComment_countNext}
           evaluation_stay_count={evaluation_stay_countNext}
           setEvaluation_stay_count={setEvaluation_stay_countNext}
-        />
+        /> */}
       </Box>
     </Container>
   );

@@ -21,6 +21,12 @@ interface NovelViewPresentationProps {
   comment_countPrev: number;
   setComment_countPrev: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_countPrev: number;
+  setStartIndexMain: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_good_countMain: number;
+  setEvaluation_good_countMain: React.Dispatch<React.SetStateAction<number>>;
+  comment_countMain: number;
+  setComment_countMain: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_stay_countMain: number;
   setEvaluation_stay_countPrev: React.Dispatch<React.SetStateAction<number>>;
   startIndexNext: number;
   setStartIndexNext: React.Dispatch<React.SetStateAction<number>>;
