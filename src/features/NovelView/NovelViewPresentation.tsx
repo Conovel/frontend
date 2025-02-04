@@ -106,7 +106,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         }}
       >
         {/* 親の投稿 */}
-        {/* <ParentPanel
+        <ParentPanel
           prevPanel={parentPanel}
           startIndex={startIndexPrev}
           setStartIndex={setStartIndexPrev}
@@ -118,7 +118,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           setComment_count={setComment_countPrev}
           evaluation_stay_count={evaluation_stay_countPrev}
           setEvaluation_stay_count={setEvaluation_stay_countPrev}
-        /> */}
+        />
 
         {/* メインの投稿 */}
         <MainPanel
@@ -132,7 +132,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         />
 
         {/* 子の投稿 */}
-        {/* <ChildrenPanel
+        <ChildrenPanel
           nextPanel={childrenPanel}
           startIndex={startIndexNext}
           setStartIndex={setStartIndexNext}
@@ -144,7 +144,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           setComment_count={setComment_countNext}
           evaluation_stay_count={evaluation_stay_countNext}
           setEvaluation_stay_count={setEvaluation_stay_countNext}
-        /> */}
+        />
       </Box>
     </Container>
   );
