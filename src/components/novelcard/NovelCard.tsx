@@ -3,6 +3,7 @@ import { Avatar, Box, TextField } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import CommentButton from '../buttonicon/CommentButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
+import { NovelProps } from '../../types/types';
 
 interface NovelCardProps {
   key: number;
@@ -15,9 +16,11 @@ interface NovelCardProps {
   setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  novel: NovelProps;
+  onClick: () => void;
 }
 
-const NovelCard: React.FC<NovelCardProps> = ({ text }) => {
+const NovelCard = ({ novel, onClick }: NovelCardProps) => {
   // Local state for counts
   const [evaluation_good_count, setEvaluation_good_count] = useState(0);
   const [comment_count, setComment_count] = useState(0);
@@ -30,6 +33,7 @@ const NovelCard: React.FC<NovelCardProps> = ({ text }) => {
         position: 'relative',
         backgroundColor: '#fff',
       }}
+      onClick={onClick}
     >
       <Box
         sx={{
@@ -50,7 +54,7 @@ const NovelCard: React.FC<NovelCardProps> = ({ text }) => {
             multiline
             fullWidth
             variant='outlined'
-            value={text}
+            value={novel.text}
             InputProps={{
               readOnly: true,
             }}

@@ -6,14 +6,10 @@ import CommentButton from '../../components/buttonicon/CommentButton';
 import NextPlanButton from '../../components/buttonicon/NextPlanButton';
 import KeyboardArrowForwardIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowBackIcon from '@mui/icons-material/KeyboardArrowLeft';
+import { Sentence } from '../../types/types';
 
 interface MainPanelProps {
-  mainPanel: {
-    sentence_id: number;
-    sentence: string;
-    userId: number;
-    userName: string;
-  }[];
+  mainPanel: Sentence[];
   evaluation_good_count: number;
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   comment_count: number;

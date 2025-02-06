@@ -1,14 +1,10 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import NovelCard from '../../components/novelcard/NovelCard';
+import { NovelProps } from '../../types/types';
 
 interface ParentPanelProps {
-  parentPanel: {
-    sentence_id: number;
-    sentence: string;
-    userId: number;
-    userName: string;
-  };
+  parentPanel: NovelProps;
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
@@ -22,6 +18,7 @@ interface ParentPanelProps {
 }
 
 const ParentPanel: React.FC<ParentPanelProps> = ({
+  parentPanel,
   startIndex,
   textCount,
   evaluation_good_count,
@@ -48,7 +45,23 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
           key={startIndex}
           index={0}
           textIndex={startIndex}
-          text={`Text content for index ${startIndex}`}
+          text={parentPanel.sentence}
+          novel={{
+            main_copy: parentPanel.main_copy,
+            overview: parentPanel.overview,
+            title: parentPanel.title,
+            author_user_name: parentPanel.author_user_name,
+            chips: parentPanel.chips,
+            avatar: parentPanel.avatar,
+            popular: parentPanel.popular,
+            newArrival: parentPanel.newArrival,
+            reader_count: parentPanel.reader_count,
+            updated_at: parentPanel.updated_at,
+            sentence_user_count: parentPanel.sentence_user_count,
+            sentence_hierarchy_count: parentPanel.sentence_hierarchy_count,
+            text: parentPanel.text,
+          }}
+          onClick={() => {}}
           evaluation_good_count={evaluation_good_count}
           setEvaluation_good_count={setEvaluation_good_count}
           comment_count={comment_count}

@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid';
-import NovelCardContainer from '../../components/novelCard/container';
+import NovelCardContainer from '../../components/novelcard/container';
 import { Chips } from '../../components/chips';
 import { Tags } from '../../components/tags';
 import { useState } from 'react'; // API動作確認用
@@ -62,22 +62,24 @@ const NovelList = () => {
       {novels.map((novel) => (
         <Grid item xs={12} sm={6} md={4} key={novel.title}>
           <NovelCardContainer
-            novel={novel}
+            novel={{
+              ...novel,
+              text: novel.main_copy, // Add the required 'text' property
+            }}
             onClick={() => {
               /* handle click */
             }}
           />
-
-          {/* API動作確認用 */}
-          <button onClick={fetchSentences}>Fetch Sentences</button>
-          <ul>
-            {sentences.map((main: Sentence) => (
-              <li key={main.sentence_id}>{main.sentence}</li>
-            ))}
-          </ul>
-          {/* API動作確認用 ここまで */}
         </Grid>
       ))}
+      {/* API動作確認用 */}
+      <button onClick={fetchSentences}>Fetch Sentences</button>
+      <ul>
+        {sentences.map((main: Sentence) => (
+          <li key={main.sentence_id}>{main.sentence}</li>
+        ))}
+      </ul>
+      {/* API動作確認用 ここまで */}
     </Grid>
   );
 };

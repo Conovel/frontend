@@ -3,32 +3,12 @@ import { Box, Container } from '@mui/material';
 import ParentPanel from './ParentPanel';
 import ChildrenPanel from './ChildrenPanel';
 import MainPanel from './MainPanel';
-
-interface MainPanel {
-  sentence_id: number;
-  sentence: string;
-  userId: number;
-  userName: string;
-}
-
-interface ParentPanel {
-  sentence_id: number;
-  sentence: string;
-  userId: number;
-  userName: string;
-}
-
-interface ChildrenPanel {
-  sentence_id: number;
-  sentence: string;
-  userId: number;
-  userName: string;
-}
+import { Sentence } from '../../types/types';
 
 interface NovelViewPresentationProps {
-  mainPanel: MainPanel;
-  parentPanel: ParentPanel;
-  childrenPanel: ChildrenPanel;
+  mainPanel: Sentence[];
+  parentPanel: Sentence[];
+  childrenPanel: Sentence[];
   start_index_parent: number;
   setStart_index_parent: React.Dispatch<React.SetStateAction<number>>;
   evaluation_good_count_parent: number;
@@ -49,20 +29,18 @@ interface NovelViewPresentationProps {
   setEvaluation_stay_count_children: React.Dispatch<
     React.SetStateAction<number>
   >;
-  start_index_main: number;
-  setStart_index_main: React.Dispatch<React.SetStateAction<number>>;
+  start_index_main?: number;
+  setStart_index_main?: React.Dispatch<React.SetStateAction<number>>;
   evaluation_good_count_main: number;
   setEvaluation_good_count_main: React.Dispatch<React.SetStateAction<number>>;
   comment_count_main: number;
   setComment_count_main: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count_main: number;
   setEvaluation_stay_count_main: React.Dispatch<React.SetStateAction<number>>;
+  textCount: number;
 }
 
 export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
-  mainPanel,
-  parentPanel,
-  childrenPanel,
   start_index_parent,
   setStart_index_parent,
   comment_count_parent,
@@ -87,9 +65,56 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setEvaluation_stay_count_main,
 }) => {
   const parentTextCount = 10;
-  const mainTextCount = 10;
+
   const childrenTextCount = 10;
   const visibleTextCount = 3;
+  const parentPanel = [
+    {
+      title: '',
+      sentence_id: 0,
+      sentence: '',
+      userId: 0,
+      userName: '',
+      profile_icon_image: '',
+      evaluation_good_count: 0,
+      evaluation_stay_count: 0,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      main_copy: '',
+      overview: '',
+      popular: false,
+      newArrival: false,
+      // add other required properties here
+    },
+  ];
+  const mainPanel = [
+    {
+      title: '',
+      sentence_id: 0,
+      sentence: '',
+      userId: 0,
+      userName: '',
+      profile_icon_image: '',
+      evaluation_good_count: 0,
+      evaluation_stay_count: 0,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+  ];
+  const childrenPanel = [
+    {
+      title: '',
+      sentence_id: 0,
+      sentence: '',
+      userId: 0,
+      userName: '',
+      profile_icon_image: '',
+      evaluation_good_count: 0,
+      evaluation_stay_count: 0,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+  ];
 
   return (
     <Container sx={{ position: 'relative', alignItems: 'center' }}>
@@ -112,28 +137,24 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           gap: '20px',
         }}
       >
-        {/* 親の投稿 */}
-        <ParentPanel
-          parentPanel={parentPanel}
-          startIndex={start_index_parent}
-          setStartIndex={setStart_index_parent}
-          visibleTextCount={visibleTextCount}
-          textCount={parentTextCount}
-          evaluation_good_count={evaluation_good_count_parent}
-          setEvaluation_good_count={setEvaluation_good_count_parent}
-          comment_count={comment_count_parent}
-          setComment_count={setComment_count_parent}
-          evaluation_stay_count={evaluation_stay_count_parent}
-          setEvaluation_stay_count={setEvaluation_stay_count_parent}
-        />
-
-        {/* メインの投稿 */}
+        {parentPanel.map((NovelProps, index) => (
+          <ParentPanel
+            key={index}
+            parentPanel={NovelProps}
+            startIndex={start_index_parent}
+            setStartIndex={setStart_index_parent}
+            visibleTextCount={visibleTextCount}
+            textCount={parentTextCount}
+            evaluation_good_count={evaluation_good_count_parent}
+            setEvaluation_good_count={setEvaluation_good_count_parent}
+            comment_count={comment_count_parent}
+            setComment_count={setComment_count_parent}
+            evaluation_stay_count={evaluation_stay_count_parent}
+            setEvaluation_stay_count={setEvaluation_stay_count_parent}
+          />
+        ))}
         <MainPanel
           mainPanel={mainPanel}
-          startIndex={start_index_main}
-          setStartIndex={setStart_index_main}
-          visibleTextCount={visibleTextCount}
-          textCount={mainTextCount}
           evaluation_good_count={evaluation_good_count_main}
           setEvaluation_good_count={setEvaluation_good_count_main}
           comment_count={comment_count_main}
@@ -141,10 +162,17 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           evaluation_stay_count={evaluation_stay_count_main}
           setEvaluation_stay_count={setEvaluation_stay_count_main}
         />
-
-        {/* 子の投稿 */}
         <ChildrenPanel
           childrenPanel={childrenPanel}
+          novel={{
+            main_copy: '',
+            overview: '',
+            title: '',
+            popular: false,
+            // add other required properties here
+            children: childrenPanel,
+          }}
+          onClick={() => {}}
           startIndex={start_index_children}
           setStartIndex={setStart_index_children}
           visibleTextCount={visibleTextCount}

@@ -4,14 +4,10 @@ import { Box, Button } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelcard/NovelCard';
+import { Sentence, NovelProps } from '../../types/types';
 
 interface ChildrenPanelProps {
-  childrenPanel: {
-    sentence_id: number;
-    sentence: string;
-    userId: number;
-    userName: string;
-  };
+  childrenPanel: Sentence[];
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
@@ -22,9 +18,13 @@ interface ChildrenPanelProps {
   setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  novel: NovelProps;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  textIndex: number;
 }
 
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
+  childrenPanel,
   startIndex,
   setStartIndex,
   visibleTextCount,
@@ -35,6 +35,9 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   setComment_count,
   evaluation_stay_count,
   setEvaluation_stay_count,
+  novel,
+  onClick,
+  textIndex,
 }) => {
   const handleScroll = (direction: 'next' | 'prev') => {
     if (direction === 'next' && startIndex + visibleTextCount < textCount) {
@@ -43,11 +46,6 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       setStartIndex(startIndex - visibleTextCount);
     }
   };
-
-  const items = Array.from({ length: textCount }, (_, i) => ({
-    index: i + 1,
-    text: `Text content for index ${i + 1}`,
-  }));
 
   return (
     <Box
@@ -98,9 +96,9 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
             </Button>
           )}
         >
-          {items.map((item) => (
+          {childrenPanel.map((panel, index) => (
             <Box
-              key={item.index}
+              key={panel.sentence_id}
               sx={{
                 justifyContent: 'center',
                 margin: '0 1vw',
@@ -108,10 +106,11 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
               }}
             >
               <NovelCard
-                text={item.text}
-                key={0}
-                index={0}
-                textIndex={0}
+                novel={novel}
+                onClick={onClick}
+                key={index}
+                index={index}
+                textIndex={textIndex}
                 evaluation_good_count={evaluation_good_count}
                 setEvaluation_good_count={setEvaluation_good_count}
                 comment_count={comment_count}

@@ -7,14 +7,6 @@ import { NovelViewPresentation } from '../features/NovelView/NovelViewPresentati
 import { TermsPage } from '../pages/terms';
 import { Box } from '@mui/material';
 
-// Define the MainPanel type to include sentence_id
-interface mainPanel {
-  sentence_id: number;
-  sentence: string;
-  userId: number;
-  userName: string;
-}
-
 /**
  * ルーティング
  * TODO：URLは別途定義でも良いかも
@@ -33,24 +25,48 @@ export const Routing = () => {
             path='/novelView'
             element={
               <NovelViewPresentation
-                mainPanel={{
-                  sentence_id: 0,
-                  sentence: '',
-                  userId: 0,
-                  userName: '',
-                }}
-                parentPanel={{
-                  sentence_id: 0,
-                  sentence: '',
-                  userId: 0,
-                  userName: '',
-                }}
-                childrenPanel={{
-                  sentence_id: 0,
-                  sentence: '',
-                  userId: 0,
-                  userName: '',
-                }}
+                mainPanel={[
+                  {
+                    title: 'Example sentence',
+                    sentence_id: 1,
+                    sentence: 'Example sentence',
+                    userId: 1,
+                    userName: 'User1',
+                    profile_icon_image: '',
+                    evaluation_good_count: 0,
+                    evaluation_stay_count: 0,
+                    created_at: '',
+                    updated_at: '',
+                  },
+                ]}
+                parentPanel={[
+                  {
+                    title: 'Parent sentence',
+                    sentence_id: 2,
+                    sentence: 'Parent sentence',
+                    userId: 2,
+                    userName: 'User2',
+                    profile_icon_image: '',
+                    evaluation_good_count: 0,
+                    evaluation_stay_count: 0,
+                    created_at: '',
+                    updated_at: '',
+                  },
+                ]}
+                childrenPanel={[
+                  {
+                    title: 'Child sentence',
+                    sentence_id: 3,
+                    sentence: 'Child sentence',
+                    userId: 3,
+                    userName: 'User3',
+                    profile_icon_image: '',
+                    evaluation_good_count: 0,
+                    evaluation_stay_count: 0,
+                    created_at: '',
+                    updated_at: '',
+                  },
+                ]}
                 start_index_parent={0}
                 setStart_index_parent={() => {}}
                 evaluation_good_count_parent={0}
@@ -59,9 +75,6 @@ export const Routing = () => {
                 setComment_count_parent={() => {}}
                 evaluation_stay_count_parent={0}
                 setEvaluation_stay_count_parent={() => {}}
-                setStart_index_main={() => {}}
-                start_index_main={0}
-                visibleTextCount={0}
                 textCount={0}
                 evaluation_good_count_main={0}
                 setEvaluation_good_count_main={() => {}}

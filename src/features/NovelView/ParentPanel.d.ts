@@ -1,11 +1,7 @@
 import React from 'react';
+import { NovelProps } from '../../types/types';
 interface ParentPanelProps {
-  parentPanel: {
-    sentence_id: number;
-    sentence: string;
-    userId: number;
-    userName: string;
-  };
+  parentPanel: NovelProps;
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;

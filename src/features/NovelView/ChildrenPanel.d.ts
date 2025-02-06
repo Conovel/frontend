@@ -1,11 +1,7 @@
 import React from 'react';
+import { Sentence, NovelProps } from '../../types/types';
 interface ChildrenPanelProps {
-  childrenPanel: {
-    sentence_id: number;
-    sentence: string;
-    userId: number;
-    userName: string;
-  };
+  childrenPanel: Sentence[];
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
@@ -16,6 +12,9 @@ interface ChildrenPanelProps {
   setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  novel: NovelProps;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  textIndex: number;
 }
 declare const ChildrenPanel: React.FC<ChildrenPanelProps>;
 export default ChildrenPanel;

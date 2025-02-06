@@ -5,8 +5,8 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import { novels } from '../NovelList';
 import { Grid } from '@mui/material';
-import NovelCardContainer from '../../components/novelCard/container';
-import { NovelProps } from '../../components/novelCard/presentation';
+import { NovelProps } from '../../types/types';
+import NovelCardContainer from '../../components/novelcard/container';
 
 const style = {
   position: 'absolute',
@@ -23,7 +23,7 @@ const style = {
 interface TransitionsModalProps {
   open: boolean;
   handleClose: () => void;
-  onNovelClick: () => void;
+  onNovelClick: (novel: NovelProps) => void;
 }
 
 export default function TransitionsModal({
@@ -48,10 +48,10 @@ export default function TransitionsModal({
         <Box sx={style}>
           {/* Add the Grid component to display novels */}
           <Grid container spacing={2}>
-            {novels.map((novel: NovelProps) => (
-              <Grid item xs={12} sm={6} md={4} key={novel.title}>
+            {novels.map((novel, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
                 <NovelCardContainer
-                  novel={novel}
+                  novel={novel as NovelProps}
                   onClick={() => {
                     /* handle click */
                   }}

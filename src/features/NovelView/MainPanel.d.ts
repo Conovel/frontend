@@ -1,11 +1,7 @@
 import React from 'react';
+import { Sentence } from '../../types/types';
 interface MainPanelProps {
-  mainPanel: {
-    sentence_id: number;
-    sentence: string;
-    userId: number;
-    userName: string;
-  }[];
+  mainPanel: Sentence[];
   evaluation_good_count: number;
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   comment_count: number;

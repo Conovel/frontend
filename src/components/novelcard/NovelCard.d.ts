@@ -1,4 +1,5 @@
 import React from 'react';
+import { NovelProps } from '../../types/types';
 interface NovelCardProps {
   key: number;
   index: number;
@@ -10,6 +11,11 @@ interface NovelCardProps {
   setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  novel: NovelProps;
+  onClick: () => void;
 }
-declare const NovelCard: React.FC<NovelCardProps>;
+declare const NovelCard: ({
+  novel,
+  onClick,
+}: NovelCardProps) => import('react/jsx-runtime').JSX.Element;
 export default NovelCard;
