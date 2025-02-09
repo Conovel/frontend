@@ -3,7 +3,7 @@ import { Box, Container } from '@mui/material';
 import ParentPanel from './ParentPanel';
 import ChildrenPanel from './ChildrenPanel';
 import MainPanel from './MainPanel';
-import { Sentence } from '../../types/types';
+import { Sentence, NovelProps } from '../../types/types';
 
 interface NovelViewPresentationProps {
   mainPanel: Sentence[];
@@ -68,28 +68,27 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
 
   const childrenTextCount = 10;
   const visibleTextCount = 3;
-  const parentPanel = [
+  const parentPanel: NovelProps[] = [
     {
       title: '',
-      sentence_id: 0,
-      sentence: '',
-      userId: 0,
-      userName: '',
-      profile_icon_image: '',
-      evaluation_good_count: 0,
-      evaluation_stay_count: 0,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
       main_copy: '',
       overview: '',
       popular: false,
       newArrival: false,
-      // add other required properties here
-    },
-  ];
-  const mainPanel = [
-    {
-      title: '',
+      avatar: {
+        src: '',
+        alt: '',
+        color: '',
+        text: '',
+      },
+      author_user_name: '',
+      chips: [],
+      tags: [],
+      reader_count: 0,
+      updated_at: new Date().toISOString(),
+      sentence_user_count: 0,
+      sentence_hierarchy_count: 0,
+      text: '',
       sentence_id: 0,
       sentence: '',
       userId: 0,
@@ -97,22 +96,52 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       profile_icon_image: '',
       evaluation_good_count: 0,
       evaluation_stay_count: 0,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
     },
   ];
-  const childrenPanel = [
+  const mainPanel: Sentence[] = [
     {
       title: '',
-      sentence_id: 0,
-      sentence: '',
-      userId: 0,
-      userName: '',
-      profile_icon_image: '',
-      evaluation_good_count: 0,
-      evaluation_stay_count: 0,
-      created_at: new Date().toISOString(),
+      main_copy: '',
+      overview: '',
+      popular: false,
+      newArrival: false,
+      avatar: {
+        src: '',
+        alt: '',
+        color: '',
+        text: '',
+      },
+      author_user_name: '',
+      chips: [],
+      tags: [],
+      reader_count: 0,
       updated_at: new Date().toISOString(),
+      sentence_user_count: 0,
+      sentence_hierarchy_count: 0,
+      text: '',
+    },
+  ];
+  const childrenPanel: Sentence[] = [
+    {
+      title: '',
+      //main_copy: '',
+      overview: '',
+      popular: false,
+      newArrival: false,
+      avatar: {
+        src: '',
+        alt: '',
+        color: '',
+        text: '',
+      },
+      author_user_name: '',
+      chips: [],
+      tags: [],
+      reader_count: 0,
+      updated_at: new Date().toISOString(),
+      sentence_user_count: 0,
+      sentence_hierarchy_count: 0,
+      text: '',
     },
   ];
 

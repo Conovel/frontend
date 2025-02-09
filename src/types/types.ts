@@ -1,8 +1,25 @@
 // types.ts
 export interface Sentence {
   title: string;
+  main_copy: string;
+  overview: string;
+  popular: boolean;
+  newArrival: boolean;
+  author_user_name: string;
+  chips: JSX.Element[];
+  tags: JSX.Element[];
+  reader_count: number;
+  avatar: {
+    src: string;
+    alt: string;
+    color: string;
+    text: string;
+  };
   sentence_id: number;
+  sentence_user_count: number;
+  sentence_hierarchy_count: number;
   sentence: string;
+  text: string;
   userId: number;
   userName: string;
   profile_icon_image: string;
@@ -108,9 +125,9 @@ export interface NovelViewPresentationProps {
 }
 
 export interface NovelProps {
+  title: string;
   main_copy: string;
   overview: string;
-  title: string;
   popular: boolean;
   newArrival: boolean;
   avatar: {
@@ -124,6 +141,13 @@ export interface NovelProps {
   tags: JSX.Element[];
   reader_count: number;
   updated_at: string;
+  sentence_id: number;
+  sentence: string;
+  userId: number;
+  userName: string;
+  profile_icon_image: string;
+  evaluation_good_count: number;
+  evaluation_stay_count: number;
   sentence_user_count: number;
   sentence_hierarchy_count: number;
   text: string;

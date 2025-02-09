@@ -17,7 +17,7 @@ interface NovelCardProps {
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
   novel: NovelProps;
-  onClick: () => void;
+  onClick: (sentence_id: number) => void;
 }
 
 const NovelCard = ({ novel, onClick }: NovelCardProps) => {

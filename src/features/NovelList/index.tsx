@@ -65,6 +65,13 @@ const NovelList = () => {
             novel={{
               ...novel,
               text: novel.main_copy, // Add the required 'text' property
+              sentence_id: 0, // Add missing properties
+              sentence: '', // Add missing properties
+              userId: 0, // Add missing properties
+              userName: '', // Add missing properties
+              profile_icon_image: '', // Add missing properties
+              evaluation_good_count: 0, // Add missing properties
+              evaluation_stay_count: 0, // Add missing properties
             }}
             onClick={() => {
               /* handle click */

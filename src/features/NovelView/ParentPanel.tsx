@@ -60,6 +60,13 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
             sentence_user_count: parentPanel.sentence_user_count,
             sentence_hierarchy_count: parentPanel.sentence_hierarchy_count,
             text: parentPanel.text,
+            sentence_id: 0,
+            sentence: '',
+            userId: 0,
+            userName: '',
+            profile_icon_image: '',
+            evaluation_good_count: 0,
+            evaluation_stay_count: 0,
           }}
           onClick={() => {}}
           evaluation_good_count={evaluation_good_count}

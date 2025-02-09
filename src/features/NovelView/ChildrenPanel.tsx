@@ -107,7 +107,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
             >
               <NovelCard
                 novel={novel}
-                onClick={onClick}
+                onClick={() => onClick(panel.sentence_id)}
                 key={index}
                 index={index}
                 textIndex={textIndex}
@@ -117,6 +117,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
                 setComment_count={setComment_count}
                 evaluation_stay_count={evaluation_stay_count}
                 setEvaluation_stay_count={setEvaluation_stay_count}
+                text={panel.sentence}
               />
             </Box>
           ))}
