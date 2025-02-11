@@ -71,6 +71,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   const parentPanel: NovelProps[] = [
     {
       title: '',
+      textIndex: 0,
       main_copy: '',
       overview: '',
       popular: false,
@@ -96,11 +97,17 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       profile_icon_image: '',
       evaluation_good_count: 0,
       evaluation_stay_count: 0,
+      children: [],
+      parent: [],
+      main: [],
+      created_at: new Date().toISOString(),
     },
   ];
   const mainPanel: Sentence[] = [
     {
       title: '',
+      text: '',
+      textIndex: 0,
       main_copy: '',
       overview: '',
       popular: false,
@@ -118,13 +125,21 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       updated_at: new Date().toISOString(),
       sentence_user_count: 0,
       sentence_hierarchy_count: 0,
-      text: '',
+      sentence_id: 0,
+      sentence: '',
+      userId: 0,
+      userName: '',
+      profile_icon_image: '',
+      evaluation_good_count: 0,
+      evaluation_stay_count: 0,
+      created_at: new Date().toISOString(),
     },
   ];
   const childrenPanel: Sentence[] = [
     {
       title: '',
-      //main_copy: '',
+      text: '',
+      textIndex: 0,
       overview: '',
       popular: false,
       newArrival: false,
@@ -136,12 +151,20 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       },
       author_user_name: '',
       chips: [],
+      created_at: new Date().toISOString(),
       tags: [],
       reader_count: 0,
       updated_at: new Date().toISOString(),
       sentence_user_count: 0,
       sentence_hierarchy_count: 0,
-      text: '',
+      main_copy: '',
+      sentence_id: 0,
+      sentence: '',
+      userId: 0,
+      userName: '',
+      profile_icon_image: '',
+      evaluation_good_count: 0,
+      evaluation_stay_count: 0,
     },
   ];
 
@@ -197,11 +220,38 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
             main_copy: '',
             overview: '',
             title: '',
+            textIndex: 0,
             popular: false,
-            // add other required properties here
+            newArrival: false,
+            avatar: {
+              src: '',
+              alt: '',
+              color: '',
+              text: '',
+            },
+            created_at: new Date().toISOString(),
+            author_user_name: '',
+            chips: [],
+            tags: [],
+            reader_count: 0,
+            sentence_user_count: 0,
+            sentence_hierarchy_count: 0,
+            text: '',
             children: childrenPanel,
+            parent: parentPanel,
+            main: mainPanel,
+            sentence_id: 0,
+            sentence: '',
+
+            userId: 0,
+            userName: '',
+            profile_icon_image: '',
+            evaluation_good_count: 0,
+            evaluation_stay_count: 0,
+            updated_at: new Date().toISOString(),
           }}
           onClick={() => {}}
+          textIndex={0}
           startIndex={start_index_children}
           setStartIndex={setStart_index_children}
           visibleTextCount={visibleTextCount}

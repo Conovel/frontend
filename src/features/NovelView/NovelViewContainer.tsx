@@ -5,6 +5,11 @@ import { Sentence } from '../../types/types';
 const main: Sentence[] = [
   {
     title: 'テストタイトル',
+    main_copy: 'テストメインコピー',
+    overview: 'テスト概要',
+    popular: false,
+    newArrival: false,
+    author_user_name: 'Kanepion',
     sentence_id: 1,
     userId: 123,
     userName: 'Kanepion',
@@ -15,27 +20,67 @@ const main: Sentence[] = [
     evaluation_stay_count: 0,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z',
+    chips: [], // 追加
+    tags: [], // 追加
+    reader_count: 0, // 追加
+    avatar: {
+      // 追加
+      src: '',
+      alt: '',
+      color: '',
+      text: '',
+    },
+    text: '',
+    textIndex: 0,
+    sentence_user_count: 0, // 追加
+    sentence_hierarchy_count: 0, // 追加
   },
 ];
 
 const parent: Sentence[] = [
   {
     title: 'テストタイトル',
+    text: 'テストテキスト',
+    main_copy: 'テストメインコピー',
+    overview: 'テスト概要',
+    popular: false,
+    newArrival: false,
+    author_user_name: 'Kanepion',
     sentence_id: 1,
     userId: 123,
     userName: 'Kanepion',
     sentence: '前の階層のテキスト1',
+    textIndex: 0,
     profile_icon_image: 'path/to/image.png',
     evaluation_good_count: 0,
     evaluation_stay_count: 0,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z',
+    chips: [], // 追加
+    tags: [], // 追加
+    reader_count: 0, // 追加
+    avatar: {
+      // 追加
+      src: '',
+      alt: '',
+      color: '',
+      text: '',
+    },
+    sentence_user_count: 0, // 追加
+    sentence_hierarchy_count: 0, // 追加
   },
 ];
 
 const children: Sentence[] = [
   {
     title: 'テストタイトル',
+    text: 'テストテキスト',
+    textIndex: 0,
+    main_copy: 'テストメインコピー',
+    overview: 'テスト概要',
+    popular: false,
+    newArrival: false,
+    author_user_name: 'Kanepion',
     sentence_id: 1,
     userId: 123,
     userName: 'Kanepion',
@@ -45,6 +90,18 @@ const children: Sentence[] = [
     evaluation_stay_count: 0,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z',
+    chips: [], // 追加
+    tags: [], // 追加
+    reader_count: 0, // 追加
+    avatar: {
+      // 追加
+      src: '',
+      alt: '',
+      color: '',
+      text: '',
+    },
+    sentence_user_count: 0, // 追加
+    sentence_hierarchy_count: 0, // 追加
   },
 ];
 

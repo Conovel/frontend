@@ -20,6 +20,7 @@ export interface Sentence {
   sentence_hierarchy_count: number;
   sentence: string;
   text: string;
+  textIndex: number;
   userId: number;
   userName: string;
   profile_icon_image: string;
@@ -138,6 +139,7 @@ export interface NovelProps {
   };
   author_user_name: string;
   chips: JSX.Element[];
+  created_at: string;
   tags: JSX.Element[];
   reader_count: number;
   updated_at: string;
@@ -151,4 +153,8 @@ export interface NovelProps {
   sentence_user_count: number;
   sentence_hierarchy_count: number;
   text: string;
+  textIndex: number;
+  children: Sentence[];
+  parent: Sentence[];
+  main: Sentence[];
 }

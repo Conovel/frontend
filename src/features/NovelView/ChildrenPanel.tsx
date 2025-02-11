@@ -23,6 +23,11 @@ interface ChildrenPanelProps {
   textIndex: number;
 }
 
+const handleClick = (sentenceId: number) => {
+  // Your logic here, using sentenceId
+  console.log(sentenceId);
+};
+
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   childrenPanel,
   startIndex,
@@ -107,7 +112,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
             >
               <NovelCard
                 novel={novel}
-                onClick={() => onClick(panel.sentence_id)}
+                onClick={() => handleClick(panel.sentence_id)}
                 key={index}
                 index={index}
                 textIndex={textIndex}
