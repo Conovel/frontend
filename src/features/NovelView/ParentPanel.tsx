@@ -59,6 +59,7 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
             updated_at: parentPanel.updated_at,
             sentence_user_count: parentPanel.sentence_user_count,
             sentence_hierarchy_count: parentPanel.sentence_hierarchy_count,
+            tags: parentPanel.tags,
             text: parentPanel.text,
             sentence_id: 0,
             sentence: '',
