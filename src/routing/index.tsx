@@ -44,6 +44,7 @@ export const Routing = () => {
                     author_user_name: '',
                     chips: [],
                     tags: [],
+                    textIndex: 0,
                     reader_count: 0,
                     avatar: {
                       src: '',
@@ -75,6 +76,7 @@ export const Routing = () => {
                     author_user_name: '',
                     chips: [],
                     tags: [],
+                    textIndex: 0,
                     reader_count: 0,
                     avatar: {
                       src: '',
@@ -106,6 +108,7 @@ export const Routing = () => {
                     author_user_name: '',
                     chips: [],
                     tags: [],
+                    textIndex: 0,
                     reader_count: 0,
                     avatar: {
                       src: '',

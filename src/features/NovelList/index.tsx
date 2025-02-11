@@ -64,14 +64,19 @@ const NovelList = () => {
           <NovelCardContainer
             novel={{
               ...novel,
-              text: novel.main_copy, // Add the required 'text' property
-              sentence_id: 0, // Add missing properties
-              sentence: '', // Add missing properties
-              userId: 0, // Add missing properties
-              userName: '', // Add missing properties
-              profile_icon_image: '', // Add missing properties
-              evaluation_good_count: 0, // Add missing properties
-              evaluation_stay_count: 0, // Add missing properties
+              text: novel.main_copy,
+              sentence_id: 0,
+              sentence: '',
+              userId: 0,
+              userName: '',
+              profile_icon_image: '',
+              evaluation_good_count: 0,
+              evaluation_stay_count: 0,
+              textIndex: 0,
+              created_at: '',
+              children: [],
+              parent: [],
+              main: [],
             }}
             onClick={() => {
               /* handle click */
