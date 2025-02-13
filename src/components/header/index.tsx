@@ -37,9 +37,13 @@ function HeaderBar() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexGrow: 1,
+                height: '50px',
               }}
             >
               <Box
+                onClick={() => {
+                  window.location.href = '/';
+                }}
                 component='img'
                 src={logo}
                 alt='Conovel Logo'
@@ -52,6 +56,9 @@ function HeaderBar() {
                 }}
               />
               <Box
+                onClick={() => {
+                  window.location.href = '/';
+                }}
                 component='img'
                 src={logo}
                 alt='Conovel Logo'
