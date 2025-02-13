@@ -32,6 +32,38 @@ import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 /**
  *
  * @export
+ * @interface ErrorResponse
+ */
+export interface ErrorResponse {
+  /**
+   *
+   * @type {ErrorResponseError}
+   * @memberof ErrorResponse
+   */
+  error?: ErrorResponseError;
+}
+/**
+ *
+ * @export
+ * @interface ErrorResponseError
+ */
+export interface ErrorResponseError {
+  /**
+   * エラーコード
+   * @type {number}
+   * @memberof ErrorResponseError
+   */
+  code?: number;
+  /**
+   * エラーメッセージ
+   * @type {string}
+   * @memberof ErrorResponseError
+   */
+  message?: string;
+}
+/**
+ *
+ * @export
  * @interface EvaluateSentence
  */
 export interface EvaluateSentence {

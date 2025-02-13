@@ -22,6 +22,7 @@ export const Routing = () => {
           <Route path='/account' element={<AccountSettings />} />
           <Route path='/account-deleted' element={<AccountDeleted />} />
           <Route path='/company' element={<CompanyPage />} />
+          <Route path='/list' element={<NovelList />} />
           <Route path='/terms' element={<TermsPage />} />
           <Route path='/deleteaccount' element={<DeleteAccountPage />} />
         </Route>
