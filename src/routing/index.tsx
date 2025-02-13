@@ -8,6 +8,7 @@ import { Box } from '@mui/material';
 import { AccountSettings } from '../features/AccountSettings/AccountSettings';
 import { DeleteAccountPage } from '../pages/deleteacounts';
 import { AccountDeleted } from '../features/DeleteAccount/AccountDeleted';
+import Login from '../pages/login';
 
 /**
  * ルーティング
@@ -25,6 +26,7 @@ export const Routing = () => {
           <Route path='/list' element={<NovelList />} />
           <Route path='/terms' element={<TermsPage />} />
           <Route path='/deleteaccount' element={<DeleteAccountPage />} />
+          <Route path='/login' element={<Login />} />
         </Route>
       </Routes>
     </>

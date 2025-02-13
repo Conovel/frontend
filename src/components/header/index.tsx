@@ -8,6 +8,7 @@ import { useState } from 'react';
 import logo from './image/conovel_header_logo.webp';
 
 import { MenuButton } from '../sidebar';
+import Button from '@mui/material/Button';
 
 function HeaderBar() {
   const [] = useState<HTMLElement | null>(null); // 修正: useStateの初期値を設定
@@ -60,6 +61,18 @@ function HeaderBar() {
                   height: 40,
                 }}
               />
+            </Box>
+            <Box>
+              <Button
+                variant='contained'
+                color='primary'
+                sx={{ mr: 2 }}
+                onClick={() => {
+                  window.location.href = '/login';
+                }}
+              >
+                ログイン
+              </Button>
             </Box>
           </Toolbar>
         </Box>
