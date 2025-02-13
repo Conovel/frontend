@@ -1,4 +1,4 @@
-import { NovelProps } from './presentation';
+import { NovelProps } from '../novelcard/presentation';
 declare const NovelCardContainer: ({
   novel,
   onClick,
