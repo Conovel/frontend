@@ -59,6 +59,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
               border: '1px solid #000',
               borderRadius: '10px',
               height: '30vh',
+              width: '80vw',
               alignItems: 'center',
               zIndex: 2,
               overflowY: 'auto',

@@ -25,15 +25,15 @@ const NovelCard = ({ novel, onClick }: NovelCardProps) => {
   const [evaluation_good_count, setEvaluation_good_count] = useState(0);
   const [comment_count, setComment_count] = useState(0);
   const [evaluation_stay_count, setEvaluation_stay_count] = useState(0);
-
   return (
     <Box
+      component='div'
       sx={{
         fontSize: '0.8rem',
         position: 'relative',
         backgroundColor: '#fff',
       }}
-      onClick={onClick}
+      onClick={() => onClick(novel.sentence_id)}
     >
       <Box
         sx={{

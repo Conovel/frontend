@@ -41,7 +41,6 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   evaluation_stay_count,
   setEvaluation_stay_count,
   novel,
-  onClick,
   textIndex,
 }) => {
   const handleScroll = (direction: 'next' | 'prev') => {

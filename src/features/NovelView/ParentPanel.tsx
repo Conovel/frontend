@@ -68,6 +68,11 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
             profile_icon_image: '',
             evaluation_good_count: 0,
             evaluation_stay_count: 0,
+            created_at: '',
+            textIndex: 0,
+            children: [],
+            parent: [],
+            main: [],
           }}
           onClick={() => {}}
           evaluation_good_count={evaluation_good_count}
