@@ -1,4 +1,5 @@
-import Grid from '@mui/material/Grid';
+import { Box, Grid } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import NovelCardContainer from '../../components/novelcard/container';
 import { Chips } from '../../components/chips';
 import { Tags } from '../../components/tags';
@@ -18,6 +19,11 @@ const config = new Configuration({
 
 const api = new SentencesApi(config);
 /*  API動作確認用 ここまで */
+
+const NovelItem = styled(Box)({
+  width: '100%',
+  marginBottom: '16px',
+});
 
 export const novels = [
   {
@@ -47,6 +53,7 @@ export const novels = [
 const NovelList = () => {
   /*  API動作確認用 */
   const [sentences, setSentences] = useState<Sentence[]>([]);
+
   const fetchSentences = async () => {
     try {
       const response = await api.getSentenceById(1);
@@ -58,27 +65,31 @@ const NovelList = () => {
   };
   /* API動作確認用 ここまで */
   return (
-    <Grid container spacing={2}>
-      {novels.map((novel) => (
-        <Grid item xs={12} sm={6} md={4} key={novel.title}>
-          <NovelCardContainer
-            novel={novel}
-            onClick={() => {
-              /* handle click */
-            }}
-          />
+    <Box>
+      <Grid container spacing={2}>
+        {novels.map((novel) => (
+          <Grid item xs={12} sm={6} md={4} key={novel.title}>
+            <NovelItem>
+              <NovelCardContainer
+                novel={novel}
+                onClick={() => {
+                  /* handle click */
+                }}
+              />
+            </NovelItem>
+          </Grid>
+        ))}
+      </Grid>
 
-          {/* API動作確認用 */}
-          <button onClick={fetchSentences}>Fetch Sentences</button>
-          <ul>
-            {sentences.map((main: Sentence) => (
-              <li key={main.sentence_id}>{main.sentence}</li>
-            ))}
-          </ul>
-          {/* API動作確認用 ここまで */}
-        </Grid>
-      ))}
-    </Grid>
+      {/* API動作確認用 */}
+      <button onClick={fetchSentences}>Fetch Sentences</button>
+      <ul>
+        {sentences.map((main: Sentence) => (
+          <li key={main.sentence_id}>{main.sentence}</li>
+        ))}
+      </ul>
+      {/* API動作確認用 ここまで */}
+    </Box>
   );
 };
 
