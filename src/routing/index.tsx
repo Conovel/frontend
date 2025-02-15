@@ -3,9 +3,9 @@ import HeaderBar from '../components/header';
 import { CompanyPage } from '../pages/company';
 import NovelList from '../features/NovelList';
 import { Footer } from '../components/footer';
-import { NovelViewPresentation } from '../features/NovelView/NovelViewPresentation';
 import { TermsPage } from '../pages/terms';
 import { Box } from '@mui/material';
+import { NovelViewContainer } from '../features/NovelView/NovelViewContainer';
 
 /**
  * ルーティング
@@ -21,132 +21,7 @@ export const Routing = () => {
           <Route path='/company' element={<CompanyPage />} />
           <Route path='/list' element={<NovelList />} />
           <Route path='/terms' element={<TermsPage />} />
-          <Route
-            path='/novelView'
-            element={
-              <NovelViewPresentation
-                mainPanel={[
-                  {
-                    title: 'Example sentence',
-                    sentence_id: 1,
-                    sentence: 'Example sentence',
-                    userId: 1,
-                    userName: 'User1',
-                    profile_icon_image: '',
-                    evaluation_good_count: 0,
-                    evaluation_stay_count: 0,
-                    created_at: '',
-                    updated_at: '',
-                    main_copy: '',
-                    overview: '',
-                    popular: false,
-                    newArrival: false,
-                    author_user_name: '',
-                    chips: [],
-                    tags: [],
-                    textIndex: 0,
-                    reader_count: 0,
-                    avatar: {
-                      src: '',
-                      alt: '',
-                      color: '',
-                      text: '',
-                    },
-                    sentence_user_count: 0,
-                    sentence_hierarchy_count: 0,
-                    text: '',
-                  },
-                ]}
-                parentPanel={[
-                  {
-                    title: 'Parent sentence',
-                    sentence_id: 2,
-                    sentence: 'Parent sentence',
-                    userId: 2,
-                    userName: 'User2',
-                    profile_icon_image: '',
-                    evaluation_good_count: 0,
-                    evaluation_stay_count: 0,
-                    created_at: '',
-                    updated_at: '',
-                    main_copy: '',
-                    overview: '',
-                    popular: false,
-                    newArrival: false,
-                    author_user_name: '',
-                    chips: [],
-                    tags: [],
-                    textIndex: 0,
-                    reader_count: 0,
-                    avatar: {
-                      src: '',
-                      alt: '',
-                      color: '',
-                      text: '',
-                    },
-                    sentence_user_count: 0,
-                    sentence_hierarchy_count: 0,
-                    text: '',
-                  },
-                ]}
-                childrenPanel={[
-                  {
-                    title: 'Child sentence',
-                    sentence_id: 3,
-                    sentence: 'Child sentence',
-                    userId: 3,
-                    userName: 'User3',
-                    profile_icon_image: '',
-                    evaluation_good_count: 0,
-                    evaluation_stay_count: 0,
-                    created_at: '',
-                    updated_at: '',
-                    main_copy: '',
-                    overview: '',
-                    popular: false,
-                    newArrival: false,
-                    author_user_name: '',
-                    chips: [],
-                    tags: [],
-                    textIndex: 0,
-                    reader_count: 0,
-                    avatar: {
-                      src: '',
-                      alt: '',
-                      color: '',
-                      text: '',
-                    },
-                    sentence_user_count: 0,
-                    sentence_hierarchy_count: 0,
-                    text: '',
-                  },
-                ]}
-                start_index_parent={0}
-                setStart_index_parent={() => {}}
-                evaluation_good_count_parent={0}
-                setEvaluation_good_count_parent={() => {}}
-                comment_count_parent={0}
-                setComment_count_parent={() => {}}
-                evaluation_stay_count_parent={0}
-                setEvaluation_stay_count_parent={() => {}}
-                textCount={0}
-                evaluation_good_count_main={0}
-                setEvaluation_good_count_main={() => {}}
-                comment_count_main={0}
-                setComment_count_main={() => {}}
-                evaluation_stay_count_main={0}
-                setEvaluation_stay_count_main={() => {}}
-                start_index_children={0}
-                setStart_index_children={() => {}}
-                evaluation_good_count_children={0}
-                setEvaluation_good_count_children={() => {}}
-                comment_count_children={0}
-                setComment_count_children={() => {}}
-                evaluation_stay_count_children={0}
-                setEvaluation_stay_count_children={() => {}}
-              />
-            }
-          />
+          <Route path='/novelView' element={<NovelViewContainer />} />
         </Route>
       </Routes>
     </>
