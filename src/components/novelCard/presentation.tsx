@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -136,6 +137,11 @@ const NovelModal = ({
   onClose: () => void;
   novel: NovelProps;
 }) => {
+  const navigate = useNavigate(); // historyを初期化
+  const handleReadMore = () => {
+    navigate('/novelView'); // novelViewページに遷移
+  };
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box
@@ -241,7 +247,16 @@ const NovelModal = ({
             <Button
               variant='contained'
               color='primary'
-              sx={{ backgroundColor: 'black', color: 'white', flex: 1 }}
+              sx={{
+                backgroundColor: 'black',
+                color: 'white',
+                flex: 1,
+                '&:hover': {
+                  backgroundColor: 'white',
+                  color: 'black',
+                },
+              }}
+              onClick={handleReadMore}
             >
               本文へ
             </Button>
