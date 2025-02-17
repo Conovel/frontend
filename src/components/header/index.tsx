@@ -2,16 +2,13 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
-
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import logo from './image/conovel_header_logo.webp';
-
 import { MenuButton } from '../sidebar';
-import Button from '@mui/material/Button';
 
 function HeaderBar() {
-  const [] = useState<HTMLElement | null>(null); // 修正: useStateの初期値を設定
+  const navigate = useNavigate();
 
   return (
     <AppBar position='sticky' color='default' sx={{ zIndex: 1201 }}>
@@ -20,7 +17,6 @@ function HeaderBar() {
           sx={{ display: 'sticky', justifyContent: 'center', width: '100%' }}
         >
           <Toolbar sx={{ justifyContent: 'space-between', width: '100%' }}>
-            {/* メニュー */}
             <Box
               sx={{
                 display: 'flex',
@@ -30,7 +26,6 @@ function HeaderBar() {
             >
               <MenuButton />
             </Box>
-            {/* ロゴ */}
             <Box
               sx={{
                 display: 'flex',
@@ -41,9 +36,7 @@ function HeaderBar() {
               }}
             >
               <Box
-                onClick={() => {
-                  window.location.href = '/';
-                }}
+                onClick={() => navigate('/')}
                 component='img'
                 src={logo}
                 alt='Conovel Logo'
@@ -56,9 +49,7 @@ function HeaderBar() {
                 }}
               />
               <Box
-                onClick={() => {
-                  window.location.href = '/';
-                }}
+                onClick={() => navigate('/')}
                 component='img'
                 src={logo}
                 alt='Conovel Logo'
@@ -69,18 +60,7 @@ function HeaderBar() {
                 }}
               />
             </Box>
-            <Box>
-              <Button
-                variant='contained'
-                color='primary'
-                sx={{ mr: 2 }}
-                onClick={() => {
-                  window.location.href = '/login';
-                }}
-              >
-                ログイン
-              </Button>
-            </Box>
+            <Box sx={{ width: 48 }} /> {/* スペース確保用 */}
           </Toolbar>
         </Box>
       </Container>
