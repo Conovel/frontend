@@ -92,6 +92,9 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     };
 
     setChildrenPanel((prev) => [...prev, newPost]);
+    const newIndex = Math.max(0, childrenPanel.length + 1 - visibleTextCount);
+    setStartIndex(newIndex);
+
     console.log('投稿されたテキスト:', text);
   };
 
@@ -143,6 +146,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
               {prev && <KeyboardArrowLeftIcon />}
             </Button>
           )}
+          index={Math.floor(startIndex / visibleTextCount)}
         >
           {childrenPanel.map((panel, index) => (
             <Box
