@@ -34,5 +34,5 @@ interface NovelViewPresentationProps {
   setEvaluation_stay_count_main: React.Dispatch<React.SetStateAction<number>>;
   textCount: number;
 }
-export declare const NovelViewPresentation: React.FC<NovelViewPresentationProps>;
-export {};
+declare const NovelViewPresentation: React.FC<NovelViewPresentationProps>;
+export default NovelViewPresentation;

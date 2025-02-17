@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Fab } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelcard/NovelCard';
 import { Sentence, NovelProps } from '../../types/types';
+import CreateIcon from '@mui/icons-material/Create';
+import { EditPost } from '../EditPost';
 
 interface ChildrenPanelProps {
   childrenPanel: Sentence[];
+  setChildrenPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
+  mainPanel: Sentence[];
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
@@ -30,6 +34,8 @@ const handleClick = (sentenceId: number) => {
 
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   childrenPanel,
+  setChildrenPanel,
+  mainPanel,
   startIndex,
   setStartIndex,
   visibleTextCount,
@@ -43,12 +49,50 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   novel,
   textIndex,
 }) => {
+  const [isEditPostOpen, setIsEditPostOpen] = useState(false);
+
   const handleScroll = (direction: 'next' | 'prev') => {
     if (direction === 'next' && startIndex + visibleTextCount < textCount) {
       setStartIndex(startIndex + visibleTextCount);
     } else if (direction === 'prev' && startIndex > 0) {
       setStartIndex(startIndex - visibleTextCount);
     }
+  };
+
+  const handleSubmitPost = (text: string) => {
+    const newPost: Sentence = {
+      sentence_id: childrenPanel.length + 1,
+      sentence: text,
+      text: text,
+      userName: 'Current User',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      title: '',
+      textIndex: 0,
+      main_copy: '',
+      overview: '',
+      popular: false,
+      newArrival: false,
+      avatar: {
+        src: '',
+        alt: '',
+        color: '',
+        text: '',
+      },
+      author_user_name: '',
+      chips: [],
+      tags: [],
+      reader_count: 0,
+      sentence_user_count: 0,
+      sentence_hierarchy_count: 0,
+      userId: 0,
+      profile_icon_image: '',
+      evaluation_good_count: 0,
+      evaluation_stay_count: 0,
+    };
+
+    setChildrenPanel((prev) => [...prev, newPost]);
+    console.log('投稿されたテキスト:', text);
   };
 
   return (
@@ -127,6 +171,30 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
           ))}
         </Carousel>
       </Box>
+      <Fab
+        aria-label='add post'
+        sx={{
+          color: '#fff',
+          backgroundColor: '#467DCC',
+          position: 'absolute',
+          bottom: '10vh',
+          left: '0vw',
+          zIndex: 5,
+          '&:hover': {
+            backgroundColor: '#0E4DC7',
+          },
+        }}
+        onClick={() => setIsEditPostOpen(true)}
+      >
+        <CreateIcon />
+      </Fab>
+
+      <EditPost
+        open={isEditPostOpen}
+        onClose={() => setIsEditPostOpen(false)}
+        onSubmit={handleSubmitPost}
+        mainText={mainPanel[mainPanel.length - 1]?.sentence || ''}
+      />
     </Box>
   );
 };

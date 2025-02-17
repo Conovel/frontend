@@ -1,4 +1,4 @@
-import { NovelViewPresentation } from './NovelViewPresentation';
+import NovelViewPresentation from './NovelViewPresentation';
 import { useState } from 'react';
 import { Sentence } from '../../types/types';
 
