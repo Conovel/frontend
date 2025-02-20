@@ -22,6 +22,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import LoginIcon from '@mui/icons-material/Login';
 
 const getMenuItems = (isLoggedIn: boolean, handleLogout: () => void) => [
   { name: 'ホーム', icon: <HomeIcon />, link: '/' },
@@ -225,7 +226,7 @@ const ListComponent: React.FC<{
                     }}
                   >
                     <Box sx={{ fontSize: 20 }}>
-                      <LogoutIcon />
+                      <LoginIcon />
                     </Box>
                     <Typography
                       variant='caption'
