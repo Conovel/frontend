@@ -9,6 +9,8 @@ import { AccountSettings } from '../features/AccountSettings/AccountSettings';
 import { DeleteAccountPage } from '../pages/deleteacounts';
 import { AccountDeleted } from '../features/DeleteAccount/AccountDeleted';
 import Login from '../pages/login';
+import { NovelViewContainer } from '../features/NovelView/NovelViewContainer';
+
 
 /**
  * ルーティング
@@ -27,6 +29,7 @@ export const Routing = () => {
           <Route path='/terms' element={<TermsPage />} />
           <Route path='/deleteaccount' element={<DeleteAccountPage />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/novelView' element={<NovelViewContainer />} />
         </Route>
       </Routes>
     </>

@@ -1,5 +1,7 @@
 import { Box, Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import Grid from '@mui/material/Grid';
+
 import NovelCardContainer from '../../components/novelcard/container';
 import { Chips } from '../../components/chips';
 import { Tags } from '../../components/tags';
@@ -65,22 +67,32 @@ const NovelList = () => {
   };
   /* API動作確認用 ここまで */
   return (
-    <Box>
-      <Grid container spacing={2}>
-        {novels.map((novel) => (
-          <Grid item xs={12} sm={6} md={4} key={novel.title}>
-            <NovelItem>
-              <NovelCardContainer
-                novel={novel}
-                onClick={() => {
-                  /* handle click */
-                }}
-              />
-            </NovelItem>
-          </Grid>
-        ))}
-      </Grid>
-
+    <Grid container spacing={2}>
+      {novels.map((novel) => (
+        <Grid item xs={12} sm={6} md={4} key={novel.title}>
+          <NovelCardContainer
+            novel={{
+              ...novel,
+              text: novel.main_copy,
+              sentence_id: 0,
+              sentence: '',
+              userId: 0,
+              userName: '',
+              profile_icon_image: '',
+              evaluation_good_count: 0,
+              evaluation_stay_count: 0,
+              textIndex: 0,
+              created_at: '',
+              children: [],
+              parent: [],
+              main: [],
+            }}
+            onClick={() => {
+              /* handle click */
+            }}
+          />
+        </Grid>
+      ))}
       {/* API動作確認用 */}
       <button onClick={fetchSentences}>Fetch Sentences</button>
       <ul>
@@ -89,7 +101,7 @@ const NovelList = () => {
         ))}
       </ul>
       {/* API動作確認用 ここまで */}
-    </Box>
+    </Grid>
   );
 };
 
