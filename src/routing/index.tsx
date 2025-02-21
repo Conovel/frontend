@@ -11,7 +11,6 @@ import { AccountDeleted } from '../features/DeleteAccount/AccountDeleted';
 import Login from '../pages/login';
 import { NovelViewContainer } from '../features/NovelView/NovelViewContainer';
 
-
 /**
  * ルーティング
  * TODO：URLは別途定義でも良いかも

@@ -1,7 +1,4 @@
-import { Box, Grid } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Grid from '@mui/material/Grid';
-
+import { Grid } from '@mui/material';
 import NovelCardContainer from '../../components/novelcard/container';
 import { Chips } from '../../components/chips';
 import { Tags } from '../../components/tags';
@@ -21,11 +18,6 @@ const config = new Configuration({
 
 const api = new SentencesApi(config);
 /*  API動作確認用 ここまで */
-
-const NovelItem = styled(Box)({
-  width: '100%',
-  marginBottom: '16px',
-});
 
 export const novels = [
   {
