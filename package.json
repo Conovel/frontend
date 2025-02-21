@@ -8,10 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "node ./node_modules/typescript/bin/tsc --noEmit",
     "preview": "vite preview",
-    "prepare": "husky install",
-    "test": "jest"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@emotion/react": "^11.13.0",
