@@ -52,9 +52,15 @@ export const EditPost: React.FC<EditPostProps> = ({
           rows={4}
           fullWidth
           value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder='続きの文章を入力してください'
+          onChange={(e) => {
+            if (e.target.value.length <= 100) {
+              setText(e.target.value);
+            }
+          }}
+          placeholder='続きの文章を入力してください (100文字以内)'
           sx={{ mt: 2 }}
+          inputProps={{ maxLength: 100 }}
+          helperText={`${text.length}/100文字`}
         />
       </DialogContent>
       <DialogActions>
