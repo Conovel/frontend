@@ -1,14 +1,14 @@
 import {
   TextField,
   Button,
-  Dialog,
-  DialogActions,
   DialogContent,
-  DialogTitle,
   Typography,
   Box,
+  Modal,
 } from '@mui/material';
-import { useState } from 'react';
+import { z } from 'zod';
+import { FieldValues, useForm, useWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface EditPostProps {
   open: boolean;
@@ -17,60 +17,108 @@ interface EditPostProps {
   mainText: string;
 }
 
+// バリデーションスキーマを定義
+const schema = z.object({
+  text: z.string().max(100, '100文字以内で入力してください'),
+});
+
 export const EditPost: React.FC<EditPostProps> = ({
   open,
   onClose,
   onSubmit,
   mainText,
 }) => {
-  const [text, setText] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
 
-  const handleSubmit = () => {
+  const watchText = useWatch({ control, name: 'text' });
+
+  const onSubmitForm = (data: FieldValues) => {
+    const text = data.text as string;
     onSubmit(text);
-    setText('');
     onClose();
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth='md' fullWidth>
-      <DialogTitle>新規投稿</DialogTitle>
-      <DialogContent>
-        <Box
-          sx={{
-            p: 2,
-            mb: 2,
-            backgroundColor: '#f5f5f5',
-            borderRadius: 1,
-            border: '1px solid #e0e0e0',
-          }}
-        >
-          <Typography variant='body1'>{mainText}</Typography>
-        </Box>
-        <TextField
-          autoFocus
-          multiline
-          rows={4}
-          fullWidth
-          value={text}
-          onChange={(e) => {
-            if (e.target.value.length <= 100) {
-              setText(e.target.value);
-            }
-          }}
-          placeholder='続きの文章を入力してください (100文字以内)'
-          sx={{ mt: 2 }}
-          inputProps={{ maxLength: 100 }}
-          helperText={`${text.length}/100文字`}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color='inherit'>
-          キャンセル
-        </Button>
-        <Button onClick={handleSubmit} color='primary' variant='contained'>
-          投稿する
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <Modal
+      open={open}
+      onClose={onClose}
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        zIndex: 1000,
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: '#fff',
+          border: '1px solid #e0e0e0',
+          borderRadius: '8px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+          padding: '16px',
+        }}
+      >
+        <DialogContent>
+          <Box
+            sx={{
+              p: 2,
+              mb: 2,
+              backgroundColor: '#f5f5f5',
+              borderRadius: 1,
+              border: '1px solid #e0e0e0',
+              position: 'relative',
+            }}
+          >
+            <Typography variant='body1'>{mainText}</Typography>
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '90%',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '1px',
+                height: '50px',
+                backgroundColor: '#000',
+                zIndex: 1,
+              }}
+            />
+          </Box>
+          <form
+            onSubmit={handleSubmit(onSubmitForm)}
+            style={{ position: 'relative', zIndex: 2 }}
+          >
+            <TextField
+              autoFocus
+              multiline
+              rows={4}
+              fullWidth
+              {...register('text')}
+              placeholder='続きの文章を入力してください (100文字以内)'
+              sx={{ mt: 2 }}
+              helperText={errors.text?.message as React.ReactNode}
+            />
+            <Typography variant='body2' sx={{ mt: 1 }}>
+              {`文字数: ${watchText?.length || 0} / 100`}
+            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+              <Button onClick={onClose} color='inherit' sx={{ mr: 1 }}>
+                キャンセル
+              </Button>
+              <Button type='submit' color='primary' variant='contained'>
+                投稿する
+              </Button>
+            </Box>
+          </form>
+        </DialogContent>
+      </div>
+    </Modal>
   );
 };
