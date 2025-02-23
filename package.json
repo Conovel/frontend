@@ -66,5 +66,10 @@
       "prettier --write",
       "stylelint --fix"
     ]
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
