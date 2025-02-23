@@ -3,8 +3,8 @@ import Carousel from 'react-material-ui-carousel';
 import { Box, Button } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import NovelCard from '../../components/novelcard/NovelCard';
 import { Sentence, NovelProps } from '../../types/types';
+import NovelCard from '../../components/novelCard/NovelCard';
 
 interface ChildrenPanelProps {
   childrenPanel: Sentence[];
