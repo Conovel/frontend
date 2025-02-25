@@ -7,7 +7,7 @@ import {
   Modal,
 } from '@mui/material';
 import { z } from 'zod';
-import { FieldValues, useForm, useWatch } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 interface EditPostProps {
@@ -22,6 +22,9 @@ const schema = z.object({
   text: z.string().max(100, '100文字以内で入力してください'),
 });
 
+// Zodスキーマから型を取得
+type EditPostFormValues = z.infer<typeof schema>;
+
 export const EditPost: React.FC<EditPostProps> = ({
   open,
   onClose,
@@ -33,14 +36,15 @@ export const EditPost: React.FC<EditPostProps> = ({
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm({
+  } = useForm<EditPostFormValues>({
     resolver: zodResolver(schema),
   });
 
   const watchText = useWatch({ control, name: 'text' });
+  const textLength = watchText?.length;
 
-  const onSubmitForm = (data: FieldValues) => {
-    const text = data.text as string;
+  const onSubmitForm = (data: EditPostFormValues) => {
+    const text = data.text;
     onSubmit(text);
     onClose();
   };
@@ -106,13 +110,18 @@ export const EditPost: React.FC<EditPostProps> = ({
               helperText={errors.text?.message as React.ReactNode}
             />
             <Typography variant='body2' sx={{ mt: 1 }}>
-              {`文字数: ${watchText?.length || 0} / 100`}
+              {`文字数: ${textLength} / 100`}
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
               <Button onClick={onClose} color='inherit' sx={{ mr: 1 }}>
                 キャンセル
               </Button>
-              <Button type='submit' color='primary' variant='contained'>
+              <Button
+                type='submit'
+                color='primary'
+                variant='contained'
+                disabled={textLength > 100}
+              >
                 投稿する
               </Button>
             </Box>
