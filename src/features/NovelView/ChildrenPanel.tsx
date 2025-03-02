@@ -59,43 +59,18 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     }
   };
 
-  const handleSubmitPost = (text: string) => {
-    const newPost: Sentence = {
+  const handleSubmitPost = (newSentence: Sentence) => {
+    // Update the sentence_id to be unique
+    const updatedSentence: Sentence = {
+      ...newSentence,
       sentence_id: childrenPanel.length + 1,
-      sentence: text,
-      text: text,
-      userName: 'Current User',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      title: '',
-      textIndex: 0,
-      main_copy: '',
-      overview: '',
-      popular: false,
-      newArrival: false,
-      avatar: {
-        src: '',
-        alt: '',
-        color: '',
-        text: '',
-      },
-      author_user_name: '',
-      chips: [],
-      tags: [],
-      reader_count: 0,
-      sentence_user_count: 0,
-      sentence_hierarchy_count: 0,
-      userId: 0,
-      profile_icon_image: '',
-      evaluation_good_count: 0,
-      evaluation_stay_count: 0,
     };
 
-    setChildrenPanel((prev) => [...prev, newPost]);
+    setChildrenPanel((prev) => [...prev, updatedSentence]);
     const newIndex = Math.max(0, childrenPanel.length + 1 - visibleTextCount);
     setStartIndex(newIndex);
 
-    console.log('投稿されたテキスト:', text);
+    console.log('投稿されたテキスト:', updatedSentence.text);
   };
 
   return (

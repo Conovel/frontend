@@ -9,11 +9,12 @@ import {
 import { z } from 'zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Sentence } from '../../types/types';
 
 interface EditPostProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (text: string) => void;
+  onSubmit: (sentence: Sentence) => void;
   mainText: string;
 }
 
@@ -45,7 +46,38 @@ export const EditPost: React.FC<EditPostProps> = ({
 
   const onSubmitForm = (data: EditPostFormValues) => {
     const text = data.text;
-    onSubmit(text);
+    // Create a new Sentence object with the text
+    const newSentence: Sentence = {
+      sentence_id: 0, // This will be set by the parent component
+      sentence: text,
+      text: text,
+      userName: 'Current User',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      title: '',
+      textIndex: 0,
+      main_copy: '',
+      overview: '',
+      popular: false,
+      newArrival: false,
+      avatar: {
+        src: '',
+        alt: '',
+        color: '',
+        text: '',
+      },
+      author_user_name: '',
+      chips: [],
+      tags: [],
+      reader_count: 0,
+      sentence_user_count: 0,
+      sentence_hierarchy_count: 0,
+      userId: 0,
+      profile_icon_image: '',
+      evaluation_good_count: 0,
+      evaluation_stay_count: 0,
+    };
+    onSubmit(newSentence);
     onClose();
   };
 
@@ -107,7 +139,7 @@ export const EditPost: React.FC<EditPostProps> = ({
               {...register('text')}
               placeholder='続きの文章を入力してください (100文字以内)'
               sx={{ mt: 2 }}
-              helperText={errors.text?.message as React.ReactNode}
+              helperText={errors.text?.message}
             />
             <Typography variant='body2' sx={{ mt: 1 }}>
               {`文字数: ${textLength} / 100`}
