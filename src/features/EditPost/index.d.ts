@@ -1,7 +1,8 @@
+import { Sentence } from '../../types/types';
 interface EditPostProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (text: string) => void;
+  onSubmit: (sentence: Sentence) => void;
   mainText: string;
 }
 export declare const EditPost: React.FC<EditPostProps>;
