@@ -4,10 +4,19 @@ import App from './App';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 
-createRoot(document.getElementById('root') as HTMLElement).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </StrictMode>,
-);
+async function enableMocking() {
+  if (!import.meta.env.PROD) {
+    const { worker } = await import('../src/mock/browser');
+    worker.start();
+  }
+}
+
+enableMocking().then(() => {
+  createRoot(document.getElementById('root') as HTMLElement).render(
+    <StrictMode>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </StrictMode>,
+  );
+});
