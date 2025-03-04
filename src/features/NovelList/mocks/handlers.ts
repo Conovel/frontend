@@ -3,7 +3,7 @@ import { NovelListItem } from '../../../api/api';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
-export const handlers = [
+export const novelListHandlers = [
   // 小説一覧取得APIモック
   http.get(`${apiBaseUrl}/novels`, () => {
     const response: NovelListItem[] = [

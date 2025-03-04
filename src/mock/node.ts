@@ -1,4 +1,6 @@
 import { setupServer } from 'msw/node';
-import { handlers } from '../features/NovelList/mocks/handlers';
+import { novelListHandlers } from '../features/NovelList/mocks/handlers';
+
+const handlers = [...novelListHandlers];
 
 export const server = setupServer(...handlers);
