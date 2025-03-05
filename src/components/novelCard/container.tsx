@@ -1,5 +1,5 @@
-import NovelCard from './NovelCard';
 import { NovelProps } from '../../types/types';
+import NovelCard from './presentation';
 
 const NovelCardContainer = ({
   novel,
@@ -8,28 +8,7 @@ const NovelCardContainer = ({
   novel: NovelProps;
   onClick: () => void;
 }) => {
-  return (
-    <NovelCard
-      novel={novel}
-      onClick={onClick}
-      key={0}
-      index={0}
-      textIndex={0}
-      text={''}
-      evaluation_good_count={0}
-      setEvaluation_good_count={function (): void {
-        throw new Error('Function not implemented.');
-      }}
-      comment_count={0}
-      setComment_count={function (): void {
-        throw new Error('Function not implemented.');
-      }}
-      evaluation_stay_count={0}
-      setEvaluation_stay_count={function (): void {
-        throw new Error('Function not implemented.');
-      }}
-    />
-  );
+  return <NovelCard novel={novel} onClick={onClick} key={0} />;
 };
 
 export default NovelCardContainer;
