@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { Box, Button, Fab } from '@mui/material';
+import { Box, Fab } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelcard/NovelCard';
