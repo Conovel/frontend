@@ -4,7 +4,7 @@ import { Box, Button, Fab } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelcard/NovelCard';
-import { Sentence, NovelProps, CreateSentenceRequest } from '../../';
+import { Sentence, NovelProps, CreateSentenceRequest } from '../../types/types';
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
 
@@ -50,6 +50,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   textIndex,
 }) => {
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const handleScroll = (direction: 'next' | 'prev') => {
     if (direction === 'next' && startIndex + visibleTextCount < textCount) {
@@ -119,8 +120,16 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       >
         <Carousel
           autoPlay={false}
-          next={() => handleScroll('next')}
-          prev={() => handleScroll('prev')}
+          index={activeIndex}
+          onChange={(now: number) => {
+            setActiveIndex(now);
+            // 必要に応じてstartIndexも更新
+            if (now > activeIndex) {
+              handleScroll('next');
+            } else if (now < activeIndex) {
+              handleScroll('prev');
+            }
+          }}
           fullHeightHover={false}
           navButtonsProps={{
             style: {
@@ -138,20 +147,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
               padding: '0 1vw',
             },
           }}
-          NavButton={({ onClick, style, next, prev }: {
-            onClick: React.MouseEventHandler<HTMLButtonElement>;
-            style: React.CSSProperties;
-            next: boolean;
-            prev: boolean;
-          }) => (
-            <Button
-              onClick={onClick}
-              style={style}
-            >
-              {next ? <KeyboardArrowRightIcon /> : <KeyboardArrowLeftIcon />}
-            </Button>
-          )}
-          index={Math.floor(startIndex / visibleTextCount)}
+          NextIcon={<KeyboardArrowRightIcon />}
+          PrevIcon={<KeyboardArrowLeftIcon />}
         >
           {childrenPanel.map((panel, index) => (
             <Box
