@@ -1,4 +1,6 @@
 // types.ts
+import React from 'react';
+
 export interface Sentence {
   title: string;
   main_copy: string;
@@ -6,8 +8,8 @@ export interface Sentence {
   popular: boolean;
   newArrival: boolean;
   author_user_name: string;
-  chips: JSX.Element[];
-  tags: JSX.Element[];
+  chips: React.ReactNode[];
+  tags: React.ReactNode[];
   reader_count: number;
   avatar: {
     src: string;
@@ -138,9 +140,9 @@ export interface NovelProps {
     text: string;
   };
   author_user_name: string;
-  chips: JSX.Element[];
+  chips: React.ReactNode[];
   created_at: string;
-  tags: JSX.Element[];
+  tags: React.ReactNode[];
   reader_count: number;
   updated_at: string;
   sentence_id: number;
@@ -157,4 +159,9 @@ export interface NovelProps {
   children: Sentence[];
   parent: Sentence[];
   main: Sentence[];
+}
+
+// リクエスト用の新しい型
+export interface CreateSentenceRequest {
+  text: string;
 }

@@ -4,7 +4,7 @@ import { Box, Button, Fab } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelcard/NovelCard';
-import { Sentence, NovelProps } from '../../types/types';
+import { Sentence, NovelProps, CreateSentenceRequest } from '../../';
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
 
@@ -59,18 +59,44 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     }
   };
 
-  const handleSubmitPost = (newSentence: Sentence) => {
-    // Update the sentence_id to be unique
-    const updatedSentence: Sentence = {
-      ...newSentence,
+  const handleSubmitPost = (sentenceRequest: CreateSentenceRequest) => {
+    // リクエストからSentenceオブジェクトを作成
+    const newSentence: Sentence = {
       sentence_id: childrenPanel.length + 1,
+      sentence: sentenceRequest.text,
+      text: sentenceRequest.text,
+      userName: 'Current User',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      title: '',
+      textIndex: 0,
+      main_copy: '',
+      overview: '',
+      popular: false,
+      newArrival: false,
+      avatar: {
+        src: '',
+        alt: '',
+        color: '',
+        text: '',
+      },
+      author_user_name: '',
+      chips: [],
+      tags: [],
+      reader_count: 0,
+      sentence_user_count: 0,
+      sentence_hierarchy_count: 0,
+      userId: 0,
+      profile_icon_image: '',
+      evaluation_good_count: 0,
+      evaluation_stay_count: 0,
     };
 
-    setChildrenPanel((prev) => [...prev, updatedSentence]);
+    setChildrenPanel((prev) => [...prev, newSentence]);
     const newIndex = Math.max(0, childrenPanel.length + 1 - visibleTextCount);
     setStartIndex(newIndex);
 
-    console.log('投稿されたテキスト:', updatedSentence.text);
+    console.log('投稿されたテキスト:', newSentence.text);
   };
 
   return (
@@ -112,13 +138,17 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
               padding: '0 1vw',
             },
           }}
-          NavButton={({ onClick, style, next, prev }) => (
+          NavButton={({ onClick, style, next, prev }: {
+            onClick: React.MouseEventHandler<HTMLButtonElement>;
+            style: React.CSSProperties;
+            next: boolean;
+            prev: boolean;
+          }) => (
             <Button
-              onClick={onClick as React.MouseEventHandler<HTMLButtonElement>}
+              onClick={onClick}
               style={style}
             >
-              {next && <KeyboardArrowRightIcon />}
-              {prev && <KeyboardArrowLeftIcon />}
+              {next ? <KeyboardArrowRightIcon /> : <KeyboardArrowLeftIcon />}
             </Button>
           )}
           index={Math.floor(startIndex / visibleTextCount)}
