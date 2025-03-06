@@ -184,7 +184,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
           backgroundColor: '#467DCC',
           position: 'absolute',
           bottom: '10vh',
-          left: '0vw',
+          right: '0vw',
           zIndex: 5,
           '&:hover': {
             backgroundColor: '#0E4DC7',
