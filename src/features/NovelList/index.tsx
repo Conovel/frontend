@@ -3,28 +3,15 @@ import { Chips } from '../../components/chips';
 import { Tags } from '../../components/tags';
 import { useState } from 'react'; // API動作確認用
 import { NovelsApi } from '../../api/api'; // API動作確認用
-import { Configuration } from '../../api/configuration'; // API動作確認用
 import NovelCardContainer from '../../components/novelCard/container';
-import { worker } from './mocks/browser';
 import { NovelListItem } from '../../types/types';
 import { convertNovelListResponse } from './convert';
 import { Box, Typography } from '@mui/material';
+import { axiosConfig } from '../../axiosConfig';
 
 /*  API動作確認用 */
-const apiBaseUrl = import.meta.env.PROD
-  ? import.meta.env.VITE_PRODUCTION_API_BASE_URL
-  : import.meta.env.VITE_DEVELOPMENT_API_BASE_URL;
 
-if (!import.meta.env.PROD) {
-  worker.start();
-}
-
-const config = new Configuration({
-  basePath: apiBaseUrl,
-  // apiKey: 'your-api-key', // APIキーが必要な場合は設定
-});
-
-const novelsApi = new NovelsApi(config);
+const novelsApi = new NovelsApi(axiosConfig);
 /*  API動作確認用 ここまで */
 
 export const novels = [
