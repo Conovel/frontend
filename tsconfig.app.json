@@ -22,7 +22,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     /* Jest and Testing Library */
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src"]
 }

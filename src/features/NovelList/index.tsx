@@ -1,22 +1,21 @@
 import Grid from '@mui/material/Grid';
-import NovelCardContainer from '../../components/novelCard/container';
+import NovelCardContainer from '../../components/novelcard/container';
 import { Chips } from '../../components/chips';
 import { Tags } from '../../components/tags';
 import { useState } from 'react'; // API動作確認用
-import { SentencesApi, Sentence } from '../../api/api'; // API動作確認用
-import { Configuration } from '../../api/configuration'; // API動作確認用
+import {
+  NovelsApi,
+  SentencesApi,
+  Sentence as ApiSentence,
+} from '../../api/api'; // API動作確認用
+import { NovelListItem, Sentence } from '../../types/types';
+import { Box, Typography } from '@mui/material';
+import { axiosConfig } from '../../axiosConfig';
 
 /*  API動作確認用 */
-const apiBaseUrl = import.meta.env.PROD
-  ? import.meta.env.VITE_PRODUCTION_API_BASE_URL
-  : import.meta.env.VITE_DEVELOPMENT_API_BASE_URL;
 
-const config = new Configuration({
-  basePath: apiBaseUrl,
-  // apiKey: 'your-api-key', // APIキーが必要な場合は設定
-});
-
-const api = new SentencesApi(config);
+const novelsApi = new NovelsApi(axiosConfig);
+const sentencesApi = new SentencesApi(axiosConfig);
 /*  API動作確認用 ここまで */
 
 export const novels = [
@@ -49,8 +48,45 @@ const NovelList = () => {
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const fetchSentences = async () => {
     try {
-      const response = await api.getSentenceById(1);
-      setSentences(response.data.main ? [response.data.main] : []);
+      const response = await sentencesApi.getSentenceById(1);
+      // APIのレスポンスを適切な形式に変換
+      if (response.data.main) {
+        const apiSentence = response.data.main;
+        // 必要なプロパティを持つオブジェクトを作成
+        const convertedSentence: Sentence = {
+          title: '',
+          main_copy: '',
+          overview: '',
+          popular: false,
+          newArrival: false,
+          author_user_name: apiSentence.sentence_user_name || '',
+          chips: [],
+          tags: [],
+          reader_count: 0,
+          avatar: {
+            src: '',
+            alt: '',
+            color: '',
+            text: '',
+          },
+          sentence_id: apiSentence.sentence_id || 0,
+          sentence_user_count: 0,
+          sentence_hierarchy_count: 0,
+          sentence: apiSentence.sentence || '',
+          text: apiSentence.sentence || '',
+          textIndex: 0,
+          userId: apiSentence.sentence_user_id || 0,
+          userName: apiSentence.sentence_user_name || '',
+          profile_icon_image: apiSentence.profile_icon_image || '',
+          evaluation_good_count: apiSentence.evaluation_good_count || 0,
+          evaluation_stay_count: apiSentence.evaluation_stay_count || 0,
+          created_at: apiSentence.created_at || '',
+          updated_at: apiSentence.updated_at || '',
+        };
+        setSentences([convertedSentence]);
+      } else {
+        setSentences([]);
+      }
     } catch (error) {
       // TODO: エラー時の対応について要検討（エラーがわかるような画面にするかなど）
       console.error('Error fetching sentences:', error);
