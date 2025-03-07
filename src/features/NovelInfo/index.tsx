@@ -5,8 +5,8 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import { novels } from '../NovelList';
 import { Grid } from '@mui/material';
+import { NovelProps } from '../../types/types';
 import NovelCardContainer from '../../components/novelcard/container';
-import { NovelProps } from '../../components/novelcard/presentation';
 
 const style = {
   position: 'absolute',

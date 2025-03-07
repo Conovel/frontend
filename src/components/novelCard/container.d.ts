@@ -1,4 +1,3 @@
-import { NovelProps } from '../novelcard/presentation';
 import { NovelProps } from '../../types/types';
 declare const NovelCardContainer: ({
   novel,

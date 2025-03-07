@@ -1,4 +1,4 @@
-import { NovelProps } from '../../components/novelcard/presentation';
+import { NovelProps } from '../../types/types';
 interface TransitionsModalProps {
   open: boolean;
   handleClose: () => void;
