@@ -90,7 +90,7 @@ export declare const createRequestFunction: (
   globalAxios: AxiosInstance,
   BASE_PATH: string,
   configuration?: Configuration,
-) => <T = unknown, R = AxiosResponse<T, any>>(
+) => <T = unknown, R = AxiosResponse<T>>(
   axios?: AxiosInstance,
   basePath?: string,
 ) => Promise<R>;
