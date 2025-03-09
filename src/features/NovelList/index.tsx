@@ -1,20 +1,13 @@
 import Grid from '@mui/material/Grid';
-import NovelCardContainer from '../../components/novelcard/container';
+import NovelCardContainer from '../../components/novelCard/container';
 import { Chips } from '../../components/chips';
 import { Tags } from '../../components/tags';
 import { useState } from 'react'; // API動作確認用
-import {
-  NovelsApi,
-  SentencesApi,
-  Sentence as ApiSentence,
-} from '../../api/api'; // API動作確認用
-import { NovelListItem, Sentence } from '../../types/types';
-import { Box, Typography } from '@mui/material';
+import { SentencesApi } from '../../api/api'; // API動作確認用
+import { Sentence } from '../../types/types';
 import { axiosConfig } from '../../axiosConfig';
 
 /*  API動作確認用 */
-
-const novelsApi = new NovelsApi(axiosConfig);
 const sentencesApi = new SentencesApi(axiosConfig);
 /*  API動作確認用 ここまで */
 

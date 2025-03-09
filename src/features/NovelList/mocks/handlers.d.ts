@@ -1,1 +1,1 @@
-export declare const novelListHandlers: any[];
+export declare const novelListHandlers: import('msw').HttpHandler[];

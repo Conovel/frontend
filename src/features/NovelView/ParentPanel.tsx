@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import NovelCard from '../../components/novelcard/NovelCard';
+import NovelCard from '../../components/novelCard/NovelCard';
 import { NovelProps } from '../../types/types';
 
 interface ParentPanelProps {

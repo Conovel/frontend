@@ -47,6 +47,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^15.2.9",
+    "msw": "^2.7.3",
     "prettier": "^3.3.3",
     "react-hook-form": "^7.54.2",
     "react-material-ui-carousel": "^3.4.2",
@@ -66,6 +67,11 @@
     "src/**/*.scss": [
       "prettier --write",
       "stylelint --fix"
+    ]
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
     ]
   }
 }

@@ -1,1 +1,1 @@
-export declare const server: any;
+export declare const server: import('msw/node').SetupServerApi;
