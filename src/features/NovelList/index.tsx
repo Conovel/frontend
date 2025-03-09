@@ -3,7 +3,7 @@ import { Chips } from '../../components/chips';
 import { Tags } from '../../components/tags';
 import { useState } from 'react'; // API動作確認用
 import { NovelsApi } from '../../api/api'; // API動作確認用
-import NovelCardContainer from '../../components/novelcard/container';
+import NovelCardContainer from '../../components/novelCard/container';
 import { NovelListItem } from '../../types/types';
 import { convertNovelListResponse } from './convert';
 import { Box, Typography } from '@mui/material';
