@@ -26,6 +26,8 @@ import LoginIcon from '@mui/icons-material/Login';
 
 const getMenuItems = (isLoggedIn: boolean, handleLogout: () => void) => [
   { name: 'ホーム', icon: <HomeIcon />, link: '/' },
+  { name: '運営会社', icon: <BusinessIcon />, link: '/company' },
+  { name: 'ポリシー', icon: <BalanceIcon />, link: '/terms' },
   ...(isLoggedIn
     ? [
         { name: 'アカウント', icon: <PersonIcon />, link: '/account' },
@@ -37,8 +39,6 @@ const getMenuItems = (isLoggedIn: boolean, handleLogout: () => void) => [
         },
       ]
     : []),
-  { name: '運営会社', icon: <BusinessIcon />, link: '/company' },
-  { name: 'ポリシー', icon: <BalanceIcon />, link: '/terms' },
 ];
 
 const ListComponent: React.FC<{
@@ -47,7 +47,8 @@ const ListComponent: React.FC<{
   isLoggedIn: boolean;
   handleLogout: () => void;
   handleLogin: () => void;
-}> = ({ selectedIndex, onSelect, isLoggedIn, handleLogout, handleLogin }) => {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ selectedIndex, onSelect, isLoggedIn, handleLogout, setIsLoggedIn }) => {
   const menuItems = getMenuItems(isLoggedIn, handleLogout);
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -208,39 +209,6 @@ const ListComponent: React.FC<{
                   </Box>
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton
-                  onClick={handleLogin}
-                  sx={{
-                    position: 'relative',
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      textAlign: 'center',
-                      width: '100%',
-                    }}
-                  >
-                    <Box sx={{ fontSize: 20 }}>
-                      <LoginIcon />
-                    </Box>
-                    <Typography
-                      variant='caption'
-                      sx={{
-                        textAlign: 'center',
-                        fontSize: 8,
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      デバッグログイン
-                    </Typography>
-                  </Box>
-                </ListItemButton>
-              </ListItem>
             </>
           )}
         </List>
@@ -273,6 +241,16 @@ const ListComponent: React.FC<{
               }}
             >
               Googleでログイン
+            </Button>
+            <Button
+              variant='contained'
+              startIcon={<LoginIcon />}
+              onClick={() => {
+                setIsLoggedIn(true);
+                handleCloseDialog();
+              }}
+            >
+              デバッグログイン
             </Button>
           </Box>
         </DialogContent>
@@ -335,6 +313,7 @@ export const MenuButton: React.FC = () => {
           isLoggedIn={isLoggedIn}
           handleLogout={handleLogout}
           handleLogin={handleLogin}
+          setIsLoggedIn={setIsLoggedIn}
         />
       </Drawer>
     </>
