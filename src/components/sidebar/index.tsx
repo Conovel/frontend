@@ -226,7 +226,7 @@ const ListComponent: React.FC<{
               variant='contained'
               startIcon={<GoogleIcon />}
               onClick={() => {
-                console.log('Google login clicked');
+                setIsLoggedIn(true);
                 handleCloseDialog();
               }}
               sx={{
@@ -250,7 +250,7 @@ const ListComponent: React.FC<{
                 handleCloseDialog();
               }}
             >
-              デバッグログイン
+              初回ログイン
             </Button>
           </Box>
         </DialogContent>
