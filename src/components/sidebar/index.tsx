@@ -19,8 +19,7 @@ import { Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import GoogleIcon from '@mui/icons-material/Google';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
+import Modal from '@mui/material/Modal';
 import DialogTitle from '@mui/material/DialogTitle';
 import LoginIcon from '@mui/icons-material/Login';
 
@@ -50,14 +49,14 @@ const ListComponent: React.FC<{
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ selectedIndex, onSelect, isLoggedIn, handleLogout, setIsLoggedIn }) => {
   const menuItems = getMenuItems(isLoggedIn, handleLogout);
-  const [openDialog, setOpenDialog] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleGoogleLoginClick = () => {
-    setOpenDialog(true);
+    setIsOpenModal(true);
   };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
   };
 
   return (
@@ -214,20 +213,33 @@ const ListComponent: React.FC<{
         </List>
       </Box>
 
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseDialog}
+      <Modal
+        open={isOpenModal}
+        onClose={handleCloseModal}
         aria-labelledby='google-login-dialog'
       >
-        <DialogTitle>Googleアカウントでログイン</DialogTitle>
-        <DialogContent>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 2,
+            borderRadius: 1,
+            width: 300,
+          }}
+        >
+          <DialogTitle>Googleアカウントでログイン</DialogTitle>
+
           <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Button
               variant='contained'
               startIcon={<GoogleIcon />}
               onClick={() => {
                 setIsLoggedIn(true);
-                handleCloseDialog();
+                handleCloseModal();
               }}
               sx={{
                 backgroundColor: '#fff',
@@ -247,14 +259,14 @@ const ListComponent: React.FC<{
               startIcon={<LoginIcon />}
               onClick={() => {
                 setIsLoggedIn(true);
-                handleCloseDialog();
+                handleCloseModal();
               }}
             >
               初回ログイン
             </Button>
           </Box>
-        </DialogContent>
-      </Dialog>
+        </Box>
+      </Modal>
     </>
   );
 };
