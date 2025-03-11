@@ -12,11 +12,11 @@ export const DeleteAccount = () => {
   const [isChecked, setIsChecked] = useState(false); // チェックボックスの状態を管理
 
   const handleDeleteAccount = () => {
-    navigate('/account-deleted');
+    navigate('/AccountDeleted');
   };
 
   const handleGoBack = () => {
-    navigate('/account');
+    navigate('/Account');
   };
 
   const toggleModal = () => setIsOpenModal(!isOpenModal); // モーダルの開閉を切り替える

@@ -386,7 +386,7 @@ export const AccountSettingsPresenter = ({
               onClick={() => {
                 // アカウント削除処理をここに追加
                 toggleDeleteAccountModal();
-                window.location.href = '/deleteaccount';
+                window.location.href = '/DeleteAccount';
               }}
               color='error'
             >
