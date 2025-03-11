@@ -1,2 +1,2 @@
-declare const Login: () => import('react/jsx-runtime').JSX.Element;
-export default Login;
+export declare const LoginPage: () => import('react/jsx-runtime').JSX.Element;
+export default LoginPage;
