@@ -23,7 +23,10 @@ import Modal from '@mui/material/Modal';
 import DialogTitle from '@mui/material/DialogTitle';
 import LoginIcon from '@mui/icons-material/Login';
 
-const getMenuItems = (isLoggedIn: boolean, handleLogout: () => void) => [
+const getMenuItems = (
+  isLoggedIn: boolean,
+  setIsLoggedIn: (value?: boolean) => void,
+) => [
   { name: 'ホーム', icon: <HomeIcon />, link: '/' },
   { name: 'アカウント', icon: <PersonIcon />, link: '/Account' },
   { name: '運営会社', icon: <BusinessIcon />, link: '/Company' },
@@ -33,7 +36,7 @@ const getMenuItems = (isLoggedIn: boolean, handleLogout: () => void) => [
         {
           name: 'ログアウト',
           icon: <LogoutIcon />,
-          onClick: handleLogout,
+          onClick: () => setIsLoggedIn(false),
           link: null,
         },
       ]
@@ -44,11 +47,9 @@ const ListComponent: React.FC<{
   selectedIndex: number;
   onSelect: (index: number) => void;
   isLoggedIn: boolean;
-  handleLogout: () => void;
-  handleLogin: () => void;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ selectedIndex, onSelect, isLoggedIn, handleLogout, setIsLoggedIn }) => {
-  const menuItems = getMenuItems(isLoggedIn, handleLogout);
+  setIsLoggedIn: (value?: boolean) => void;
+}> = ({ selectedIndex, onSelect, isLoggedIn, setIsLoggedIn }) => {
+  const menuItems = getMenuItems(isLoggedIn, setIsLoggedIn);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleGoogleLoginClick = () => {
@@ -274,19 +275,17 @@ const ListComponent: React.FC<{
 export const MenuButton: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedInState] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
+  const setIsLoggedIn = (value?: boolean) => {
+    const newLoginStatus = value !== undefined ? value : !isLoggedIn;
+    setIsLoggedInState(newLoginStatus);
     setIsOpen(false);
-    navigate('/');
-  };
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    setIsOpen(false);
-    navigate('/');
+    if (!newLoginStatus) {
+      navigate('/');
+    }
   };
 
   const toggleDrawer =
@@ -323,8 +322,6 @@ export const MenuButton: React.FC = () => {
           selectedIndex={selectedIndex ?? 0}
           onSelect={setSelectedIndex}
           isLoggedIn={isLoggedIn}
-          handleLogout={handleLogout}
-          handleLogin={handleLogin}
           setIsLoggedIn={setIsLoggedIn}
         />
       </Drawer>
