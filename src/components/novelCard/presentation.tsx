@@ -144,7 +144,7 @@ const NovelModal = ({
 }) => {
   const navigate = useNavigate(); // historyを初期化
   const handleReadMore = () => {
-    navigate('/NovelView'); // novelViewページに遷移
+    navigate('/novelView'); // novelViewページに遷移
   };
 
   return (

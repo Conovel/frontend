@@ -21,14 +21,14 @@ export const Routing = () => {
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<NovelList />} />
-          <Route path='/Account' element={<AccountSettings />} />
-          <Route path='/AccountDeleted' element={<AccountDeleted />} />
-          <Route path='/Company' element={<CompanyPage />} />
-          <Route path='/List' element={<NovelList />} />
-          <Route path='/Terms' element={<TermsPage />} />
-          <Route path='/DeleteAccount' element={<DeleteAccountPage />} />
-          <Route path='/Login' element={<Login />} />
-          <Route path='/NovelView' element={<NovelViewContainer />} />
+          <Route path='/account' element={<AccountSettings />} />
+          <Route path='/accountDeleted' element={<AccountDeleted />} />
+          <Route path='/company' element={<CompanyPage />} />
+          <Route path='/list' element={<NovelList />} />
+          <Route path='/terms' element={<TermsPage />} />
+          <Route path='/deleteAccount' element={<DeleteAccountPage />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/novelView' element={<NovelViewContainer />} />
         </Route>
       </Routes>
     </>

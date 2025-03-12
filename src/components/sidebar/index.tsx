@@ -28,9 +28,9 @@ const getMenuItems = (
   setIsLoggedIn: (value?: boolean) => void,
 ) => [
   { name: 'ホーム', icon: <HomeIcon />, link: '/' },
-  { name: 'アカウント', icon: <PersonIcon />, link: '/Account' },
-  { name: '運営会社', icon: <BusinessIcon />, link: '/Company' },
-  { name: 'ポリシー', icon: <BalanceIcon />, link: '/Terms' },
+  { name: 'アカウント', icon: <PersonIcon />, link: '/account' },
+  { name: '運営会社', icon: <BusinessIcon />, link: '/company' },
+  { name: 'ポリシー', icon: <BalanceIcon />, link: '/terms' },
   ...(isLoggedIn
     ? [
         {
