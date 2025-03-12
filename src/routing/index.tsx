@@ -6,7 +6,7 @@ import { Footer } from '../components/footer';
 import { TermsPage } from '../pages/terms';
 import { Box } from '@mui/material';
 import { AccountSettings } from '../features/AccountSettings/AccountSettings';
-import { DeleteAccountPage } from '../pages/deleteAccounts';
+import { DeleteAccountPage } from '../pages/deleteAccount';
 import { AccountDeleted } from '../features/DeleteAccount/AccountDeleted';
 import Login from '../pages/login';
 import { NovelViewContainer } from '../features/NovelView/NovelViewContainer';
