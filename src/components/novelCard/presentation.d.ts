@@ -3,6 +3,11 @@ export interface NovelProps {
   main_copy: string;
   overview: string;
   title: string;
+  text: string;
+  textIndex: number;
+  children: string;
+  main: string;
+  parent: string;
   avatar: {
     src: string;
     alt: string;
