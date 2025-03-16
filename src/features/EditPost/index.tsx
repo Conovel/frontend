@@ -42,7 +42,7 @@ export const EditPost: React.FC<EditPostProps> = ({
   });
 
   const watchText = useWatch({ control, name: 'text' });
-  const textLength = watchText?.length;
+  const textLength = watchText?.length ?? 0;
 
   const onSubmitForm = (data: EditPostFormValues) => {
     const text = data.text;
