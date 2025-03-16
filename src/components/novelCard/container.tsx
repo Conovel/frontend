@@ -18,6 +18,7 @@ const NovelCardContainer = ({
         main: Array.isArray(novel.main)
           ? novel.main.map((sentence) => sentence.text || '').join('')
           : novel.main,
+        parent: novel.parent.map((sentence) => sentence.text || '').join(''),
       }}
       onClick={onClick}
     />
