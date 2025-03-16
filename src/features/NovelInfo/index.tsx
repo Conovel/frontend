@@ -51,7 +51,34 @@ export default function TransitionsModal({
             {novels.map((novel, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
                 <NovelCardContainer
-                  novel={novel as NovelProps}
+                  novel={{
+                    title: novel.title,
+                    main_copy: novel.main_copy,
+                    overview: novel.overview,
+                    popular: novel.popular,
+                    newArrival: novel.newArrival,
+                    avatar: novel.avatar,
+                    author_user_name: novel.author_user_name,
+                    chips: novel.chips,
+                    sentence_hierarchy_count: novel.sentence_hierarchy_count,
+                    created_at: new Date().toISOString(),
+                    sentence_id: 0,
+                    sentence: '',
+                    userId: 0,
+                    userName: '',
+                    profile_icon_image: '',
+                    evaluation_good_count: 0,
+                    evaluation_stay_count: 0,
+                    sentence_user_count: 0,
+                    tags: [],
+                    reader_count: 0,
+                    updated_at: new Date().toISOString(),
+                    text: '',
+                    textIndex: 0,
+                    children: [],
+                    main: [],
+                    parent: [],
+                  }}
                   onClick={() => {
                     /* handle click */
                   }}

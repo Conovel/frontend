@@ -5,6 +5,10 @@ import NovelList from '../features/NovelList';
 import { Footer } from '../components/footer';
 import { TermsPage } from '../pages/terms';
 import { Box } from '@mui/material';
+import { AccountSettings } from '../features/AccountSettings/AccountSettings';
+import { DeleteAccountPage } from '../pages/deleteAccount';
+import { AccountDeleted } from '../features/DeleteAccount/AccountDeleted';
+import Login from '../pages/login';
 import { NovelViewContainer } from '../features/NovelView/NovelViewContainer';
 
 /**
@@ -17,10 +21,13 @@ export const Routing = () => {
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<NovelList />} />
-          <Route path='/account' />
+          <Route path='/account' element={<AccountSettings />} />
+          <Route path='/accountDeleted' element={<AccountDeleted />} />
           <Route path='/company' element={<CompanyPage />} />
           <Route path='/list' element={<NovelList />} />
           <Route path='/terms' element={<TermsPage />} />
+          <Route path='/deleteAccount' element={<DeleteAccountPage />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/novelView' element={<NovelViewContainer />} />
         </Route>
       </Routes>

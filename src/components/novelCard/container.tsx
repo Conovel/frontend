@@ -1,5 +1,5 @@
-import NovelCard from './NovelCard';
 import { NovelProps } from '../../types/types';
+import NovelCard from './presentation';
 
 const NovelCardContainer = ({
   novel,
@@ -10,24 +10,16 @@ const NovelCardContainer = ({
 }) => {
   return (
     <NovelCard
-      novel={novel}
+      novel={{
+        ...novel,
+        children: Array.isArray(novel.children)
+          ? novel.children.map((sentence) => sentence.text || '').join('')
+          : '',
+        main: Array.isArray(novel.main)
+          ? novel.main.map((sentence) => sentence.text || '').join('')
+          : novel.main,
+      }}
       onClick={onClick}
-      key={0}
-      index={0}
-      textIndex={0}
-      text={''}
-      evaluation_good_count={0}
-      setEvaluation_good_count={function (): void {
-        throw new Error('Function not implemented.');
-      }}
-      comment_count={0}
-      setComment_count={function (): void {
-        throw new Error('Function not implemented.');
-      }}
-      evaluation_stay_count={0}
-      setEvaluation_stay_count={function (): void {
-        throw new Error('Function not implemented.');
-      }}
     />
   );
 };

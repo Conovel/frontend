@@ -2,8 +2,8 @@
  * 遷移先リンク
  */
 export const LINK = {
-  account: '/account', // アカウント
-  company: '/company', // 運営会社
-  terms: '/terms', // ポリシー
-  list: '/list', // 一覧
+  account: '/Account', // アカウント
+  company: '/Company', // 運営会社
+  terms: '/Terms', // ポリシー
+  list: '/List', // 一覧
 };
