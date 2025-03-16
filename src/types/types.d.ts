@@ -152,3 +152,8 @@ export interface NovelProps {
 export interface CreateSentenceRequest {
   text: string;
 }
+export interface PostSentence {
+  parent_sentence_id: number;
+  parent_updated_at: string;
+  sentence: string;
+}

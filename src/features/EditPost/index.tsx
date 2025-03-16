@@ -46,6 +46,8 @@ export const EditPost: React.FC<EditPostProps> = ({
 
   const onSubmitForm = (data: EditPostFormValues) => {
     const text = data.text;
+    // このコンポーネントではCreateSentenceRequestのみを作成し、
+    // ChildrenPanelコンポーネントでPostSentence形式に変換してからAPIに送信します
     const sentenceRequest: CreateSentenceRequest = {
       text: text,
     };

@@ -4,9 +4,62 @@ import { Box, Fab } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
-import { Sentence, NovelProps, CreateSentenceRequest } from '../../types/types';
+import {
+  Sentence,
+  NovelProps,
+  CreateSentenceRequest,
+  PostSentence,
+} from '../../types/types';
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
+
+// ユーティリティ関数: CreateSentenceRequestからSentenceを作成
+const createSentenceFromRequest = (
+  request: CreateSentenceRequest,
+  parentId: number,
+  parentUpdatedAt: string,
+  nextSentenceId: number,
+): Sentence => {
+  // APIに送信するためのPostSentenceオブジェクトを作成
+  const postSentence: PostSentence = {
+    parent_sentence_id: parentId,
+    parent_updated_at: parentUpdatedAt,
+    sentence: request.text,
+  };
+
+  // 開発環境では、PostSentenceからSentenceを作成
+  // 本番環境では、このオブジェクトをAPIに送信し、APIからSentenceを受け取る
+  return {
+    sentence_id: nextSentenceId,
+    sentence: postSentence.sentence,
+    text: postSentence.sentence,
+    userName: 'Current User',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    title: '',
+    textIndex: 0,
+    main_copy: '',
+    overview: '',
+    popular: false,
+    newArrival: false,
+    avatar: {
+      src: '',
+      alt: '',
+      color: '',
+      text: '',
+    },
+    author_user_name: '',
+    chips: [],
+    tags: [],
+    reader_count: 0,
+    sentence_user_count: 0,
+    sentence_hierarchy_count: 0,
+    userId: 0,
+    profile_icon_image: '',
+    evaluation_good_count: 0,
+    evaluation_stay_count: 0,
+  };
+};
 
 interface ChildrenPanelProps {
   childrenPanel: Sentence[];
@@ -61,37 +114,24 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   };
 
   const handleSubmitPost = (sentenceRequest: CreateSentenceRequest) => {
-    // リクエストからSentenceオブジェクトを作成
-    const newSentence: Sentence = {
-      sentence_id: childrenPanel.length + 1,
-      sentence: sentenceRequest.text,
-      text: sentenceRequest.text,
-      userName: 'Current User',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      title: '',
-      textIndex: 0,
-      main_copy: '',
-      overview: '',
-      popular: false,
-      newArrival: false,
-      avatar: {
-        src: '',
-        alt: '',
-        color: '',
-        text: '',
-      },
-      author_user_name: '',
-      chips: [],
-      tags: [],
-      reader_count: 0,
-      sentence_user_count: 0,
-      sentence_hierarchy_count: 0,
-      userId: 0,
-      profile_icon_image: '',
-      evaluation_good_count: 0,
-      evaluation_stay_count: 0,
-    };
+    // 本番環境では、以下のような処理を行います
+    // 1. CreateSentenceRequestからPostSentenceを作成
+    // 2. APIを呼び出してPostSentenceを送信
+    // 3. APIから完全なSentenceオブジェクトを受け取る
+    // 4. 受け取ったSentenceオブジェクトをchildrenPanelに追加
+
+    // 親投稿のIDと更新日時を取得
+    const parentId = mainPanel[mainPanel.length - 1]?.sentence_id || 0;
+    const parentUpdatedAt =
+      mainPanel[mainPanel.length - 1]?.updated_at || new Date().toISOString();
+
+    // 開発環境では、クライアント側でSentenceオブジェクトを作成
+    const newSentence = createSentenceFromRequest(
+      sentenceRequest,
+      parentId,
+      parentUpdatedAt,
+      childrenPanel.length + 1,
+    );
 
     setChildrenPanel((prev) => [...prev, newSentence]);
     const newIndex = Math.max(0, childrenPanel.length + 1 - visibleTextCount);
