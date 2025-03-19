@@ -22,11 +22,9 @@ import GoogleIcon from '@mui/icons-material/Google';
 import Modal from '@mui/material/Modal';
 import DialogTitle from '@mui/material/DialogTitle';
 import LoginIcon from '@mui/icons-material/Login';
+import { useAuth } from '../../hooks/useAuth';
 
-const getMenuItems = (
-  isLoggedIn: boolean,
-  setIsLoggedIn: (value?: boolean) => void,
-) => [
+const getMenuItems = (isLoggedIn: boolean, logout: () => void) => [
   { name: 'ホーム', icon: <HomeIcon />, link: '/' },
   { name: 'アカウント', icon: <PersonIcon />, link: '/account' },
   { name: '運営会社', icon: <BusinessIcon />, link: '/company' },
@@ -36,7 +34,7 @@ const getMenuItems = (
         {
           name: 'ログアウト',
           icon: <LogoutIcon />,
-          onClick: () => setIsLoggedIn(false),
+          onClick: logout,
           link: null,
         },
       ]
@@ -46,11 +44,11 @@ const getMenuItems = (
 const ListComponent: React.FC<{
   selectedIndex: number;
   onSelect: (index: number) => void;
-  isLoggedIn: boolean;
-  setIsLoggedIn: (value?: boolean) => void;
-}> = ({ selectedIndex, onSelect, isLoggedIn, setIsLoggedIn }) => {
-  const menuItems = getMenuItems(isLoggedIn, setIsLoggedIn);
+}> = ({ selectedIndex, onSelect }) => {
+  const { isLoggedIn, login, logout } = useAuth();
+  const menuItems = getMenuItems(isLoggedIn, logout);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const navigate = useNavigate();
 
   const handleGoogleLoginClick = () => {
     setIsOpenModal(true);
@@ -58,6 +56,16 @@ const ListComponent: React.FC<{
 
   const handleCloseModal = () => {
     setIsOpenModal(false);
+  };
+
+  const handleGoogleLogin = () => {
+    login();
+    handleCloseModal();
+  };
+
+  const handleFirstTimeLogin = () => {
+    handleCloseModal();
+    navigate('/login?firstTime=true');
   };
 
   return (
@@ -238,10 +246,7 @@ const ListComponent: React.FC<{
             <Button
               variant='contained'
               startIcon={<GoogleIcon />}
-              onClick={() => {
-                setIsLoggedIn(true);
-                handleCloseModal();
-              }}
+              onClick={handleGoogleLogin}
               sx={{
                 backgroundColor: '#fff',
                 color: '#757575',
@@ -258,10 +263,7 @@ const ListComponent: React.FC<{
             <Button
               variant='contained'
               startIcon={<LoginIcon />}
-              onClick={() => {
-                setIsLoggedIn(true);
-                handleCloseModal();
-              }}
+              onClick={handleFirstTimeLogin}
             >
               初回ログイン
             </Button>
@@ -275,18 +277,6 @@ const ListComponent: React.FC<{
 export const MenuButton: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [isLoggedIn, setIsLoggedInState] = useState(false);
-  const navigate = useNavigate();
-
-  const setIsLoggedIn = (value?: boolean) => {
-    const newLoginStatus = value !== undefined ? value : !isLoggedIn;
-    setIsLoggedInState(newLoginStatus);
-    setIsOpen(false);
-
-    if (!newLoginStatus) {
-      navigate('/');
-    }
-  };
 
   const toggleDrawer =
     (isOpen: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -321,8 +311,6 @@ export const MenuButton: React.FC = () => {
         <ListComponent
           selectedIndex={selectedIndex ?? 0}
           onSelect={setSelectedIndex}
-          isLoggedIn={isLoggedIn}
-          setIsLoggedIn={setIsLoggedIn}
         />
       </Drawer>
     </>

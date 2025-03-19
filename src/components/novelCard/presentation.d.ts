@@ -1,13 +1,14 @@
 import * as React from 'react';
+import { Sentence } from '../../types/types';
 export interface NovelProps {
   main_copy: string;
   overview: string;
   title: string;
   text: string;
   textIndex: number;
-  children: string;
-  main: string;
-  parent: string;
+  children: Sentence[];
+  main: Sentence[];
+  parent: Sentence[];
   avatar: {
     src: string;
     alt: string;

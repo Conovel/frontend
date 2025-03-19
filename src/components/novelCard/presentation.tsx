@@ -11,6 +11,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { Button, TextField, Modal } from '@mui/material';
+import { Sentence } from '../../types/types';
 
 export interface NovelProps {
   main_copy: string;
@@ -18,9 +19,9 @@ export interface NovelProps {
   title: string;
   text: string;
   textIndex: number;
-  children: string;
-  main: string;
-  parent: string;
+  children: Sentence[];
+  main: Sentence[];
+  parent: Sentence[];
   avatar: {
     src: string;
     alt: string;
