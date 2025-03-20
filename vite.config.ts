@@ -2,14 +2,16 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    watch:
-      process.env.NODE_ENV === "development"
-        ? {
-            usePolling: true,
-          }
-        : undefined,
-  },
+export default defineConfig(({ mode }) => {
+  // 一応ログに現在のmodeを出力しておく
+  console.log(`Vite is running in mode: ${mode}`);
+
+  return {
+    plugins: [react()],
+    server: {
+      watch: {
+        usePolling: mode === "development",
+      },
+    },
+  };
 });
