@@ -149,6 +149,12 @@ export const LoginPresenter = ({
       <Modal
         open={isFirstTimeLoginModalOpen}
         onClose={() => setIsFirstTimeLoginModalOpen(false)}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          mx: 4,
+        }}
       >
         <Paper
           sx={{
@@ -249,10 +255,6 @@ export const LoginPresenter = ({
               }
               label='匿名で活動する'
             />
-
-            <Typography variant='body2' color='text.secondary'>
-              これらの設定はあとからいつでも変更できます。
-            </Typography>
           </Box>
 
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}>
