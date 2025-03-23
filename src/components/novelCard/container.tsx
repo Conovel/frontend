@@ -8,21 +8,7 @@ const NovelCardContainer = ({
   novel: NovelProps;
   onClick: () => void;
 }) => {
-  return (
-    <NovelCard
-      novel={{
-        ...novel,
-        children: Array.isArray(novel.children)
-          ? novel.children.map((sentence) => sentence.text || '').join('')
-          : '',
-        main: Array.isArray(novel.main)
-          ? novel.main.map((sentence) => sentence.text || '').join('')
-          : novel.main,
-        parent: novel.parent.map((sentence) => sentence.text || '').join(''),
-      }}
-      onClick={onClick}
-    />
-  );
+  return <NovelCard novel={novel} onClick={onClick} key={0} />;
 };
 
 export default NovelCardContainer;

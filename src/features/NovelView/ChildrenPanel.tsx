@@ -65,6 +65,7 @@ interface ChildrenPanelProps {
   childrenPanel: Sentence[];
   setChildrenPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
   mainPanel: Sentence[];
+  setMainPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
@@ -89,6 +90,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   childrenPanel,
   setChildrenPanel,
   mainPanel,
+  setMainPanel,
   startIndex,
   setStartIndex,
   visibleTextCount,
@@ -114,12 +116,6 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   };
 
   const handleSubmitPost = (sentenceRequest: CreateSentenceRequest) => {
-    // 本番環境では、以下のような処理を行います
-    // 1. CreateSentenceRequestからPostSentenceを作成
-    // 2. APIを呼び出してPostSentenceを送信
-    // 3. APIから完全なSentenceオブジェクトを受け取る
-    // 4. 受け取ったSentenceオブジェクトをchildrenPanelに追加
-
     // 親投稿のIDと更新日時を取得
     const parentId = mainPanel[mainPanel.length - 1]?.sentence_id || 0;
     const parentUpdatedAt =
@@ -133,7 +129,9 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       childrenPanel.length + 1,
     );
 
+    // 両方のパネルを更新
     setChildrenPanel((prev) => [...prev, newSentence]);
+    setMainPanel((prev) => [...prev, newSentence]);
     const newIndex = Math.max(0, childrenPanel.length + 1 - visibleTextCount);
     setStartIndex(newIndex);
 

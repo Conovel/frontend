@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Container } from '@mui/material';
 import ParentPanel from './ParentPanel';
 import ChildrenPanel from './ChildrenPanel';
@@ -40,7 +40,7 @@ interface NovelViewPresentationProps {
   textCount: number;
 }
 
-const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
+export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   start_index_parent,
   setStart_index_parent,
   comment_count_parent,
@@ -63,15 +63,11 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setComment_count_main,
   evaluation_stay_count_main,
   setEvaluation_stay_count_main,
-  mainPanel,
-  childrenPanel: initialChildrenPanel,
 }) => {
-  const [childrenPanel, setChildrenPanel] = useState(initialChildrenPanel);
   const parentTextCount = 10;
   const childrenTextCount = 10;
   const visibleTextCount = 3;
-
-  const defaultParentPanel: NovelProps[] = [
+  const parentPanel: NovelProps[] = [
     {
       title: '',
       textIndex: 0,
@@ -106,13 +102,11 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       created_at: new Date().toISOString(),
     },
   ];
-
-  const defaultMainPanel: Sentence[] = [
+  const mainPanel: Sentence[] = [
     {
       title: '',
       text: '',
       textIndex: 0,
-      main_copy: '',
       overview: '',
       popular: false,
       newArrival: false,
@@ -124,11 +118,13 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       },
       author_user_name: '',
       chips: [],
+      created_at: new Date().toISOString(),
       tags: [],
       reader_count: 0,
       updated_at: new Date().toISOString(),
       sentence_user_count: 0,
       sentence_hierarchy_count: 0,
+      main_copy: '',
       sentence_id: 0,
       sentence: '',
       userId: 0,
@@ -136,7 +132,38 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       profile_icon_image: '',
       evaluation_good_count: 0,
       evaluation_stay_count: 0,
+    },
+  ];
+  const childrenPanel: Sentence[] = [
+    {
+      title: '',
+      text: '',
+      textIndex: 0,
+      overview: '',
+      popular: false,
+      newArrival: false,
+      avatar: {
+        src: '',
+        alt: '',
+        color: '',
+        text: '',
+      },
+      author_user_name: '',
+      chips: [],
       created_at: new Date().toISOString(),
+      tags: [],
+      reader_count: 0,
+      updated_at: new Date().toISOString(),
+      sentence_user_count: 0,
+      sentence_hierarchy_count: 0,
+      main_copy: '',
+      sentence_id: 0,
+      sentence: '',
+      userId: 0,
+      userName: '',
+      profile_icon_image: '',
+      evaluation_good_count: 0,
+      evaluation_stay_count: 0,
     },
   ];
 
@@ -148,23 +175,20 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           top: '10vh',
           bottom: '5vh',
           left: '50%',
-          transform: 'translateX(-50%)',
           width: '2px',
           backgroundColor: '#000',
           zIndex: 1,
         }}
-      />
+      ></Box>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: '20px',
-          position: 'relative',
-          width: '100%',
         }}
       >
-        {defaultParentPanel.map((NovelProps, index) => (
+        {parentPanel.map((NovelProps, index) => (
           <ParentPanel
             key={index}
             parentPanel={NovelProps}
@@ -181,7 +205,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           />
         ))}
         <MainPanel
-          mainPanel={mainPanel || defaultMainPanel}
+          mainPanel={mainPanel}
           evaluation_good_count={evaluation_good_count_main}
           setEvaluation_good_count={setEvaluation_good_count_main}
           comment_count={comment_count_main}
@@ -191,32 +215,32 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         />
         <ChildrenPanel
           childrenPanel={childrenPanel}
-          setChildrenPanel={setChildrenPanel}
-          mainPanel={mainPanel || defaultMainPanel}
+          setChildrenPanel={() => {}}
+          mainPanel={mainPanel}
+          setMainPanel={() => {}}
           novel={{
             main_copy: '',
             overview: '',
             title: '',
-            textIndex: 0,
-            popular: false,
-            newArrival: false,
+            author_user_name: '',
+            chips: [],
             avatar: {
               src: '',
               alt: '',
               color: '',
               text: '',
             },
-            created_at: new Date().toISOString(),
-            author_user_name: '',
-            chips: [],
-            tags: [],
+            popular: false,
+            newArrival: false,
             reader_count: 0,
+            updated_at: new Date().toISOString(),
             sentence_user_count: 0,
             sentence_hierarchy_count: 0,
+            tags: [],
             text: '',
             children: childrenPanel,
-            parent: defaultParentPanel,
-            main: mainPanel || defaultMainPanel,
+            parent: parentPanel,
+            main: mainPanel,
             sentence_id: 0,
             sentence: '',
             userId: 0,
@@ -224,7 +248,8 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
             profile_icon_image: '',
             evaluation_good_count: 0,
             evaluation_stay_count: 0,
-            updated_at: new Date().toISOString(),
+            created_at: new Date().toISOString(),
+            textIndex: 0,
           }}
           onClick={() => {}}
           textIndex={0}
@@ -243,5 +268,3 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
     </Container>
   );
 };
-
-export default NovelViewPresentation;

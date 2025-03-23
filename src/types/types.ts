@@ -8,8 +8,8 @@ export interface Sentence {
   popular: boolean;
   newArrival: boolean;
   author_user_name: string;
-  chips: React.ReactNode[];
-  tags: React.ReactNode[];
+  chips: JSX.Element[];
+  tags: JSX.Element[];
   reader_count: number;
   avatar: {
     src: string;
@@ -140,9 +140,9 @@ export interface NovelProps {
     text: string;
   };
   author_user_name: string;
-  chips: React.ReactNode[];
+  chips: JSX.Element[];
   created_at: string;
-  tags: React.ReactNode[];
+  tags: JSX.Element[];
   reader_count: number;
   updated_at: string;
   sentence_id: number;

@@ -113,7 +113,6 @@ const NovelList = () => {
             <Typography>updated_at{res.updated_at}</Typography>
           </Box>
         ))}
-        ))
       </Box>
       {/* API動作確認用 ここまで */}
     </>
