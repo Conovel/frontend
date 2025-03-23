@@ -88,7 +88,6 @@ const handleClick = (sentenceId: number) => {
 
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   childrenPanel,
-  setChildrenPanel,
   mainPanel,
   setMainPanel,
   startIndex,
@@ -129,8 +128,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       childrenPanel.length + 1,
     );
 
-    // 両方のパネルを更新
-    setChildrenPanel((prev) => [...prev, newSentence]);
+    // mainPanelのみを更新
     setMainPanel((prev) => [...prev, newSentence]);
     const newIndex = Math.max(0, childrenPanel.length + 1 - visibleTextCount);
     setStartIndex(newIndex);
