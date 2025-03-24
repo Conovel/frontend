@@ -191,7 +191,7 @@ export interface NovelDetail {
    */
   main_copy?: string;
   /**
-   * 小説に投稿している投稿の数
+   * 小説に投稿している投稿者の数
    * @type {number}
    * @memberof NovelDetail
    */
