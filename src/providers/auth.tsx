@@ -1,12 +1,24 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { API_URL } from '../config/settings';
 
-const AuthContext = createContext();
-export const useAuth = () => useContext(AuthContext);
+// 環境変数からAPI URLを取得
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState('');
-  const [currentUser, setCurrentUser] = useState(null);
+// 型定義をインポート
+import { AuthContextType, AuthProviderProps } from './auth.d';
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [token, setToken] = useState<string>('');
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
     // URLからクエリパラメータを解析してトークンを取得
