@@ -64,6 +64,7 @@
       "prettier --write",
       "eslint --fix",
       "npm run lint",
+      "bash -c 'tsc --noEmit'",
       "npm run format"
     ],
     "src/**/*.scss": [
