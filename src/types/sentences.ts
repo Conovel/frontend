@@ -1,5 +1,5 @@
 export interface Sentence {
-  sentencesId: number;
+  sentenceId: number;
   sentence: string;
   sentenceUserId: number;
   sentenceUserName: string;
