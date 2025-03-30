@@ -1,7 +1,7 @@
 /**
  * 小説
  */
-export interface Novel {
+export interface NovelListItem {
   titleId: number;
   title: string;
   famousSentenceText: string;
@@ -20,7 +20,7 @@ export interface Novel {
 /**
  * 小説の概要
  */
-export interface NovelDetail extends Novel {
+export interface NovelDetail extends NovelListItem {
   mainCopy: string;
   sentenceUserCount: number;
   sentenceHierarchyCount: number;
