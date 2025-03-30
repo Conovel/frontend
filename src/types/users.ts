@@ -11,7 +11,7 @@ export interface User {
 /**
  * 自分自身のアカウント情報
  */
-export interface ViewMeUser {
+export interface ViewMeUser extends User {
   birthYearAndMonth: string;
   isAnonymous: boolean;
 }
