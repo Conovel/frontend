@@ -59,7 +59,7 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
             {novel.chips.map((chip, index) => (
-              <Box key={index}>{chip}</Box>
+              <Box key={index}>{chip.label}</Box>
             ))}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -84,7 +84,7 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
               color='text.secondary'
             >
               {novel.tags.map((tag, index) => (
-                <Box key={index}>{tag}</Box>
+                <Box key={index}>{tag.label}</Box>
               ))}
             </Box>
           </Box>
@@ -167,7 +167,7 @@ const NovelModal = ({
           </Box>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
             {novel.chips.map((chip, index) => (
-              <Box key={index}>{chip}</Box>
+              <Box key={index}>{chip.label}</Box>
             ))}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -176,7 +176,7 @@ const NovelModal = ({
               color='text.secondary'
             >
               {novel.tags.map((tag, index) => (
-                <Box key={index}>{tag}</Box>
+                <Box key={index}>{tag.label}</Box>
               ))}
             </Box>
           </Box>
