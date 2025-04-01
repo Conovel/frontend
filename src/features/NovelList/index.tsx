@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid';
-import { useState } from 'react';
-import { NovelsApi } from '../../api/api';
+import { useState } from 'react'; //API動作確認用
+import { NovelsApi } from '../../api/api'; //API動作確認用
 import NovelCardContainer from '../../components/novelCard/container';
 import { NovelListItem } from '../../types/types';
 import { convertNovelListResponse } from './convert';
@@ -8,7 +8,9 @@ import { Box, Typography } from '@mui/material';
 import { axiosConfig } from '../../axiosConfig';
 import { mockNovels } from './mocks/data';
 
+/*APi動作確認用 */
 const novelsApi = new NovelsApi(axiosConfig);
+/*APi動作確認用　ここまで */
 
 const NovelList = () => {
   const [responseNovels, setResponseNovels] = useState<NovelListItem[]>([]);
@@ -21,6 +23,7 @@ const NovelList = () => {
       );
       setResponseNovels(mappedResponse);
     } catch (error) {
+      // TODO: エラー時の対応について要検討（エラーがわかるような画面にするかなど）
       console.error('Error fetching sentences:', error);
     }
   };
@@ -56,6 +59,7 @@ const NovelList = () => {
         ))}
       </Grid>
 
+      {/** API動作確認用 */}
       <button onClick={fetchNovels}>Fetch Novels</button>
       <Box>
         {responseNovels.map((res) => (
@@ -67,6 +71,7 @@ const NovelList = () => {
             </Typography>
             <Typography>author_user_id：{res.author_user_id}</Typography>
             <Typography>author_user_name：{res.author_user_name}</Typography>
+            {/** // TODO：仮でindex0番目だけ */}
             <Typography>
               profile_icon_image：{res.profile_icon_image}
             </Typography>
@@ -79,6 +84,7 @@ const NovelList = () => {
             </Typography>
             <Typography>created_at：{res.created_at}</Typography>
             <Typography>updated_at{res.updated_at}</Typography>
+            {/*API動作確認用　ここまで */}
           </Box>
         ))}
       </Box>
