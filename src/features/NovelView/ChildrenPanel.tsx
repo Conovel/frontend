@@ -13,54 +13,6 @@ import {
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
 
-// ユーティリティ関数: CreateSentenceRequestからSentenceを作成
-const createSentenceFromRequest = (
-  request: CreateSentenceRequest,
-  parentId: number,
-  parentUpdatedAt: string,
-  nextSentenceId: number,
-): Sentence => {
-  // APIに送信するためのPostSentenceオブジェクトを作成
-  const postSentence: PostSentence = {
-    parent_sentence_id: parentId,
-    parent_updated_at: parentUpdatedAt,
-    sentence: request.text,
-  };
-
-  // 開発環境では、PostSentenceからSentenceを作成
-  // 本番環境では、このオブジェクトをAPIに送信し、APIからSentenceを受け取る
-  return {
-    sentence_id: nextSentenceId,
-    sentence: postSentence.sentence,
-    text: postSentence.sentence,
-    userName: 'Current User',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    title: '',
-    textIndex: 0,
-    main_copy: '',
-    overview: '',
-    popular: false,
-    newArrival: false,
-    avatar: {
-      src: '',
-      alt: '',
-      color: '',
-      text: '',
-    },
-    author_user_name: '',
-    chips: [],
-    tags: [],
-    reader_count: 0,
-    sentence_user_count: 0,
-    sentence_hierarchy_count: 0,
-    userId: 0,
-    profile_icon_image: '',
-    evaluation_good_count: 0,
-    evaluation_stay_count: 0,
-  };
-};
-
 interface ChildrenPanelProps {
   childrenPanel: Sentence[];
   setChildrenPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
@@ -114,26 +66,97 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     }
   };
 
-  const handleSubmitPost = (sentenceRequest: CreateSentenceRequest) => {
-    // 親投稿のIDと更新日時を取得
-    const parentId = mainPanel[mainPanel.length - 1]?.sentence_id || 0;
-    const parentUpdatedAt =
-      mainPanel[mainPanel.length - 1]?.updated_at || new Date().toISOString();
+  const handleCarouselChange = (now: number) => {
+    setActiveIndex(now);
+    if (now > activeIndex) {
+      handleScroll('next');
+    } else if (now < activeIndex) {
+      handleScroll('prev');
+    }
+  };
 
-    // 開発環境では、クライアント側でSentenceオブジェクトを作成
-    const newSentence = createSentenceFromRequest(
-      sentenceRequest,
-      parentId,
-      parentUpdatedAt,
-      childrenPanel.length + 1,
-    );
+  const carouselNavButtonStyle = {
+    backgroundColor: '#BDBDBD',
+    opacity: 0.5,
+    width: '0.5vw',
+    color: '#fff',
+    borderRadius: 5,
+  };
 
-    // mainPanelのみを更新
-    setMainPanel((prev) => [...prev, newSentence]);
-    const newIndex = Math.max(0, childrenPanel.length + 1 - visibleTextCount);
-    setStartIndex(newIndex);
+  const carouselNavWrapperStyle = {
+    position: 'absolute' as const,
+    top: '7vh',
+    padding: '0 1vw',
+  };
 
-    console.log('投稿されたテキスト:', newSentence.text);
+  const renderNovelCard = (panel: Sentence, index: number) => (
+    <Box
+      key={panel.sentence_id}
+      sx={{
+        justifyContent: 'center',
+        margin: '0 1vw',
+        width: 'calc(100% - 2vw)',
+      }}
+    >
+      <NovelCard
+        novel={novel}
+        onClick={() => handleClick(panel.sentence_id)}
+        key={index}
+        index={index}
+        textIndex={textIndex}
+        evaluation_good_count={evaluation_good_count}
+        setEvaluation_good_count={setEvaluation_good_count}
+        comment_count={comment_count}
+        setComment_count={setComment_count}
+        evaluation_stay_count={evaluation_stay_count}
+        setEvaluation_stay_count={setEvaluation_stay_count}
+        text={panel.sentence}
+      />
+    </Box>
+  );
+
+  const handleSubmitPost = async (sentenceRequest: CreateSentenceRequest) => {
+    try {
+      // 親投稿のIDと更新日時を取得
+      const parentId = mainPanel[mainPanel.length - 1]?.sentence_id || 0;
+      const parentUpdatedAt =
+        mainPanel[mainPanel.length - 1]?.updated_at || new Date().toISOString();
+
+      // APIに送信するためのPostSentenceオブジェクトを作成
+      const postSentence: PostSentence = {
+        parent_sentence_id: parentId,
+        parent_updated_at: parentUpdatedAt,
+        sentence: sentenceRequest.text,
+      };
+
+      // モックAPIを使用して新しい文章を投稿
+      const response = await fetch(
+        `${import.meta.env.VITE_DEVELOPMENT_API_BASE_URL}/sentences`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(postSentence),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to create sentence');
+      }
+
+      const newSentence: Sentence = await response.json();
+
+      // mainPanelを更新
+      setMainPanel((prev) => [...prev, newSentence]);
+      const newIndex = Math.max(0, childrenPanel.length + 1 - visibleTextCount);
+      setStartIndex(newIndex);
+
+      console.log('投稿されたテキスト:', newSentence.text);
+    } catch (error) {
+      console.error('Error creating sentence:', error);
+      // エラーハンドリングを追加することをお勧めします
+    }
   };
 
   return (
@@ -157,60 +180,14 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         <Carousel
           autoPlay={false}
           index={activeIndex}
-          onChange={(now: number) => {
-            setActiveIndex(now);
-            // 必要に応じてstartIndexも更新
-            if (now > activeIndex) {
-              handleScroll('next');
-            } else if (now < activeIndex) {
-              handleScroll('prev');
-            }
-          }}
+          onChange={handleCarouselChange}
           fullHeightHover={false}
-          navButtonsProps={{
-            style: {
-              backgroundColor: '#BDBDBD',
-              opacity: 0.5,
-              width: '0.5vw',
-              color: '#fff',
-              borderRadius: 5,
-            },
-          }}
-          navButtonsWrapperProps={{
-            style: {
-              position: 'absolute',
-              top: '7vh',
-              padding: '0 1vw',
-            },
-          }}
+          navButtonsProps={{ style: carouselNavButtonStyle }}
+          navButtonsWrapperProps={{ style: carouselNavWrapperStyle }}
           NextIcon={<KeyboardArrowRightIcon />}
           PrevIcon={<KeyboardArrowLeftIcon />}
         >
-          {childrenPanel.map((panel, index) => (
-            <Box
-              key={panel.sentence_id}
-              sx={{
-                justifyContent: 'center',
-                margin: '0 1vw',
-                width: 'calc(100% - 2vw)',
-              }}
-            >
-              <NovelCard
-                novel={novel}
-                onClick={() => handleClick(panel.sentence_id)}
-                key={index}
-                index={index}
-                textIndex={textIndex}
-                evaluation_good_count={evaluation_good_count}
-                setEvaluation_good_count={setEvaluation_good_count}
-                comment_count={comment_count}
-                setComment_count={setComment_count}
-                evaluation_stay_count={evaluation_stay_count}
-                setEvaluation_stay_count={setEvaluation_stay_count}
-                text={panel.sentence}
-              />
-            </Box>
-          ))}
+          {childrenPanel.map(renderNovelCard)}
         </Carousel>
       </Box>
       <Fab
