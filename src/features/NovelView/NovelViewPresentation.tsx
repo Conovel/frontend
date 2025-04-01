@@ -3,7 +3,8 @@ import { Box, Container } from '@mui/material';
 import ParentPanel from './ParentPanel';
 import ChildrenPanel from './ChildrenPanel';
 import MainPanel from './MainPanel';
-import { Sentence, NovelProps } from '../../types/types';
+import { Sentence } from '../../types/types';
+import { mockContainerData } from './mocks/data';
 
 interface NovelViewPresentationProps {
   mainPanel: Sentence[];
@@ -67,105 +68,6 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   const parentTextCount = 10;
   const childrenTextCount = 10;
   const visibleTextCount = 3;
-  const parentPanel: NovelProps[] = [
-    {
-      title: '',
-      textIndex: 0,
-      main_copy: '',
-      overview: '',
-      popular: false,
-      newArrival: false,
-      avatar: {
-        src: '',
-        alt: '',
-        color: '',
-        text: '',
-      },
-      author_user_name: '',
-      chips: [],
-      tags: [],
-      reader_count: 0,
-      updated_at: new Date().toISOString(),
-      sentence_user_count: 0,
-      sentence_hierarchy_count: 0,
-      text: '',
-      sentence_id: 0,
-      sentence: '',
-      userId: 0,
-      userName: '',
-      profile_icon_image: '',
-      evaluation_good_count: 0,
-      evaluation_stay_count: 0,
-      children: [],
-      parent: [],
-      main: [],
-      created_at: new Date().toISOString(),
-    },
-  ];
-  const mainPanel: Sentence[] = [
-    {
-      title: '',
-      text: '',
-      textIndex: 0,
-      overview: '',
-      popular: false,
-      newArrival: false,
-      avatar: {
-        src: '',
-        alt: '',
-        color: '',
-        text: '',
-      },
-      author_user_name: '',
-      chips: [],
-      created_at: new Date().toISOString(),
-      tags: [],
-      reader_count: 0,
-      updated_at: new Date().toISOString(),
-      sentence_user_count: 0,
-      sentence_hierarchy_count: 0,
-      main_copy: '',
-      sentence_id: 0,
-      sentence: '',
-      userId: 0,
-      userName: '',
-      profile_icon_image: '',
-      evaluation_good_count: 0,
-      evaluation_stay_count: 0,
-    },
-  ];
-  const childrenPanel: Sentence[] = [
-    {
-      title: '',
-      text: '',
-      textIndex: 0,
-      overview: '',
-      popular: false,
-      newArrival: false,
-      avatar: {
-        src: '',
-        alt: '',
-        color: '',
-        text: '',
-      },
-      author_user_name: '',
-      chips: [],
-      created_at: new Date().toISOString(),
-      tags: [],
-      reader_count: 0,
-      updated_at: new Date().toISOString(),
-      sentence_user_count: 0,
-      sentence_hierarchy_count: 0,
-      main_copy: '',
-      sentence_id: 0,
-      sentence: '',
-      userId: 0,
-      userName: '',
-      profile_icon_image: '',
-      evaluation_good_count: 0,
-      evaluation_stay_count: 0,
-    },
-  ];
 
   return (
     <Container sx={{ position: 'relative', alignItems: 'center' }}>
@@ -188,7 +90,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           gap: '20px',
         }}
       >
-        {parentPanel.map((NovelProps, index) => (
+        {mockContainerData.parent.map((NovelProps, index) => (
           <ParentPanel
             key={index}
             parentPanel={NovelProps}
@@ -205,7 +107,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           />
         ))}
         <MainPanel
-          mainPanel={mainPanel}
+          mainPanel={mockContainerData.main}
           evaluation_good_count={evaluation_good_count_main}
           setEvaluation_good_count={setEvaluation_good_count_main}
           comment_count={comment_count_main}
@@ -214,9 +116,9 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           setEvaluation_stay_count={setEvaluation_stay_count_main}
         />
         <ChildrenPanel
-          childrenPanel={childrenPanel}
+          childrenPanel={mockContainerData.children}
           setChildrenPanel={() => {}}
-          mainPanel={mainPanel}
+          mainPanel={mockContainerData.main}
           setMainPanel={() => {}}
           novel={{
             main_copy: '',
@@ -237,12 +139,11 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
             sentence_user_count: 0,
             sentence_hierarchy_count: 0,
             tags: [],
-            text: '',
-            children: childrenPanel,
-            parent: parentPanel,
-            main: mainPanel,
-            sentence_id: 0,
             sentence: '',
+            children: mockContainerData.children,
+            parent: mockContainerData.parent,
+            main: mockContainerData.main,
+            sentence_id: 0,
             userId: 0,
             userName: '',
             profile_icon_image: '',

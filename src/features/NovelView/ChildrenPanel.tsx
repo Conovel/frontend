@@ -110,7 +110,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         setComment_count={setComment_count}
         evaluation_stay_count={evaluation_stay_count}
         setEvaluation_stay_count={setEvaluation_stay_count}
-        text={panel.sentence}
+        sentence={panel.sentence}
       />
     </Box>
   );
@@ -152,7 +152,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       const newIndex = Math.max(0, childrenPanel.length + 1 - visibleTextCount);
       setStartIndex(newIndex);
 
-      console.log('投稿されたテキスト:', newSentence.text);
+      console.log('投稿されたテキスト:', newSentence.sentence);
     } catch (error) {
       console.error('Error creating sentence:', error);
       // エラーハンドリングを追加することをお勧めします
