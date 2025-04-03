@@ -6,7 +6,7 @@ import { NovelListItem } from '../../types/types';
 import { convertNovelListResponse } from './convert';
 import { Box, Typography } from '@mui/material';
 import { axiosConfig } from '../../axiosConfig';
-import { mockNovels } from './mocks/data';
+import { novels } from './mocks/data';
 
 /*APi動作確認用 */
 const novelsApi = new NovelsApi(axiosConfig);
@@ -31,7 +31,7 @@ const NovelList = () => {
   return (
     <>
       <Grid container spacing={2}>
-        {mockNovels.map((novel) => (
+        {novels.map((novel) => (
           <Grid item xs={12} sm={6} md={4} key={novel.title}>
             <NovelCardContainer
               novel={{

@@ -1,2 +1,2 @@
 import { NovelProps } from '../../../types/types';
-export declare const mockNovels: NovelProps[];
+export declare const novels: NovelProps[];

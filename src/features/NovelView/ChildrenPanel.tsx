@@ -131,7 +131,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
 
       // モックAPIを使用して新しい文章を投稿
       const response = await fetch(
-        `${import.meta.env.VITE_DEVELOPMENT_API_BASE_URL}/sentences`,
+        `${import.meta.env.VITE_API_BASE_URL}/sentences`,
         {
           method: 'POST',
           headers: {

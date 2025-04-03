@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw';
 import { NovelListItem } from '../../../api/api';
 import { PostSentence } from '../../../types/types';
 
-const apiBaseUrl = import.meta.env.VITE_DEVELOPMENT_API_BASE_URL;
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 export const novelListHandlers = [
   // 小説一覧取得APIモック

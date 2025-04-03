@@ -1,6 +1,6 @@
 import { NovelProps } from '../../../types/types';
 
-export const mockNovels: NovelProps[] = [
+export const novels: NovelProps[] = [
   {
     main_copy: '目を覚ますとエンジニアに転生していた',
     overview:
