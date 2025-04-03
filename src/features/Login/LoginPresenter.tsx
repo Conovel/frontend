@@ -13,6 +13,7 @@ import {
 import { GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export const LoginPresenter = () => {
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -20,20 +21,27 @@ export const LoginPresenter = () => {
     useState(false);
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
   // デモ用の簡易的な実装
-  const handleGoogleSuccess = (credentialResponse: any) => {
-    // 実際の認証処理はコメントアウト
-    // const { credential } = credentialResponse;
-    // TODO: バックエンドAPIとの連携
-    console.log('ログイン成功（デモ）:', credentialResponse);
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    const { credential } = credentialResponse;
+    console.log('credential:', credentialResponse);
 
-    // 通常のログイン後の処理
-    // 初回ログインの場合はモーダルを表示する
-    setIsFirstTimeLoginModalOpen(true);
+    try {
+      const res = await axios.post(`${apiBaseUrl}/auth/create`, { token: credential });
+      console.log('バックエンドからのレスポンス:', res.data);
 
-    // ログイン成功後にホームページに遷移
-    navigate('/');
+      // 通常のログイン後の処理
+      // 初回ログインの場合はモーダルを表示する
+      setIsFirstTimeLoginModalOpen(true);
+
+      // ログイン成功後にホームページに遷移
+      navigate('/');
+    } catch (error) {
+      console.error('ログイン処理中にエラーが発生しました:', error);
+      handleGoogleError();
+    }
   };
 
   const handleGoogleError = () => {
