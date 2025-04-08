@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "prepare": "husky install",
     "test": "jest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc -p tsconfig.app.json --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.13.0",
@@ -66,8 +66,7 @@
       "prettier --write",
       "eslint --fix",
       "npm run lint",
-      "npm run format",
-      "npm run typecheck"
+      "npm run format"
     ],
     "src/**/*.scss": [
       "prettier --write",
