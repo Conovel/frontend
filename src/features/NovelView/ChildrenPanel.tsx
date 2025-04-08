@@ -13,6 +13,53 @@ import {
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
 
+const carouselNavButtonStyle = {
+  backgroundColor: '#BDBDBD',
+  opacity: 0.5,
+  width: '0.5vw',
+  color: '#fff',
+  borderRadius: 5,
+};
+
+const carouselNavWrapperStyle = {
+  position: 'absolute' as const,
+  top: '7vh',
+  padding: '0 1vw',
+};
+
+const mainBoxStyle = {
+  backgroundColor: '#fff',
+  justifyContent: 'space-between',
+  margin: '5vh auto',
+  height: '20vh',
+  width: '70vw',
+  alignItems: 'center',
+  zIndex: 2,
+};
+
+const innerBoxStyle = {
+  justifyContent: 'center',
+  overflow: 'hidden',
+};
+
+const novelCardBoxStyle = {
+  justifyContent: 'center',
+  margin: '0 1vw',
+  width: 'calc(100% - 2vw)',
+};
+
+const fabStyle = {
+  color: '#fff',
+  backgroundColor: '#467DCC',
+  position: 'absolute',
+  bottom: '10vh',
+  right: '0vw',
+  zIndex: 5,
+  '&:hover': {
+    backgroundColor: '#0E4DC7',
+  },
+};
+
 interface ChildrenPanelProps {
   childrenPanel: Sentence[];
   setChildrenPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
@@ -75,29 +122,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     }
   };
 
-  const carouselNavButtonStyle = {
-    backgroundColor: '#BDBDBD',
-    opacity: 0.5,
-    width: '0.5vw',
-    color: '#fff',
-    borderRadius: 5,
-  };
-
-  const carouselNavWrapperStyle = {
-    position: 'absolute' as const,
-    top: '7vh',
-    padding: '0 1vw',
-  };
-
   const renderNovelCard = (panel: Sentence, index: number) => (
-    <Box
-      key={panel.sentence_id}
-      sx={{
-        justifyContent: 'center',
-        margin: '0 1vw',
-        width: 'calc(100% - 2vw)',
-      }}
-    >
+    <Box key={panel.sentence_id} sx={novelCardBoxStyle}>
       <NovelCard
         novel={novel}
         onClick={() => handleClick(panel.sentence_id)}
@@ -160,23 +186,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   };
 
   return (
-    <Box
-      sx={{
-        backgroundColor: '#fff',
-        justifyContent: 'space-between',
-        margin: '5vh auto',
-        height: '20vh',
-        width: '70vw',
-        alignItems: 'center',
-        zIndex: 2,
-      }}
-    >
-      <Box
-        sx={{
-          justifyContent: 'center',
-          overflow: 'hidden',
-        }}
-      >
+    <Box sx={mainBoxStyle}>
+      <Box sx={innerBoxStyle}>
         <Carousel
           autoPlay={false}
           index={activeIndex}
@@ -192,17 +203,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       </Box>
       <Fab
         aria-label='add post'
-        sx={{
-          color: '#fff',
-          backgroundColor: '#467DCC',
-          position: 'absolute',
-          bottom: '10vh',
-          right: '0vw',
-          zIndex: 5,
-          '&:hover': {
-            backgroundColor: '#0E4DC7',
-          },
-        }}
+        sx={fabStyle}
         onClick={() => setIsEditPostOpen(true)}
       >
         <CreateIcon />
