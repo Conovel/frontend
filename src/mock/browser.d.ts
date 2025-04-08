@@ -1,1 +1,1 @@
-export declare const worker: import('msw').SetupWorker;
+export declare const worker: import('msw/browser').SetupWorker;

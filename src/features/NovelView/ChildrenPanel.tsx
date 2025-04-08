@@ -12,6 +12,7 @@ import {
 } from '../../types/types';
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
+import { SentencesApi } from '../../api/api';
 
 const carouselNavButtonStyle = {
   backgroundColor: '#BDBDBD',
@@ -155,23 +156,45 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         sentence: sentenceRequest.text,
       };
 
-      // モックAPIを使用して新しい文章を投稿
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/sentences`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(postSentence),
-        },
-      );
+      // OpenAPIが生成したAPIクライアントを使用して新しい文章を投稿
+      const sentencesApi = new SentencesApi();
+      const response = await sentencesApi.postSentence(postSentence);
 
-      if (!response.ok) {
+      if (response.status !== 201 || !response.data.main) {
         throw new Error('Failed to create sentence');
       }
 
-      const newSentence: Sentence = await response.json();
+      // Convert API response Sentence to application Sentence type
+      const apiSentence = response.data.main;
+      const newSentence: Sentence = {
+        title: '',
+        main_copy: '',
+        overview: '',
+        popular: false,
+        newArrival: false,
+        author_user_name: '',
+        chips: [],
+        tags: [],
+        reader_count: 0,
+        avatar: {
+          src: '',
+          alt: '',
+          color: '',
+          text: '',
+        },
+        sentence_id: apiSentence.sentence_id || 0,
+        sentence_user_count: 0,
+        sentence_hierarchy_count: 0,
+        sentence: apiSentence.sentence || '',
+        textIndex: 0,
+        userId: 0,
+        userName: '',
+        profile_icon_image: '',
+        evaluation_good_count: 0,
+        evaluation_stay_count: 0,
+        created_at: apiSentence.created_at || '',
+        updated_at: apiSentence.updated_at || '',
+      };
 
       // mainPanelを更新
       setMainPanel((prev) => [...prev, newSentence]);

@@ -1,4 +1,4 @@
-import { setupWorker } from 'msw';
+import { setupWorker } from 'msw/browser';
 import { novelListHandlers } from '../features/NovelList/mocks/handlers';
 
 const handlers = [...novelListHandlers];
