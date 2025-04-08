@@ -1,5 +1,5 @@
 // types.ts
-import React from 'react';
+import * as React from 'react';
 
 export interface Sentence {
   title: string;

@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2022",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable", "ESNext"],
+    "module": "es2022",
     "skipLibCheck": true,
     "composite": true,
     /* Bundler mode */
@@ -23,7 +23,9 @@
     "noFallthroughCasesInSwitch": true,
     /* Jest and Testing Library */
     "types": ["jest", "node"],
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true
   },
-  "include": ["src/__test__"]
+  "include": ["src/**/*"]
 }
