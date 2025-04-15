@@ -6,7 +6,6 @@ import { NovelListItem } from '../../types/types';
 import { convertNovelListResponse } from './convert';
 import { Box, Typography } from '@mui/material';
 import { axiosConfig } from '../../axiosConfig';
-import { novels } from './mocks/data';
 
 /*APi動作確認用 */
 const novelsApi = new NovelsApi(axiosConfig);
@@ -31,25 +30,38 @@ const NovelList = () => {
   return (
     <>
       <Grid container spacing={2}>
-        {novels.map((novel) => (
-          <Grid item xs={12} sm={6} md={4} key={novel.title}>
+        {responseNovels.map((novel) => (
+          <Grid item xs={12} sm={6} md={4} key={novel.title_id}>
             <NovelCardContainer
               novel={{
                 ...novel,
-                sentence: novel.main_copy,
+                sentence: novel.famous_sentence_text,
                 sentence_id: 0,
-                userId: 0,
-                userName: '',
-                profile_icon_image: '',
-                evaluation_good_count: 0,
+                userId: novel.author_user_id,
+                userName: novel.author_user_name,
+                profile_icon_image: novel.profile_icon_image,
+                evaluation_good_count: novel.evaluation_good_count,
                 evaluation_stay_count: 0,
                 textIndex: 0,
-                created_at: '',
+                created_at: novel.created_at,
                 children: [],
                 parent: [],
                 main: [],
-                chips: novel.chips,
-                tags: novel.tags,
+                chips: [],
+                tags: novel.title_genres.map((genre) => ({ label: genre })),
+                main_copy: novel.famous_sentence_text,
+                overview: '',
+                popular: novel.is_famous,
+                newArrival: novel.is_new,
+                reader_count: novel.view_count,
+                avatar: {
+                  src: novel.profile_icon_image,
+                  alt: novel.author_user_name,
+                  color: '#000000',
+                  text: novel.author_user_name,
+                },
+                sentence_user_count: 0,
+                sentence_hierarchy_count: 0,
               }}
               onClick={() => {
                 /* handle click */
