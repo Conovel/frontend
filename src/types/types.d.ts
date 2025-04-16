@@ -1,6 +1,4 @@
-// types.ts
 import * as React from 'react';
-
 export interface Sentence {
   title: string;
   main_copy: string;
@@ -30,14 +28,12 @@ export interface Sentence {
   created_at: string;
   updated_at: string;
 }
-
 export interface ViewSentence {
   main: Sentence[];
   parent: Sentence[];
   parallels: Sentence[];
   children: Sentence[];
 }
-
 export interface NovelListItem {
   title_id: number;
   title: string;
@@ -53,7 +49,6 @@ export interface NovelListItem {
   created_at: string;
   updated_at: string;
 }
-
 export interface NovelDetail extends NovelListItem {
   main_copy: string;
   sentence_user_count: number;
@@ -61,7 +56,6 @@ export interface NovelDetail extends NovelListItem {
   reader_count: number;
   overview: string;
 }
-
 export interface User {
   user_id: number;
   user_name: string;
@@ -71,26 +65,22 @@ export interface User {
   created_at: string;
   updated_at: string;
 }
-
 export interface ViewMeUser extends User {
   birth_year_and_month: string;
   is_anonymous: boolean;
 }
-
 export interface UpdateUser {
   user_name: string;
   nick_name: string;
   is_anonymous: boolean;
   profile_icon_image: string;
 }
-
 export interface ErrorResponse {
   error: {
     code: number;
     message: string;
   };
 }
-
 export interface NovelViewPresentationProps {
   mainPanel: Sentence[];
   parentPanel: Sentence[];
@@ -125,7 +115,6 @@ export interface NovelViewPresentationProps {
   setEvaluation_stay_count_main: React.Dispatch<React.SetStateAction<number>>;
   textCount: number;
 }
-
 export interface NovelProps {
   title: string;
   main_copy: string;
@@ -133,8 +122,12 @@ export interface NovelProps {
   popular: boolean;
   newArrival: boolean;
   author_user_name: string;
-  chips: { label: string }[];
-  tags: { label: string }[];
+  chips: {
+    label: string;
+  }[];
+  tags: {
+    label: string;
+  }[];
   reader_count: number;
   avatar: {
     src: string;
@@ -158,13 +151,9 @@ export interface NovelProps {
   main: Sentence[];
   parent: Sentence[];
 }
-
-// リクエスト用の新しい型
 export interface CreateSentenceRequest {
   text: string;
 }
-
-// APIに送信するための型 (OpenAPI仕様に合わせる)
 export interface PostSentence {
   parent_sentence_id: number;
   parent_updated_at: string;

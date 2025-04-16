@@ -9,7 +9,7 @@ interface NovelCardProps {
   key: number;
   index: number;
   textIndex: number;
-  text: string;
+  sentence: string;
   evaluation_good_count: number;
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   comment_count: number;
@@ -54,7 +54,7 @@ const NovelCard = ({ novel, onClick }: NovelCardProps) => {
             multiline
             fullWidth
             variant='outlined'
-            value={novel.text}
+            value={novel.sentence}
             InputProps={{
               readOnly: true,
             }}

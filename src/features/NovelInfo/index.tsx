@@ -3,7 +3,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import { novels } from '../NovelList';
+import { novels } from '../NovelList/mocks/data';
 import { Grid } from '@mui/material';
 import { NovelProps } from '../../types/types';
 import NovelCardContainer from '../../components/novelCard/container';
@@ -48,7 +48,7 @@ export default function TransitionsModal({
         <Box sx={style}>
           {/* Add the Grid component to display novels */}
           <Grid container spacing={2}>
-            {novels.map((novel, index) => (
+            {novels.map((novel: NovelProps, index: number) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
                 <NovelCardContainer
                   novel={{
@@ -73,7 +73,6 @@ export default function TransitionsModal({
                     tags: [],
                     reader_count: 0,
                     updated_at: new Date().toISOString(),
-                    text: '',
                     textIndex: 0,
                     children: [],
                     main: [],
