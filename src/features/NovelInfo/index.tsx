@@ -9,7 +9,7 @@ import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import GroupsIcon from '@mui/icons-material/Groups';
-import { NovelProps } from '../../components/novelCard/presentation';
+import { NovelProps } from '../../types/types';
 
 interface NovelInfoProps {
   open: boolean;
@@ -69,7 +69,7 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
           </Box>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
             {novel.chips.map((chip, index) => (
-              <Box key={index}>{chip}</Box>
+              <Box key={index}>{chip.label}</Box>
             ))}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -78,7 +78,7 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
               color='text.secondary'
             >
               {novel.tags.map((tag, index) => (
-                <Box key={index}>{tag}</Box>
+                <Box key={index}>{tag.label}</Box>
               ))}
             </Box>
           </Box>

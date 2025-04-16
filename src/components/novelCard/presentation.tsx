@@ -7,31 +7,8 @@ import Avatar from '@mui/material/Avatar';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import { NovelProps } from '../../types/types';
 import { NovelInfo } from '../../features/NovelInfo';
-
-export interface NovelProps {
-  main_copy: string;
-  overview: string;
-  title: string;
-  text: string;
-  textIndex: number;
-  children: string;
-  main: string;
-  parent: string;
-  avatar: {
-    src: string;
-    alt: string;
-    color: string;
-    text: string;
-  };
-  author_user_name: string;
-  reader_count: number;
-  updated_at: string;
-  sentence_hierarchy_count: number;
-  sentence_user_count: number;
-  chips: React.ReactNode[];
-  tags: React.ReactNode[];
-}
 
 const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
   const [openModal, setOpenModal] = React.useState(false);
@@ -79,7 +56,7 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
             {novel.chips.map((chip, index) => (
-              <Box key={index}>{chip}</Box>
+              <Box key={index}>{chip.label}</Box>
             ))}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -104,7 +81,7 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
               color='text.secondary'
             >
               {novel.tags.map((tag, index) => (
-                <Box key={index}>{tag}</Box>
+                <Box key={index}>{tag.label}</Box>
               ))}
             </Box>
           </Box>

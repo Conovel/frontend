@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { NovelProps } from '../../types/types';
 import NovelCard from '../../components/novelCard/NovelCard';
+import { NovelProps } from '../../types/types';
 
 interface ParentPanelProps {
   parentPanel: NovelProps;
@@ -45,7 +45,7 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
           key={startIndex}
           index={0}
           textIndex={startIndex}
-          text={parentPanel.sentence}
+          sentence={parentPanel.sentence}
           novel={{
             main_copy: parentPanel.main_copy,
             overview: parentPanel.overview,
@@ -60,9 +60,8 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
             sentence_user_count: parentPanel.sentence_user_count,
             sentence_hierarchy_count: parentPanel.sentence_hierarchy_count,
             tags: parentPanel.tags,
-            text: parentPanel.text,
+            sentence: parentPanel.sentence,
             sentence_id: 0,
-            sentence: '',
             userId: 0,
             userName: '',
             profile_icon_image: '',
