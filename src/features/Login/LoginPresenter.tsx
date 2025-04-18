@@ -122,6 +122,7 @@ export const LoginPresenter = () => {
             ) : (
           
             /* MEMO：ここに新規登録とログインを兼ねたボタンとわかるテキストを追加する？ */
+            /* MEMO：ボタン押下→Googleアカウント選択→既存ユーザーならログイン、なければユーザー追加 */
             <Button
               variant='outlined'
               color='primary'
