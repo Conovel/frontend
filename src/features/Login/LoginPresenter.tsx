@@ -10,6 +10,7 @@ import {
   TextField,
   Divider,
 } from '@mui/material';
+// MEMO：フロントのreact-oauthとバックのomniauthの機能が干渉したためreact-oauthを使用しない方法で実装
 // import { GoogleLogin } from '@react-oauth/google';
 import { Link } from 'react-router-dom';
 import { useAuth } from "../../providers/auth";
@@ -120,6 +121,7 @@ export const LoginPresenter = () => {
               </Link>
             ) : (
           
+            /* MEMO：ここに新規登録とログインを兼ねたボタンとわかるテキストを追加する？ */
             <Button
               variant='outlined'
               color='primary'
@@ -133,6 +135,7 @@ export const LoginPresenter = () => {
 
         <Divider sx={{ width: '100%', my: 2 }}>または</Divider>
 
+        {/* MEMO：新規登録とログインボタンを統合する方針の場合、下記のボタンは削除する */}
         <Button
           variant='outlined'
           color='primary'
