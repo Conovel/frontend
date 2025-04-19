@@ -6,9 +6,7 @@ import { NovelListItem } from '../../types/types';
 import { convertNovelListResponse } from './convert';
 import { axiosConfig } from '../../axiosConfig';
 
-/*APi動作確認用 */
 const novelsApi = new NovelsApi(axiosConfig);
-/*APi動作確認用　ここまで */
 
 const NovelList = () => {
   const [responseNovels, setResponseNovels] = useState<NovelListItem[]>([]);
@@ -17,10 +15,10 @@ const NovelList = () => {
     const fetchNovels = async () => {
       try {
         const response = await novelsApi.getNovels();
-        const mappedResponse: NovelListItem[] = convertNovelListResponse(
+        const convertedResponse: NovelListItem[] = convertNovelListResponse(
           response.data,
         );
-        setResponseNovels(mappedResponse);
+        setResponseNovels(convertedResponse);
       } catch (error) {
         // TODO: エラー時の対応について要検討（エラーがわかるような画面にするかなど）
         console.error('Error fetching sentences:', error);
