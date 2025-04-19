@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid';
-import { useEffect, useState } from 'react'; //API動作確認用
-import { NovelsApi } from '../../api/api'; //API動作確認用
+import { useEffect, useState } from 'react';
+import { NovelsApi } from '../../api/api';
 import NovelCardContainer from '../../components/novelCard/container';
 import { NovelListItem } from '../../types/types';
 import { convertNovelListResponse } from './convert';
@@ -65,7 +65,7 @@ const NovelList = () => {
                 sentence_hierarchy_count: 0,
               }}
               onClick={() => {
-                /* handle click */
+                // TODO：不要なonClick削除する
               }}
             />
           </Grid>
