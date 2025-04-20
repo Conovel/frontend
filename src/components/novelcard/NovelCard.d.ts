@@ -4,7 +4,7 @@ interface NovelCardProps {
   key: number;
   index: number;
   textIndex: number;
-  text: string;
+  sentence: string;
   evaluation_good_count: number;
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   comment_count: number;

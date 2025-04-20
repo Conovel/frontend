@@ -1,4 +1,6 @@
 // types.ts
+import * as React from 'react';
+
 export interface Sentence {
   title: string;
   main_copy: string;
@@ -19,7 +21,6 @@ export interface Sentence {
   sentence_user_count: number;
   sentence_hierarchy_count: number;
   sentence: string;
-  text: string;
   textIndex: number;
   userId: number;
   userName: string;
@@ -131,30 +132,41 @@ export interface NovelProps {
   overview: string;
   popular: boolean;
   newArrival: boolean;
+  author_user_name: string;
+  chips: { label: string }[];
+  tags: { label: string }[];
+  reader_count: number;
   avatar: {
     src: string;
     alt: string;
     color: string;
     text: string;
   };
-  author_user_name: string;
-  chips: JSX.Element[];
-  created_at: string;
-  tags: JSX.Element[];
-  reader_count: number;
-  updated_at: string;
   sentence_id: number;
+  sentence_user_count: number;
+  sentence_hierarchy_count: number;
   sentence: string;
+  textIndex: number;
   userId: number;
   userName: string;
   profile_icon_image: string;
   evaluation_good_count: number;
   evaluation_stay_count: number;
-  sentence_user_count: number;
-  sentence_hierarchy_count: number;
-  text: string;
-  textIndex: number;
+  created_at: string;
+  updated_at: string;
   children: Sentence[];
-  parent: Sentence[];
   main: Sentence[];
+  parent: Sentence[];
+}
+
+// リクエスト用の新しい型
+export interface CreateSentenceRequest {
+  text: string;
+}
+
+// APIに送信するための型 (OpenAPI仕様に合わせる)
+export interface PostSentence {
+  parent_sentence_id: number;
+  parent_updated_at: string;
+  sentence: string;
 }

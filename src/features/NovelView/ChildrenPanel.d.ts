@@ -2,6 +2,9 @@ import React from 'react';
 import { Sentence, NovelProps } from '../../types/types';
 interface ChildrenPanelProps {
   childrenPanel: Sentence[];
+  setChildrenPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
+  mainPanel: Sentence[];
+  setMainPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
