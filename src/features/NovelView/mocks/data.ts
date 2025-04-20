@@ -6,6 +6,7 @@ export const mockParentPanel: NovelProps[] = [
     textIndex: 0,
     main_copy: '',
     overview: '',
+    text: '',
     popular: false,
     newArrival: false,
     avatar: {
@@ -51,7 +52,6 @@ export const mockMainPanel: Sentence[] = [
     },
     author_user_name: '',
     chips: [],
-    created_at: new Date().toISOString(),
     tags: [],
     reader_count: 0,
     updated_at: new Date().toISOString(),
@@ -64,6 +64,7 @@ export const mockMainPanel: Sentence[] = [
     profile_icon_image: '',
     evaluation_good_count: 0,
     evaluation_stay_count: 0,
+    created_at: new Date().toISOString(),
   },
 ];
 
@@ -83,7 +84,6 @@ export const mockChildrenPanel: Sentence[] = [
     },
     author_user_name: '',
     chips: [],
-    created_at: new Date().toISOString(),
     tags: [],
     reader_count: 0,
     updated_at: new Date().toISOString(),
@@ -96,6 +96,7 @@ export const mockChildrenPanel: Sentence[] = [
     profile_icon_image: '',
     evaluation_good_count: 0,
     evaluation_stay_count: 0,
+    created_at: new Date().toISOString(),
   },
 ];
 
@@ -103,8 +104,10 @@ export const mockNovelProps = {
   main_copy: '',
   overview: '',
   title: '',
+  text: '',
   author_user_name: '',
   chips: [],
+  tags: [],
   avatar: {
     src: '',
     alt: '',
@@ -117,7 +120,6 @@ export const mockNovelProps = {
   updated_at: new Date().toISOString(),
   sentence_user_count: 0,
   sentence_hierarchy_count: 0,
-  tags: [],
   sentence: '',
   children: mockChildrenPanel,
   parent: mockParentPanel,

@@ -82,8 +82,12 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
             {novel.title}
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
-            {novel.chips.map((chip, index) => (
-              <Box key={index}>{chip.label}</Box>
+            {novel.chips?.map((chip: React.ReactNode, index: number) => (
+              <Box key={index}>
+                {React.isValidElement(chip) && 'label' in chip.props
+                  ? chip.props.label
+                  : chip}
+              </Box>
             ))}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -107,8 +111,12 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
               sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
               color='text.secondary'
             >
-              {novel.tags.map((tag, index) => (
-                <Box key={index}>{tag.label}</Box>
+              {novel.tags?.map((tag: React.ReactNode, index: number) => (
+                <Box key={index}>
+                  {React.isValidElement(tag) && 'label' in tag.props
+                    ? tag.props.label
+                    : tag}
+                </Box>
               ))}
             </Box>
           </Box>
@@ -190,8 +198,12 @@ const NovelModal = ({
             <Typography sx={{ ml: 1 }}>{novel.author_user_name}</Typography>
           </Box>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
-            {novel.chips.map((chip, index) => (
-              <Box key={index}>{chip.label}</Box>
+            {novel.chips?.map((chip: React.ReactNode, index: number) => (
+              <Box key={index}>
+                {React.isValidElement(chip) && 'label' in chip.props
+                  ? chip.props.label
+                  : chip}
+              </Box>
             ))}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -199,8 +211,12 @@ const NovelModal = ({
               sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
               color='text.secondary'
             >
-              {novel.tags.map((tag, index) => (
-                <Box key={index}>{tag.label}</Box>
+              {novel.tags?.map((tag: React.ReactNode, index: number) => (
+                <Box key={index}>
+                  {React.isValidElement(tag) && 'label' in tag.props
+                    ? tag.props.label
+                    : tag}
+                </Box>
               ))}
             </Box>
           </Box>

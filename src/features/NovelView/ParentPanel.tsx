@@ -50,6 +50,7 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
             main_copy: parentPanel.main_copy,
             overview: parentPanel.overview,
             title: parentPanel.title,
+            text: parentPanel.sentence,
             author_user_name: parentPanel.author_user_name,
             chips: parentPanel.chips,
             avatar: parentPanel.avatar,

@@ -6,8 +6,10 @@ export declare const mockNovelProps: {
   main_copy: string;
   overview: string;
   title: string;
+  text: string;
   author_user_name: string;
   chips: never[];
+  tags: never[];
   avatar: {
     src: string;
     alt: string;
@@ -20,7 +22,6 @@ export declare const mockNovelProps: {
   updated_at: string;
   sentence_user_count: number;
   sentence_hierarchy_count: number;
-  tags: never[];
   sentence: string;
   children: Sentence[];
   parent: NovelProps[];

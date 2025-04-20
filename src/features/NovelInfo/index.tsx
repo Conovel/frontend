@@ -55,6 +55,7 @@ export default function TransitionsModal({
                     title: novel.title,
                     main_copy: novel.main_copy,
                     overview: novel.overview,
+                    text: novel.text,
                     popular: novel.popular,
                     newArrival: novel.newArrival,
                     avatar: novel.avatar,

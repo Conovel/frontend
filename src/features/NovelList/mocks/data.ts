@@ -1,4 +1,5 @@
 import { NovelProps } from '../../../types/types';
+import * as React from 'react';
 
 export const novels: NovelProps[] = [
   {
@@ -7,6 +8,7 @@ export const novels: NovelProps[] = [
       '雪山で目を覚ますとエンジニアに転生していた.雪山ながら密林からガジェットを取り寄せて悠々生活・快適ライフを送っている',
     title:
       '山暮らし聖女の異世界スローライフ～聖女召喚された私，偽物だとして雪山に廃棄されるも，目が覚めるとエンジニアに転生していたことにより本当の「聖女」になる～',
+    text: '雪山で目を覚ますとエンジニアに転生していた。',
     popular: true,
     newArrival: true,
     avatar: {
@@ -16,8 +18,14 @@ export const novels: NovelProps[] = [
       text: 'RS',
     },
     author_user_name: 'Remy Sharp',
-    chips: [{ label: '人気' }, { label: '新着' }],
-    tags: [{ label: 'ラブストーリー' }, { label: 'ファンタジー' }],
+    chips: [
+      React.createElement('span', { key: 'popular' }, '人気'),
+      React.createElement('span', { key: 'new' }, '新着'),
+    ],
+    tags: [
+      React.createElement('span', { key: 'love' }, 'ラブストーリー'),
+      React.createElement('span', { key: 'fantasy' }, 'ファンタジー'),
+    ],
     reader_count: 100,
     updated_at: '2024/08/20',
     sentence_user_count: 150,
