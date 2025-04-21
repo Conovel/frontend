@@ -6,7 +6,6 @@ export declare const mockNovelProps: {
   main_copy: string;
   overview: string;
   title: string;
-  text: string;
   author_user_name: string;
   chips: never[];
   tags: never[];

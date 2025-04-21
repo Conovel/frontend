@@ -6,7 +6,6 @@ import { NovelListItem } from '../../types/types';
 import { convertNovelListResponse } from './convert';
 import { Box, Typography } from '@mui/material';
 import { axiosConfig } from '../../axiosConfig';
-import React from 'react';
 
 /*APi動作確認用 */
 const novelsApi = new NovelsApi(axiosConfig);
@@ -49,12 +48,11 @@ const NovelList = () => {
                 parent: [],
                 main: [],
                 chips: [],
-                tags: novel.title_genres.map((genre) =>
-                  React.createElement('span', { key: genre }, genre),
-                ),
+                tags: novel.title_genres.map((genre) => ({
+                  label: genre,
+                })),
                 main_copy: novel.famous_sentence_text,
                 overview: '',
-                text: novel.famous_sentence_text,
                 popular: novel.is_famous,
                 newArrival: novel.is_new,
                 reader_count: novel.view_count,

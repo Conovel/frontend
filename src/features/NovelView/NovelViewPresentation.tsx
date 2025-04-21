@@ -93,10 +93,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         {mockContainerData.parent.map((NovelProps, index) => (
           <ParentPanel
             key={index}
-            parentPanel={{
-              ...NovelProps,
-              text: NovelProps.sentence,
-            }}
+            parentPanel={NovelProps}
             startIndex={start_index_parent}
             setStartIndex={setStart_index_parent}
             visibleTextCount={visibleTextCount}
@@ -124,8 +121,36 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           mainPanel={mockContainerData.main}
           setMainPanel={() => {}}
           novel={{
-            ...mockContainerData.children[0],
-            text: mockContainerData.children[0].main_copy,
+            main_copy: '',
+            overview: '',
+            title: '',
+            author_user_name: '',
+            chips: [],
+            avatar: {
+              src: '',
+              alt: '',
+              color: '',
+              text: '',
+            },
+            popular: false,
+            newArrival: false,
+            reader_count: 0,
+            updated_at: new Date().toISOString(),
+            sentence_user_count: 0,
+            sentence_hierarchy_count: 0,
+            tags: [],
+            sentence: '',
+            children: mockContainerData.children,
+            parent: mockContainerData.parent,
+            main: mockContainerData.main,
+            sentence_id: 0,
+            userId: 0,
+            userName: '',
+            profile_icon_image: '',
+            evaluation_good_count: 0,
+            evaluation_stay_count: 0,
+            created_at: new Date().toISOString(),
+            textIndex: 0,
           }}
           onClick={() => {}}
           textIndex={0}

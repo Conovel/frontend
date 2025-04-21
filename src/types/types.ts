@@ -130,12 +130,11 @@ export interface NovelProps {
   title: string;
   main_copy: string;
   overview: string;
-  text: string;
   popular: boolean;
   newArrival: boolean;
   author_user_name: string;
-  chips: React.ReactNode[];
-  tags: React.ReactNode[];
+  chips: { label: string }[];
+  tags: { label: string }[];
   reader_count: number;
   avatar: {
     src: string;

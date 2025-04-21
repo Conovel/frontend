@@ -11,31 +11,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { Button, TextField, Modal } from '@mui/material';
-import { Sentence } from '../../types/types';
-
-export interface NovelProps {
-  main_copy: string;
-  overview: string;
-  title: string;
-  text: string;
-  textIndex: number;
-  children: Sentence[];
-  main: Sentence[];
-  parent: Sentence[];
-  avatar: {
-    src: string;
-    alt: string;
-    color: string;
-    text: string;
-  };
-  author_user_name: string;
-  reader_count: number;
-  updated_at: string;
-  sentence_hierarchy_count: number;
-  sentence_user_count: number;
-  chips: React.ReactNode[];
-  tags: React.ReactNode[];
-}
+import { NovelProps } from '../../types/types';
 
 const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
   const [openModal, setOpenModal] = React.useState(false);
@@ -82,12 +58,8 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
             {novel.title}
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
-            {novel.chips?.map((chip: React.ReactNode, index: number) => (
-              <Box key={index}>
-                {React.isValidElement(chip) && 'label' in chip.props
-                  ? chip.props.label
-                  : chip}
-              </Box>
+            {novel.chips?.map((chip, index) => (
+              <Box key={index}>{chip.label}</Box>
             ))}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -111,12 +83,8 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
               sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
               color='text.secondary'
             >
-              {novel.tags?.map((tag: React.ReactNode, index: number) => (
-                <Box key={index}>
-                  {React.isValidElement(tag) && 'label' in tag.props
-                    ? tag.props.label
-                    : tag}
-                </Box>
+              {novel.tags?.map((tag, index) => (
+                <Box key={index}>{tag.label}</Box>
               ))}
             </Box>
           </Box>
@@ -198,12 +166,8 @@ const NovelModal = ({
             <Typography sx={{ ml: 1 }}>{novel.author_user_name}</Typography>
           </Box>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
-            {novel.chips?.map((chip: React.ReactNode, index: number) => (
-              <Box key={index}>
-                {React.isValidElement(chip) && 'label' in chip.props
-                  ? chip.props.label
-                  : chip}
-              </Box>
+            {novel.chips?.map((chip, index) => (
+              <Box key={index}>{chip.label}</Box>
             ))}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -211,12 +175,8 @@ const NovelModal = ({
               sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
               color='text.secondary'
             >
-              {novel.tags?.map((tag: React.ReactNode, index: number) => (
-                <Box key={index}>
-                  {React.isValidElement(tag) && 'label' in tag.props
-                    ? tag.props.label
-                    : tag}
-                </Box>
+              {novel.tags?.map((tag, index) => (
+                <Box key={index}>{tag.label}</Box>
               ))}
             </Box>
           </Box>

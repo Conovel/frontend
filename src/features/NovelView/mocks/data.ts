@@ -6,7 +6,6 @@ export const mockParentPanel: NovelProps[] = [
     textIndex: 0,
     main_copy: '',
     overview: '',
-    text: '',
     popular: false,
     newArrival: false,
     avatar: {
@@ -104,7 +103,6 @@ export const mockNovelProps = {
   main_copy: '',
   overview: '',
   title: '',
-  text: '',
   author_user_name: '',
   chips: [],
   tags: [],
