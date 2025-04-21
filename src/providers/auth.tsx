@@ -1,10 +1,20 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+// 型定義
+export interface AuthContextType {
+  token: string;
+  setToken: React.Dispatch<React.SetStateAction<string>>;
+  currentUser: any;
+  setCurrentUser: React.Dispatch<React.SetStateAction<any>>;
+  logout: () => void;
+}
+
+export interface AuthProviderProps {
+  children: React.ReactNode;
+}
+
 // 環境変数からAPI URLを取得
 const API_URL = import.meta.env.VITE_API_BASE_URL;
-
-// 型定義をインポート
-import { AuthContextType, AuthProviderProps } from './auth.d';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
