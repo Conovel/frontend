@@ -129,15 +129,28 @@ export const LoginPresenter = ({
           // デモ用の設定
           text='signin_with'
           theme='outline'
+          containerProps={{
+            style: {
+              backgroundColor: 'black',
+              color: 'white',
+            },
+          }}
         />
 
         <Divider sx={{ width: '100%', my: 2 }}>または</Divider>
 
         <Button
-          variant='outlined'
-          color='primary'
+          variant='contained'
+          color='inherit'
           onClick={openFirstTimeLoginModal}
-          sx={{ width: '240px' }}
+          sx={{
+            width: '240px',
+            backgroundColor: 'black',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: '#333333',
+            },
+          }}
         >
           初回ログイン
         </Button>
@@ -202,9 +215,10 @@ export const LoginPresenter = ({
               />
               <label htmlFor='avatar-upload'>
                 <IconButton
-                  color='primary'
+                  color='inherit'
                   aria-label='アップロード画像'
                   component='span'
+                  sx={{ color: 'black' }}
                 >
                   <AddPhotoAlternateIcon />
                 </IconButton>
@@ -257,10 +271,24 @@ export const LoginPresenter = ({
             />
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              color: 'black',
+              mt: 4,
+            }}
+          >
             <Button
               onClick={() => setIsFirstTimeLoginModalOpen(false)}
               variant='outlined'
+              sx={{
+                color: 'black',
+                borderColor: 'black',
+                '&:hover': {
+                  borderColor: '#333333',
+                },
+              }}
             >
               戻る
             </Button>
@@ -268,6 +296,13 @@ export const LoginPresenter = ({
               onClick={handleCompleteOnboarding}
               variant='contained'
               disabled={!penName.trim() || birthDate === null}
+              sx={{
+                backgroundColor: 'black',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#333333',
+                },
+              }}
             >
               OK
             </Button>
