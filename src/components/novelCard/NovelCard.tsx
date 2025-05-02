@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Box, TextField } from '@mui/material';
+import { Avatar, Box, Typography } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import CommentButton from '../buttonicon/CommentButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
@@ -50,25 +50,15 @@ const NovelCard = ({ novel, onClick }: NovelCardProps) => {
           }}
         >
           <Avatar sx={{ width: 24, height: 24, zIndex: 2 }}>C</Avatar>
-          <TextField
-            multiline
-            fullWidth
-            variant='outlined'
-            value={novel.sentence}
-            InputProps={{
-              readOnly: true,
-            }}
+          <Typography
             sx={{
               marginTop: '0.5vh',
-              textAlign: 'left',
-              alignItems: 'center',
-              position: 'absolute',
-              inset: '1vh 1vw',
-              fontSize: '1.0rem',
-              width: '95%',
+              fontSize: '1rem',
               height: '10vh',
             }}
-          />
+          >
+            {novel.sentence}
+          </Typography>
         </Box>
       </Box>
 

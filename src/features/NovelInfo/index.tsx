@@ -3,7 +3,7 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import { Button, TextField } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
