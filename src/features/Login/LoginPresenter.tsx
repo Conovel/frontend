@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 export const LoginPresenter = () => {
   const [loginError, setLoginError] = useState<string | null>(null);
