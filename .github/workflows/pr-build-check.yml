@@ -1,0 +1,27 @@
+name: PR Build Check
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # your Node version
+
+      - name: Install dependencies
+        run: npm ci
+        # npm ci に失敗する	package-lock.json と package.json の不整合がある可能性
+
+      - name: Build project
+        run: npm run build
+        # npm run build が失敗する	.env が必要な場合は secrets や mock で対応
