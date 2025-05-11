@@ -14,13 +14,13 @@ export default defineConfig(({ mode }) => {
       },
       host: true, // Docker環境で必要
       proxy: {
-        '/v1': {
-          target: 'http://localhost:3001', // Docker環境外からのアクセス用
+        "/v1": {
+          target: "http://localhost:3001", // Docker環境外からのアクセス用
           changeOrigin: true,
           secure: false,
-          rewrite: (path) => path.replace(/^\/v1/, '/v1')
-        }
-      }
+          rewrite: (path) => path.replace(/^\/v1/, "/v1"),
+        },
+      },
     },
   };
 });
