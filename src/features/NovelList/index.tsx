@@ -10,23 +10,39 @@ const novelsApi = new NovelsApi(axiosConfig);
 
 const NovelList = () => {
   const [responseNovels, setResponseNovels] = useState<NovelListItem[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchNovels = async () => {
       try {
         const response = await novelsApi.getNovels();
+        console.log('API Response:', response); // デバッグ用ログ
+        console.log('Response type:', typeof response.data); // レスポンスの型を確認
+        console.log('Is Array?', Array.isArray(response.data)); // 配列かどうかを確認
+
+        if (!Array.isArray(response.data)) {
+          throw new Error('API response is not in the expected array format');
+        }
+
         const convertedResponse: NovelListItem[] = convertNovelListResponse(
           response.data,
         );
         setResponseNovels(convertedResponse);
+        setError(null);
       } catch (error) {
-        // TODO: エラー時の対応について要検討（エラーがわかるような画面にするかなど）
         console.error('Error fetching sentences:', error);
+        setError(
+          error instanceof Error ? error.message : 'Failed to fetch novels',
+        );
       }
     };
 
     fetchNovels();
   }, []);
+
+  if (error) {
+    return <div style={{ padding: '20px', color: 'red' }}>Error: {error}</div>;
+  }
 
   return (
     <>
