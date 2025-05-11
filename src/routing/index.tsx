@@ -1,4 +1,4 @@
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Outlet, Route, Routes } from 'react-router';
 import HeaderBar from '../components/header';
 import { CompanyPage } from '../pages/company';
 import NovelList from '../features/NovelList';
@@ -24,7 +24,6 @@ export const Routing = () => {
           <Route path='/account' element={<AccountSettings />} />
           <Route path='/accountDeleted' element={<AccountDeleted />} />
           <Route path='/company' element={<CompanyPage />} />
-          <Route path='/list' element={<NovelList />} />
           <Route path='/terms' element={<TermsPage />} />
           <Route path='/deleteAccount' element={<DeleteAccountPage />} />
           <Route path='/login' element={<Login />} />
