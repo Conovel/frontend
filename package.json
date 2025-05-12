@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "prepare": "husky install",
     "test": "jest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "cp:env": "copy .env.example .env || cp .env.example .env"
   },
   "dependencies": {
     "@emotion/react": "^11.13.0",
