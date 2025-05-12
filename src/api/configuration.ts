@@ -102,7 +102,10 @@ export class Configuration {
     this.username = param.username;
     this.password = param.password;
     this.accessToken = param.accessToken;
-    this.basePath = param.basePath;
+    this.basePath =
+      param.basePath ||
+      import.meta.env.VITE_API_BASE_URL ||
+      'http://localhost:3001';
     this.serverIndex = param.serverIndex;
     this.baseOptions = param.baseOptions;
     this.formDataCtor = param.formDataCtor;
