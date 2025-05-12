@@ -12,10 +12,9 @@ import {
 } from '@mui/material';
 // MEMO：フロントのreact-oauthとバックのomniauthの機能が干渉したためreact-oauthを使用しない方法で実装
 // import { GoogleLogin } from '@react-oauth/google';
-import { Link } from 'react-router-dom';
 import { useAuth } from "../../providers/auth";
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router';
 import axios from 'axios';
 
 export const LoginPresenter = () => {
