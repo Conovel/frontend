@@ -36,10 +36,10 @@ export const Routing = () => {
 
 const Layout = () => {
   return (
-    <Box display='flex' flexDirection='column' height='100%'>
+    <Box display='flex' flexDirection='column' minHeight='100vh'>
       <HeaderBar />
 
-      <main style={{ padding: '8px', flex: 1 }}>
+      <main style={{ padding: '8px', flexGrow: 1 }}>
         <Outlet />
       </main>
 
