@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 // MEMO：フロントのreact-oauthとバックのomniauthの機能が干渉したためreact-oauthを使用しない方法で実装
 // import { GoogleLogin } from '@react-oauth/google';
-import { useAuth } from "../../providers/auth";
+import { useAuth } from '../../providers/auth';
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router';
 import axios from 'axios';
@@ -29,17 +29,17 @@ export const LoginPresenter = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
+    const token = params.get('token');
     if (token) {
       setToken(token);
-      localStorage.setItem("auth", token);
+      localStorage.setItem('auth', token);
     }
   }, [setToken, navigate]);
 
   const handleGoogleAuth = (e) => {
     e.preventDefault();
-    const form = document.createElement("form");
-    form.method = "GET";
+    const form = document.createElement('form');
+    form.method = 'GET';
     form.action = `${authBaseUrl}/auth/google_oauth2`;
     document.body.appendChild(form);
     form.submit();
@@ -51,7 +51,9 @@ export const LoginPresenter = () => {
     console.log('credential:', credentialResponse);
 
     try {
-      const res = await axios.post(`${apiBaseUrl}/auth/create`, { token: credential });
+      const res = await axios.post(`${apiBaseUrl}/auth/create`, {
+        token: credential,
+      });
       console.log('バックエンドからのレスポンス:', res.data);
 
       // 通常のログイン後の処理
@@ -115,11 +117,10 @@ export const LoginPresenter = () => {
         <>
           {/* ログイン済みの場合はマイページへのリンク、そうでない場合はログインボタン */}
           {currentUser ? (
-              <Link to="/account" className="btn btn-accent gap-2 w-full">
-                マイページへ
-              </Link>
-            ) : (
-          
+            <Link to='/account' className='btn btn-accent gap-2 w-full'>
+              マイページへ
+            </Link>
+          ) : (
             /* MEMO：ここに新規登録とログインを兼ねたボタンとわかるテキストを追加する？ */
             /* MEMO：ボタン押下→Googleアカウント選択→既存ユーザーならログイン、なければユーザー追加 */
             <Button
@@ -131,7 +132,7 @@ export const LoginPresenter = () => {
               Googleログイン
             </Button>
           )}
-        </> 
+        </>
 
         <Divider sx={{ width: '100%', my: 2 }}>または</Divider>
 

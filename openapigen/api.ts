@@ -668,6 +668,45 @@ export const AuthApiAxiosParamCreator = function (
         options: localVarRequestOptions,
       };
     },
+    /**
+     *
+     * @summary トークンのリフレッシュ
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    refreshToken: async (
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/auth/refresh`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: "POST",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
   };
 };
 
@@ -702,6 +741,32 @@ export const AuthApiFp = function (configuration?: Configuration) {
           configuration,
         )(axios, localVarOperationServerBasePath || basePath);
     },
+    /**
+     *
+     * @summary トークンのリフレッシュ
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async refreshToken(
+      options?: RawAxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.refreshToken(options);
+      const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+      const localVarOperationServerBasePath =
+        operationServerMap["AuthApi.refreshToken"]?.[
+          localVarOperationServerIndex
+        ]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, localVarOperationServerBasePath || basePath);
+    },
   };
 };
 
@@ -727,6 +792,17 @@ export const AuthApiFactory = function (
         .logOut(options)
         .then((request) => request(axios, basePath));
     },
+    /**
+     *
+     * @summary トークンのリフレッシュ
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    refreshToken(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+      return localVarFp
+        .refreshToken(options)
+        .then((request) => request(axios, basePath));
+    },
   };
 };
 
@@ -747,6 +823,19 @@ export class AuthApi extends BaseAPI {
   public logOut(options?: RawAxiosRequestConfig) {
     return AuthApiFp(this.configuration)
       .logOut(options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @summary トークンのリフレッシュ
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthApi
+   */
+  public refreshToken(options?: RawAxiosRequestConfig) {
+    return AuthApiFp(this.configuration)
+      .refreshToken(options)
       .then((request) => request(this.axios, this.basePath));
   }
 }
