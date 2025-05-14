@@ -11,11 +11,9 @@ function HeaderBar() {
   const navigate = useNavigate();
 
   return (
-    <AppBar position='sticky' color='default' sx={{ zIndex: 1201 }}>
+    <AppBar color='default' sx={{ top: 0, position: 'sticky' }}>
       <Container maxWidth='xl' sx={{ px: { xs: 0, md: 3 } }}>
-        <Box
-          sx={{ display: 'sticky', justifyContent: 'center', width: '100%' }}
-        >
+        <Box sx={{ justifyContent: 'center', width: '100%' }}>
           <Toolbar sx={{ justifyContent: 'space-between', width: '100%' }}>
             <Box
               sx={{
