@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import NovelCard from '../../components/novelCard/NovelCard';
-import { NovelProps } from '../../types/types';
+import { Sentence } from '../../types/types';
 
 interface ParentPanelProps {
-  parentPanel: NovelProps;
+  parentPanel: Sentence;
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
@@ -61,14 +61,14 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
             sentence_hierarchy_count: parentPanel.sentence_hierarchy_count,
             tags: parentPanel.tags,
             sentence: parentPanel.sentence,
-            sentence_id: 0,
-            userId: 0,
-            userName: '',
-            profile_icon_image: '',
-            evaluation_good_count: 0,
-            evaluation_stay_count: 0,
-            created_at: '',
-            textIndex: 0,
+            sentence_id: parentPanel.sentence_id,
+            userId: parentPanel.userId,
+            userName: parentPanel.userName,
+            profile_icon_image: parentPanel.profile_icon_image,
+            evaluation_good_count: parentPanel.evaluation_good_count,
+            evaluation_stay_count: parentPanel.evaluation_stay_count,
+            created_at: parentPanel.created_at,
+            textIndex: parentPanel.textIndex,
             children: [],
             parent: [],
             main: [],

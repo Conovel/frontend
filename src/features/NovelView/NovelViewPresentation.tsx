@@ -1,171 +1,92 @@
 import React from 'react';
-import { Box, Container } from '@mui/material';
+import { Box } from '@mui/material';
+import { MainPanel } from './MainPanel';
 import ParentPanel from './ParentPanel';
-import ChildrenPanel from './ChildrenPanel';
-import MainPanel from './MainPanel';
+import { ChildrenPanel } from './ChildrenPanel';
 import { Sentence } from '../../types/types';
-import { mockContainerData } from './mocks/data';
 
 interface NovelViewPresentationProps {
-  mainPanel: Sentence[];
-  parentPanel: Sentence[];
-  childrenPanel: Sentence[];
-  start_index_parent: number;
-  setStart_index_parent: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_count_parent: number;
-  setEvaluation_good_count_parent: React.Dispatch<React.SetStateAction<number>>;
-  comment_count_parent: number;
-  setComment_count_parent: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count_parent: number;
-  setEvaluation_stay_count_parent: React.Dispatch<React.SetStateAction<number>>;
-  start_index_children: number;
-  setStart_index_children: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_count_children: number;
-  setEvaluation_good_count_children: React.Dispatch<
-    React.SetStateAction<number>
-  >;
-  comment_count_children: number;
-  setComment_count_children: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count_children: number;
-  setEvaluation_stay_count_children: React.Dispatch<
-    React.SetStateAction<number>
-  >;
-  start_index_main?: number;
-  setStart_index_main?: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_count_main: number;
-  setEvaluation_good_count_main: React.Dispatch<React.SetStateAction<number>>;
-  comment_count_main: number;
-  setComment_count_main: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count_main: number;
-  setEvaluation_stay_count_main: React.Dispatch<React.SetStateAction<number>>;
+  mainPanel: Sentence | null;
+  parentPanel: Sentence | null;
+  childrenPanels: Sentence[];
+  startIndex: number;
+  setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   textCount: number;
+  evaluation_good_count: number;
+  setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
+  comment_count: number;
+  setComment_count: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_stay_count: number;
+  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  onPostSuccess: (newPost: Sentence) => void;
 }
 
-export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
-  start_index_parent,
-  setStart_index_parent,
-  comment_count_parent,
-  setComment_count_parent,
-  evaluation_stay_count_parent,
-  setEvaluation_stay_count_parent,
-  start_index_children,
-  setStart_index_children,
-  evaluation_good_count_parent,
-  setEvaluation_good_count_parent,
-  evaluation_good_count_children,
-  setEvaluation_good_count_children,
-  comment_count_children,
-  setComment_count_children,
-  evaluation_stay_count_children,
-  setEvaluation_stay_count_children,
-  evaluation_good_count_main,
-  setEvaluation_good_count_main,
-  comment_count_main,
-  setComment_count_main,
-  evaluation_stay_count_main,
-  setEvaluation_stay_count_main,
+const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
+  mainPanel,
+  parentPanel,
+  childrenPanels,
+  startIndex,
+  setStartIndex,
+  textCount,
+  evaluation_good_count,
+  setEvaluation_good_count,
+  comment_count,
+  setComment_count,
+  evaluation_stay_count,
+  setEvaluation_stay_count,
+  onPostSuccess,
 }) => {
-  const parentTextCount = 10;
-  const childrenTextCount = 10;
-  const visibleTextCount = 3;
-
   return (
-    <Container sx={{ position: 'relative', alignItems: 'center' }}>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '10vh',
-          bottom: '5vh',
-          left: '50%',
-          width: '2px',
-          backgroundColor: '#000',
-          zIndex: 1,
-        }}
-      ></Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '20px',
-        }}
-      >
-        {mockContainerData.parent.map((NovelProps, index) => (
-          <ParentPanel
-            key={index}
-            parentPanel={NovelProps}
-            startIndex={start_index_parent}
-            setStartIndex={setStart_index_parent}
-            visibleTextCount={visibleTextCount}
-            textCount={parentTextCount}
-            evaluation_good_count={evaluation_good_count_parent}
-            setEvaluation_good_count={setEvaluation_good_count_parent}
-            comment_count={comment_count_parent}
-            setComment_count={setComment_count_parent}
-            evaluation_stay_count={evaluation_stay_count_parent}
-            setEvaluation_stay_count={setEvaluation_stay_count_parent}
-          />
-        ))}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minHeight: '100vh',
+        backgroundColor: '#f5f5f5',
+      }}
+    >
+      {parentPanel && (
+        <ParentPanel
+          parentPanel={parentPanel}
+          startIndex={startIndex}
+          setStartIndex={setStartIndex}
+          visibleTextCount={3}
+          textCount={textCount}
+          evaluation_good_count={evaluation_good_count}
+          setEvaluation_good_count={setEvaluation_good_count}
+          comment_count={comment_count}
+          setComment_count={setComment_count}
+          evaluation_stay_count={evaluation_stay_count}
+          setEvaluation_stay_count={setEvaluation_stay_count}
+        />
+      )}
+      {mainPanel && (
         <MainPanel
-          mainPanel={mockContainerData.main}
-          evaluation_good_count={evaluation_good_count_main}
-          setEvaluation_good_count={setEvaluation_good_count_main}
-          comment_count={comment_count_main}
-          setComment_count={setComment_count_main}
-          evaluation_stay_count={evaluation_stay_count_main}
-          setEvaluation_stay_count={setEvaluation_stay_count_main}
+          mainPanel={mainPanel}
+          onPostSuccess={onPostSuccess}
+          evaluation_good_count={evaluation_good_count}
+          setEvaluation_good_count={setEvaluation_good_count}
+          comment_count={comment_count}
+          setComment_count={setComment_count}
+          evaluation_stay_count={evaluation_stay_count}
+          setEvaluation_stay_count={setEvaluation_stay_count}
         />
+      )}
+      {childrenPanels.length > 0 && (
         <ChildrenPanel
-          childrenPanel={mockContainerData.children}
-          setChildrenPanel={() => {}}
-          mainPanel={mockContainerData.main}
-          setMainPanel={() => {}}
-          novel={{
-            main_copy: '',
-            overview: '',
-            title: '',
-            author_user_name: '',
-            chips: [],
-            avatar: {
-              src: '',
-              alt: '',
-              color: '',
-              text: '',
-            },
-            popular: false,
-            newArrival: false,
-            reader_count: 0,
-            updated_at: new Date().toISOString(),
-            sentence_user_count: 0,
-            sentence_hierarchy_count: 0,
-            tags: [],
-            sentence: '',
-            children: mockContainerData.children,
-            parent: mockContainerData.parent,
-            main: mockContainerData.main,
-            sentence_id: 0,
-            userId: 0,
-            userName: '',
-            profile_icon_image: '',
-            evaluation_good_count: 0,
-            evaluation_stay_count: 0,
-            created_at: new Date().toISOString(),
-            textIndex: 0,
-          }}
-          onClick={() => {}}
-          textIndex={0}
-          startIndex={start_index_children}
-          setStartIndex={setStart_index_children}
-          visibleTextCount={visibleTextCount}
-          textCount={childrenTextCount}
-          evaluation_good_count={evaluation_good_count_children}
-          setEvaluation_good_count={setEvaluation_good_count_children}
-          comment_count={comment_count_children}
-          setComment_count={setComment_count_children}
-          evaluation_stay_count={evaluation_stay_count_children}
-          setEvaluation_stay_count={setEvaluation_stay_count_children}
+          childrenPanels={childrenPanels}
+          evaluation_good_count={evaluation_good_count}
+          setEvaluation_good_count={setEvaluation_good_count}
+          comment_count={comment_count}
+          setComment_count={setComment_count}
+          evaluation_stay_count={evaluation_stay_count}
+          setEvaluation_stay_count={setEvaluation_stay_count}
+          onPostSuccess={onPostSuccess}
         />
-      </Box>
-    </Container>
+      )}
+    </Box>
   );
 };
+
+export default NovelViewPresentation;

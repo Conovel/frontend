@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import CommentButton from '../buttonicon/CommentButton';
@@ -6,10 +6,10 @@ import NextPlanButton from '../buttonicon/NextPlanButton';
 import { NovelProps } from '../../types/types';
 
 interface NovelCardProps {
-  key: number;
-  index: number;
-  textIndex: number;
-  sentence: string;
+  key?: number;
+  index?: number;
+  textIndex?: number;
+  sentence?: string;
   evaluation_good_count: number;
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   comment_count: number;
@@ -17,76 +17,113 @@ interface NovelCardProps {
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
   novel: NovelProps;
-  onClick: (sentence_id: number) => void;
+  onClick?: (sentence_id: number) => void;
+  onPostClick?: () => void;
 }
 
-const NovelCard = ({ novel, onClick }: NovelCardProps) => {
-  // Local state for counts
-  const [evaluation_good_count, setEvaluation_good_count] = useState(0);
-  const [comment_count, setComment_count] = useState(0);
-  const [evaluation_stay_count, setEvaluation_stay_count] = useState(0);
-  return (
-    <Box
-      component='div'
-      sx={{
-        fontSize: '0.8rem',
-        position: 'relative',
-        backgroundColor: '#fff',
-      }}
-      onClick={() => onClick(novel.sentence_id)}
-    >
+const NovelCard: React.FC<NovelCardProps> = memo(
+  ({
+    novel,
+    onClick,
+    onPostClick,
+    evaluation_good_count,
+    setEvaluation_good_count,
+    comment_count,
+    setComment_count,
+    evaluation_stay_count,
+    setEvaluation_stay_count,
+  }) => {
+    const handleClick = () => {
+      if (onClick) {
+        onClick(novel.sentence_id);
+      }
+    };
+
+    return (
       <Box
+        component='div'
         sx={{
-          border: '1px solid #000',
-          padding: '1vh 1vw',
-          borderRadius: '1vh',
+          fontSize: '0.8rem',
+          position: 'relative',
+          backgroundColor: '#fff',
+          transition: 'transform 0.2s ease-in-out',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          },
         }}
+        onClick={handleClick}
       >
-        {/* 小説のテキストを表示するテキストボックス */}
         <Box
           sx={{
-            alignItems: 'flex-start',
-            height: '15vh',
+            border: '1px solid #000',
+            padding: '1vh 1vw',
+            borderRadius: '1vh',
           }}
         >
-          <Avatar sx={{ width: 24, height: 24, zIndex: 2 }}>C</Avatar>
-          <Typography
+          {/* 小説のテキストを表示するテキストボックス */}
+          <Box
             sx={{
-              marginTop: '0.5vh',
-              fontSize: '1rem',
-              height: '10vh',
+              alignItems: 'flex-start',
+              height: '15vh',
             }}
           >
-            {novel.sentence}
-          </Typography>
+            <Avatar
+              sx={{
+                width: 24,
+                height: 24,
+                zIndex: 2,
+                backgroundColor: novel.avatar.color || '#1976d2',
+              }}
+            >
+              {novel.avatar.text || 'U'}
+            </Avatar>
+            <Typography
+              sx={{
+                marginTop: '0.5vh',
+                fontSize: '1rem',
+                height: '10vh',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                display: '-webkit-box',
+                WebkitLineClamp: 4,
+                WebkitBoxOrient: 'vertical',
+              }}
+            >
+              {novel.sentence}
+            </Typography>
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            marginTop: '0.2vh',
+            backgroundColor: 'transparent',
+          }}
+        >
+          <>
+            <ThumbUpButton
+              evaluation_good_count={evaluation_good_count}
+              setEvaluation_good_count={setEvaluation_good_count}
+            />
+            <CommentButton
+              comment_count={comment_count}
+              setComment_count={setComment_count}
+            />
+            <NextPlanButton
+              evaluation_stay_count={evaluation_stay_count}
+              setEvaluation_stay_count={setEvaluation_stay_count}
+              onClick={onPostClick}
+            />
+          </>
         </Box>
       </Box>
+    );
+  },
+);
 
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          marginTop: '0.2vh',
-          backgroundColor: 'transparent',
-        }}
-      >
-        <>
-          <ThumbUpButton
-            evaluation_good_count={evaluation_good_count}
-            setEvaluation_good_count={setEvaluation_good_count}
-          />
-          <CommentButton
-            comment_count={comment_count}
-            setComment_count={setComment_count}
-          />
-          <NextPlanButton
-            evaluation_stay_count={evaluation_stay_count}
-            setEvaluation_stay_count={setEvaluation_stay_count}
-          />
-        </>
-      </Box>
-    </Box>
-  );
-};
+NovelCard.displayName = 'NovelCard';
 
 export default NovelCard;

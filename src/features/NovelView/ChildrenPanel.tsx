@@ -1,245 +1,140 @@
-import React, { useState } from 'react';
-import Carousel from 'react-material-ui-carousel';
-import { Box, Fab } from '@mui/material';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import React, { memo } from 'react';
+import { Box, Typography, Snackbar, Alert } from '@mui/material';
 import NovelCard from '../../components/novelCard/NovelCard';
-import {
-  Sentence,
-  NovelProps,
-  CreateSentenceRequest,
-  PostSentence,
-} from '../../types/types';
-import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
+import { Sentence, PostSentence, NovelProps } from '../../types/types';
 import { SentencesApi } from '../../api/api';
 
-const carouselNavButtonStyle = {
-  backgroundColor: '#BDBDBD',
-  opacity: 0.5,
-  width: '0.5vw',
-  color: '#fff',
-  borderRadius: 5,
-};
-
-const carouselNavWrapperStyle = {
-  position: 'absolute' as const,
-  top: '7vh',
-  padding: '0 1vw',
-};
-
-const mainBoxStyle = {
-  backgroundColor: '#fff',
-  justifyContent: 'space-between',
-  margin: '5vh auto',
-  height: '20vh',
-  width: '70vw',
-  alignItems: 'center',
-  zIndex: 2,
-};
-
-const innerBoxStyle = {
-  justifyContent: 'center',
-  overflow: 'hidden',
-};
-
-const novelCardBoxStyle = {
-  justifyContent: 'center',
-  margin: '0 1vw',
-  width: 'calc(100% - 2vw)',
-};
-
-const fabStyle = {
-  color: '#fff',
-  backgroundColor: '#467DCC',
-  position: 'absolute',
-  bottom: '10vh',
-  right: '0vw',
-  zIndex: 5,
-  '&:hover': {
-    backgroundColor: '#0E4DC7',
-  },
-};
-
 interface ChildrenPanelProps {
-  childrenPanel: Sentence[];
-  setChildrenPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
-  mainPanel: Sentence[];
-  setMainPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
-  startIndex: number;
-  setStartIndex: React.Dispatch<React.SetStateAction<number>>;
-  visibleTextCount: number;
-  textCount: number;
+  childrenPanels: Sentence[];
   evaluation_good_count: number;
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   comment_count: number;
   setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
-  novel: NovelProps;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  textIndex: number;
+  onPostSuccess: (newPost: Sentence) => void;
 }
 
-const handleClick = (sentenceId: number) => {
-  // Your logic here, using sentenceId
-  console.log(sentenceId);
-};
+export const ChildrenPanel: React.FC<ChildrenPanelProps> = memo(
+  ({
+    childrenPanels,
+    evaluation_good_count,
+    setEvaluation_good_count,
+    comment_count,
+    setComment_count,
+    evaluation_stay_count,
+    setEvaluation_stay_count,
+    onPostSuccess,
+  }) => {
+    const [isEditPostOpen, setIsEditPostOpen] = React.useState(false);
+    const [selectedChild, setSelectedChild] = React.useState<Sentence | null>(
+      null,
+    );
+    const [error, setError] = React.useState<string | null>(null);
 
-const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
-  childrenPanel,
-  mainPanel,
-  setMainPanel,
-  startIndex,
-  setStartIndex,
-  visibleTextCount,
-  textCount,
-  evaluation_good_count,
-  setEvaluation_good_count,
-  comment_count,
-  setComment_count,
-  evaluation_stay_count,
-  setEvaluation_stay_count,
-  novel,
-  textIndex,
-}) => {
-  const [isEditPostOpen, setIsEditPostOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+    const handlePostSubmit = async (sentenceRequest: PostSentence) => {
+      try {
+        setError(null);
+        const sentencesApi = new SentencesApi();
+        const response = await sentencesApi.postSentence(sentenceRequest);
 
-  const handleScroll = (direction: 'next' | 'prev') => {
-    if (direction === 'next' && startIndex + visibleTextCount < textCount) {
-      setStartIndex(startIndex + visibleTextCount);
-    } else if (direction === 'prev' && startIndex > 0) {
-      setStartIndex(startIndex - visibleTextCount);
-    }
-  };
-
-  const handleCarouselChange = (now: number) => {
-    setActiveIndex(now);
-    if (now > activeIndex) {
-      handleScroll('next');
-    } else if (now < activeIndex) {
-      handleScroll('prev');
-    }
-  };
-
-  const renderNovelCard = (panel: Sentence, index: number) => (
-    <Box key={panel.sentence_id} sx={novelCardBoxStyle}>
-      <NovelCard
-        novel={novel}
-        onClick={() => handleClick(panel.sentence_id)}
-        key={index}
-        index={index}
-        textIndex={textIndex}
-        evaluation_good_count={evaluation_good_count}
-        setEvaluation_good_count={setEvaluation_good_count}
-        comment_count={comment_count}
-        setComment_count={setComment_count}
-        evaluation_stay_count={evaluation_stay_count}
-        setEvaluation_stay_count={setEvaluation_stay_count}
-        sentence={panel.sentence}
-      />
-    </Box>
-  );
-
-  const handleSubmitPost = async (sentenceRequest: CreateSentenceRequest) => {
-    try {
-      // 親投稿のIDと更新日時を取得
-      const parentId = mainPanel[mainPanel.length - 1]?.sentence_id || 0;
-      const parentUpdatedAt =
-        mainPanel[mainPanel.length - 1]?.updated_at || new Date().toISOString();
-
-      // APIに送信するためのPostSentenceオブジェクトを作成
-      const postSentence: PostSentence = {
-        parent_sentence_id: parentId,
-        parent_updated_at: parentUpdatedAt,
-        sentence: sentenceRequest.text,
-      };
-
-      // OpenAPIが生成したAPIクライアントを使用して新しい文章を投稿
-      const sentencesApi = new SentencesApi();
-      const response = await sentencesApi.postSentence(postSentence);
-
-      if (response.status !== 201 || !response.data.main) {
-        throw new Error('Failed to create sentence');
+        if (
+          response.status === 201 &&
+          response.data.main &&
+          Array.isArray(response.data.main) &&
+          response.data.main.length > 0
+        ) {
+          onPostSuccess(response.data.main[0]);
+          setIsEditPostOpen(false);
+          setSelectedChild(null);
+        } else {
+          throw new Error('投稿に失敗しました。もう一度お試しください。');
+        }
+      } catch (error) {
+        console.error('Error posting sentence:', error);
+        setError(
+          error instanceof Error
+            ? error.message
+            : '投稿に失敗しました。もう一度お試しください。',
+        );
       }
+    };
 
-      // Convert API response Sentence to application Sentence type
-      const apiSentence = response.data.main;
-      const newSentence: Sentence = {
-        title: '',
-        main_copy: '',
-        overview: '',
-        popular: false,
-        newArrival: false,
-        author_user_name: '',
-        chips: [],
-        tags: [],
-        reader_count: 0,
-        avatar: {
-          src: '',
-          alt: '',
-          color: '',
-          text: '',
-        },
-        sentence_id: apiSentence.sentence_id || 0,
-        sentence_user_count: 0,
-        sentence_hierarchy_count: 0,
-        sentence: apiSentence.sentence || '',
-        textIndex: 0,
-        userId: 0,
-        userName: '',
-        profile_icon_image: '',
-        evaluation_good_count: 0,
-        evaluation_stay_count: 0,
-        created_at: apiSentence.created_at || '',
-        updated_at: apiSentence.updated_at || '',
-      };
+    const handleEditPostOpen = (child: Sentence) => {
+      setSelectedChild(child);
+      setIsEditPostOpen(true);
+    };
 
-      // mainPanelを更新
-      setMainPanel((prev) => [...prev, newSentence]);
-      const newIndex = Math.max(0, childrenPanel.length + 1 - visibleTextCount);
-      setStartIndex(newIndex);
+    const handleEditPostClose = () => {
+      setIsEditPostOpen(false);
+      setSelectedChild(null);
+    };
 
-      console.log('投稿されたテキスト:', newSentence.sentence);
-    } catch (error) {
-      console.error('Error creating sentence:', error);
-      // エラーハンドリングを追加することをお勧めします
-    }
-  };
+    const handleErrorClose = () => {
+      setError(null);
+    };
 
-  return (
-    <Box sx={mainBoxStyle}>
-      <Box sx={innerBoxStyle}>
-        <Carousel
-          autoPlay={false}
-          index={activeIndex}
-          onChange={handleCarouselChange}
-          fullHeightHover={false}
-          navButtonsProps={{ style: carouselNavButtonStyle }}
-          navButtonsWrapperProps={{ style: carouselNavWrapperStyle }}
-          NextIcon={<KeyboardArrowRightIcon />}
-          PrevIcon={<KeyboardArrowLeftIcon />}
-        >
-          {childrenPanel.map(renderNovelCard)}
-        </Carousel>
-      </Box>
-      <Fab
-        aria-label='add post'
-        sx={fabStyle}
-        onClick={() => setIsEditPostOpen(true)}
+    return (
+      <Box
+        sx={{
+          width: '100%',
+          maxWidth: 800,
+          mx: 'auto',
+          p: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
       >
-        <CreateIcon />
-      </Fab>
+        <Typography variant='h6' sx={{ mb: 2 }}>
+          続きの文章
+        </Typography>
+        {childrenPanels.map((child) => {
+          const novelProps: NovelProps = {
+            ...child,
+            children: [],
+            main: [],
+            parent: [],
+          };
 
-      <EditPost
-        open={isEditPostOpen}
-        onClose={() => setIsEditPostOpen(false)}
-        onSubmit={handleSubmitPost}
-        mainText={mainPanel[mainPanel.length - 1]?.sentence || ''}
-      />
-    </Box>
-  );
-};
+          return (
+            <NovelCard
+              key={child.sentence_id}
+              novel={novelProps}
+              evaluation_good_count={evaluation_good_count}
+              setEvaluation_good_count={setEvaluation_good_count}
+              comment_count={comment_count}
+              setComment_count={setComment_count}
+              evaluation_stay_count={evaluation_stay_count}
+              setEvaluation_stay_count={setEvaluation_stay_count}
+              onPostClick={() => handleEditPostOpen(child)}
+            />
+          );
+        })}
+        {selectedChild && (
+          <EditPost
+            open={isEditPostOpen}
+            onClose={handleEditPostClose}
+            onSubmit={handlePostSubmit}
+            mainText={selectedChild.sentence}
+            parentSentenceId={selectedChild.sentence_id}
+            parentUpdatedAt={selectedChild.updated_at}
+          />
+        )}
+        <Snackbar
+          open={!!error}
+          autoHideDuration={6000}
+          onClose={handleErrorClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert severity='error' sx={{ width: '100%' }}>
+            {error}
+          </Alert>
+        </Snackbar>
+      </Box>
+    );
+  },
+);
 
-export default ChildrenPanel;
+ChildrenPanel.displayName = 'ChildrenPanel';

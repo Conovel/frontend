@@ -2,14 +2,15 @@
 import * as React from 'react';
 
 export interface Sentence {
+  comment_count: number;
   title: string;
   main_copy: string;
   overview: string;
   popular: boolean;
   newArrival: boolean;
   author_user_name: string;
-  chips: JSX.Element[];
-  tags: JSX.Element[];
+  chips: { label: string }[];
+  tags: { label: string }[];
   reader_count: number;
   avatar: {
     src: string;
