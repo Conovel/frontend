@@ -64,6 +64,7 @@ export const mockMainPanel: Sentence[] = [
     profile_icon_image: '',
     evaluation_good_count: 0,
     evaluation_stay_count: 0,
+    comment_count: 0,
   },
 ];
 
@@ -96,6 +97,7 @@ export const mockChildrenPanel: Sentence[] = [
     profile_icon_image: '',
     evaluation_good_count: 0,
     evaluation_stay_count: 0,
+    comment_count: 0,
   },
 ];
 
@@ -167,6 +169,7 @@ export const mockContainerData = {
       children: [],
       parent: [],
       main: [],
+      comment_count: 0,
     },
   ],
   parent: [
@@ -201,6 +204,7 @@ export const mockContainerData = {
       children: [],
       parent: [],
       main: [],
+      comment_count: 0,
     },
   ],
   children: [
@@ -235,6 +239,7 @@ export const mockContainerData = {
       children: [],
       parent: [],
       main: [],
+      comment_count: 0,
     },
   ],
 };

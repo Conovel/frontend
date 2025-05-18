@@ -9,7 +9,7 @@ import { AccountSettings } from '../features/AccountSettings/AccountSettings';
 import { DeleteAccountPage } from '../pages/deleteAccount';
 import { AccountDeleted } from '../features/DeleteAccount/AccountDeleted';
 import Login from '../pages/login';
-import { NovelViewContainer } from '../features/NovelView/NovelViewContainer';
+import NovelViewContainer from '../features/NovelView/NovelViewContainer';
 
 /**
  * ルーティング
