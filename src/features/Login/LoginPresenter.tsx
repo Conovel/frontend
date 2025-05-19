@@ -36,7 +36,7 @@ export const LoginPresenter = () => {
     }
   }, [setToken, navigate]);
 
-  const handleGoogleAuth = (e) => {
+  const handleGoogleAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const form = document.createElement('form');
     form.method = 'GET';
