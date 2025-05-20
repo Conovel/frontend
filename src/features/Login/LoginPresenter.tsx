@@ -38,11 +38,7 @@ export const LoginPresenter = () => {
 
   const handleGoogleAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const form = document.createElement('form');
-    form.method = 'GET';
-    form.action = `${authBaseUrl}/auth/google_oauth2`;
-    document.body.appendChild(form);
-    form.submit();
+    window.location.href = `${authBaseUrl}/auth/google_oauth2`;
   };
 
   // デモ用の簡易的な実装
