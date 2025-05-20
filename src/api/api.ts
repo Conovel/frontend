@@ -20,6 +20,10 @@ import globalAxios from 'axios';
 import {
   DUMMY_BASE_URL,
   assertParamExists,
+  setApiKeyToObject,
+  setBasicAuthToObject,
+  setBearerAuthToObject,
+  setOAuthToObject,
   setSearchParams,
   serializeDataIfNeeded,
   toPathString,
@@ -27,7 +31,13 @@ import {
 } from './common';
 import type { RequestArgs } from './base';
 // @ts-ignore
-import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
+import {
+  BASE_PATH,
+  COLLECTION_FORMATS,
+  BaseAPI,
+  RequiredError,
+  operationServerMap,
+} from './base';
 
 /**
  *
@@ -181,7 +191,7 @@ export interface NovelDetail {
    */
   main_copy?: string;
   /**
-   * 小説に投稿された投稿の数
+   * 小説に投稿している投稿者の数
    * @type {number}
    * @memberof NovelDetail
    */
@@ -314,6 +324,43 @@ export interface PostSentence {
    * @memberof PostSentence
    */
   sentence?: string;
+}
+/**
+ *
+ * @export
+ * @interface PostSentence409Response
+ */
+export interface PostSentence409Response {
+  /**
+   *
+   * @type {ErrorResponseError}
+   * @memberof PostSentence409Response
+   */
+  error?: ErrorResponseError;
+  /**
+   *
+   * @type {Sentence}
+   * @memberof PostSentence409Response
+   */
+  main?: Sentence;
+  /**
+   *
+   * @type {Sentence}
+   * @memberof PostSentence409Response
+   */
+  parent?: Sentence;
+  /**
+   *
+   * @type {Array<Sentence>}
+   * @memberof PostSentence409Response
+   */
+  parallels?: Array<Sentence>;
+  /**
+   *
+   * @type {Array<Sentence>}
+   * @memberof PostSentence409Response
+   */
+  children?: Array<Sentence>;
 }
 /**
  *
@@ -621,6 +668,45 @@ export const AuthApiAxiosParamCreator = function (
         options: localVarRequestOptions,
       };
     },
+    /**
+     *
+     * @summary トークンのリフレッシュ
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    refreshToken: async (
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/auth/refresh`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'POST',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
   };
 };
 
@@ -655,6 +741,32 @@ export const AuthApiFp = function (configuration?: Configuration) {
           configuration,
         )(axios, localVarOperationServerBasePath || basePath);
     },
+    /**
+     *
+     * @summary トークンのリフレッシュ
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async refreshToken(
+      options?: RawAxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.refreshToken(options);
+      const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+      const localVarOperationServerBasePath =
+        operationServerMap['AuthApi.refreshToken']?.[
+          localVarOperationServerIndex
+        ]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, localVarOperationServerBasePath || basePath);
+    },
   };
 };
 
@@ -680,6 +792,17 @@ export const AuthApiFactory = function (
         .logOut(options)
         .then((request) => request(axios, basePath));
     },
+    /**
+     *
+     * @summary トークンのリフレッシュ
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    refreshToken(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+      return localVarFp
+        .refreshToken(options)
+        .then((request) => request(axios, basePath));
+    },
   };
 };
 
@@ -700,6 +823,19 @@ export class AuthApi extends BaseAPI {
   public logOut(options?: RawAxiosRequestConfig) {
     return AuthApiFp(this.configuration)
       .logOut(options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @summary トークンのリフレッシュ
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthApi
+   */
+  public refreshToken(options?: RawAxiosRequestConfig) {
+    return AuthApiFp(this.configuration)
+      .refreshToken(options)
       .then((request) => request(this.axios, this.basePath));
   }
 }
