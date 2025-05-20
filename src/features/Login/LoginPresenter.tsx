@@ -15,7 +15,7 @@ import {
 import { useAuth } from '../../providers/auth';
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router';
-import axios from 'axios';
+// import axios from 'axios';
 
 export const LoginPresenter = () => {
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -23,7 +23,7 @@ export const LoginPresenter = () => {
     useState(false);
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  // const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
   const { setToken, currentUser } = useAuth();
 
@@ -46,31 +46,31 @@ export const LoginPresenter = () => {
   };
 
   // デモ用の簡易的な実装
-  const handleGoogleSuccess = async (credentialResponse: any) => {
-    const { credential } = credentialResponse;
-    console.log('credential:', credentialResponse);
+  // const handleGoogleSuccess = async (credentialResponse: any) => {
+  //   const { credential } = credentialResponse;
+  //   console.log('credential:', credentialResponse);
 
-    try {
-      const res = await axios.post(`${apiBaseUrl}/auth/create`, {
-        token: credential,
-      });
-      console.log('バックエンドからのレスポンス:', res.data);
+  //   try {
+  //     const res = await axios.post(`${apiBaseUrl}/auth/create`, {
+  //       token: credential,
+  //     });
+  //     console.log('バックエンドからのレスポンス:', res.data);
 
-      // 通常のログイン後の処理
-      // 初回ログインの場合はモーダルを表示する
-      setIsFirstTimeLoginModalOpen(true);
+  //     // 通常のログイン後の処理
+  //     // 初回ログインの場合はモーダルを表示する
+  //     setIsFirstTimeLoginModalOpen(true);
 
-      // ログイン成功後にホームページに遷移
-      navigate('/');
-    } catch (error) {
-      console.error('ログイン処理中にエラーが発生しました:', error);
-      handleGoogleError();
-    }
-  };
+  //     // ログイン成功後にホームページに遷移
+  //     navigate('/');
+  //   } catch (error) {
+  //     console.error('ログイン処理中にエラーが発生しました:', error);
+  //     handleGoogleError();
+  //   }
+  // };
 
-  const handleGoogleError = () => {
-    setLoginError('ログインに失敗しました。もう一度お試しください。');
-  };
+  // const handleGoogleError = () => {
+  //   setLoginError('ログインに失敗しました。もう一度お試しください。');
+  // };
 
   const handleCompleteOnboarding = () => {
     // ユーザー名など初回設定情報を保存する処理をここに追加
@@ -116,6 +116,7 @@ export const LoginPresenter = () => {
 
         <>
           {/* ログイン済みの場合はマイページへのリンク、そうでない場合はログインボタン */}
+          {console.log('currentUser:', currentUser)}
           {currentUser ? (
             <Link to='/account' className='btn btn-accent gap-2 w-full'>
               マイページへ
