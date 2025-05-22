@@ -45,7 +45,40 @@ export const ChildrenPanel: React.FC<ChildrenPanelProps> = memo(
           Array.isArray(response.data.main) &&
           response.data.main.length > 0
         ) {
-          onPostSuccess(response.data.main[0]);
+          const newPost = response.data.main[0];
+          const convertedSentence: Sentence = {
+            title: newPost.title || '',
+            main_copy: newPost.main_copy || '',
+            overview: newPost.overview || '',
+            popular: newPost.popular || false,
+            newArrival: newPost.newArrival || false,
+            author_user_name: newPost.author_user_name || '',
+            chips: newPost.chips || [],
+            tags: newPost.tags || [],
+            reader_count: newPost.reader_count || 0,
+            avatar: newPost.avatar || {
+              src: '',
+              alt: '',
+              color: '',
+              text: '',
+            },
+            sentence_id: newPost.sentence_id!,
+            sentence_user_count: newPost.sentence_user_count || 0,
+            sentence_hierarchy_count: newPost.sentence_hierarchy_count || 0,
+            sentence: newPost.sentence || '',
+            textIndex: newPost.textIndex || 0,
+            userId: newPost.userId || 0,
+            userName: newPost.userName || '',
+            profile_icon_image: newPost.profile_icon_image || '',
+            evaluation_good_count: newPost.evaluation_good_count || 0,
+            evaluation_stay_count: newPost.evaluation_stay_count || 0,
+            created_at: newPost.created_at || '',
+            updated_at: newPost.updated_at || '',
+            comment_count: 0,
+          };
+
+          console.log('変換後の投稿:', convertedSentence);
+          onPostSuccess(convertedSentence);
           setIsEditPostOpen(false);
           setSelectedChild(null);
         } else {
