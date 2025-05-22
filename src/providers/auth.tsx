@@ -30,14 +30,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string>('');
   const [currentUser, setCurrentUser] = useState<any>(null);
 
-  useEffect(() => {
-    // URLからクエリパラメータを解析してトークンを取得
-    const query = new URLSearchParams(window.location.search);
-    const tokenFromUrl = query.get('token');
+  // クッキーからトークンを取得するヘルパー関数
+  const getCookie = (name: string): string | null => {
+    const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
+    return match ? decodeURIComponent(match[2]) : null;
+  };
 
-    if (tokenFromUrl) {
-      setToken(tokenFromUrl);
-      localStorage.setItem('authToken', tokenFromUrl); // トークンをlocalStorageに保存
+  useEffect(() => {
+    // クッキーからトークンを取得
+    const tokenFromCookie = getCookie('jwt_token');
+    console.log('All cookies:', document.cookie);
+    console.log('Token from cookie:', tokenFromCookie);
+
+    if (tokenFromCookie) {
+      setToken(tokenFromCookie);
     } else {
       const storedToken = localStorage.getItem('authToken');
       if (storedToken) {
@@ -51,6 +57,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       fetch(`${API_URL}/api/v1/users/current`, {
         headers: {
           Authorization: `Bearer ${token}`,
+          credentials: 'include',
         },
       })
         .then((response) => {

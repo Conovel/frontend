@@ -9,6 +9,7 @@ docs/ErrorResponse.md
 docs/ErrorResponseError.md
 docs/EvaluateSentence.md
 docs/EvaluationsApi.md
+docs/GetCurrentUserId200Response.md
 docs/NovelDetail.md
 docs/NovelListItem.md
 docs/NovelsApi.md

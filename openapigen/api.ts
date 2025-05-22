@@ -103,6 +103,19 @@ export type EvaluateSentenceEvaluationEnum =
 /**
  *
  * @export
+ * @interface GetCurrentUserId200Response
+ */
+export interface GetCurrentUserId200Response {
+  /**
+   *
+   * @type {number}
+   * @memberof GetCurrentUserId200Response
+   */
+  user_id?: number;
+}
+/**
+ *
+ * @export
  * @interface NovelDetail
  */
 export interface NovelDetail {
@@ -1553,6 +1566,45 @@ export const UsersApiAxiosParamCreator = function (
     },
     /**
      *
+     * @summary ログインしているユーザーのidを取得
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getCurrentUserId: async (
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/users/current_user_id`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: "GET",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
      * @summary ユーザーが投稿している小説リストを取得
      * @param {number} userId
      * @param {*} [options] Override http request option.
@@ -1809,6 +1861,35 @@ export const UsersApiFp = function (configuration?: Configuration) {
     },
     /**
      *
+     * @summary ログインしているユーザーのidを取得
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getCurrentUserId(
+      options?: RawAxiosRequestConfig,
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string,
+      ) => AxiosPromise<GetCurrentUserId200Response>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.getCurrentUserId(options);
+      const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+      const localVarOperationServerBasePath =
+        operationServerMap["UsersApi.getCurrentUserId"]?.[
+          localVarOperationServerIndex
+        ]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, localVarOperationServerBasePath || basePath);
+    },
+    /**
+     *
      * @summary ユーザーが投稿している小説リストを取得
      * @param {number} userId
      * @param {*} [options] Override http request option.
@@ -1980,6 +2061,19 @@ export const UsersApiFactory = function (
     },
     /**
      *
+     * @summary ログインしているユーザーのidを取得
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getCurrentUserId(
+      options?: RawAxiosRequestConfig,
+    ): AxiosPromise<GetCurrentUserId200Response> {
+      return localVarFp
+        .getCurrentUserId(options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     *
      * @summary ユーザーが投稿している小説リストを取得
      * @param {number} userId
      * @param {*} [options] Override http request option.
@@ -2067,6 +2161,19 @@ export class UsersApi extends BaseAPI {
   public deleteUserByMe(options?: RawAxiosRequestConfig) {
     return UsersApiFp(this.configuration)
       .deleteUserByMe(options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @summary ログインしているユーザーのidを取得
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApi
+   */
+  public getCurrentUserId(options?: RawAxiosRequestConfig) {
+    return UsersApiFp(this.configuration)
+      .getCurrentUserId(options)
       .then((request) => request(this.axios, this.basePath));
   }
 
