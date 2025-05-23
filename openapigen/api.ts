@@ -42,6 +42,56 @@ import {
 /**
  *
  * @export
+ * @interface ConflictSentence
+ */
+export interface ConflictSentence {
+  /**
+   *
+   * @type {ErrorResponseError}
+   * @memberof ConflictSentence
+   */
+  error?: ErrorResponseError;
+  /**
+   *
+   * @type {Sentence}
+   * @memberof ConflictSentence
+   */
+  main?: Sentence;
+  /**
+   *
+   * @type {Sentence}
+   * @memberof ConflictSentence
+   */
+  parent?: Sentence;
+  /**
+   *
+   * @type {Array<Sentence>}
+   * @memberof ConflictSentence
+   */
+  parallels?: Array<Sentence>;
+  /**
+   *
+   * @type {Array<Sentence>}
+   * @memberof ConflictSentence
+   */
+  children?: Array<Sentence>;
+}
+/**
+ *
+ * @export
+ * @interface CurrentUserId
+ */
+export interface CurrentUserId {
+  /**
+   * ログイン中のユーザーの一意のid
+   * @type {number}
+   * @memberof CurrentUserId
+   */
+  user_id?: number;
+}
+/**
+ *
+ * @export
  * @interface ErrorResponse
  */
 export interface ErrorResponse {
@@ -100,19 +150,6 @@ export const EvaluateSentenceEvaluationEnum = {
 export type EvaluateSentenceEvaluationEnum =
   (typeof EvaluateSentenceEvaluationEnum)[keyof typeof EvaluateSentenceEvaluationEnum];
 
-/**
- *
- * @export
- * @interface GetCurrentUserId200Response
- */
-export interface GetCurrentUserId200Response {
-  /**
-   *
-   * @type {number}
-   * @memberof GetCurrentUserId200Response
-   */
-  user_id?: number;
-}
 /**
  *
  * @export
@@ -337,43 +374,6 @@ export interface PostSentence {
    * @memberof PostSentence
    */
   sentence?: string;
-}
-/**
- *
- * @export
- * @interface PostSentence409Response
- */
-export interface PostSentence409Response {
-  /**
-   *
-   * @type {ErrorResponseError}
-   * @memberof PostSentence409Response
-   */
-  error?: ErrorResponseError;
-  /**
-   *
-   * @type {Sentence}
-   * @memberof PostSentence409Response
-   */
-  main?: Sentence;
-  /**
-   *
-   * @type {Sentence}
-   * @memberof PostSentence409Response
-   */
-  parent?: Sentence;
-  /**
-   *
-   * @type {Array<Sentence>}
-   * @memberof PostSentence409Response
-   */
-  parallels?: Array<Sentence>;
-  /**
-   *
-   * @type {Array<Sentence>}
-   * @memberof PostSentence409Response
-   */
-  children?: Array<Sentence>;
 }
 /**
  *
@@ -1868,10 +1868,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
     async getCurrentUserId(
       options?: RawAxiosRequestConfig,
     ): Promise<
-      (
-        axios?: AxiosInstance,
-        basePath?: string,
-      ) => AxiosPromise<GetCurrentUserId200Response>
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<CurrentUserId>
     > {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.getCurrentUserId(options);
@@ -2067,7 +2064,7 @@ export const UsersApiFactory = function (
      */
     getCurrentUserId(
       options?: RawAxiosRequestConfig,
-    ): AxiosPromise<GetCurrentUserId200Response> {
+    ): AxiosPromise<CurrentUserId> {
       return localVarFp
         .getCurrentUserId(options)
         .then((request) => request(axios, basePath));

@@ -55,7 +55,7 @@ No authorization required
 
 # **getCurrentUserId**
 
-> GetCurrentUserId200Response getCurrentUserId()
+> CurrentUserId getCurrentUserId()
 
 ### Example
 
@@ -74,7 +74,7 @@ This endpoint does not have any parameters.
 
 ### Return type
 
-**GetCurrentUserId200Response**
+**CurrentUserId**
 
 ### Authorization
 
