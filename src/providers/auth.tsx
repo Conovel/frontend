@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+import { UsersApi } from '../api/api';
+import { axiosConfig } from '../axiosConfig';
+
 // 型定義
 export interface AuthContextType {
   token: string;
@@ -18,6 +21,8 @@ const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const usersApi = new UsersApi(axiosConfig);
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -28,51 +33,45 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string>('');
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [currentUserId, setCurrentUserId] = useState<string>('');
 
   // クッキーからトークンを取得するヘルパー関数
-  const getCookie = (name: string): string | null => {
-    const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
-    return match ? decodeURIComponent(match[2]) : null;
-  };
+  // const getCookie = (name: string): string | null => {
+  //   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
+  //   return match ? decodeURIComponent(match[2]) : null;
+  // };
 
   useEffect(() => {
     // クッキーからトークンを取得
-    const tokenFromCookie = getCookie('jwt_token');
-    console.log('All cookies:', document.cookie);
-    console.log('Token from cookie:', tokenFromCookie);
+    // const tokenFromCookie = getCookie('jwt_token');
+    // console.log('All cookies:', document.cookie);
+    // console.log('Token from cookie:', tokenFromCookie);
 
-    if (tokenFromCookie) {
-      setToken(tokenFromCookie);
-    } else {
-      const storedToken = localStorage.getItem('authToken');
-      if (storedToken) {
-        setToken(storedToken);
-      }
-    }
-  }, []);
+    // if (tokenFromCookie) {
+    //   setToken(tokenFromCookie);
+    // } else {
+    //   const storedToken = localStorage.getItem('authToken');
+    //   if (storedToken) {
+    //     setToken(storedToken);
+    //   }
+    // }
 
-  useEffect(() => {
-    if (token) {
-      fetch(`${API_URL}/api/v1/users/current`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          credentials: 'include',
-        },
+    usersApi
+    .getCurrentUserId()
+      .then((response) => { 
+        if (!response.ok) {
+          throw new Error('Failed to fetch user');
+        }
+        console.log("response:", response.json());
+        return response.json();
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Failed to fetch user');
-          }
-          return response.json();
-        })
-        .then((data) => setCurrentUser(data.user))
-        .catch((error) => {
-          console.error('Error fetching user:', error);
-          logout(); // エラー時にログアウト
-        });
-    }
-  }, [token]);
+      .then((data) => setCurrentUserId(data))
+      .catch((error) => {
+        console.error('Error fetching user:', error);
+        logout(); // エラー時にログアウト
+      });
+    
+  }, []);
 
   const logout = () => {
     setCurrentUser(null); // ユーザー情報をクリア
