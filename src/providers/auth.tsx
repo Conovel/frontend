@@ -31,6 +31,12 @@ export const useAuth = () => {
   return context;
 };
 
+const logout = () => {
+  setCurrentUser(null); // ユーザー情報をクリア
+  setToken(''); // トークンをクリア
+  localStorage.removeItem('authToken'); // localStorageからトークンを削除
+};
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string>('');
   const [currentUserId, setCurrentUserId] = useState<string>('');
@@ -56,32 +62,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     //   }
     // }
 
-    usersApi
-    .getCurrentUserId()
-      .then((response) => { 
-        if (!response.ok) {
-          throw new Error('Failed to fetch user');
-        }
-        console.log("response:", response.json());
-        return response.json();
-      })
-      .then((data) => setCurrentUserId(data))
-      .catch((error) => {
+    const fetchCurrentUserId = async () => {
+      try {
+        // `usersApi.getCurrentUserId` を呼び出してデータを取得
+        const response = await usersApi.getCurrentUserId();
+        console.log('response:', response.data);
+  
+        // ユーザーIDを状態に設定
+        setCurrentUserId(response.data.user_id);
+      } catch (error) {
         console.error('Error fetching user:', error);
-        logout(); // エラー時にログアウト
-      });
-    
+  
+        // エラー時にログアウト処理を実行
+        logout();
+      }
+    };
+  
+    fetchCurrentUserId();
   }, []);
 
-  const logout = () => {
-    setCurrentUser(null); // ユーザー情報をクリア
-    setToken(''); // トークンをクリア
-    localStorage.removeItem('authToken'); // localStorageからトークンを削除
-  };
+  
 
   return (
     <AuthContext.Provider
-      value={{ token, logout, setToken, currentUser, setCurrentUser }}
+      value={{ token, logout, setToken, currentUserId, setCurrentUserId }}
     >
       {children}
     </AuthContext.Provider>
