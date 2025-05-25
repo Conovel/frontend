@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { Box, Typography, Snackbar, Alert } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import NovelCard from '../../components/novelCard/NovelCard';
 import { EditPost } from '../EditPost';
 import { Sentence, PostSentence, NovelProps } from '../../types/types';
@@ -25,8 +26,8 @@ export const ChildrenPanel: React.FC<ChildrenPanelProps> = memo(
     setComment_count,
     evaluation_stay_count,
     setEvaluation_stay_count,
-    onPostSuccess,
   }) => {
+    const navigate = useNavigate();
     const [isEditPostOpen, setIsEditPostOpen] = React.useState(false);
     const [selectedChild, setSelectedChild] = React.useState<Sentence | null>(
       null,
@@ -78,7 +79,7 @@ export const ChildrenPanel: React.FC<ChildrenPanelProps> = memo(
           };
 
           console.log('変換後の投稿:', convertedSentence);
-          onPostSuccess(convertedSentence);
+          navigate(`/novelView/${convertedSentence.sentence_id}`);
           setIsEditPostOpen(false);
           setSelectedChild(null);
         } else {

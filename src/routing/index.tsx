@@ -27,7 +27,10 @@ export const Routing = () => {
           <Route path='/terms' element={<TermsPage />} />
           <Route path='/deleteAccount' element={<DeleteAccountPage />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/novelView' element={<NovelViewContainer />} />
+          <Route
+            path='/novelView/:sentence_id'
+            element={<NovelViewContainer />}
+          />
         </Route>
       </Routes>
     </>

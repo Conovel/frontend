@@ -56,6 +56,12 @@ export const EditPost: React.FC<EditPostProps> = memo(
     const watchText = useWatch({ control, name: 'sentence' });
     const textLength = watchText?.length ?? 0;
 
+    // モーダルが閉じられたときにフォームをリセット
+    const handleClose = useCallback(() => {
+      reset();
+      onClose();
+    }, [reset, onClose]);
+
     const handleFormSubmit = useCallback(
       async (data: EditPostFormValues) => {
         try {
@@ -69,7 +75,7 @@ export const EditPost: React.FC<EditPostProps> = memo(
           setShowSuccess(true);
           reset();
           setTimeout(() => {
-            onClose();
+            handleClose();
             setShowSuccess(false);
           }, 2000);
         } catch (error) {
@@ -78,7 +84,7 @@ export const EditPost: React.FC<EditPostProps> = memo(
           setIsLoading(false);
         }
       },
-      [onSubmit, parentSentenceId, parentUpdatedAt, onClose, reset],
+      [onSubmit, parentSentenceId, parentUpdatedAt, handleClose, reset],
     );
 
     const handleSuccessClose = useCallback(() => {
@@ -89,7 +95,7 @@ export const EditPost: React.FC<EditPostProps> = memo(
       <>
         <Modal
           open={open}
-          onClose={onClose}
+          onClose={handleClose}
           sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -157,7 +163,7 @@ export const EditPost: React.FC<EditPostProps> = memo(
                   sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}
                 >
                   <Button
-                    onClick={onClose}
+                    onClick={handleClose}
                     color='inherit'
                     sx={{ mr: 1 }}
                     disabled={isLoading}
