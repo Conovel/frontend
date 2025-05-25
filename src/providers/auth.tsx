@@ -64,8 +64,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const fetchCurrentUserId = async () => {
       try {
-        // `usersApi.getCurrentUserId` を呼び出してデータを取得
-        const response = await usersApi.getCurrentUserId();
+        const response = await usersApi.getCurrentUserId({ withCredentials: true });
         console.log('response:', response.data);
   
         // ユーザーIDを状態に設定
