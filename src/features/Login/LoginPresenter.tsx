@@ -10,12 +10,9 @@ import {
   TextField,
   Divider,
 } from '@mui/material';
-// MEMO：フロントのreact-oauthとバックのomniauthの機能が干渉したためreact-oauthを使用しない方法で実装
-// import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../../providers/auth';
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router';
-// import axios from 'axios';
 
 export const LoginPresenter = () => {
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -41,33 +38,7 @@ export const LoginPresenter = () => {
     window.location.href = `${authBaseUrl}/auth/google_oauth2`;
   };
 
-  // デモ用の簡易的な実装
-  // const handleGoogleSuccess = async (credentialResponse: any) => {
-  //   const { credential } = credentialResponse;
-  //   console.log('credential:', credentialResponse);
-
-  //   try {
-  //     const res = await axios.post(`${apiBaseUrl}/auth/create`, {
-  //       token: credential,
-  //     });
-  //     console.log('バックエンドからのレスポンス:', res.data);
-
-  //     // 通常のログイン後の処理
-  //     // 初回ログインの場合はモーダルを表示する
-  //     setIsFirstTimeLoginModalOpen(true);
-
-  //     // ログイン成功後にホームページに遷移
-  //     navigate('/');
-  //   } catch (error) {
-  //     console.error('ログイン処理中にエラーが発生しました:', error);
-  //     handleGoogleError();
-  //   }
-  // };
-
-  // const handleGoogleError = () => {
-  //   setLoginError('ログインに失敗しました。もう一度お試しください。');
-  // };
-
+  
   const handleCompleteOnboarding = () => {
     // ユーザー名など初回設定情報を保存する処理をここに追加
     console.log('初回設定が完了しました。ユーザー名:', username);
@@ -101,14 +72,6 @@ export const LoginPresenter = () => {
           ログイン
         </Typography>
 
-        {/* <GoogleLogin
-          onSuccess={handleGoogleSuccess}
-          onError={handleGoogleError}
-          useOneTap
-          // デモ用の設定
-          text='signin_with'
-          theme='outline'
-        /> */}
 
         <>
           {/* ログイン済みの場合はマイページへのリンク、そうでない場合はログインボタン */}
