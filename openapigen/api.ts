@@ -87,7 +87,7 @@ export interface CurrentUserId {
    * @type {number}
    * @memberof CurrentUserId
    */
-  user_id?: number;
+  current_user_id?: number;
 }
 /**
  *

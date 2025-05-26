@@ -2,9 +2,9 @@
 
 ## Properties
 
-| Name        | Type       | Description                    | Notes                             |
-| ----------- | ---------- | ------------------------------ | --------------------------------- |
-| **user_id** | **number** | ログイン中のユーザーの一意のid | [optional] [default to undefined] |
+| Name                | Type       | Description                    | Notes                             |
+| ------------------- | ---------- | ------------------------------ | --------------------------------- |
+| **current_user_id** | **number** | ログイン中のユーザーの一意のid | [optional] [default to undefined] |
 
 ## Example
 
@@ -12,7 +12,7 @@
 import { CurrentUserId } from "./api";
 
 const instance: CurrentUserId = {
-  user_id,
+  current_user_id,
 };
 ```
 

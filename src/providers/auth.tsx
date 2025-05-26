@@ -64,23 +64,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const fetchCurrentUserId = async () => {
       try {
-        const response = await usersApi.getCurrentUserId({ withCredentials: true });
+        const response = await usersApi.getCurrentUserId({
+          withCredentials: true,
+        });
         console.log('response:', response.data);
-  
+
         // ユーザーIDを状態に設定
         setCurrentUserId(response.data.user_id);
       } catch (error) {
         console.error('Error fetching user:', error);
-  
+
         // エラー時にログアウト処理を実行
         logout();
       }
     };
-  
+
     fetchCurrentUserId();
   }, []);
-
-  
 
   return (
     <AuthContext.Provider
