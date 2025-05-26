@@ -7,17 +7,14 @@ import { axiosConfig } from '../axiosConfig';
 export interface AuthContextType {
   token: string;
   setToken: React.Dispatch<React.SetStateAction<string>>;
-  currentUser: any;
-  setCurrentUser: React.Dispatch<React.SetStateAction<any>>;
+  currentUserId: string;
+  setCurrentUserId: React.Dispatch<React.SetStateAction<string>>;
   logout: () => void;
 }
 
 export interface AuthProviderProps {
   children: React.ReactNode;
 }
-
-// 環境変数からAPI URLを取得
-const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -31,54 +28,35 @@ export const useAuth = () => {
   return context;
 };
 
-const logout = () => {
-  setCurrentUser(null); // ユーザー情報をクリア
-  setToken(''); // トークンをクリア
-  localStorage.removeItem('authToken'); // localStorageからトークンを削除
-};
-
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string>('');
   const [currentUserId, setCurrentUserId] = useState<string>('');
 
-  // クッキーからトークンを取得するヘルパー関数
-  // const getCookie = (name: string): string | null => {
-  //   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
-  //   return match ? decodeURIComponent(match[2]) : null;
-  // };
+  const fetchCurrentUserId = async () => {
+    try {
+      const response = await usersApi.getCurrentUserId({
+        withCredentials: true,
+      });
+      console.log('response:', response.data);
+
+      // ユーザーIDを状態に設定
+      setCurrentUserId(String(response.data.current_user_id ?? ''));
+    } catch (error) {
+      console.error('Error fetching user:', error);
+
+      // エラー時にログアウト処理を実行
+      logout();
+    }
+  };
+
+  const logout = () => {
+    setCurrentUserId(''); // ユーザー情報をクリア
+    setToken(''); // トークンをクリア
+    localStorage.removeItem('authToken'); // localStorageからトークンを削除
+  };
+  
 
   useEffect(() => {
-    // クッキーからトークンを取得
-    // const tokenFromCookie = getCookie('jwt_token');
-    // console.log('All cookies:', document.cookie);
-    // console.log('Token from cookie:', tokenFromCookie);
-
-    // if (tokenFromCookie) {
-    //   setToken(tokenFromCookie);
-    // } else {
-    //   const storedToken = localStorage.getItem('authToken');
-    //   if (storedToken) {
-    //     setToken(storedToken);
-    //   }
-    // }
-
-    const fetchCurrentUserId = async () => {
-      try {
-        const response = await usersApi.getCurrentUserId({
-          withCredentials: true,
-        });
-        console.log('response:', response.data);
-
-        // ユーザーIDを状態に設定
-        setCurrentUserId(response.data.user_id);
-      } catch (error) {
-        console.error('Error fetching user:', error);
-
-        // エラー時にログアウト処理を実行
-        logout();
-      }
-    };
-
     fetchCurrentUserId();
   }, []);
 
