@@ -16,7 +16,7 @@ function HeaderBar() {
         <Box
           sx={{ display: 'sticky', justifyContent: 'center', width: '100%' }}
         >
-          <Toolbar sx={{ justifyContent: 'space-between', width: '100%' }}>
+          <Toolbar sx={{ justifyContent: 'space-between' }}>
             <Box
               sx={{
                 display: 'flex',
