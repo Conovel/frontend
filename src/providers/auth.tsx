@@ -34,20 +34,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string>('');
   const [currentUserId, setCurrentUserId] = useState<string>('');
 
-  // ログイン状態: 'checking' | 'success' | 'failure'
   const setLoginStatus = (status: 'checking' | 'success' | 'failure') => {
     sessionStorage.setItem('loginStatus', status);
+  };
+
+  
+  const logout = () => {
+    setCurrentUserId('');
+    setToken('');
+    localStorage.removeItem('authToken');
+    sessionStorage.setItem('loginStatus', 'failure');
   };
 
   const fetchCurrentUserId = async () => {
     // ループ防止: 'checking' の時だけ実行
     if (sessionStorage.getItem('loginStatus') !== 'checking') return;
-
+  
     try {
       const response = await usersApi.getCurrentUserId({ withCredentials: true });
       if (response.data && response.data.current_user_id) {
-        setCurrentUserId(String(response.data.current_user_id));
         setLoginStatus('success');
+        setCurrentUserId(String(response.data.current_user_id));
         return;
       }
       throw new Error('No current_user_id');
@@ -55,7 +62,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // current_user_id取得失敗→トークンリフレッシュ
       try {
         const refreshRes = await authApi.refreshToken({ withCredentials: true });
-        // リフレッシュ成功→再度current_user_id取得
         if (refreshRes.status === 200) {
           // ループ防止: 'checking' の時だけ再実行
           if (sessionStorage.getItem('loginStatus') === 'checking') {
@@ -63,26 +69,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             return;
           }
         }
-        // リフレッシュ失敗
         setLoginStatus('failure');
+        setCurrentUserId('');
         logout();
       } catch (refreshError) {
         setLoginStatus('failure');
+        setCurrentUserId('');
         logout();
       }
     }
   };
 
-  const logout = () => {
-    setCurrentUserId('');
-    setToken('');
-    localStorage.removeItem('authToken');
-    sessionStorage.setItem('loginStatus', 'failure');
-  };
-  
 
   useEffect(() => {
     setLoginStatus('checking');
+    setCurrentUserId('');
     fetchCurrentUserId();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

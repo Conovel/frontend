@@ -3,11 +3,11 @@ import {
   Typography,
   Container,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
+  // Dialog,
+  // DialogTitle,
+  // DialogContent,
+  // DialogActions,
+  // TextField,
   Divider,
 } from '@mui/material';
 import { useAuth } from '../../providers/auth';
@@ -16,13 +16,12 @@ import { useNavigate, Link } from 'react-router';
 
 export const LoginPresenter = () => {
   const [loginError, setLoginError] = useState<string | null>(null);
-  const [isFirstTimeLoginModalOpen, setIsFirstTimeLoginModalOpen] =
+  // const [isFirstTimeLoginModalOpen, setIsFirstTimeLoginModalOpen] =
     useState(false);
-  const [username, setUsername] = useState('');
+  // const [username, setUsername] = useState('');
   const navigate = useNavigate();
-  // const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
-  const { setToken, currentUser } = useAuth();
+  const { setToken, currentUserId } = useAuth();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -39,23 +38,23 @@ export const LoginPresenter = () => {
   };
 
   
-  const handleCompleteOnboarding = () => {
-    // ユーザー名など初回設定情報を保存する処理をここに追加
-    console.log('初回設定が完了しました。ユーザー名:', username);
-    setIsFirstTimeLoginModalOpen(false);
+  // const handleCompleteOnboarding = () => {
+  //   // ユーザー名など初回設定情報を保存する処理をここに追加
+  //   console.log('初回設定が完了しました。ユーザー名:', username);
+  //   setIsFirstTimeLoginModalOpen(false);
 
-    // ログイン完了後にホームページなどに遷移
-    navigate('/');
-  };
+  //   // ログイン完了後にホームページなどに遷移
+  //   navigate('/');
+  // };
 
-  const handleSkipOnboarding = () => {
-    setIsFirstTimeLoginModalOpen(false);
-    navigate('/');
-  };
+  // const handleSkipOnboarding = () => {
+  //   setIsFirstTimeLoginModalOpen(false);
+  //   navigate('/');
+  // };
 
-  const openFirstTimeLoginModal = () => {
-    setIsFirstTimeLoginModalOpen(true);
-  };
+  // const openFirstTimeLoginModal = () => {
+  //   setIsFirstTimeLoginModalOpen(true);
+  // };
 
   return (
     <Container maxWidth='sm'>
@@ -74,12 +73,28 @@ export const LoginPresenter = () => {
 
 
         <>
-          {/* ログイン済みの場合はマイページへのリンク、そうでない場合はログインボタン */}
-          {console.log('currentUser:', currentUser)}
-          {currentUser ? (
-            <Link to='/account' className='btn btn-accent gap-2 w-full'>
-              マイページへ
-            </Link>
+          {/* 
+          　ログイン済みの場合はログアウトボタンとマイページへのリンクを表示
+          　そうでない場合はログインボタンを表示
+          */}
+          {console.log('currentUserId:', currentUserId)}
+          {currentUserId ? (
+            <>
+              <Button
+                variant='outlined'
+                color='primary'
+                // onClick={}
+                sx={{ width: '240px' }}
+              >
+                ログアウト
+              </Button>
+
+              <Divider sx={{ width: '100%', my: 2 }}>または</Divider>
+              
+              <Link to='/account' className='btn btn-accent gap-2 w-full'>
+                マイページへ
+              </Link>
+            </>
           ) : (
             /* MEMO：ここに新規登録とログインを兼ねたボタンとわかるテキストを追加する？ */
             /* MEMO：ボタン押下→Googleアカウント選択→既存ユーザーならログイン、なければユーザー追加 */
@@ -94,23 +109,22 @@ export const LoginPresenter = () => {
           )}
         </>
 
-        <Divider sx={{ width: '100%', my: 2 }}>または</Divider>
 
         {/* MEMO：新規登録とログインボタンを統合する方針の場合、下記のボタンは削除する */}
-        <Button
+        {/* <Button
           variant='outlined'
           color='primary'
           onClick={openFirstTimeLoginModal}
           sx={{ width: '240px' }}
         >
           初回ログイン
-        </Button>
+        </Button> */}
 
         {loginError && <Typography color='error'>{loginError}</Typography>}
       </Box>
 
       {/* 初回ログイン用モーダル */}
-      <Dialog
+      {/* <Dialog
         open={isFirstTimeLoginModalOpen}
         onClose={() => setIsFirstTimeLoginModalOpen(false)}
       >
@@ -145,7 +159,7 @@ export const LoginPresenter = () => {
             設定を完了
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </Container>
   );
 };

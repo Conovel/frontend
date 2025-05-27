@@ -1,6 +1,6 @@
 import './App.css';
 import { Routing } from './routing';
-import { AuthProvider } from './providers/auth'; // Google認証機能に使用予定
+import { AuthProvider } from './providers/auth';
 
 export default function App() {
   return (
