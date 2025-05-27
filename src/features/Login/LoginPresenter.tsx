@@ -21,7 +21,7 @@ export const LoginPresenter = () => {
   // const [username, setUsername] = useState('');
   const navigate = useNavigate();
   const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
-  const { setToken, currentUserId } = useAuth();
+  const { setToken, currentUserId, logout } = useAuth();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -83,7 +83,7 @@ export const LoginPresenter = () => {
               <Button
                 variant='outlined'
                 color='primary'
-                // onClick={}
+                onClick={logout}
                 sx={{ width: '240px' }}
               >
                 ログアウト
