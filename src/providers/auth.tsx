@@ -30,6 +30,12 @@ export const useAuth = () => {
   return context;
 };
 
+// TODO:
+// current_user_idは不要
+// users_meを叩いて情報をコンテキストで渡す
+// tokenのフックはアクセスできないので不要
+// APIを叩いた時点でログインしてないことに気づいてフロント側で動きを変える
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string>('');
   const [currentUserId, setCurrentUserId] = useState<string>('');
@@ -39,7 +45,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   
-  const logout = () => {
+  const logout = async () => {
+    try {
+      // AuthApiのlogOutを実行
+      const logOutFunc = await authApi.logOut({ withCredentials: true });
+      if (logOutFunc.status === 200) {
+        // ループ防止: 'checking' の時だけ再実行
+        if (sessionStorage.getItem('loginStatus') === 'checking') {
+          // ログアウト成功時の処理
+        }
+      }
+    } catch (e) {
+      console.error('ログアウトAPI呼び出しでエラー:', e);
+    }
+
+    setLoginStatus('failure');
     setCurrentUserId('');
     setToken('');
     localStorage.removeItem('authToken');
@@ -69,12 +89,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             return;
           }
         }
-        setLoginStatus('failure');
-        setCurrentUserId('');
         logout();
       } catch (refreshError) {
-        setLoginStatus('failure');
-        setCurrentUserId('');
         logout();
       }
     }
