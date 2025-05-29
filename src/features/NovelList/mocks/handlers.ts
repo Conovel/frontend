@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { NovelListItem } from '../../../api/api';
-import { PostSentence } from '../../../types/types';
+import { PostSentence } from '../../NovelView/ChildrenPanel';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 

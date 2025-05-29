@@ -4,15 +4,22 @@ import { Box, Fab } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
-import {
-  Sentence,
-  NovelProps,
-  CreateSentenceRequest,
-  PostSentence,
-} from '../../types/types';
+import { Sentence, NovelProps } from '../../types/types';
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
 import { SentencesApi } from '../../api/api';
+
+// APIに送信するための型 (OpenAPI仕様に合わせる)
+export interface PostSentence {
+  parent_sentence_id: number;
+  parent_updated_at: string;
+  sentence: string;
+}
+
+// リクエスト用の新しい型
+export interface CreateSentenceRequest {
+  text: string;
+}
 
 const carouselNavButtonStyle = {
   backgroundColor: '#BDBDBD',

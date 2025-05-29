@@ -9,7 +9,7 @@ import {
 import { z } from 'zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CreateSentenceRequest } from '../../types/types';
+import { CreateSentenceRequest } from '../NovelView/ChildrenPanel';
 
 interface EditPostProps {
   open: boolean;
