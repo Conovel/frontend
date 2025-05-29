@@ -44,7 +44,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     sessionStorage.setItem('loginStatus', status);
   };
 
-  
   const logout = async () => {
     try {
       // AuthApiのlogOutを実行
@@ -68,7 +67,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const fetchCurrentUserId = async () => {
     if (sessionStorage.getItem('loginStatus') !== 'checking') return;
-  
+
     try {
       const response = await usersApi.getUserByMe({ withCredentials: true });
       if (response.data && response.data.user_id) {
@@ -80,17 +79,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error) {
       setLoginStatus('failure');
       try {
-        const refreshRes = await authApi.refreshToken({ withCredentials: true });
+        const refreshRes = await authApi.refreshToken({
+          withCredentials: true,
+        });
         if (refreshRes.status !== 200) {
           throw new Error('Refresh failed');
         }
-      
+
         setLoginStatus('checking');
-        const retryResponse = await usersApi.getUserByMe({ withCredentials: true });
+        const retryResponse = await usersApi.getUserByMe({
+          withCredentials: true,
+        });
         if (!(retryResponse.data && retryResponse.data.user_id)) {
           throw new Error('No user_id after refresh');
         }
-      
+
         setLoginStatus('success');
         setCurrentUserId(String(retryResponse.data.user_id));
         return;
@@ -99,7 +102,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
   };
-
 
   useEffect(() => {
     setLoginStatus('checking');

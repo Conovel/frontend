@@ -5,7 +5,6 @@ All URIs are relative to _/v1_
 | Method                                          | HTTP request                           | Description                                    |
 | ----------------------------------------------- | -------------------------------------- | ---------------------------------------------- |
 | [**deleteUserByMe**](#deleteuserbyme)           | **POST** /users/me/delete              | 自分自身のユーザーアカウントを削除（論理削除） |
-| [**getCurrentUserId**](#getcurrentuserid)       | **GET** /users/current_user_id         | ログインしているユーザーのidを取得             |
 | [**getNovelsByUserId**](#getnovelsbyuserid)     | **GET** /users/{user_id}/posted_novels | ユーザーが投稿している小説リストを取得         |
 | [**getUserById**](#getuserbyid)                 | **GET** /users/{user_id}               | IDで自分以外のユーザーアカウント情報を取得     |
 | [**getUserByMe**](#getuserbyme)                 | **GET** /users/me                      | 自分自身のユーザーアカウント情報を取得         |
@@ -50,47 +49,6 @@ No authorization required
 | ----------- | -------------------- | ---------------- |
 | **200**     | ユーザーの削除に成功 | -                |
 | **422**     | ユーザーの削除に失敗 | -                |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **getCurrentUserId**
-
-> CurrentUserId getCurrentUserId()
-
-### Example
-
-```typescript
-import { UsersApi, Configuration } from "./api";
-
-const configuration = new Configuration();
-const apiInstance = new UsersApi(configuration);
-
-const { status, data } = await apiInstance.getCurrentUserId();
-```
-
-### Parameters
-
-This endpoint does not have any parameters.
-
-### Return type
-
-**CurrentUserId**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-### HTTP response details
-
-| Status code | Description                              | Response headers |
-| ----------- | ---------------------------------------- | ---------------- |
-| **200**     | ログインしているユーザーのid             | -                |
-| **401**     | ログインしているユーザーのidの取得に失敗 | -                |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

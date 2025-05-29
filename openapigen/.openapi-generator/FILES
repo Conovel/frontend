@@ -6,7 +6,6 @@ common.ts
 configuration.ts
 docs/AuthApi.md
 docs/ConflictSentence.md
-docs/CurrentUserId.md
 docs/ErrorResponse.md
 docs/ErrorResponseError.md
 docs/EvaluateSentence.md

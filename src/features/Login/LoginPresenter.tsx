@@ -17,7 +17,7 @@ import { useNavigate, Link } from 'react-router';
 export const LoginPresenter = () => {
   const [loginError, setLoginError] = useState<string | null>(null);
   // const [isFirstTimeLoginModalOpen, setIsFirstTimeLoginModalOpen] =
-    useState(false);
+  useState(false);
   // const [username, setUsername] = useState('');
   const navigate = useNavigate();
   const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
@@ -37,7 +37,6 @@ export const LoginPresenter = () => {
     window.location.href = `${authBaseUrl}/auth/google_oauth2`;
   };
 
-  
   // const handleCompleteOnboarding = () => {
   //   // ユーザー名など初回設定情報を保存する処理をここに追加
   //   console.log('初回設定が完了しました。ユーザー名:', username);
@@ -71,7 +70,6 @@ export const LoginPresenter = () => {
           ログイン
         </Typography>
 
-
         <>
           {/* 
           　ログイン済みの場合はログアウトボタンとマイページへのリンクを表示
@@ -90,7 +88,7 @@ export const LoginPresenter = () => {
               </Button>
 
               <Divider sx={{ width: '100%', my: 2 }}>または</Divider>
-              
+
               <Link to='/account' className='btn btn-accent gap-2 w-full'>
                 マイページへ
               </Link>
@@ -108,7 +106,6 @@ export const LoginPresenter = () => {
             </Button>
           )}
         </>
-
 
         {/* MEMO：新規登録とログインボタンを統合する方針の場合、下記のボタンは削除する */}
         {/* <Button
