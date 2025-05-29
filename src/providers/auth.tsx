@@ -67,31 +67,35 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const fetchCurrentUserId = async () => {
-    // ループ防止: 'checking' の時だけ実行
     if (sessionStorage.getItem('loginStatus') !== 'checking') return;
   
     try {
-      const response = await usersApi.getCurrentUserId({ withCredentials: true });
-      if (response.data && response.data.current_user_id) {
+      const response = await usersApi.getUserByMe({ withCredentials: true });
+      if (response.data && response.data.user_id) {
         setLoginStatus('success');
-        setCurrentUserId(String(response.data.current_user_id));
+        setCurrentUserId(String(response.data.user_id));
         return;
       }
       throw new Error('No current_user_id');
     } catch (error) {
-      // current_user_id取得失敗→トークンリフレッシュ
+      setLoginStatus('failure');
       try {
         const refreshRes = await authApi.refreshToken({ withCredentials: true });
-        if (refreshRes.status === 200) {
-          // ループ防止: 'checking' の時だけ再実行
-          if (sessionStorage.getItem('loginStatus') === 'checking') {
-            await fetchCurrentUserId();
-            return;
-          }
+        if (refreshRes.status !== 200) {
+          throw new Error('Refresh failed');
         }
-        logout();
+      
+        setLoginStatus('checking');
+        const retryResponse = await usersApi.getUserByMe({ withCredentials: true });
+        if (!(retryResponse.data && retryResponse.data.user_id)) {
+          throw new Error('No user_id after refresh');
+        }
+      
+        setLoginStatus('success');
+        setCurrentUserId(String(retryResponse.data.user_id));
+        return;
       } catch (refreshError) {
-        logout();
+        await logout();
       }
     }
   };
