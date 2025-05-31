@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import NovelCard from '../../components/novelCard/NovelCard';
 import { Sentence } from '../../types/sentences';
+import { SentenceCard } from '../../components/sentenceCard/SentenceCard';
 
 interface ParentPanelProps {
   parentPanel: Sentence;
@@ -41,7 +41,7 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
       }}
     >
       {startIndex < textCount ? (
-        <NovelCard
+        <SentenceCard
           key={startIndex}
           index={0}
           textIndex={startIndex}
@@ -58,12 +58,12 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
             evaluationStayCount: 0,
           }}
           onClick={() => {}}
-          evaluation_good_count={evaluation_good_count}
-          setEvaluation_good_count={setEvaluation_good_count}
-          comment_count={comment_count}
-          setComment_count={setComment_count}
-          evaluation_stay_count={evaluation_stay_count}
-          setEvaluation_stay_count={setEvaluation_stay_count}
+          evaluationGoodCount={evaluation_good_count}
+          setEvaluationGoodCount={setEvaluation_good_count}
+          commentCound={comment_count}
+          setCommentCount={setComment_count}
+          evaluationStayCount={evaluation_stay_count}
+          setEvaluationStayCount={setEvaluation_stay_count}
         />
       ) : null}
     </Box>

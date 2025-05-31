@@ -3,12 +3,12 @@ import Carousel from 'react-material-ui-carousel';
 import { Box, Fab } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import NovelCard from '../../components/novelCard/NovelCard';
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
 import { SentencesApi } from '../../api/api';
 import { Sentence } from '../../types/sentences';
 import { NovelProps } from '../../components/novelCard/presentation';
+import { SentenceCard } from '../../components/sentenceCard/SentenceCard';
 
 // APIに送信するための型 (OpenAPI仕様に合わせる)
 export interface PostSentence {
@@ -132,18 +132,18 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
 
   const renderNovelCard = (panel: Sentence, index: number) => (
     <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
-      <NovelCard
+      <SentenceCard
         novel={panel}
         onClick={() => handleClick(panel.sentenceId)}
         key={index}
         index={index}
         textIndex={textIndex}
-        evaluation_good_count={evaluation_good_count}
-        setEvaluation_good_count={setEvaluation_good_count}
-        comment_count={comment_count}
-        setComment_count={setComment_count}
-        evaluation_stay_count={evaluation_stay_count}
-        setEvaluation_stay_count={setEvaluation_stay_count}
+        evaluationGoodCount={evaluation_good_count}
+        setEvaluationGoodCount={setEvaluation_good_count}
+        commentCound={comment_count}
+        setCommentCount={setComment_count}
+        evaluationStayCount={evaluation_stay_count}
+        setEvaluationStayCount={setEvaluation_stay_count}
         sentence={panel.sentence}
       />
     </Box>
