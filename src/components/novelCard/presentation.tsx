@@ -11,7 +11,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { Button, TextField, Modal } from '@mui/material';
-import { NovelProps } from '../../types/types';
+import { NovelProps } from './NovelCard';
 
 const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
   const [openModal, setOpenModal] = React.useState(false);

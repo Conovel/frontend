@@ -3,8 +3,8 @@ import { Box, Container } from '@mui/material';
 import ParentPanel from './ParentPanel';
 import ChildrenPanel from './ChildrenPanel';
 import MainPanel from './MainPanel';
-import { Sentence } from '../../types/types';
 import { mockContainerData } from './mocks/data';
+import { Sentence } from '../../types/sentences';
 
 interface NovelViewPresentationProps {
   mainPanel: Sentence[];

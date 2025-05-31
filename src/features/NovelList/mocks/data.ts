@@ -1,4 +1,4 @@
-import { NovelProps } from '../../../types/types';
+import { NovelProps } from '../../../components/novelCard/NovelCard';
 
 export const novels: NovelProps[] = [
   {

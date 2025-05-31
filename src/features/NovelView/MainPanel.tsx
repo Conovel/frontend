@@ -6,7 +6,7 @@ import CommentButton from '../../components/buttonicon/CommentButton';
 import NextPlanButton from '../../components/buttonicon/NextPlanButton';
 import KeyboardArrowForwardIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowBackIcon from '@mui/icons-material/KeyboardArrowLeft';
-import { Sentence } from '../../types/types';
+import { Sentence } from '../../types/sentences';
 
 interface MainPanelProps {
   mainPanel: Sentence[];
@@ -51,7 +51,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
       <Box>
         {mainPanel.map((panel) => (
           <Box
-            key={panel.sentence_id}
+            key={panel.sentenceId}
             sx={{
               backgroundColor: '#fff',
               position: 'relative',
@@ -75,10 +75,10 @@ const MainPanel: React.FC<MainPanelProps> = ({
             >
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Avatar sx={{ fontSize: '1.2rem', width: 32, height: 32 }}>
-                  {panel.userName.charAt(0)}
+                  {panel.sentenceUserId}
                 </Avatar>
                 <Box sx={{ marginLeft: '1vh', fontSize: '1.2rem' }}>
-                  {panel.userName}
+                  {panel.sentenceUserName}
                 </Box>
               </Box>
             </Box>
