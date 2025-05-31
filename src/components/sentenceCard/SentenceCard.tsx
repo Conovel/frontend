@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import CommentButton from '../buttonicon/CommentButton';
@@ -12,7 +12,7 @@ interface SentenceCardProps {
   sentence: string;
   evaluationGoodCount: number;
   setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
-  commentCound: number;
+  commentCount: number;
   setCommentCount: React.Dispatch<React.SetStateAction<number>>;
   evaluationStayCount: number;
   setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
@@ -20,12 +20,16 @@ interface SentenceCardProps {
   onClick: (sentence_id: number) => void;
 }
 
-export const SentenceCard = ({ novel, onClick }: SentenceCardProps) => {
-  // Local state for counts
-  const [evaluationGoodCount, setEvaluationGoodCount] = useState(0);
-  const [evaluationStayCount, setEvaluationStayCount] = useState(0);
-  const [commentCount, setCommentCount] = useState(0);
-
+export const SentenceCard = ({
+  novel,
+  onClick,
+  evaluationGoodCount,
+  setEvaluationGoodCount,
+  commentCount,
+  setCommentCount,
+  evaluationStayCount,
+  setEvaluationStayCount,
+}: SentenceCardProps) => {
   return (
     <Box
       component='div'
