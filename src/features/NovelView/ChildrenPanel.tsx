@@ -3,11 +3,12 @@ import Carousel from 'react-material-ui-carousel';
 import { Box, Fab } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import NovelCard, { NovelProps } from '../../components/novelCard/NovelCard';
+import NovelCard from '../../components/novelCard/NovelCard';
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
 import { SentencesApi } from '../../api/api';
 import { Sentence } from '../../types/sentences';
+import { NovelProps } from '../../components/novelCard/presentation';
 
 // APIに送信するための型 (OpenAPI仕様に合わせる)
 export interface PostSentence {

@@ -1,4 +1,4 @@
-import { NovelProps } from '../../../components/novelCard/NovelCard';
+import { NovelProps } from '../../../components/novelCard/presentation';
 import { Sentence } from '../../../types/sentences';
 
 export const mockParentPanel: NovelProps[] = [

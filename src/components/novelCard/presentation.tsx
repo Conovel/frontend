@@ -11,7 +11,40 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { Button, TextField, Modal } from '@mui/material';
-import { NovelProps } from './NovelCard';
+import { Sentence } from '../../types/sentences';
+
+export interface NovelProps {
+  title: string;
+  main_copy: string;
+  overview: string;
+  popular: boolean;
+  newArrival: boolean;
+  author_user_name: string;
+  chips: { label: string }[];
+  tags: { label: string }[];
+  reader_count: number;
+  avatar: {
+    src: string;
+    alt: string;
+    color: string;
+    text: string;
+  };
+  sentence_id: number;
+  sentence_user_count: number;
+  sentence_hierarchy_count: number;
+  sentence: string;
+  textIndex: number;
+  userId: number;
+  userName: string;
+  profile_icon_image: string;
+  evaluation_good_count: number;
+  evaluation_stay_count: number;
+  created_at: string;
+  updated_at: string;
+  children: Sentence[];
+  main: Sentence[];
+  parent: Sentence[];
+}
 
 const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
   const [openModal, setOpenModal] = React.useState(false);

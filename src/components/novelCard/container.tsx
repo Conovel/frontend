@@ -1,5 +1,4 @@
-import { NovelProps } from './NovelCard';
-import NovelCard from './presentation';
+import NovelCard, { NovelProps } from './presentation';
 
 const NovelCardContainer = ({
   novel,
