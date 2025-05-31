@@ -60,7 +60,7 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
           onClick={() => {}}
           evaluationGoodCount={evaluation_good_count}
           setEvaluationGoodCount={setEvaluation_good_count}
-          commentCound={comment_count}
+          commentCount={comment_count}
           setCommentCount={setComment_count}
           evaluationStayCount={evaluation_stay_count}
           setEvaluationStayCount={setEvaluation_stay_count}
