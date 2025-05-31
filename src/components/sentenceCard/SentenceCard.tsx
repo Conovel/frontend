@@ -17,7 +17,7 @@ interface SentenceCardProps {
   evaluationStayCount: number;
   setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
   novel: Sentence;
-  onClick: (sentence_id: number) => void;
+  onClick: (sentenceId: number) => void;
 }
 
 export const SentenceCard = ({
