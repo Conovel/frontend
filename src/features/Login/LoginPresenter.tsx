@@ -6,24 +6,11 @@ import {
   Divider,
 } from '@mui/material';
 import { useAuth } from '../../providers/auth';
-import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router';
+import { Link } from 'react-router';
 
 export const LoginPresenter = () => {
-  // const [loginError, setLoginError] = useState<string | null>(null);
-  useState(false);
-  const navigate = useNavigate();
   const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
-  const { setToken, currentUserId, logout } = useAuth();
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
-    if (token) {
-      setToken(token);
-      localStorage.setItem('auth', token);
-    }
-  }, [setToken, navigate]);
+  const { currentUserId, logout } = useAuth();
 
   const handleGoogleAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -44,7 +31,6 @@ export const LoginPresenter = () => {
         <Typography variant='h4' component='h1'>
           ログイン
         </Typography>
-
         <>
           {console.log('currentUserId:', currentUserId)}
           {currentUserId ? (
@@ -75,8 +61,6 @@ export const LoginPresenter = () => {
             </Button>
           )}
         </>
-
-        {/* {loginError && <Typography color='error'>{loginError}</Typography>} */}
       </Box>
     </Container>
   );

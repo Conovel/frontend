@@ -6,8 +6,6 @@ import { axiosConfig } from '../axiosConfig';
 
 // 型定義
 export interface AuthContextType {
-  token: string;
-  setToken: React.Dispatch<React.SetStateAction<string>>;
   currentUserId: string;
   setCurrentUserId: React.Dispatch<React.SetStateAction<string>>;
   logout: () => void;
@@ -33,11 +31,9 @@ export const useAuth = () => {
 // TODO:
 // current_user_idは不要
 // users_meを叩いて情報をコンテキストで渡す
-// tokenのフックはアクセスできないので不要
 // APIを叩いた時点でログインしてないことに気づいてフロント側で動きを変える
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [token, setToken] = useState<string>('');
   const [currentUserId, setCurrentUserId] = useState<string>('');
 
   const setLoginStatus = (status: 'checking' | 'success' | 'failure') => {
@@ -60,8 +56,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     setLoginStatus('failure');
     setCurrentUserId('');
-    setToken('');
-    localStorage.removeItem('authToken');
     sessionStorage.setItem('loginStatus', 'failure');
   };
 
@@ -112,7 +106,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ token, logout, setToken, currentUserId, setCurrentUserId }}
+      value={{ logout, currentUserId, setCurrentUserId }}
     >
       {children}
     </AuthContext.Provider>
