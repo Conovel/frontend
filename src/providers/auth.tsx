@@ -5,9 +5,21 @@ import { AuthApi } from '../api/api';
 import { axiosConfig } from '../axiosConfig';
 
 // 型定義
+export interface User {
+  user_id: number;
+  user_name: string;
+  nick_name: string;
+  profile_icon_image: string;
+  evaluation_good_count: number;
+  created_at: string;
+  updated_at: string;
+  birth_year_and_month: string;
+  is_anonymous: boolean;
+}
+
 export interface AuthContextType {
-  currentUserId: string;
-  setCurrentUserId: React.Dispatch<React.SetStateAction<string>>;
+  currentUser: User | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
   logout: () => void;
 }
 
@@ -34,7 +46,7 @@ export const useAuth = () => {
 // APIを叩いた時点でログインしてないことに気づいてフロント側で動きを変える
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [currentUserId, setCurrentUserId] = useState<string>('');
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const setLoginStatus = (status: 'checking' | 'success' | 'failure') => {
     sessionStorage.setItem('loginStatus', status);
@@ -55,7 +67,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
 
     setLoginStatus('failure');
-    setCurrentUserId('');
+    setCurrentUser(null);
     sessionStorage.setItem('loginStatus', 'failure');
   };
 
@@ -66,7 +78,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await usersApi.getUserByMe({ withCredentials: true });
       if (response.data && response.data.user_id) {
         setLoginStatus('success');
-        setCurrentUserId(String(response.data.user_id));
+        setCurrentUser(response.data as User); 
         return;
       }
       throw new Error('No current_user_id');
@@ -89,7 +101,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
 
         setLoginStatus('success');
-        setCurrentUserId(String(retryResponse.data.user_id));
+        setCurrentUser(retryResponse.data as User);
         return;
       } catch (refreshError) {
         await logout();
@@ -99,14 +111,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     setLoginStatus('checking');
-    setCurrentUserId('');
+    setCurrentUser(null);
     fetchCurrentUserId();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ logout, currentUserId, setCurrentUserId }}
+      value={{ logout, currentUser, setCurrentUser }}
     >
       {children}
     </AuthContext.Provider>

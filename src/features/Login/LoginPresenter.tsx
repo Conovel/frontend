@@ -10,7 +10,7 @@ import { Link } from 'react-router';
 
 export const LoginPresenter = () => {
   const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
-  const { currentUserId, logout } = useAuth();
+  const { currentUser, logout } = useAuth();
 
   const handleGoogleAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -25,16 +25,24 @@ export const LoginPresenter = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 3,
+          gap: 2,
+          textAlign: 'center',
         }}
       >
         <Typography variant='h4' component='h1'>
           ログイン
         </Typography>
         <>
-          {console.log('currentUserId:', currentUserId)}
-          {currentUserId ? (
+          {console.log('currentUser:', currentUser)}
+          {currentUser ? (
             <>
+            <img
+              src={currentUser.profile_icon_image}
+              alt='プロフィールアイコン'
+              style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+            />
+            <p>ようこそ、{currentUser.user_name}さん！<br />
+            （ユーザーID：{currentUser.user_id}）</p>
               <Button
                 variant='outlined'
                 color='primary'
@@ -51,6 +59,8 @@ export const LoginPresenter = () => {
               </Link>
             </>
           ) : (
+            <>
+            <p>ログインまたは新規登録してください</p>
             <Button
               variant='outlined'
               color='primary'
@@ -59,6 +69,7 @@ export const LoginPresenter = () => {
             >
               Googleログイン
             </Button>
+            </>
           )}
         </>
       </Box>
