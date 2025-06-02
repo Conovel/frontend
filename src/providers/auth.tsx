@@ -40,11 +40,6 @@ export const useAuth = () => {
   return context;
 };
 
-// TODO:
-// current_user_idは不要
-// users_meを叩いて情報をコンテキストで渡す
-// APIを叩いた時点でログインしてないことに気づいてフロント側で動きを変える
-
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
@@ -78,7 +73,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await usersApi.getUserByMe({ withCredentials: true });
       if (response.data && response.data.user_id) {
         setLoginStatus('success');
-        setCurrentUser(response.data as User); 
+        setCurrentUser(response.data as User);
         return;
       }
       throw new Error('No current_user_id');
@@ -117,9 +112,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ logout, currentUser, setCurrentUser }}
-    >
+    <AuthContext.Provider value={{ logout, currentUser, setCurrentUser }}>
       {children}
     </AuthContext.Provider>
   );

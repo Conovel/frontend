@@ -1,10 +1,4 @@
-import {
-  Box,
-  Typography,
-  Container,
-  Button,
-  Divider,
-} from '@mui/material';
+import { Box, Typography, Container, Button, Divider } from '@mui/material';
 import { useAuth } from '../../providers/auth';
 import { Link } from 'react-router';
 
@@ -36,13 +30,16 @@ export const LoginPresenter = () => {
           {console.log('currentUser:', currentUser)}
           {currentUser ? (
             <>
-            <img
-              src={currentUser.profile_icon_image}
-              alt='プロフィールアイコン'
-              style={{ width: '100px', height: '100px', borderRadius: '50%' }}
-            />
-            <p>ようこそ、{currentUser.user_name}さん！<br />
-            （ユーザーID：{currentUser.user_id}）</p>
+              <img
+                src={currentUser.profile_icon_image}
+                alt='プロフィールアイコン'
+                style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+              />
+              <p>
+                ようこそ、{currentUser.user_name}さん！
+                <br />
+                （ユーザーID：{currentUser.user_id}）
+              </p>
               <Button
                 variant='outlined'
                 color='primary'
@@ -60,15 +57,15 @@ export const LoginPresenter = () => {
             </>
           ) : (
             <>
-            <p>ログインまたは新規登録してください</p>
-            <Button
-              variant='outlined'
-              color='primary'
-              onClick={handleGoogleAuth}
-              sx={{ width: '240px' }}
-            >
-              Googleログイン
-            </Button>
+              <p>ログインまたは新規登録してください</p>
+              <Button
+                variant='outlined'
+                color='primary'
+                onClick={handleGoogleAuth}
+                sx={{ width: '240px' }}
+              >
+                Googleログイン
+              </Button>
             </>
           )}
         </>
