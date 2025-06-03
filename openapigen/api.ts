@@ -20,42 +20,24 @@ import globalAxios from "axios";
 import {
   DUMMY_BASE_URL,
   assertParamExists,
+  setApiKeyToObject,
+  setBasicAuthToObject,
+  setBearerAuthToObject,
+  setOAuthToObject,
   setSearchParams,
   serializeDataIfNeeded,
   toPathString,
   createRequestFunction,
 } from "./common";
-
-// BK
-// import {
-//   DUMMY_BASE_URL,
-//   assertParamExists,
-//   setApiKeyToObject,
-//   setBasicAuthToObject,
-//   setBearerAuthToObject,
-//   setOAuthToObject,
-//   setSearchParams,
-//   serializeDataIfNeeded,
-//   toPathString,
-//   createRequestFunction,
-// } from "./common";
-
 import type { RequestArgs } from "./base";
 // @ts-ignore
 import {
   BASE_PATH,
+  COLLECTION_FORMATS,
   BaseAPI,
+  RequiredError,
   operationServerMap,
 } from "./base";
-
-// BK
-// import {
-//   BASE_PATH,
-//   COLLECTION_FORMATS,
-//   BaseAPI,
-//   RequiredError,
-//   operationServerMap,
-// } from "./base";
 
 /**
  *
@@ -483,43 +465,43 @@ export interface User {
    * @type {number}
    * @memberof User
    */
-  user_id?: number;
+  user_id: number;
   /**
    * ユーザーのペンネーム
    * @type {string}
    * @memberof User
    */
-  user_name?: string;
+  user_name: string;
   /**
    * ユーザーのニックネーム
    * @type {string}
    * @memberof User
    */
-  nick_name?: string;
+  nick_name: string;
   /**
    * ユーザーアイコン画像のurl
    * @type {string}
    * @memberof User
    */
-  profile_icon_image?: string;
+  profile_icon_image: string;
   /**
    * Good評価の数
    * @type {number}
    * @memberof User
    */
-  evaluation_good_count?: number;
+  evaluation_good_count: number;
   /**
    * ユーザーの作成日時
    * @type {string}
    * @memberof User
    */
-  created_at?: string;
+  created_at: string;
   /**
    * ユーザーの修正日時
    * @type {string}
    * @memberof User
    */
-  updated_at?: string;
+  updated_at: string;
 }
 /**
  *
@@ -557,43 +539,43 @@ export interface ViewMeUser {
    * @type {number}
    * @memberof ViewMeUser
    */
-  user_id?: number;
+  user_id: number;
   /**
    * ユーザーのペンネーム
    * @type {string}
    * @memberof ViewMeUser
    */
-  user_name?: string;
+  user_name: string;
   /**
    * ユーザーのニックネーム
    * @type {string}
    * @memberof ViewMeUser
    */
-  nick_name?: string;
+  nick_name: string;
   /**
    * ユーザーアイコン画像のurl
    * @type {string}
    * @memberof ViewMeUser
    */
-  profile_icon_image?: string;
+  profile_icon_image: string;
   /**
    * Good評価の数
    * @type {number}
    * @memberof ViewMeUser
    */
-  evaluation_good_count?: number;
+  evaluation_good_count: number;
   /**
    * ユーザーの作成日時
    * @type {string}
    * @memberof ViewMeUser
    */
-  created_at?: string;
+  created_at: string;
   /**
    * ユーザーの修正日時
    * @type {string}
    * @memberof ViewMeUser
    */
-  updated_at?: string;
+  updated_at: string;
   /**
    * ユーザーの生年月（YYYY/MM）
    * @type {string}
