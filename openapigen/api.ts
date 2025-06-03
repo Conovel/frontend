@@ -20,10 +20,10 @@ import globalAxios from "axios";
 import {
   DUMMY_BASE_URL,
   assertParamExists,
-  setApiKeyToObject,
-  setBasicAuthToObject,
-  setBearerAuthToObject,
-  setOAuthToObject,
+  // setApiKeyToObject, // 未使用（一時的にコメントアウト）
+  // setBasicAuthToObject, // 未使用（一時的にコメントアウト）
+  // setBearerAuthToObject, // 未使用（一時的にコメントアウト）
+  // setOAuthToObject, // 未使用（一時的にコメントアウト）
   setSearchParams,
   serializeDataIfNeeded,
   toPathString,
@@ -33,9 +33,9 @@ import type { RequestArgs } from "./base";
 // @ts-ignore
 import {
   BASE_PATH,
-  COLLECTION_FORMATS,
+  // COLLECTION_FORMATS, // 未使用（一時的にコメントアウト）
   BaseAPI,
-  RequiredError,
+  // RequiredError, // 未使用（一時的にコメントアウト）
   operationServerMap,
 } from "./base";
 
