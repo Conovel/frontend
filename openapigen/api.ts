@@ -20,24 +20,42 @@ import globalAxios from "axios";
 import {
   DUMMY_BASE_URL,
   assertParamExists,
-  // setApiKeyToObject, // 未使用（一時的にコメントアウト）
-  // setBasicAuthToObject, // 未使用（一時的にコメントアウト）
-  // setBearerAuthToObject, // 未使用（一時的にコメントアウト）
-  // setOAuthToObject, // 未使用（一時的にコメントアウト）
   setSearchParams,
   serializeDataIfNeeded,
   toPathString,
   createRequestFunction,
 } from "./common";
+
+// BK
+// import {
+//   DUMMY_BASE_URL,
+//   assertParamExists,
+//   setApiKeyToObject,
+//   setBasicAuthToObject,
+//   setBearerAuthToObject,
+//   setOAuthToObject,
+//   setSearchParams,
+//   serializeDataIfNeeded,
+//   toPathString,
+//   createRequestFunction,
+// } from "./common";
+
 import type { RequestArgs } from "./base";
 // @ts-ignore
 import {
   BASE_PATH,
-  // COLLECTION_FORMATS, // 未使用（一時的にコメントアウト）
   BaseAPI,
-  // RequiredError, // 未使用（一時的にコメントアウト）
   operationServerMap,
 } from "./base";
+
+// BK
+// import {
+//   BASE_PATH,
+//   COLLECTION_FORMATS,
+//   BaseAPI,
+//   RequiredError,
+//   operationServerMap,
+// } from "./base";
 
 /**
  *
