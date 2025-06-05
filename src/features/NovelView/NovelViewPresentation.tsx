@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, TextField, Button, Modal, Typography } from '@mui/material';
 import ParentPanel from './ParentPanel';
 import MainPanel from './MainPanel';
 import ChildrenPanel from './ChildrenPanel';
@@ -36,6 +36,7 @@ interface NovelViewPresentationProps {
   evaluation_stay_count_main: number;
   setEvaluation_stay_count_main: React.Dispatch<React.SetStateAction<number>>;
   textCount: number;
+  onPost: (newSentence: string) => Promise<void>;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -65,8 +66,31 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   evaluation_stay_count_main,
   setEvaluation_stay_count_main,
   textCount,
+  onPost,
 }) => {
   const [start_index_main, setStart_index_main] = useState(0);
+  const [newSentence, setNewSentence] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handlePost = async () => {
+    if (newSentence.trim()) {
+      await onPost(newSentence);
+      setNewSentence('');
+      setIsModalOpen(false);
+    }
+  };
+
+  const modalStyle = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 2,
+  };
 
   return (
     <Box
@@ -129,6 +153,52 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
               evaluation_stay_count={evaluation_stay_count_main}
               setEvaluation_stay_count={setEvaluation_stay_count_main}
             />
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={() => setIsModalOpen(true)}
+              sx={{ mt: 2, mb: 2 }}
+            >
+              続きを書く
+            </Button>
+            <Modal
+              open={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              aria-labelledby='novel-post-modal'
+            >
+              <Box sx={modalStyle}>
+                <Typography variant='h6' component='h2' gutterBottom>
+                  続きを書く
+                </Typography>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={6}
+                  value={newSentence}
+                  onChange={(e) => setNewSentence(e.target.value)}
+                  placeholder='新しい文章を入力してください'
+                  variant='outlined'
+                  sx={{ mb: 2 }}
+                />
+                <Box
+                  sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}
+                >
+                  <Button
+                    variant='outlined'
+                    onClick={() => setIsModalOpen(false)}
+                  >
+                    キャンセル
+                  </Button>
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={handlePost}
+                  >
+                    投稿する
+                  </Button>
+                </Box>
+              </Box>
+            </Modal>
             <ChildrenPanel
               childrenPanel={childrenPanel}
               setChildrenPanel={() => {}}
