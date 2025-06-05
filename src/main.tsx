@@ -6,13 +6,17 @@ import { BrowserRouter } from 'react-router';
 
 async function enableMocking() {
   if (!import.meta.env.PROD) {
-    const { worker } = await import('../src/mock/browser');
-    worker.start();
+    const { worker } = await import('./mock/browser');
+    await worker.start({
+      onUnhandledRequest: 'bypass', // 未処理のリクエストはそのまま通す
+    });
   }
 }
 
+// MSWの初期化を待ってからアプリケーションを起動
 enableMocking().then(() => {
-  createRoot(document.getElementById('root') as HTMLElement).render(
+  const root = createRoot(document.getElementById('root')!);
+  root.render(
     <StrictMode>
       <BrowserRouter>
         <App />

@@ -15,10 +15,15 @@ const NovelList = () => {
     const fetchNovels = async () => {
       try {
         const response = await novelsApi.getNovels();
-        const convertedResponse: NovelListItem[] = convertNovelListResponse(
-          response.data,
-        );
-        setResponseNovels(convertedResponse);
+        // response.dataが配列であることを確認
+        if (Array.isArray(response.data)) {
+          const convertedResponse: NovelListItem[] = convertNovelListResponse(
+            response.data,
+          );
+          setResponseNovels(convertedResponse);
+        } else {
+          console.error('Invalid response format:', response.data);
+        }
       } catch (error) {
         // TODO: エラー時の対応について要検討（エラーがわかるような画面にするかなど）
         console.error('Error fetching sentences:', error);
