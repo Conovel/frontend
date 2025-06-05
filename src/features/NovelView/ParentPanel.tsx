@@ -47,6 +47,7 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
           textIndex={startIndex}
           sentence={parentPanel.sentence}
           novel={{
+            title_id: parentPanel.title_id,
             main_copy: parentPanel.main_copy,
             overview: parentPanel.overview,
             title: parentPanel.title,

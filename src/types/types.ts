@@ -127,6 +127,7 @@ export interface NovelViewPresentationProps {
 }
 
 export interface NovelProps {
+  title_id: number;
   title: string;
   main_copy: string;
   overview: string;

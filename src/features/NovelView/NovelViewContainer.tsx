@@ -1,8 +1,10 @@
-import { NovelViewPresentation } from './NovelViewPresentation';
+import NovelViewPresentation from './NovelViewPresentation';
 import { useState } from 'react';
 import { mockContainerData } from './mocks/data';
+import { useParams } from 'react-router-dom';
 
 export const NovelViewContainer = () => {
+  const { sentenceId } = useParams<{ sentenceId: string }>();
   const [start_index_parent, setStart_index_parent] = useState(0);
   const [start_index_children, setStart_index_children] = useState(0);
   const [evaluation_good_count_parent, setEvaluation_good_count_parent] =
@@ -23,6 +25,9 @@ export const NovelViewContainer = () => {
   const [comment_count_main, setComment_count_main] = useState<number>(0);
   const [evaluation_stay_count_main, setEvaluation_stay_count_main] =
     useState<number>(0);
+
+  // sentenceIdを使用してデータを取得する処理をここに追加
+  console.log('Current sentence ID:', sentenceId);
 
   return (
     <NovelViewPresentation

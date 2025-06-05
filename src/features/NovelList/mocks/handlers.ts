@@ -2,6 +2,9 @@ import { http, HttpResponse } from 'msw';
 import { NovelListItem } from '../../../api/api';
 import { PostSentence } from '../../../types/types';
 
+// 投稿IDのカウンター
+let nextSentenceId = 1;
+
 export const novelListHandlers = [
   // 小説一覧を取得するハンドラー
   http.get('/v1/novels', () => {
@@ -80,10 +83,11 @@ export const novelListHandlers = [
     const data = (await request.json()) as PostSentence;
     console.log('Submitted data:', data);
 
+    const currentId = nextSentenceId++;
     return HttpResponse.json(
       {
         main: {
-          sentence_id: 1,
+          sentence_id: currentId,
           sentence: data.sentence,
           sentence_user_id: 1,
           sentence_user_name: 'テストユーザー',

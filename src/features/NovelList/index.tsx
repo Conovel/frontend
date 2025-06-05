@@ -69,9 +69,6 @@ const NovelList = () => {
                 sentence_user_count: 0,
                 sentence_hierarchy_count: 0,
               }}
-              onClick={() => {
-                // TODO：不要なonClick削除する
-              }}
             />
           </Grid>
         ))}

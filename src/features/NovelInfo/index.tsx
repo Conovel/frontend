@@ -23,7 +23,6 @@ const style = {
 interface TransitionsModalProps {
   open: boolean;
   handleClose: () => void;
-  onNovelClick: (novel: NovelProps) => void;
 }
 
 export default function TransitionsModal({
@@ -52,6 +51,7 @@ export default function TransitionsModal({
               <Grid item xs={12} sm={6} md={4} key={index}>
                 <NovelCardContainer
                   novel={{
+                    title_id: novel.title_id,
                     title: novel.title,
                     main_copy: novel.main_copy,
                     overview: novel.overview,
@@ -77,9 +77,6 @@ export default function TransitionsModal({
                     children: [],
                     main: [],
                     parent: [],
-                  }}
-                  onClick={() => {
-                    /* handle click */
                   }}
                 />
               </Grid>

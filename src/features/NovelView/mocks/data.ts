@@ -2,6 +2,7 @@ import { Sentence, NovelProps } from '../../../types/types';
 
 export const mockParentPanel: NovelProps[] = [
   {
+    title_id: 1,
     title: '',
     textIndex: 0,
     main_copy: '',
@@ -100,6 +101,7 @@ export const mockChildrenPanel: Sentence[] = [
 ];
 
 export const mockNovelProps = {
+  title_id: 1,
   main_copy: '',
   overview: '',
   title: '',
@@ -136,6 +138,7 @@ export const mockNovelProps = {
 export const mockContainerData = {
   main: [
     {
+      title_id: 1,
       title: 'テストタイトル',
       main_copy: 'テストメインコピー',
       overview: 'テスト概要',
@@ -171,6 +174,7 @@ export const mockContainerData = {
   ],
   parent: [
     {
+      title_id: 1,
       title: 'テストタイトル',
       sentence: 'ああ，あの若いころ気づいていれば',
       main_copy: 'テストメインコピー',
@@ -198,13 +202,11 @@ export const mockContainerData = {
       },
       sentence_user_count: 0,
       sentence_hierarchy_count: 0,
-      children: [],
-      parent: [],
-      main: [],
     },
   ],
   children: [
     {
+      title_id: 1,
       title: 'テストタイトル',
       sentence: 'テストテキスト',
       textIndex: 0,

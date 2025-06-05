@@ -10,6 +10,10 @@ import { Sentence } from '../../types/types';
 
 interface MainPanelProps {
   mainPanel: Sentence[];
+  startIndex: number;
+  setStartIndex: React.Dispatch<React.SetStateAction<number>>;
+  visibleTextCount: number;
+  textCount: number;
   evaluation_good_count: number;
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   comment_count: number;
@@ -20,6 +24,10 @@ interface MainPanelProps {
 
 const MainPanel: React.FC<MainPanelProps> = ({
   mainPanel,
+  startIndex,
+  setStartIndex,
+  visibleTextCount,
+  textCount,
   evaluation_good_count,
   setEvaluation_good_count,
   comment_count,
@@ -33,6 +41,14 @@ const MainPanel: React.FC<MainPanelProps> = ({
     setShowIcons((prev) => !prev);
   };
 
+  const handleScroll = (direction: 'next' | 'prev') => {
+    if (direction === 'next' && startIndex + visibleTextCount < textCount) {
+      setStartIndex(startIndex + visibleTextCount);
+    } else if (direction === 'prev' && startIndex > 0) {
+      setStartIndex(startIndex - visibleTextCount);
+    }
+  };
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
       <KeyboardArrowBackIcon
@@ -44,82 +60,82 @@ const MainPanel: React.FC<MainPanelProps> = ({
           transform: 'translateY(-50%)',
           zIndex: 3,
         }}
-        onClick={() => {
-          /* Handle left arrow click */
-        }}
+        onClick={() => handleScroll('prev')}
       />
       <Box>
-        {mainPanel.map((panel) => (
-          <Box
-            key={panel.sentence_id}
-            sx={{
-              backgroundColor: '#fff',
-              position: 'relative',
-              textAlign: 'left',
-              border: '1px solid #000',
-              borderRadius: '10px',
-              height: '30vh',
-              width: '80vw',
-              alignItems: 'center',
-              zIndex: 2,
-              overflowY: 'auto',
-            }}
-          >
+        {mainPanel
+          .slice(startIndex, startIndex + visibleTextCount)
+          .map((panel) => (
             <Box
+              key={panel.sentence_id}
               sx={{
-                display: 'flex',
+                backgroundColor: '#fff',
+                position: 'relative',
+                textAlign: 'left',
+                border: '1px solid #000',
+                borderRadius: '10px',
+                height: '30vh',
+                width: '80vw',
                 alignItems: 'center',
-                margin: '2vh 2vh',
-                justifyContent: 'space-between',
+                zIndex: 2,
+                overflowY: 'auto',
               }}
             >
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Avatar sx={{ fontSize: '1.2rem', width: 32, height: 32 }}>
-                  {panel.userName.charAt(0)}
-                </Avatar>
-                <Box sx={{ marginLeft: '1vh', fontSize: '1.2rem' }}>
-                  {panel.userName}
-                </Box>
-              </Box>
-            </Box>
-            <p style={{ margin: '1vh 1vh', fontSize: '1.6rem' }}>
-              {panel.sentence}
-            </p>
-            <DragIndicatorIcon
-              onClick={handleIconClick}
-              sx={{
-                cursor: 'pointer',
-                position: 'absolute',
-                bottom: '10px',
-                right: '10px',
-              }}
-            />
-            {showIcons && (
               <Box
                 sx={{
                   display: 'flex',
-                  position: 'absolute',
-                  bottom: '10px',
-                  right: '25px',
-                  zIndex: 4,
+                  alignItems: 'center',
+                  margin: '2vh 2vh',
+                  justifyContent: 'space-between',
                 }}
               >
-                <ThumbUpButton
-                  evaluation_good_count={evaluation_good_count}
-                  setEvaluation_good_count={setEvaluation_good_count}
-                />
-                <CommentButton
-                  comment_count={comment_count}
-                  setComment_count={setComment_count}
-                />
-                <NextPlanButton
-                  evaluation_stay_count={evaluation_stay_count}
-                  setEvaluation_stay_count={setEvaluation_stay_count}
-                />
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Avatar sx={{ fontSize: '1.2rem', width: 32, height: 32 }}>
+                    {panel.userName.charAt(0)}
+                  </Avatar>
+                  <Box sx={{ marginLeft: '1vh', fontSize: '1.2rem' }}>
+                    {panel.userName}
+                  </Box>
+                </Box>
               </Box>
-            )}
-          </Box>
-        ))}
+              <p style={{ margin: '1vh 1vh', fontSize: '1.6rem' }}>
+                {panel.sentence}
+              </p>
+              <DragIndicatorIcon
+                onClick={handleIconClick}
+                sx={{
+                  cursor: 'pointer',
+                  position: 'absolute',
+                  bottom: '10px',
+                  right: '10px',
+                }}
+              />
+              {showIcons && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    position: 'absolute',
+                    bottom: '10px',
+                    right: '25px',
+                    zIndex: 4,
+                  }}
+                >
+                  <ThumbUpButton
+                    evaluation_good_count={evaluation_good_count}
+                    setEvaluation_good_count={setEvaluation_good_count}
+                  />
+                  <CommentButton
+                    comment_count={comment_count}
+                    setComment_count={setComment_count}
+                  />
+                  <NextPlanButton
+                    evaluation_stay_count={evaluation_stay_count}
+                    setEvaluation_stay_count={setEvaluation_stay_count}
+                  />
+                </Box>
+              )}
+            </Box>
+          ))}
       </Box>
       <KeyboardArrowForwardIcon
         sx={{
@@ -130,9 +146,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
           transform: 'translateY(-50%)',
           zIndex: 3,
         }}
-        onClick={() => {
-          /* Handle right arrow click */
-        }}
+        onClick={() => handleScroll('next')}
       />
     </Box>
   );

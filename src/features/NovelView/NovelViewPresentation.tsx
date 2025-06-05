@@ -1,10 +1,9 @@
-import React from 'react';
-import { Box, Container } from '@mui/material';
+import React, { useState } from 'react';
+import { Box } from '@mui/material';
 import ParentPanel from './ParentPanel';
-import ChildrenPanel from './ChildrenPanel';
 import MainPanel from './MainPanel';
-import { Sentence } from '../../types/types';
-import { mockContainerData } from './mocks/data';
+import ChildrenPanel from './ChildrenPanel';
+import { NovelProps, Sentence } from '../../types/types';
 
 interface NovelViewPresentationProps {
   mainPanel: Sentence[];
@@ -30,8 +29,6 @@ interface NovelViewPresentationProps {
   setEvaluation_stay_count_children: React.Dispatch<
     React.SetStateAction<number>
   >;
-  start_index_main?: number;
-  setStart_index_main?: React.Dispatch<React.SetStateAction<number>>;
   evaluation_good_count_main: number;
   setEvaluation_good_count_main: React.Dispatch<React.SetStateAction<number>>;
   comment_count_main: number;
@@ -41,17 +38,20 @@ interface NovelViewPresentationProps {
   textCount: number;
 }
 
-export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
+const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
+  mainPanel,
+  parentPanel,
+  childrenPanel,
   start_index_parent,
   setStart_index_parent,
+  evaluation_good_count_parent,
+  setEvaluation_good_count_parent,
   comment_count_parent,
   setComment_count_parent,
   evaluation_stay_count_parent,
   setEvaluation_stay_count_parent,
   start_index_children,
   setStart_index_children,
-  evaluation_good_count_parent,
-  setEvaluation_good_count_parent,
   evaluation_good_count_children,
   setEvaluation_good_count_children,
   comment_count_children,
@@ -64,108 +64,95 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setComment_count_main,
   evaluation_stay_count_main,
   setEvaluation_stay_count_main,
+  textCount,
 }) => {
-  const parentTextCount = 10;
-  const childrenTextCount = 10;
-  const visibleTextCount = 3;
+  const [start_index_main, setStart_index_main] = useState(0);
 
   return (
-    <Container sx={{ position: 'relative', alignItems: 'center' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minHeight: '100vh',
+        backgroundColor: '#f5f5f5',
+        position: 'relative',
+      }}
+    >
       <Box
         sx={{
           position: 'absolute',
-          top: '10vh',
-          bottom: '5vh',
           left: '50%',
+          top: 0,
+          bottom: 0,
           width: '2px',
-          backgroundColor: '#000',
+          backgroundColor: '#e0e0e0',
           zIndex: 1,
         }}
-      ></Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '20px',
-        }}
-      >
-        {mockContainerData.parent.map((NovelProps, index) => (
-          <ParentPanel
-            key={index}
-            parentPanel={NovelProps}
-            startIndex={start_index_parent}
-            setStartIndex={setStart_index_parent}
-            visibleTextCount={visibleTextCount}
-            textCount={parentTextCount}
-            evaluation_good_count={evaluation_good_count_parent}
-            setEvaluation_good_count={setEvaluation_good_count_parent}
-            comment_count={comment_count_parent}
-            setComment_count={setComment_count_parent}
-            evaluation_stay_count={evaluation_stay_count_parent}
-            setEvaluation_stay_count={setEvaluation_stay_count_parent}
-          />
-        ))}
-        <MainPanel
-          mainPanel={mockContainerData.main}
-          evaluation_good_count={evaluation_good_count_main}
-          setEvaluation_good_count={setEvaluation_good_count_main}
-          comment_count={comment_count_main}
-          setComment_count={setComment_count_main}
-          evaluation_stay_count={evaluation_stay_count_main}
-          setEvaluation_stay_count={setEvaluation_stay_count_main}
-        />
-        <ChildrenPanel
-          childrenPanel={mockContainerData.children}
-          setChildrenPanel={() => {}}
-          mainPanel={mockContainerData.main}
-          setMainPanel={() => {}}
-          novel={{
-            main_copy: '',
-            overview: '',
-            title: '',
-            author_user_name: '',
-            chips: [],
-            avatar: {
-              src: '',
-              alt: '',
-              color: '',
-              text: '',
-            },
-            popular: false,
-            newArrival: false,
-            reader_count: 0,
-            updated_at: new Date().toISOString(),
-            sentence_user_count: 0,
-            sentence_hierarchy_count: 0,
-            tags: [],
-            sentence: '',
-            children: mockContainerData.children,
-            parent: mockContainerData.parent,
-            main: mockContainerData.main,
-            sentence_id: 0,
-            userId: 0,
-            userName: '',
-            profile_icon_image: '',
-            evaluation_good_count: 0,
-            evaluation_stay_count: 0,
-            created_at: new Date().toISOString(),
-            textIndex: 0,
-          }}
-          onClick={() => {}}
-          textIndex={0}
-          startIndex={start_index_children}
-          setStartIndex={setStart_index_children}
-          visibleTextCount={visibleTextCount}
-          textCount={childrenTextCount}
-          evaluation_good_count={evaluation_good_count_children}
-          setEvaluation_good_count={setEvaluation_good_count_children}
-          comment_count={comment_count_children}
-          setComment_count={setComment_count_children}
-          evaluation_stay_count={evaluation_stay_count_children}
-          setEvaluation_stay_count={setEvaluation_stay_count_children}
-        />
-      </Box>
-    </Container>
+      />
+      {parentPanel.map((novel, index) => {
+        const novelWithRelations: NovelProps = {
+          ...novel,
+          title_id: novel.sentence_id,
+          children: childrenPanel,
+          main: mainPanel,
+          parent: parentPanel,
+          chips: novel.chips.map((chip) => ({ label: chip.props.children })),
+          tags: novel.tags.map((tag) => ({ label: tag.props.children })),
+        };
+
+        return (
+          <React.Fragment key={index}>
+            <ParentPanel
+              parentPanel={novelWithRelations}
+              startIndex={start_index_parent}
+              setStartIndex={setStart_index_parent}
+              visibleTextCount={3}
+              textCount={textCount}
+              evaluation_good_count={evaluation_good_count_parent}
+              setEvaluation_good_count={setEvaluation_good_count_parent}
+              comment_count={comment_count_parent}
+              setComment_count={setComment_count_parent}
+              evaluation_stay_count={evaluation_stay_count_parent}
+              setEvaluation_stay_count={setEvaluation_stay_count_parent}
+            />
+            <MainPanel
+              mainPanel={mainPanel}
+              startIndex={start_index_main}
+              setStartIndex={setStart_index_main}
+              visibleTextCount={3}
+              textCount={textCount}
+              evaluation_good_count={evaluation_good_count_main}
+              setEvaluation_good_count={setEvaluation_good_count_main}
+              comment_count={comment_count_main}
+              setComment_count={setComment_count_main}
+              evaluation_stay_count={evaluation_stay_count_main}
+              setEvaluation_stay_count={setEvaluation_stay_count_main}
+            />
+            <ChildrenPanel
+              childrenPanel={childrenPanel}
+              setChildrenPanel={() => {}}
+              mainPanel={mainPanel}
+              setMainPanel={() => {}}
+              startIndex={start_index_children}
+              setStartIndex={setStart_index_children}
+              visibleTextCount={3}
+              textCount={textCount}
+              evaluation_good_count={evaluation_good_count_children}
+              setEvaluation_good_count={setEvaluation_good_count_children}
+              comment_count={comment_count_children}
+              setComment_count={setComment_count_children}
+              evaluation_stay_count={evaluation_stay_count_children}
+              setEvaluation_stay_count={setEvaluation_stay_count_children}
+              novel={novelWithRelations}
+              onClick={() => {}}
+              textIndex={index}
+            />
+          </React.Fragment>
+        );
+      })}
+    </Box>
   );
 };
+
+export default NovelViewPresentation;

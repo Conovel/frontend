@@ -2,6 +2,7 @@ import { NovelProps } from '../../../types/types';
 
 export const novels: NovelProps[] = [
   {
+    title_id: 1,
     main_copy: '目を覚ますとエンジニアに転生していた',
     overview:
       '雪山で目を覚ますとエンジニアに転生していた.雪山ながら密林からガジェットを取り寄せて悠々生活・快適ライフを送っている',
