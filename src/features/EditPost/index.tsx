@@ -102,7 +102,10 @@ export const EditPost: React.FC<EditPostProps> = ({
             />
           </Box>
           <form
-            onSubmit={handleSubmit(onSubmitForm)}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(onSubmitForm)(e);
+            }}
             style={{ position: 'relative', zIndex: 2 }}
           >
             <TextField

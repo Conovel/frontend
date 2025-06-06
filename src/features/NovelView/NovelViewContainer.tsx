@@ -55,9 +55,6 @@ export const NovelViewContainer = () => {
 
         // 新しい投稿をmainPanelの先頭に追加
         setMainPanel([newMainSentence]);
-
-        // 画面をリロード
-        window.location.reload();
       } catch (error) {
         console.error('投稿に失敗しました:', error);
         // エラー処理を追加
