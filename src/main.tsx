@@ -2,7 +2,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
-import { BrowserRouter } from 'react-router';
 
 async function enableMocking() {
   if (!import.meta.env.PROD) {
@@ -18,9 +17,7 @@ enableMocking().then(() => {
   const root = createRoot(document.getElementById('root')!);
   root.render(
     <StrictMode>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <App />
     </StrictMode>,
   );
 });
