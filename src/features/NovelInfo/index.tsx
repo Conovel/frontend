@@ -2,7 +2,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import { Grid } from '@mui/material';
-import { useNavigate } from 'react-router';
 import { NovelProps } from '../../types/types';
 import NovelCardContainer from '../../components/novelCard/container';
 import { novels } from '../NovelList/mocks/data';
