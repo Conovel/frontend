@@ -10,7 +10,6 @@ import { novels } from '../NovelList/mocks/data';
 interface NovelInfoProps {
   open: boolean;
   onClose: () => void;
-  novel?: NovelProps;
 }
 
 const modalStyle = {
@@ -28,12 +27,7 @@ const modalStyle = {
 /**
  * 小説概要モーダル
  */
-export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
-  const navigate = useNavigate();
-  const handleReadMore = () => {
-    navigate('/novelView');
-  };
-
+export const NovelInfo = ({ open, onClose }: NovelInfoProps) => {
   return (
     <Modal open={open} onClose={onClose}>
       <Fade in={open}>

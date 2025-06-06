@@ -9,7 +9,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { NovelProps } from '../../types/types';
-import { NovelInfo } from '../../features/NovelInfo';
 
 interface NovelCardProps {
   novel: NovelProps;
