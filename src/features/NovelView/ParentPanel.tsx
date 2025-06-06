@@ -33,8 +33,7 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
       sx={{
         backgroundColor: '#fff',
         justifyContent: 'space-between',
-        margin: '5vh auto',
-        height: '20vh',
+        margin: '0.5vh auto',
         width: '70vw',
         alignItems: 'center',
         zIndex: 2,

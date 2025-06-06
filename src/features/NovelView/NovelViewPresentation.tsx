@@ -91,6 +91,8 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         minHeight: '100vh',
         backgroundColor: '#f5f5f5',
         position: 'relative',
+        pt: 0,
+        pb: 16,
       }}
     >
       <Box
@@ -101,7 +103,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           bottom: 0,
           width: '2px',
           backgroundColor: '#e0e0e0',
-          zIndex: 1,
+          zIndex: 0,
         }}
       />
       {parentPanel.map((novel, index) => {
@@ -117,37 +119,41 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
 
         return (
           <React.Fragment key={index}>
-            <ParentPanel
-              parentPanel={novelWithRelations}
-              startIndex={start_index_parent}
-              setStartIndex={setStart_index_parent}
-              visibleTextCount={3}
-              textCount={textCount}
-              evaluation_good_count={evaluation_good_count_parent}
-              setEvaluation_good_count={setEvaluation_good_count_parent}
-              comment_count={comment_count_parent}
-              setComment_count={setComment_count_parent}
-              evaluation_stay_count={evaluation_stay_count_parent}
-              setEvaluation_stay_count={setEvaluation_stay_count_parent}
-            />
-            <MainPanel
-              mainPanel={mainPanel}
-              startIndex={start_index_main}
-              setStartIndex={setStart_index_main}
-              visibleTextCount={3}
-              textCount={textCount}
-              evaluation_good_count={evaluation_good_count_main}
-              setEvaluation_good_count={setEvaluation_good_count_main}
-              comment_count={comment_count_main}
-              setComment_count={setComment_count_main}
-              evaluation_stay_count={evaluation_stay_count_main}
-              setEvaluation_stay_count={setEvaluation_stay_count_main}
-            />
+            <Box sx={{ mb: 6 }}>
+              <ParentPanel
+                parentPanel={novelWithRelations}
+                startIndex={start_index_parent}
+                setStartIndex={setStart_index_parent}
+                visibleTextCount={3}
+                textCount={textCount}
+                evaluation_good_count={evaluation_good_count_parent}
+                setEvaluation_good_count={setEvaluation_good_count_parent}
+                comment_count={comment_count_parent}
+                setComment_count={setComment_count_parent}
+                evaluation_stay_count={evaluation_stay_count_parent}
+                setEvaluation_stay_count={setEvaluation_stay_count_parent}
+              />
+            </Box>
+            <Box sx={{ mb: 0.5 }}>
+              <MainPanel
+                mainPanel={mainPanel}
+                startIndex={start_index_main}
+                setStartIndex={setStart_index_main}
+                visibleTextCount={3}
+                textCount={textCount}
+                evaluation_good_count={evaluation_good_count_main}
+                setEvaluation_good_count={setEvaluation_good_count_main}
+                comment_count={comment_count_main}
+                setComment_count={setComment_count_main}
+                evaluation_stay_count={evaluation_stay_count_main}
+                setEvaluation_stay_count={setEvaluation_stay_count_main}
+              />
+            </Box>
             <Button
               variant='contained'
               color='primary'
               onClick={() => setIsModalOpen(true)}
-              sx={{ mt: 2, mb: 2 }}
+              sx={{ mt: 0.5, mb: 0.5, zIndex: 2, position: 'relative' }}
             >
               続きを書く
             </Button>
