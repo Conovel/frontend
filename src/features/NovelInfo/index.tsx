@@ -1,48 +1,31 @@
-// TransitionsModal.tsx
-import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import { novels } from '../NovelList/mocks/data';
-import { Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Avatar from '@mui/material/Avatar';
+import { Button, Fade, TextField } from '@mui/material';
+import { useNavigate } from 'react-router';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
+import GroupsIcon from '@mui/icons-material/Groups';
 import { NovelProps } from '../../types/types';
-import NovelCardContainer from '../../components/novelCard/container';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
-interface TransitionsModalProps {
+interface NovelInfoProps {
   open: boolean;
   handleClose: () => void;
-}
 
-export default function TransitionsModal({
-  open,
-  handleClose,
-}: TransitionsModalProps) {
+/**
+ * 小説概要モーダル
+ */
+export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
+  const navigate = useNavigate(); // historyを初期化
+  const handleReadMore = () => {
+    navigate('/novelView'); // novelViewページに遷移
+  };
+
   return (
-    <Modal
-      aria-labelledby='transition-modal-title'
-      aria-describedby='transition-modal-description'
-      open={open}
-      onClose={handleClose}
-      closeAfterTransition
-      slots={{ backdrop: Backdrop }}
-      slotProps={{
-        backdrop: {
-          timeout: 500,
-        },
-      }}
-    >
+    <Modal open={open} onClose={onClose}>
       <Fade in={open}>
         <Box sx={style}>
           {/* Add the Grid component to display novels */}
@@ -86,4 +69,4 @@ export default function TransitionsModal({
       </Fade>
     </Modal>
   );
-}
+};

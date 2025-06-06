@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -8,6 +9,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { NovelProps } from '../../types/types';
+import { NovelInfo } from '../../features/NovelInfo';
 
 interface NovelCardProps {
   novel: NovelProps;
