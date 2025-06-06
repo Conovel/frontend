@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { Box, Fab } from '@mui/material';
+import { Box } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
@@ -10,7 +10,6 @@ import {
   CreateSentenceRequest,
   PostSentence,
 } from '../../types/types';
-import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
 import { SentencesApi } from '../../api/api';
 
@@ -47,18 +46,6 @@ const novelCardBoxStyle = {
   justifyContent: 'center',
   margin: '0 1vw',
   width: 'calc(100% - 2vw)',
-};
-
-const fabStyle = {
-  color: '#fff',
-  backgroundColor: '#467DCC',
-  position: 'absolute',
-  bottom: '10vh',
-  right: '0vw',
-  zIndex: 5,
-  '&:hover': {
-    backgroundColor: '#0E4DC7',
-  },
 };
 
 interface ChildrenPanelProps {
@@ -224,13 +211,6 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
           {childrenPanel.map(renderNovelCard)}
         </Carousel>
       </Box>
-      <Fab
-        aria-label='add post'
-        sx={fabStyle}
-        onClick={() => setIsEditPostOpen(true)}
-      >
-        <CreateIcon />
-      </Fab>
 
       <EditPost
         open={isEditPostOpen}
