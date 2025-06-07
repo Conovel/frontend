@@ -43,9 +43,6 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
       {startIndex < textCount ? (
         <SentenceCard
           key={startIndex}
-          index={0}
-          textIndex={startIndex}
-          sentence={parentPanel.sentence}
           novel={{
             sentenceId: parentPanel.sentenceId,
             sentence: parentPanel.sentence,

@@ -132,7 +132,6 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
             updatedAt: new Date().toISOString(),
           }}
           onClick={() => {}}
-          textIndex={0}
           startIndex={start_index_children}
           setStartIndex={setStart_index_children}
           visibleTextCount={visibleTextCount}

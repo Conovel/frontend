@@ -85,7 +85,6 @@ interface ChildrenPanelProps {
   setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
   novel: Sentence;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  textIndex: number;
 }
 
 const handleClick = (sentenceId: number) => {
@@ -107,7 +106,6 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   setCommentCount,
   evaluationStayCount,
   setEvaluationStayCount,
-  textIndex,
 }) => {
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -129,21 +127,17 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     }
   };
 
-  const renderNovelCard = (panel: Sentence, index: number) => (
+  const renderNovelCard = (panel: Sentence) => (
     <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
       <SentenceCard
         novel={panel}
         onClick={() => handleClick(panel.sentenceId)}
-        key={index}
-        index={index}
-        textIndex={textIndex}
         evaluationGoodCount={evaluationGoodCount}
         setEvaluationGoodCount={setEvaluationGoodCount}
         commentCount={commentCount}
         setCommentCount={setCommentCount}
         evaluationStayCount={evaluationStayCount}
         setEvaluationStayCount={setEvaluationStayCount}
-        sentence={panel.sentence}
       />
     </Box>
   );

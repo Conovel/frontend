@@ -6,10 +6,6 @@ import NextPlanButton from '../buttonicon/NextPlanButton';
 import { Sentence } from '../../types/sentences';
 
 interface SentenceCardProps {
-  key: number;
-  index: number;
-  textIndex: number;
-  sentence: string;
   evaluationGoodCount: number;
   setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
   commentCount: number;
