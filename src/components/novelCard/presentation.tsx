@@ -19,8 +19,6 @@ const NovelCard = ({ novel }: NovelCardProps) => {
 
   const handleCardClick = () => {
     navigate(`/novelView/${novel.title_id}/1`);
-    // ページの再読み込みを実行
-    window.location.reload();
   };
 
   return (

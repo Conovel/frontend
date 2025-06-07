@@ -1,5 +1,5 @@
 import NovelViewPresentation from './NovelViewPresentation';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { mockContainerData } from './mocks/data';
 import { useParams } from 'react-router-dom';
 
@@ -29,7 +29,7 @@ export const NovelViewContainer = () => {
   // データの状態管理
   const [mainPanel, setMainPanel] = useState(mockContainerData.main);
   const [parentPanel, setParentPanel] = useState(mockContainerData.parent);
-  const [childrenPanel] = useState(mockContainerData.children);
+  const childrenPanel = useMemo(() => mockContainerData.children, []);
 
   // 投稿処理
   const handlePost = useCallback(
@@ -64,7 +64,9 @@ export const NovelViewContainer = () => {
   );
 
   // sentenceIdを使用してデータを取得する処理をここに追加
-  console.log('Current sentence ID:', sentenceId);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('Current sentence ID:', sentenceId);
+  }
 
   return (
     <NovelViewPresentation

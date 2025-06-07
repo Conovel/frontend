@@ -1,10 +1,9 @@
 import { http, HttpResponse } from 'msw';
 import { NovelListItem } from '../../../api/api';
 
-
 export const novelListHandlers = [
   // 小説一覧を取得するハンドラー
-  http.get('/v1/novels', () => {
+  http.get(/\/(v1\/)?novels/, () => {
     return HttpResponse.json([
       {
         title_id: 1,
