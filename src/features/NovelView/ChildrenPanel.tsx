@@ -7,7 +7,6 @@ import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
 import { SentencesApi } from '../../api/api';
 import { Sentence } from '../../types/sentences';
-import { NovelProps } from '../../components/novelCard/presentation';
 import { SentenceCard } from '../../components/sentenceCard/SentenceCard';
 
 // APIに送信するための型 (OpenAPI仕様に合わせる)
@@ -78,13 +77,13 @@ interface ChildrenPanelProps {
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
   textCount: number;
-  evaluation_good_count: number;
-  setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
-  comment_count: number;
-  setComment_count: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count: number;
-  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
-  novel: NovelProps;
+  evaluationGoodCount: number;
+  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
+  commentCount: number;
+  setCommentCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCount: number;
+  setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
+  novel: Sentence;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   textIndex: number;
 }
@@ -102,12 +101,12 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   setStartIndex,
   visibleTextCount,
   textCount,
-  evaluation_good_count,
-  setEvaluation_good_count,
-  comment_count,
-  setComment_count,
-  evaluation_stay_count,
-  setEvaluation_stay_count,
+  evaluationGoodCount,
+  setEvaluationGoodCount,
+  commentCount,
+  setCommentCount,
+  evaluationStayCount,
+  setEvaluationStayCount,
   textIndex,
 }) => {
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
@@ -138,12 +137,12 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         key={index}
         index={index}
         textIndex={textIndex}
-        evaluationGoodCount={evaluation_good_count}
-        setEvaluationGoodCount={setEvaluation_good_count}
-        commentCount={comment_count}
-        setCommentCount={setComment_count}
-        evaluationStayCount={evaluation_stay_count}
-        setEvaluationStayCount={setEvaluation_stay_count}
+        evaluationGoodCount={evaluationGoodCount}
+        setEvaluationGoodCount={setEvaluationGoodCount}
+        commentCount={commentCount}
+        setCommentCount={setCommentCount}
+        evaluationStayCount={evaluationStayCount}
+        setEvaluationStayCount={setEvaluationStayCount}
         sentence={panel.sentence}
       />
     </Box>

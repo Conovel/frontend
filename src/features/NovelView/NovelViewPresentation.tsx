@@ -121,36 +121,15 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           mainPanel={mockContainerData.main}
           setMainPanel={() => {}}
           novel={{
-            main_copy: '',
-            overview: '',
-            title: '',
-            author_user_name: '',
-            chips: [],
-            avatar: {
-              src: '',
-              alt: '',
-              color: '',
-              text: '',
-            },
-            popular: false,
-            newArrival: false,
-            reader_count: 0,
-            updated_at: new Date().toISOString(),
-            sentence_user_count: 0,
-            sentence_hierarchy_count: 0,
-            tags: [],
+            sentenceId: 0,
             sentence: '',
-            children: mockContainerData.children,
-            parent: mockContainerData.parent,
-            main: mockContainerData.main,
-            sentence_id: 0,
-            userId: 0,
-            userName: '',
-            profile_icon_image: '',
-            evaluation_good_count: 0,
-            evaluation_stay_count: 0,
-            created_at: new Date().toISOString(),
-            textIndex: 0,
+            sentenceUserId: 0,
+            sentenceUserName: '',
+            profileIconImage: '',
+            evaluationGoodCount: 0,
+            evaluationStayCount: 0,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
           }}
           onClick={() => {}}
           textIndex={0}
@@ -158,12 +137,12 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           setStartIndex={setStart_index_children}
           visibleTextCount={visibleTextCount}
           textCount={childrenTextCount}
-          evaluation_good_count={evaluation_good_count_children}
-          setEvaluation_good_count={setEvaluation_good_count_children}
-          comment_count={comment_count_children}
-          setComment_count={setComment_count_children}
-          evaluation_stay_count={evaluation_stay_count_children}
-          setEvaluation_stay_count={setEvaluation_stay_count_children}
+          evaluationGoodCount={evaluation_good_count_children}
+          setEvaluationGoodCount={setEvaluation_good_count_children}
+          commentCount={comment_count_children}
+          setCommentCount={setComment_count_children}
+          evaluationStayCount={evaluation_stay_count_children}
+          setEvaluationStayCount={setEvaluation_stay_count_children}
         />
       </Box>
     </Container>
