@@ -169,6 +169,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
           color: '',
           text: '',
         },
+        title_id: novel.title_id,
         sentence_id: apiSentence.sentence_id || 0,
         sentence_user_count: 0,
         sentence_hierarchy_count: 0,

@@ -2,6 +2,7 @@
 import * as React from 'react';
 
 export interface Sentence {
+  title_id: number;
   title: string;
   main_copy: string;
   overview: string;

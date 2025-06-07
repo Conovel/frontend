@@ -18,7 +18,7 @@ const NovelCard = ({ novel }: NovelCardProps) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/novelView/${novel.title_id}/1`);
+    navigate(`/novelView/${novel.title_id}/${novel.sentence_id}`);
   };
 
   return (

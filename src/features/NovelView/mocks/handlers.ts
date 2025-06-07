@@ -4,6 +4,7 @@ import { PostSentence, Sentence } from '../../../types/types';
 // サーバー側で一元管理する文データ
 let sentences: Sentence[] = [
   {
+    title_id: 1,
     sentence_id: 1,
     sentence: 'これは取得したサンプル文です',
     profile_icon_image: '/path/to/avatar.jpg',

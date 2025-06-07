@@ -42,7 +42,7 @@ const NovelList = () => {
               novel={{
                 ...novel,
                 sentence: novel.famous_sentence_text,
-                sentence_id: 0,
+                sentence_id: 2,
                 userId: novel.author_user_id,
                 userName: novel.author_user_name,
                 profile_icon_image: novel.profile_icon_image,

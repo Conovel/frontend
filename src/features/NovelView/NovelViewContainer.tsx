@@ -1,6 +1,10 @@
 import NovelViewPresentation from './NovelViewPresentation';
-import { useState, useCallback, useMemo } from 'react';
-import { mockContainerData } from './mocks/data';
+import { useState, useCallback, useEffect } from 'react';
+import {
+  mockContainerData,
+  buildInitialData,
+  INITIAL_SENTENCE_ID,
+} from './mocks/data';
 import { useParams } from 'react-router-dom';
 
 export const NovelViewContainer = () => {
@@ -29,7 +33,22 @@ export const NovelViewContainer = () => {
   // データの状態管理
   const [mainPanel, setMainPanel] = useState(mockContainerData.main);
   const [parentPanel, setParentPanel] = useState(mockContainerData.parent);
-  const childrenPanel = useMemo(() => mockContainerData.children, []);
+  const [childrenPanel, setChildrenPanel] = useState(
+    mockContainerData.children,
+  );
+
+  // sentenceIdが変更されたときにデータを更新
+  useEffect(() => {
+    const targetId = sentenceId
+      ? parseInt(sentenceId, 10)
+      : INITIAL_SENTENCE_ID;
+    const newData = buildInitialData(targetId);
+    if (newData) {
+      setMainPanel(newData.main);
+      setParentPanel(newData.parent);
+      setChildrenPanel(newData.children);
+    }
+  }, [sentenceId]);
 
   // 投稿処理
   const handlePost = useCallback(
@@ -40,9 +59,9 @@ export const NovelViewContainer = () => {
 
         // 投稿が成功したら、データを更新
         const newMainSentence = {
-          ...mockContainerData.main[0], // 既存のデータ構造を継承
+          ...mainPanel[0], // 既存のデータ構造を継承
           sentence: newSentence,
-          sentence_id: mockContainerData.main[0].sentence_id + 1, // 既存のIDに1を加算
+          sentence_id: mainPanel[0].sentence_id + 1, // 既存のIDに1を加算
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         };
@@ -63,9 +82,10 @@ export const NovelViewContainer = () => {
     [mainPanel],
   );
 
-  // sentenceIdを使用してデータを取得する処理をここに追加
+  // デバッグ用のログ出力
   if (process.env.NODE_ENV !== 'production') {
     console.log('Current sentence ID:', sentenceId);
+    console.log('Current data:', { mainPanel, parentPanel, childrenPanel });
   }
 
   return (
