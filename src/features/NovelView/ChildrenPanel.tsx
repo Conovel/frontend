@@ -110,24 +110,39 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     }
   };
 
-  const renderNovelCard = (panel: Sentence, index: number) => (
-    <Box key={panel.sentence_id} sx={novelCardBoxStyle}>
-      <NovelCard
-        novel={novel}
-        onClick={() => handleClick(panel.sentence_id)}
-        key={index}
-        index={index}
-        textIndex={textIndex}
-        evaluation_good_count={evaluation_good_count}
-        setEvaluation_good_count={setEvaluation_good_count}
-        comment_count={comment_count}
-        setComment_count={setComment_count}
-        evaluation_stay_count={evaluation_stay_count}
-        setEvaluation_stay_count={setEvaluation_stay_count}
-        sentence={panel.sentence}
-      />
-    </Box>
-  );
+  const renderNovelCard = (panel: Sentence, index: number) => {
+    // SentenceからNovelProps型へ変換
+    const panelAsNovelProps = {
+      ...panel,
+      children: [],
+      main: [],
+      parent: [],
+      chips: (panel.chips || []).map((chip: any) =>
+        typeof chip === 'string' ? { label: chip } : chip,
+      ),
+      tags: (panel.tags || []).map((tag: any) =>
+        typeof tag === 'string' ? { label: tag } : tag,
+      ),
+    };
+    return (
+      <Box key={panel.sentence_id} sx={novelCardBoxStyle}>
+        <NovelCard
+          novel={panelAsNovelProps}
+          onClick={() => handleClick(panel.sentence_id)}
+          key={index}
+          index={index}
+          textIndex={textIndex}
+          evaluation_good_count={evaluation_good_count}
+          setEvaluation_good_count={setEvaluation_good_count}
+          comment_count={comment_count}
+          setComment_count={setComment_count}
+          evaluation_stay_count={evaluation_stay_count}
+          setEvaluation_stay_count={setEvaluation_stay_count}
+          sentence={panel.sentence}
+        />
+      </Box>
+    );
+  };
 
   const handleSubmitPost = async (sentenceRequest: CreateSentenceRequest) => {
     try {

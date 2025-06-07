@@ -42,7 +42,9 @@ export const NovelViewContainer = () => {
     const targetId = sentenceId
       ? parseInt(sentenceId, 10)
       : INITIAL_SENTENCE_ID;
+    console.log('Building initial data for sentence ID:', targetId);
     const newData = buildInitialData(targetId);
+    console.log('New data from buildInitialData:', newData);
     if (newData) {
       setMainPanel(newData.main);
       setParentPanel(newData.parent);
@@ -85,7 +87,14 @@ export const NovelViewContainer = () => {
   // デバッグ用のログ出力
   if (process.env.NODE_ENV !== 'production') {
     console.log('Current sentence ID:', sentenceId);
-    console.log('Current data:', { mainPanel, parentPanel, childrenPanel });
+    console.log('Current data:', {
+      mainPanel,
+      parentPanel,
+      childrenPanel,
+      mainPanelIds: mainPanel.map((p) => p.sentence_id),
+      parentPanelIds: parentPanel.map((p) => p.sentence_id),
+      childrenPanelIds: childrenPanel.map((p) => p.sentence_id),
+    });
   }
 
   return (

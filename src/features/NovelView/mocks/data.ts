@@ -222,7 +222,7 @@ export const sentencesData: SentencesData = {
     title_id: 1,
     title: 'テストタイトル',
     sentence:
-      '主人の帰りが何よりも心待ちだったことを思い出す．今思えば，なんてちっぽけなことに心躍らせていたんだろう',
+      'それでも、あの頃の私は、それだけで十分だった。玄関の鍵の音、靴を脱ぐ気配、そして「ただいま」という声。それを聞くたびに、胸の奥がじんわりとあたたかくなった。',
     textIndex: 0,
     main_copy: 'テストメインコピー',
     overview: 'テスト概要',
@@ -278,9 +278,20 @@ export const buildInitialData = (sentenceId: number) => {
   const relations = sentenceRelations[sentenceId];
   if (!relations) return null;
 
-  const main = [sentencesData[sentenceId]]; // 現在のセンテンスをメインとして表示
+  // メインパネルには現在のセンテンスを表示
+  const main = [sentencesData[sentenceId]];
+
+  // 親パネルには親センテンスを表示
   const parent = relations.parent.map((id: number) => sentencesData[id]);
-  const children = relations.children.map((id: number) => sentencesData[id]);
+
+  // 子パネルには常にsentence_id=3の内容を表示
+  const children = [sentencesData[3]];
+
+  console.log('Building data for sentence ID:', sentenceId, {
+    main: main.map((m) => m.sentence_id),
+    parent: parent.map((p) => p.sentence_id),
+    children: children.map((c) => c.sentence_id),
+  });
 
   return {
     main,
