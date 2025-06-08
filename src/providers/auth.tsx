@@ -76,7 +76,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setCurrentUser(response.data as User);
         return;
       }
-      throw new Error('No current_user_id');
+      throw new Error('No user_id');
     } catch (error) {
       setLoginStatus('failure');
       try {
