@@ -49,14 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async () => {
     try {
-      // AuthApiのlogOutを実行
-      const logOutFunc = await authApi.logOut({ withCredentials: true });
-      if (logOutFunc.status === 200) {
-        // ループ防止: 'checking' の時だけ再実行
-        if (sessionStorage.getItem('loginStatus') === 'checking') {
-          // ログアウト成功時の処理
-        }
-      }
+      await authApi.logOut({ withCredentials: true });
     } catch (e) {
       console.error('ログアウトAPI呼び出しでエラー:', e);
     }
