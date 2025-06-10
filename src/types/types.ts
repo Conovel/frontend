@@ -9,8 +9,8 @@ export interface Sentence {
   popular: boolean;
   newArrival: boolean;
   author_user_name: string;
-  chips: JSX.Element[];
-  tags: JSX.Element[];
+  chips: { label: string }[];
+  tags: { label: string }[];
   reader_count: number;
   avatar: {
     src: string;
