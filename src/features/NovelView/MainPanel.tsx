@@ -1,70 +1,100 @@
 import React, { useState } from 'react';
-import { Avatar, Box } from '@mui/material';
+import { Avatar, Box, IconButton } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ThumbUpButton from '../../components/buttonicon/ThumbsUpButton';
 import CommentButton from '../../components/buttonicon/CommentButton';
 import NextPlanButton from '../../components/buttonicon/NextPlanButton';
-import KeyboardArrowForwardIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardArrowBackIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { Sentence } from '../../types/types';
 
 interface MainPanelProps {
   mainPanel: Sentence[];
   startIndex: number;
-  setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
-  textCount: number;
   evaluation_good_count: number;
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   comment_count: number;
   setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  onNavigate?: (direction: 'prev' | 'next') => void;
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
   mainPanel,
   startIndex,
-  setStartIndex,
   visibleTextCount,
-  textCount,
   evaluation_good_count,
   setEvaluation_good_count,
   comment_count,
   setComment_count,
   evaluation_stay_count,
   setEvaluation_stay_count,
+  onNavigate,
 }) => {
   const [showIcons, setShowIcons] = useState(false);
+  const [localStartIndex, setLocalStartIndex] = useState(startIndex);
 
   const handleIconClick = () => {
     setShowIcons((prev) => !prev);
   };
 
-  const handleScroll = (direction: 'next' | 'prev') => {
-    if (direction === 'next' && startIndex + visibleTextCount < textCount) {
-      setStartIndex(startIndex + visibleTextCount);
-    } else if (direction === 'prev' && startIndex > 0) {
-      setStartIndex(startIndex - visibleTextCount);
+  const handleNavigation = (direction: 'prev' | 'next') => {
+    if (onNavigate) {
+      onNavigate(direction);
+    } else {
+      // ローカルナビゲーション
+      if (
+        direction === 'next' &&
+        localStartIndex + visibleTextCount < mainPanel.length
+      ) {
+        setLocalStartIndex(localStartIndex + visibleTextCount);
+      } else if (direction === 'prev' && localStartIndex > 0) {
+        setLocalStartIndex(Math.max(0, localStartIndex - visibleTextCount));
+      }
     }
   };
 
+  const currentStartIndex = onNavigate ? startIndex : localStartIndex;
+  const showPrevButton = currentStartIndex > 0;
+  const showNextButton =
+    currentStartIndex + visibleTextCount < mainPanel.length;
+
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
-      <KeyboardArrowBackIcon
-        sx={{
-          cursor: 'pointer',
-          position: 'absolute',
-          left: '1vw',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 3,
-        }}
-        onClick={() => handleScroll('prev')}
-      />
+    <Box
+      sx={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+      }}
+    >
+      {/* 左ナビゲーションボタン */}
+      {showPrevButton && (
+        <IconButton
+          onClick={() => handleNavigation('prev')}
+          sx={{
+            position: 'absolute',
+            left: '-50px',
+            zIndex: 10,
+            backgroundColor: '#BDBDBD',
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: '#9E9E9E',
+            },
+          }}
+          size='small'
+        >
+          <KeyboardArrowLeftIcon />
+        </IconButton>
+      )}
+
+      {/* メインコンテンツ */}
       <Box>
         {mainPanel
-          .slice(startIndex, startIndex + visibleTextCount)
+          .slice(currentStartIndex, currentStartIndex + visibleTextCount)
           .map((panel) => (
             <Box
               key={panel.sentence_id}
@@ -79,6 +109,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
                 alignItems: 'center',
                 zIndex: 2,
                 overflowY: 'auto',
+                mb: 2,
               }}
             >
               <Box
@@ -137,17 +168,26 @@ const MainPanel: React.FC<MainPanelProps> = ({
             </Box>
           ))}
       </Box>
-      <KeyboardArrowForwardIcon
-        sx={{
-          cursor: 'pointer',
-          position: 'absolute',
-          right: '10px',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 3,
-        }}
-        onClick={() => handleScroll('next')}
-      />
+
+      {/* 右ナビゲーションボタン */}
+      {showNextButton && (
+        <IconButton
+          onClick={() => handleNavigation('next')}
+          sx={{
+            position: 'absolute',
+            right: '-50px',
+            zIndex: 10,
+            backgroundColor: '#BDBDBD',
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: '#9E9E9E',
+            },
+          }}
+          size='small'
+        >
+          <KeyboardArrowRightIcon />
+        </IconButton>
+      )}
     </Box>
   );
 };
