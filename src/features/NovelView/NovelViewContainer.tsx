@@ -4,11 +4,18 @@ import {
   mockContainerData,
   buildInitialData,
   INITIAL_SENTENCE_ID,
+  addNewSentence,
+  getParallelSentences,
 } from './mocks/data';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export const NovelViewContainer = () => {
-  const { sentenceId } = useParams<{ sentenceId: string }>();
+  const { titleId, sentenceId } = useParams<{
+    titleId: string;
+    sentenceId: string;
+  }>();
+  const navigate = useNavigate();
+
   const [start_index_parent, setStart_index_parent] = useState(0);
   const [start_index_children, setStart_index_children] = useState(0);
   const [evaluation_good_count_parent, setEvaluation_good_count_parent] =
@@ -37,65 +44,141 @@ export const NovelViewContainer = () => {
     mockContainerData.children,
   );
 
-  // sentenceIdが変更されたときにデータを更新
+  // 現在のsentenceIdと関連するパラレル投稿の管理
+  const [currentSentenceId, setCurrentSentenceId] = useState<number>(() => {
+    return sentenceId ? parseInt(sentenceId, 10) : INITIAL_SENTENCE_ID;
+  });
+
+  // パラレル投稿管理用の状態
+  const [currentParallelIndex, setCurrentParallelIndex] = useState(0);
+  const [parallelSentences, setParallelSentences] = useState<any[]>([]);
+
+  // URLが変更されたときにデータを更新
   useEffect(() => {
     const targetId = sentenceId
       ? parseInt(sentenceId, 10)
       : INITIAL_SENTENCE_ID;
-    console.log('Building initial data for sentence ID:', targetId);
-    const newData = buildInitialData(targetId);
-    console.log('New data from buildInitialData:', newData);
-    if (newData) {
-      setMainPanel(newData.main);
-      setParentPanel(newData.parent);
-      setChildrenPanel(newData.children);
+    if (targetId !== currentSentenceId) {
+      setCurrentSentenceId(targetId);
+      console.log('URL changed, updating to sentence ID:', targetId);
+
+      const newData = buildInitialData(targetId);
+      if (newData) {
+        setMainPanel(newData.main);
+        setParentPanel(newData.parent);
+        setChildrenPanel(newData.children);
+
+        // パラレル投稿を取得
+        const parentSentence = newData.parent[newData.parent.length - 1];
+        if (parentSentence) {
+          const parallels = getParallelSentences(parentSentence.sentence_id);
+          setParallelSentences(parallels);
+
+          // 現在のsentenceがパラレル投稿の中にある場合、そのインデックスを設定
+          const currentIndex = parallels.findIndex(
+            (p) => p.sentence_id === targetId,
+          );
+          setCurrentParallelIndex(Math.max(0, currentIndex));
+        }
+      }
     }
-  }, [sentenceId]);
+  }, [sentenceId, currentSentenceId]);
 
   // 投稿処理
   const handlePost = useCallback(
     async (newSentence: string) => {
       try {
-        // ここでAPIを呼び出して投稿を保存
-        // const response = await api.post('/sentences', { sentence: newSentence });
+        // 現在のmainPanelのIDを親IDとして取得
+        const currentMainId = mainPanel[0].sentence_id;
 
-        // 投稿が成功したら、データを更新
-        const newMainSentence = {
-          ...mainPanel[0], // 既存のデータ構造を継承
-          sentence: newSentence,
-          sentence_id: mainPanel[0].sentence_id + 1, // 既存のIDに1を加算
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        };
+        // 新しい文章を追加し、親子関係を管理
+        const { newSentence: createdSentence } = addNewSentence(
+          newSentence,
+          currentMainId,
+        );
 
         // 現在のmainPanelの内容をparentPanelに移動
-        const currentMain = mainPanel[0];
-        if (currentMain) {
-          setParentPanel([currentMain]);
-        }
+        setParentPanel(mainPanel);
 
-        // 新しい投稿をmainPanelの先頭に追加
-        setMainPanel([newMainSentence]);
+        // 新しい投稿をmainPanelに設定
+        setMainPanel([createdSentence]);
+
+        // childrenPanelはuseEffectで自動更新される
       } catch (error) {
         console.error('投稿に失敗しました:', error);
-        // エラー処理を追加
       }
     },
-    [mainPanel],
-  );
-
-  // デバッグ用のログ出力
-  if (process.env.NODE_ENV !== 'production') {
-    console.log('Current sentence ID:', sentenceId);
-    console.log('Current data:', {
+    [
       mainPanel,
       parentPanel,
       childrenPanel,
-      mainPanelIds: mainPanel.map((p) => p.sentence_id),
-      parentPanelIds: parentPanel.map((p) => p.sentence_id),
-      childrenPanelIds: childrenPanel.map((p) => p.sentence_id),
-    });
-  }
+      parallelSentences,
+      currentParallelIndex,
+    ],
+  );
+
+  // パラレル投稿のナビゲーション関数
+  const handleNextParallel = useCallback(() => {
+    if (parallelSentences.length > 0) {
+      const nextIndex = (currentParallelIndex + 1) % parallelSentences.length;
+      const nextSentence = parallelSentences[nextIndex];
+      setCurrentParallelIndex(nextIndex);
+
+      // URLを更新
+      navigate(`/novelView/${titleId || '1'}/${nextSentence.sentence_id}`, {
+        replace: true,
+      });
+    }
+  }, [currentParallelIndex, parallelSentences, navigate, titleId]);
+
+  const handlePrevParallel = useCallback(() => {
+    if (parallelSentences.length > 0) {
+      const prevIndex =
+        currentParallelIndex === 0
+          ? parallelSentences.length - 1
+          : currentParallelIndex - 1;
+      const prevSentence = parallelSentences[prevIndex];
+      setCurrentParallelIndex(prevIndex);
+
+      // URLを更新
+      navigate(`/novelView/${titleId || '1'}/${prevSentence.sentence_id}`, {
+        replace: true,
+      });
+    }
+  }, [currentParallelIndex, parallelSentences, navigate, titleId]);
+
+  // 子投稿がクリックされたときのハンドラー
+  const handleChildClick = useCallback(
+    (clickedSentence: any) => {
+      console.log('Child clicked:', clickedSentence);
+      // 子投稿をクリックしたときは新しいページに遷移
+      navigate(`/novelView/${titleId || '1'}/${clickedSentence.sentence_id}`);
+    },
+    [navigate, titleId],
+  );
+
+  // MainPanelのナビゲーション処理（コンテンツ内での移動）
+  const handleMainPanelNavigate = useCallback((direction: 'prev' | 'next') => {
+    // MainPanel内でのナビゲーションは現在のsentenceの前後の関連投稿を表示
+    // 実装は今後の拡張として残す
+    console.log('MainPanel navigate:', direction);
+  }, []);
+
+  // パラレル投稿が存在するかどうか
+  const hasParallels = parallelSentences.length > 1;
+
+  // デバッグ用のログ出力
+  console.log('Current sentence ID:', sentenceId);
+  console.log('Current data:', {
+    mainPanel,
+    parentPanel,
+    childrenPanel,
+    parallelSentences,
+    currentParallelIndex,
+    mainPanelIds: mainPanel.map((p) => p.sentence_id),
+    parentPanelIds: parentPanel.map((p) => p.sentence_id),
+    childrenPanelIds: childrenPanel.map((p) => p.sentence_id),
+  });
 
   return (
     <NovelViewPresentation
@@ -124,8 +207,15 @@ export const NovelViewContainer = () => {
       setComment_count_main={setComment_count_main}
       evaluation_stay_count_main={evaluation_stay_count_main}
       setEvaluation_stay_count_main={setEvaluation_stay_count_main}
-      textCount={mainPanel.length + parentPanel.length + childrenPanel.length}
+      textCount={15} // モックデータの総数
       onPost={handlePost}
+      onNextParallel={handleNextParallel}
+      onPrevParallel={handlePrevParallel}
+      hasParallels={hasParallels}
+      currentParallelIndex={currentParallelIndex}
+      totalParallels={parallelSentences.length}
+      onChildClick={handleChildClick}
+      onMainPanelNavigate={handleMainPanelNavigate}
     />
   );
 };
