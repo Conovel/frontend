@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import ParentPanel from './ParentPanel';
 import MainPanel from './MainPanel';
 import ChildrenPanel from './ChildrenPanel';
@@ -38,6 +39,13 @@ interface NovelViewPresentationProps {
   setEvaluation_stay_count_main: React.Dispatch<React.SetStateAction<number>>;
   textCount: number;
   onPost: (newSentence: string) => Promise<void>;
+  onNextParallel: () => void;
+  onPrevParallel: () => void;
+  hasParallels: boolean;
+  currentParallelIndex: number;
+  totalParallels: number;
+  onChildClick: (clickedSentence: any) => void;
+  onMainPanelNavigate: (direction: 'prev' | 'next') => void;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -52,7 +60,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setComment_count_parent,
   evaluation_stay_count_parent,
   setEvaluation_stay_count_parent,
-  start_index_children,
   setStart_index_children,
   evaluation_good_count_children,
   setEvaluation_good_count_children,
@@ -68,8 +75,15 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setEvaluation_stay_count_main,
   textCount,
   onPost,
+  onNextParallel,
+  onPrevParallel,
+  hasParallels,
+  currentParallelIndex,
+  totalParallels,
+  onChildClick,
+  onMainPanelNavigate,
 }) => {
-  const [start_index_main, setStart_index_main] = useState(0);
+  const [start_index_main] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mainPanelState, setMainPanelState] = useState<Sentence[]>(mainPanel);
   const [childrenPanelState, setChildrenPanelState] =
@@ -106,15 +120,69 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           zIndex: 0,
         }}
       />
-      {parentPanel.map((novel, index) => {
+
+      {/* 履歴表示エリア */}
+      {parentPanel.length > 1 && (
+        <Box sx={{ mb: 4, width: '100%', maxWidth: '600px' }}>
+          <Box
+            sx={{
+              mb: 2,
+              textAlign: 'center',
+              color: 'text.secondary',
+              fontSize: '0.875rem',
+            }}
+          >
+            過去の投稿
+          </Box>
+          {parentPanel.slice(0, -1).map((novel, index) => {
+            const novelWithRelations: NovelProps = {
+              ...novel,
+              title_id: novel.sentence_id,
+              children: [],
+              main: [],
+              parent: [],
+              chips: novel.chips.map((chip) => ({
+                label: chip.label || '',
+              })),
+              tags: novel.tags.map((tag) => ({
+                label: tag.label || '',
+              })),
+            };
+
+            return (
+              <Box key={index} sx={{ mb: 2, opacity: 0.7 }}>
+                <ParentPanel
+                  parentPanel={novelWithRelations}
+                  startIndex={0}
+                  setStartIndex={() => {}}
+                  visibleTextCount={1}
+                  textCount={1}
+                  evaluation_good_count={novel.evaluation_good_count}
+                  setEvaluation_good_count={() => {}}
+                  comment_count={0}
+                  setComment_count={() => {}}
+                  evaluation_stay_count={novel.evaluation_stay_count}
+                  setEvaluation_stay_count={() => {}}
+                />
+              </Box>
+            );
+          })}
+        </Box>
+      )}
+
+      {parentPanel.slice(-1).map((novel, index) => {
         const novelWithRelations: NovelProps = {
           ...novel,
           title_id: novel.sentence_id,
           children: childrenPanel,
           main: mainPanel,
           parent: parentPanel,
-          chips: novel.chips.map((chip) => ({ label: chip.props.children })),
-          tags: novel.tags.map((tag) => ({ label: tag.props.children })),
+          chips: novel.chips.map((chip) => ({
+            label: chip.label || '',
+          })),
+          tags: novel.tags.map((tag) => ({
+            label: tag.label || '',
+          })),
         };
 
         return (
@@ -134,21 +202,65 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
                 setEvaluation_stay_count={setEvaluation_stay_count_parent}
               />
             </Box>
-            <Box sx={{ mb: 0.5 }}>
-              <MainPanel
-                mainPanel={mainPanel}
-                startIndex={start_index_main}
-                setStartIndex={setStart_index_main}
-                visibleTextCount={3}
-                textCount={textCount}
-                evaluation_good_count={evaluation_good_count_main}
-                setEvaluation_good_count={setEvaluation_good_count_main}
-                comment_count={comment_count_main}
-                setComment_count={setComment_count_main}
-                evaluation_stay_count={evaluation_stay_count_main}
-                setEvaluation_stay_count={setEvaluation_stay_count_main}
-              />
+
+            {/* MainPanelとパラレル投稿ナビゲーション */}
+            <Box
+              sx={{ display: 'flex', alignItems: 'center', mb: 0.5, gap: 1 }}
+            >
+              {/* 左矢印ボタン */}
+              {hasParallels && (
+                <IconButton
+                  onClick={onPrevParallel}
+                  sx={{
+                    color: 'primary.main',
+                    '&:hover': { backgroundColor: 'rgba(25, 118, 210, 0.04)' },
+                  }}
+                  size='small'
+                >
+                  <ChevronLeft />
+                </IconButton>
+              )}
+
+              {/* MainPanel */}
+              <Box sx={{ flex: 1 }}>
+                <MainPanel
+                  mainPanel={mainPanel}
+                  startIndex={start_index_main}
+                  visibleTextCount={3}
+                  evaluation_good_count={evaluation_good_count_main}
+                  setEvaluation_good_count={setEvaluation_good_count_main}
+                  comment_count={comment_count_main}
+                  setComment_count={setComment_count_main}
+                  evaluation_stay_count={evaluation_stay_count_main}
+                  setEvaluation_stay_count={setEvaluation_stay_count_main}
+                  onNavigate={onMainPanelNavigate}
+                />
+              </Box>
+
+              {/* 右矢印ボタン */}
+              {hasParallels && (
+                <IconButton
+                  onClick={onNextParallel}
+                  sx={{
+                    color: 'primary.main',
+                    '&:hover': { backgroundColor: 'rgba(25, 118, 210, 0.04)' },
+                  }}
+                  size='small'
+                >
+                  <ChevronRight />
+                </IconButton>
+              )}
             </Box>
+
+            {/* パラレル投稿インジケーター */}
+            {hasParallels && (
+              <Box
+                sx={{ mb: 0.5, fontSize: '0.75rem', color: 'text.secondary' }}
+              >
+                パラレル投稿 {currentParallelIndex + 1} / {totalParallels}
+              </Box>
+            )}
+
             <Button
               variant='contained'
               color='primary'
@@ -168,10 +280,8 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
               setChildrenPanel={setChildrenPanelState}
               mainPanel={mainPanelState}
               setMainPanel={setMainPanelState}
-              startIndex={start_index_children}
               setStartIndex={setStart_index_children}
               visibleTextCount={3}
-              textCount={textCount}
               evaluation_good_count={evaluation_good_count_children}
               setEvaluation_good_count={setEvaluation_good_count_children}
               comment_count={comment_count_children}
@@ -179,7 +289,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
               evaluation_stay_count={evaluation_stay_count_children}
               setEvaluation_stay_count={setEvaluation_stay_count_children}
               novel={novelWithRelations}
-              onClick={() => {}}
+              onClick={onChildClick}
               textIndex={index}
             />
           </React.Fragment>
