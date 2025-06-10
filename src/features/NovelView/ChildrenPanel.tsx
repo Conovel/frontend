@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { Box } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
@@ -15,16 +15,15 @@ import { SentencesApi } from '../../api/api';
 
 const carouselNavButtonStyle = {
   backgroundColor: '#BDBDBD',
-  opacity: 0.5,
-  width: '0.5vw',
+  opacity: 0.7,
+  width: '40px',
+  height: '40px',
   color: '#fff',
-  borderRadius: 5,
-};
-
-const carouselNavWrapperStyle = {
-  position: 'absolute' as const,
-  top: '7vh',
-  padding: '0 1vw',
+  borderRadius: '50%',
+  '&:hover': {
+    opacity: 1,
+    backgroundColor: '#9E9E9E',
+  },
 };
 
 const mainBoxStyle = {
@@ -40,6 +39,7 @@ const mainBoxStyle = {
 const innerBoxStyle = {
   justifyContent: 'center',
   overflow: 'hidden',
+  position: 'relative',
 };
 
 const novelCardBoxStyle = {
@@ -53,10 +53,8 @@ interface ChildrenPanelProps {
   setChildrenPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
   mainPanel: Sentence[];
   setMainPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
-  startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
-  textCount: number;
   evaluation_good_count: number;
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
   comment_count: number;
@@ -77,10 +75,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   childrenPanel,
   mainPanel,
   setMainPanel,
-  startIndex,
   setStartIndex,
   visibleTextCount,
-  textCount,
   evaluation_good_count,
   setEvaluation_good_count,
   comment_count,
@@ -93,21 +89,13 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleScroll = (direction: 'next' | 'prev') => {
-    if (direction === 'next' && startIndex + visibleTextCount < textCount) {
-      setStartIndex(startIndex + visibleTextCount);
-    } else if (direction === 'prev' && startIndex > 0) {
-      setStartIndex(startIndex - visibleTextCount);
-    }
-  };
+  // childrenPanelが変更された時にactiveIndexをリセット
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [childrenPanel.length]);
 
   const handleCarouselChange = (now: number) => {
     setActiveIndex(now);
-    if (now > activeIndex) {
-      handleScroll('next');
-    } else if (now < activeIndex) {
-      handleScroll('prev');
-    }
   };
 
   const renderNovelCard = (panel: Sentence, index: number) => {
@@ -211,21 +199,73 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     }
   };
 
+  // カルーセルを表示する条件を追加
+  const showCarousel = childrenPanel && childrenPanel.length > 0;
+  const showNavigation = childrenPanel.length > 1;
+
   return (
     <Box sx={mainBoxStyle}>
       <Box sx={innerBoxStyle}>
-        <Carousel
-          autoPlay={false}
-          index={activeIndex}
-          onChange={handleCarouselChange}
-          fullHeightHover={false}
-          navButtonsProps={{ style: carouselNavButtonStyle }}
-          navButtonsWrapperProps={{ style: carouselNavWrapperStyle }}
-          NextIcon={<KeyboardArrowRightIcon />}
-          PrevIcon={<KeyboardArrowLeftIcon />}
-        >
-          {childrenPanel.map(renderNovelCard)}
-        </Carousel>
+        {showCarousel ? (
+          <Carousel
+            autoPlay={false}
+            index={activeIndex}
+            onChange={handleCarouselChange}
+            fullHeightHover={false}
+            navButtonsProps={{
+              style: carouselNavButtonStyle,
+            }}
+            navButtonsWrapperProps={{
+              style: {
+                position: 'absolute',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                zIndex: 10,
+              },
+            }}
+            NextIcon={<KeyboardArrowRightIcon />}
+            PrevIcon={<KeyboardArrowLeftIcon />}
+            navButtonsAlwaysVisible={showNavigation}
+            navButtonsAlwaysInvisible={!showNavigation}
+            indicators={showNavigation}
+            indicatorIconButtonProps={{
+              style: {
+                padding: '5px',
+                color: '#BDBDBD',
+                margin: '0 2px',
+              },
+            }}
+            activeIndicatorIconButtonProps={{
+              style: {
+                color: '#1976d2',
+              },
+            }}
+            indicatorContainerProps={{
+              style: {
+                position: 'absolute',
+                bottom: '10px',
+                zIndex: 15,
+                textAlign: 'center',
+                width: '100%',
+              },
+            }}
+          >
+            {childrenPanel.map(renderNovelCard)}
+          </Carousel>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+              color: 'text.secondary',
+              fontSize: '0.875rem',
+            }}
+          >
+            まだ続きの投稿がありません
+          </Box>
+        )}
       </Box>
 
       <EditPost
