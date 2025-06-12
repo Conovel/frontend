@@ -83,13 +83,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     // functional.tsでloginStatusを初期化（idle）
     resetAuthStatus(); // 必要に応じてloginStatusを初期化
-    subscribeToAuthStatus((status) => {
-      // 状態変更で強制的に再レンダリングしたい場合はstate化も可
-      // ここではcurrentUser以外UI反映がないので省略
+    // 📌 重要：unsubscribe関数を受け取る
+    const unsubscribe = subscribeToAuthStatus((status) => {
+      // 必要に応じて状態変更時の処理を追加
+      console.log('Auth status changed:', status);
     });
     setCurrentUser(null);
     fetchCurrentUserId();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
+    // 📌 重要：クリーンアップ関数でunsubscribe
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
