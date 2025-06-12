@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { UsersApi } from '../api/api';
 import { AuthApi } from '../api/api';
 import { axiosConfig } from '../axiosConfig';
+import { withAuth } from '../api/functional';
 
 // 型定義
 export interface User {
@@ -62,39 +63,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const fetchCurrentUserId = async () => {
     if (sessionStorage.getItem('loginStatus') !== 'checking') return;
 
-    try {
-      const response = await usersApi.getUserByMe({ withCredentials: true });
-      if (response.data && response.data.user_id) {
-        setLoginStatus('success');
-        setCurrentUser(response.data as User);
-        return;
-      }
-      throw new Error('No user_id');
-    } catch (error) {
-      setLoginStatus('failure');
-      try {
-        const refreshRes = await authApi.refreshToken({
-          withCredentials: true,
-        });
-        if (refreshRes.status !== 200) {
-          throw new Error('Refresh failed');
+    const response = await withAuth(
+      (
+        async () => {
+          return await usersApi.getUserByMe({ withCredentials: true });
         }
+      ),
+      (
+        async () => await logout()
+      )
+    );
 
-        setLoginStatus('checking');
-        const retryResponse = await usersApi.getUserByMe({
-          withCredentials: true,
-        });
-        if (!(retryResponse.data && retryResponse.data.user_id)) {
-          throw new Error('No user_id after refresh');
-        }
-
-        setLoginStatus('success');
-        setCurrentUser(retryResponse.data as User);
-        return;
-      } catch (refreshError) {
-        await logout();
-      }
+    if (response.data && response.data.user_id) {
+      setLoginStatus('success');
+      setCurrentUser(response.data as User);
+      return;
     }
+    throw new Error('No user_id');
   };
 
   useEffect(() => {
