@@ -1,6 +1,12 @@
+import { AuthApi } from './api';
+import { axiosConfig } from '../axiosConfig';
+
+const authApi = new AuthApi(axiosConfig);
+
 export const withAuth = async <T>(
   fn: () => Promise<T>,
-  onAuthFailure: () => Promise<void> = async () => { await logout(); },
+  onAuthFailure: () => Promise<void>,
+  onRefreshFailure?: () => Promise<void>,
 ): Promise<T | null> => {
   try {
     return await fn();
@@ -17,7 +23,12 @@ export const withAuth = async <T>(
         return null;
       }
     } else {
-      throw error; // 認証エラー以外はそのまま投げる
+      if (onRefreshFailure) {
+        await onRefreshFailure();
+      } else {
+        await onAuthFailure();
+      }
+      return null;
     }
   }
 };
