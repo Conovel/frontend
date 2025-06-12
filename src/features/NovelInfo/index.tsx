@@ -32,8 +32,8 @@ export const NovelInfo = ({ open, onClose }: NovelInfoProps) => {
       <Fade in={open}>
         <Box sx={modalStyle}>
           <Grid container spacing={2}>
-          {novels.map((novel: NovelProps) => (  
-              <Grid item xs={12} sm={6} md={4} key={novel.id}> 
+            {novels.map((novel: NovelProps) => (
+              <Grid item xs={12} sm={6} md={4} key={novel.id}>
                 <NovelCardContainer novel={novel} />
               </Grid>
             ))}

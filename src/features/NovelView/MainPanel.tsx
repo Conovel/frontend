@@ -41,7 +41,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
   const [] = useState(false);
   const [localStartIndex, setLocalStartIndex] = useState(startIndex);
 
-
   const handleNavigation = (direction: 'prev' | 'next') => {
     if (onNavigate) {
       onNavigate(direction);
