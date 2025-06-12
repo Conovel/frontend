@@ -67,7 +67,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const fetchCurrentUserId = async () => {
     // functional.tsの状態を参照
-    if (getLoginStatus() !== 'checking') return;
+    if (getLoginStatus() !== 'idle') return;
 
     // logout自体がasync functionなのでそのまま渡す
     const response = await withAuth(getUserByMe, logout);
