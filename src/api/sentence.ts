@@ -1,7 +1,7 @@
 import { ViewSentence } from '../types/api';
 
 const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 export const fetchSentence = async (
   sentenceId: string,

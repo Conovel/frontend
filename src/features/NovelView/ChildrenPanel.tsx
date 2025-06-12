@@ -87,13 +87,14 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
 
-  // childrenPanelが変更された時にactiveIndexをリセット
   useEffect(() => {
     setActiveIndex(0);
   }, [childrenPanel.length]);
 
-  const handleCarouselChange = (now: number) => {
-    setActiveIndex(now);
+  const handleCarouselChange = (now?: number) => {
+    if (now !== undefined) {
+      setActiveIndex(now);
+    }
   };
 
   const handleClick = (sentenceId: number) => {

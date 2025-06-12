@@ -33,7 +33,7 @@ export const NovelInfo = ({ open, onClose }: NovelInfoProps) => {
         <Box sx={modalStyle}>
           <Grid container spacing={2}>
             {novels.map((novel: NovelProps) => (
-              <Grid item xs={12} sm={6} md={4} key={novel.id}>
+              <Grid item xs={12} sm={6} md={4} key={novel.sentence_id}>
                 <NovelCardContainer novel={novel} />
               </Grid>
             ))}

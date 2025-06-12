@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, IconButton } from '@mui/material';
-import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import { Box, Button } from '@mui/material';
 import ParentPanel from './ParentPanel';
 import MainPanel from './MainPanel';
 import ChildrenPanel from './ChildrenPanel';
