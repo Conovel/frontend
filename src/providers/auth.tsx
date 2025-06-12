@@ -63,16 +63,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const fetchCurrentUserId = async () => {
     if (sessionStorage.getItem('loginStatus') !== 'checking') return;
 
-    const response = await withAuth(
-      (
-        async () => {
-          return await usersApi.getUserByMe({ withCredentials: true });
-        }
-      ),
-      (
-        async () => await logout()
-      )
-    );
+    const getUserByMe = () => usersApi.getUserByMe({ withCredentials: true });
+    const handleAuthFailure = () => logout();
+    const response = await withAuth(getUserByMe, handleAuthFailure);
 
     if (response.data && response.data.user_id) {
       setLoginStatus('success');
