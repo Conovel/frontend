@@ -30,7 +30,9 @@ export const withAuth = async <T>(
   onRefreshFailure?: () => Promise<void>,
 ): Promise<T | null> => {
   try {
-    return await fn();
+    const result = await fn();
+    setLoginStatus('success');
+    return result;
   } catch (error: any) {
     if (error?.response?.status === 401) {
       try {
@@ -47,6 +49,7 @@ export const withAuth = async <T>(
       }
     } else {
       // 401以外のエラー - onRefreshFailureがあればそれを、なければonAuthFailureを実行
+      setLoginStatus('failure');
       if (onRefreshFailure) {
         await onRefreshFailure();
       } else {
