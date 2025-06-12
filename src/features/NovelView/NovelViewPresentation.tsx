@@ -45,6 +45,7 @@ interface NovelViewPresentationProps {
   currentParallelIndex: number;
   totalParallels: number;
   onChildClick: (clickedSentence: any) => void;
+  onParentClick: (clickedSentence: any) => void;
   onMainPanelNavigate: (direction: 'prev' | 'next') => void;
 }
 
@@ -81,13 +82,11 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   currentParallelIndex,
   totalParallels,
   onChildClick,
+  onParentClick,
   onMainPanelNavigate,
 }) => {
   const [start_index_main] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [mainPanelState, setMainPanelState] = useState<Sentence[]>(mainPanel);
-  const [childrenPanelState, setChildrenPanelState] =
-    useState<Sentence[]>(childrenPanel);
 
   const handlePost = async (sentenceRequest: CreateSentenceRequest) => {
     if (sentenceRequest.text.trim()) {
@@ -163,6 +162,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
                   setComment_count={() => {}}
                   evaluation_stay_count={novel.evaluation_stay_count}
                   setEvaluation_stay_count={() => {}}
+                  onClick={() => onParentClick(novel)}
                 />
               </Box>
             );
@@ -200,56 +200,27 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
                 setComment_count={setComment_count_parent}
                 evaluation_stay_count={evaluation_stay_count_parent}
                 setEvaluation_stay_count={setEvaluation_stay_count_parent}
+                onClick={() => onParentClick(novel)}
               />
             </Box>
 
-            {/* MainPanelとパラレル投稿ナビゲーション */}
-            <Box
-              sx={{ display: 'flex', alignItems: 'center', mb: 0.5, gap: 1 }}
-            >
-              {/* 左矢印ボタン */}
-              {hasParallels && (
-                <IconButton
-                  onClick={onPrevParallel}
-                  sx={{
-                    color: 'primary.main',
-                    '&:hover': { backgroundColor: 'rgba(25, 118, 210, 0.04)' },
-                  }}
-                  size='small'
-                >
-                  <ChevronLeft />
-                </IconButton>
-              )}
-
-              {/* MainPanel */}
-              <Box sx={{ flex: 1 }}>
-                <MainPanel
-                  mainPanel={mainPanel}
-                  startIndex={start_index_main}
-                  visibleTextCount={3}
-                  evaluation_good_count={evaluation_good_count_main}
-                  setEvaluation_good_count={setEvaluation_good_count_main}
-                  comment_count={comment_count_main}
-                  setComment_count={setComment_count_main}
-                  evaluation_stay_count={evaluation_stay_count_main}
-                  setEvaluation_stay_count={setEvaluation_stay_count_main}
-                  onNavigate={onMainPanelNavigate}
-                />
-              </Box>
-
-              {/* 右矢印ボタン */}
-              {hasParallels && (
-                <IconButton
-                  onClick={onNextParallel}
-                  sx={{
-                    color: 'primary.main',
-                    '&:hover': { backgroundColor: 'rgba(25, 118, 210, 0.04)' },
-                  }}
-                  size='small'
-                >
-                  <ChevronRight />
-                </IconButton>
-              )}
+            {/* MainPanel */}
+            <Box sx={{ mb: 0.5 }}>
+              <MainPanel
+                mainPanel={mainPanel}
+                startIndex={start_index_main}
+                visibleTextCount={3}
+                evaluation_good_count={evaluation_good_count_main}
+                setEvaluation_good_count={setEvaluation_good_count_main}
+                comment_count={comment_count_main}
+                setComment_count={setComment_count_main}
+                evaluation_stay_count={evaluation_stay_count_main}
+                setEvaluation_stay_count={setEvaluation_stay_count_main}
+                onNavigate={hasParallels ? onMainPanelNavigate : undefined}
+                hasParallels={hasParallels}
+                onPrevParallel={onPrevParallel}
+                onNextParallel={onNextParallel}
+              />
             </Box>
 
             {/* パラレル投稿インジケーター */}
@@ -276,10 +247,10 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
               mainText={mainPanel[0]?.sentence || ''}
             />
             <ChildrenPanel
-              childrenPanel={childrenPanelState}
-              setChildrenPanel={setChildrenPanelState}
-              mainPanel={mainPanelState}
-              setMainPanel={setMainPanelState}
+              childrenPanel={childrenPanel}
+              setChildrenPanel={() => {}}
+              mainPanel={mainPanel}
+              setMainPanel={() => {}}
               setStartIndex={setStart_index_children}
               visibleTextCount={3}
               evaluation_good_count={evaluation_good_count_children}
