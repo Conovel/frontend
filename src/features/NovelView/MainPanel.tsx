@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Avatar, Box, IconButton } from '@mui/material';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ThumbUpButton from '../../components/buttonicon/ThumbsUpButton';
@@ -39,12 +38,9 @@ const MainPanel: React.FC<MainPanelProps> = ({
   onPrevParallel,
   onNextParallel,
 }) => {
-  const [showIcons, setShowIcons] = useState(false);
+  const [] = useState(false);
   const [localStartIndex, setLocalStartIndex] = useState(startIndex);
 
-  const handleIconClick = () => {
-    setShowIcons((prev) => !prev);
-  };
 
   const handleNavigation = (direction: 'prev' | 'next') => {
     if (onNavigate) {
@@ -144,41 +140,32 @@ const MainPanel: React.FC<MainPanelProps> = ({
               <p style={{ margin: '1vh 1vh', fontSize: '1.6rem' }}>
                 {panel.sentence}
               </p>
-              <DragIndicatorIcon
-                onClick={handleIconClick}
-                sx={{
-                  cursor: 'pointer',
-                  position: 'absolute',
-                  bottom: '10px',
-                  right: '10px',
-                }}
-              />
-              {showIcons && (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    position: 'absolute',
-                    bottom: '10px',
-                    right: '25px',
-                    zIndex: 4,
-                  }}
-                >
-                  <ThumbUpButton
-                    evaluation_good_count={evaluation_good_count}
-                    setEvaluation_good_count={setEvaluation_good_count}
-                  />
-                  <CommentButton
-                    comment_count={comment_count}
-                    setComment_count={setComment_count}
-                  />
-                  <NextPlanButton
-                    evaluation_stay_count={evaluation_stay_count}
-                    setEvaluation_stay_count={setEvaluation_stay_count}
-                  />
-                </Box>
-              )}
             </Box>
           ))}
+      </Box>
+
+      {/* ボタン群 - メインパネルの枠外右下に固定表示 */}
+      <Box
+        sx={{
+          display: 'flex',
+          position: 'absolute',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 10,
+        }}
+      >
+        <ThumbUpButton
+          evaluation_good_count={evaluation_good_count}
+          setEvaluation_good_count={setEvaluation_good_count}
+        />
+        <CommentButton
+          comment_count={comment_count}
+          setComment_count={setComment_count}
+        />
+        <NextPlanButton
+          evaluation_stay_count={evaluation_stay_count}
+          setEvaluation_stay_count={setEvaluation_stay_count}
+        />
       </Box>
 
       {/* 右ナビゲーションボタン - パラレル投稿がある場合はその切り替え、ない場合は通常のナビゲーション */}
