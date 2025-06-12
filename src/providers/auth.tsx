@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    // functional.tsでloginStatusをcheckingに
+    // functional.tsでloginStatusを初期化（idle）
     resetAuthStatus(); // 必要に応じてloginStatusを初期化
     subscribeToAuthStatus((status) => {
       // 状態変更で強制的に再レンダリングしたい場合はstate化も可
