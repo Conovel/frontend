@@ -77,7 +77,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setCurrentUser(response.data as User);
       return;
     }
-    throw new Error('No user_id');
+    // TODO: 認証エラー時の画面遷移などを記載すること！
   };
 
   useEffect(() => {
