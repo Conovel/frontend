@@ -19,6 +19,9 @@ interface MainPanelProps {
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
   onNavigate?: (direction: 'prev' | 'next') => void;
+  hasParallels?: boolean;
+  onPrevParallel?: () => void;
+  onNextParallel?: () => void;
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
@@ -32,6 +35,9 @@ const MainPanel: React.FC<MainPanelProps> = ({
   evaluation_stay_count,
   setEvaluation_stay_count,
   onNavigate,
+  hasParallels,
+  onPrevParallel,
+  onNextParallel,
 }) => {
   const [showIcons, setShowIcons] = useState(false);
   const [localStartIndex, setLocalStartIndex] = useState(startIndex);
@@ -71,10 +77,16 @@ const MainPanel: React.FC<MainPanelProps> = ({
         position: 'relative',
       }}
     >
-      {/* 左ナビゲーションボタン */}
-      {showPrevButton && (
+      {/* 左ナビゲーションボタン - パラレル投稿がある場合はその切り替え、ない場合は通常のナビゲーション */}
+      {(hasParallels || showPrevButton) && (
         <IconButton
-          onClick={() => handleNavigation('prev')}
+          onClick={() => {
+            if (hasParallels && onPrevParallel) {
+              onPrevParallel();
+            } else {
+              handleNavigation('prev');
+            }
+          }}
           sx={{
             position: 'absolute',
             left: '-50px',
@@ -169,10 +181,16 @@ const MainPanel: React.FC<MainPanelProps> = ({
           ))}
       </Box>
 
-      {/* 右ナビゲーションボタン */}
-      {showNextButton && (
+      {/* 右ナビゲーションボタン - パラレル投稿がある場合はその切り替え、ない場合は通常のナビゲーション */}
+      {(hasParallels || showNextButton) && (
         <IconButton
-          onClick={() => handleNavigation('next')}
+          onClick={() => {
+            if (hasParallels && onNextParallel) {
+              onNextParallel();
+            } else {
+              handleNavigation('next');
+            }
+          }}
           sx={{
             position: 'absolute',
             right: '-50px',
