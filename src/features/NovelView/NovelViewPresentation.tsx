@@ -44,9 +44,9 @@ interface NovelViewPresentationProps {
   hasParallels: boolean;
   currentParallelIndex: number;
   totalParallels: number;
-  onChildClick: (clickedSentence: any) => void;
   onParentClick: (clickedSentence: any) => void;
   onMainPanelNavigate: (direction: 'prev' | 'next') => void;
+  titleId?: string;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -81,9 +81,9 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   hasParallels,
   currentParallelIndex,
   totalParallels,
-  onChildClick,
   onParentClick,
   onMainPanelNavigate,
+  titleId,
 }) => {
   const [start_index_main] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -260,8 +260,8 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
               evaluation_stay_count={evaluation_stay_count_children}
               setEvaluation_stay_count={setEvaluation_stay_count_children}
               novel={novelWithRelations}
-              onClick={onChildClick}
               textIndex={index}
+              titleId={titleId}
             />
           </React.Fragment>
         );

@@ -14,9 +14,9 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "allowImportingTsExtensions": true,
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "strict": true,
@@ -30,5 +30,6 @@
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["vite.config.ts", "src/**/*", "src/types/custom.d.ts"]
+  "include": ["vite.config.ts", "src/**/*.{ts,tsx}", "src/types/custom.d.ts"],
+  "exclude": ["src/**/*.d.ts"]
 }

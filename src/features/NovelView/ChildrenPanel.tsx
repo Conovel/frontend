@@ -12,6 +12,7 @@ import {
 } from '../../types/types';
 import { EditPost } from '../EditPost';
 import { SentencesApi } from '../../api/api';
+import { useNavigate } from 'react-router-dom';
 
 const carouselNavButtonStyle = {
   backgroundColor: '#BDBDBD',
@@ -62,14 +63,9 @@ interface ChildrenPanelProps {
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
   novel: NovelProps;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   textIndex: number;
+  titleId?: string;
 }
-
-const handleClick = (sentenceId: number) => {
-  // Your logic here, using sentenceId
-  console.log(sentenceId);
-};
 
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   childrenPanel,
@@ -85,9 +81,11 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   setEvaluation_stay_count,
   novel,
   textIndex,
+  titleId,
 }) => {
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
 
   // childrenPanelが変更された時にactiveIndexをリセット
   useEffect(() => {
@@ -96,6 +94,15 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
 
   const handleCarouselChange = (now: number) => {
     setActiveIndex(now);
+  };
+
+  const handleClick = (sentenceId: number) => {
+    const clickedSentence = childrenPanel.find(
+      (sentence: Sentence) => sentence.sentence_id === sentenceId,
+    );
+    if (clickedSentence) {
+      navigate(`/novelView/${titleId || '1'}/${clickedSentence.sentence_id}`);
+    }
   };
 
   const renderNovelCard = (panel: Sentence, index: number) => {

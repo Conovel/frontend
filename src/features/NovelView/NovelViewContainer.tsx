@@ -105,15 +105,18 @@ export const NovelViewContainer = () => {
 
         // 新規投稿の場合、childrenPanelを空にする
         setChildrenPanel([]);
-        
+
         // パラレル投稿情報もリセット
         setParallelSentences([]);
         setCurrentParallelIndex(0);
-        
+
         // URLを新しい投稿のIDに更新
-        navigate(`/novelView/${titleId || '1'}/${createdSentence.sentence_id}`, {
-          replace: false,
-        });
+        navigate(
+          `/novelView/${titleId || '1'}/${createdSentence.sentence_id}`,
+          {
+            replace: false,
+          },
+        );
       } catch (error) {
         console.error('投稿に失敗しました:', error);
       }
@@ -150,16 +153,6 @@ export const NovelViewContainer = () => {
       });
     }
   }, [currentParallelIndex, parallelSentences, navigate, titleId]);
-
-  // 子投稿がクリックされたときのハンドラー
-  const handleChildClick = useCallback(
-    (clickedSentence: any) => {
-      console.log('Child clicked:', clickedSentence);
-      // 子投稿をクリックしたときは新しいページに遷移
-      navigate(`/novelView/${titleId || '1'}/${clickedSentence.sentence_id}`);
-    },
-    [navigate, titleId],
-  );
 
   // ParentPanelがクリックされたときのハンドラー
   const handleParentClick = useCallback(
@@ -228,9 +221,9 @@ export const NovelViewContainer = () => {
       hasParallels={hasParallels}
       currentParallelIndex={currentParallelIndex}
       totalParallels={parallelSentences.length}
-      onChildClick={handleChildClick}
       onParentClick={handleParentClick}
       onMainPanelNavigate={handleMainPanelNavigate}
+      titleId={titleId}
     />
   );
 };
