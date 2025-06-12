@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { UsersApi } from '../api/api';
 import { AuthApi } from '../api/api';
 import { axiosConfig } from '../axiosConfig';
-import { withAuth } from '../api/functional';
+import { withAuth, subscribeToAuthStatus, getLoginStatus, resetAuthStatus, LoginStatus } from '../api/functional';
 
 // 型定義
 export interface User {
@@ -44,8 +44,12 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  const setLoginStatus = (status: 'checking' | 'success' | 'failure') => {
-    sessionStorage.setItem('loginStatus', status);
+  // loginStatusはfunctional.tsで管理するのでsessionStorageは不要
+  // ただし、もともとのsetLoginStatusのインターフェースは維持
+  const setLoginStatus = (status: LoginStatus) => {
+    // 互換のため。UI用state管理はfunctional.ts側
+    // sessionStorage.setItem('loginStatus', status); // 不要
+    // functional.tsで管理されるため何もせず
   };
 
   const logout = async () => {
@@ -54,21 +58,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (e) {
       console.error('ログアウトAPI呼び出しでエラー:', e);
     }
-
-    setLoginStatus('failure');
+    resetAuthStatus(); // functional.tsでloginStatusをidleに戻す
     setCurrentUser(null);
-    sessionStorage.setItem('loginStatus', 'failure');
+    // sessionStorage.setItem('loginStatus', 'failure'); // 不要
   };
+  
+  const getUserByMe = () => usersApi.getUserByMe({ withCredentials: true });
 
   const fetchCurrentUserId = async () => {
-    if (sessionStorage.getItem('loginStatus') !== 'checking') return;
+    // functional.tsの状態を参照
+    if (getLoginStatus() !== 'checking') return;
 
-    const getUserByMe = () => usersApi.getUserByMe({ withCredentials: true });
-    const handleAuthFailure = () => logout();
-    const response = await withAuth(getUserByMe, handleAuthFailure);
+    // logout自体がasync functionなのでそのまま渡す
+    const response = await withAuth(getUserByMe, logout);
 
-    if (response.data && response.data.user_id) {
-      setLoginStatus('success');
+    if (response?.data?.user_id) {
+      // setLoginStatus('success'); // 管理はfunctional.ts側
       setCurrentUser(response.data as User);
       return;
     }
@@ -76,7 +81,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    setLoginStatus('checking');
+    // functional.tsでloginStatusをcheckingに
+    resetAuthStatus(); // 必要に応じてloginStatusを初期化
+    subscribeToAuthStatus((status) => {
+      // 状態変更で強制的に再レンダリングしたい場合はstate化も可
+      // ここではcurrentUser以外UI反映がないので省略
+    });
     setCurrentUser(null);
     fetchCurrentUserId();
     // eslint-disable-next-line react-hooks/exhaustive-deps
