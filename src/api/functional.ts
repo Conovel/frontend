@@ -40,8 +40,9 @@ export const withAuth = async <T>(
         const refreshRes = await authApi.refreshToken({ withCredentials: true });
         if (refreshRes.status !== 200) throw new Error('Refresh failed');
 
+        const result = await fn(); // 再実行        
         setLoginStatus('success');
-        return await fn(); // 再試行
+        return result;
       } catch (refreshError) {
         setLoginStatus('failure');
         await onAuthFailure();
