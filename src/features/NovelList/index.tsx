@@ -5,16 +5,31 @@ import NovelCardContainer from '../../components/novelCard/container';
 import { NovelListItem } from '../../types/types';
 import { convertNovelListResponse } from './convert';
 import { axiosConfig } from '../../axiosConfig';
+// import { withAuth } from '../../api/functional'; // 認証付きでAPIを呼び出すテスト  
+// import { useAuth } from '../../providers/auth'; // 認証付きでAPIを呼び出すテスト  
 
 const novelsApi = new NovelsApi(axiosConfig);
 
 const NovelList = () => {
   const [responseNovels, setResponseNovels] = useState<NovelListItem[]>([]);
+  // const { logout } = useAuth(); // 認証付きでAPIを呼び出すテスト  
 
   useEffect(() => {
     const fetchNovels = async () => {
       try {
         const response = await novelsApi.getNovels();
+
+        // 認証付きでAPIを呼び出すテスト        
+        // const response = await withAuth(novelsApi.getNovels, logout);
+        // console.log('Auth response:', response);
+
+        // if (response) {
+        //   console.log('小説の取得に成功');
+        // } else {
+        //   console.error('小説の取得に失敗→ログアウト');
+        //   return
+        // }
+
         const convertedResponse: NovelListItem[] = convertNovelListResponse(
           response.data,
         );

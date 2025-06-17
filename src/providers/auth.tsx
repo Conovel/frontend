@@ -21,7 +21,7 @@ export interface User {
 export interface AuthContextType {
   currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 export interface AuthProviderProps {
