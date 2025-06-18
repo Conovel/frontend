@@ -25,12 +25,12 @@ const setLoginStatus = (status: LoginStatus) => {
 export const getLoginStatus = (): LoginStatus => loginStatus;
 
 export const withAuth = async <T>(
-  fn: () => Promise<T>,
+  fn: (options?: { withCredentials?: boolean }) => Promise<T>,
   onAuthFailure: () => Promise<void>,
   onRefreshFailure?: () => Promise<void>,
 ): Promise<T | null> => {
   try {
-    const result = await fn();
+    const result = await fn({ withCredentials: true });
     setLoginStatus('success');
     return result;
   } catch (error: any) {
@@ -40,7 +40,7 @@ export const withAuth = async <T>(
         const refreshRes = await authApi.refreshToken({ withCredentials: true });
         if (refreshRes.status !== 200) throw new Error('Refresh failed');
 
-        const result = await fn(); // 再実行        
+        const result = await fn({ withCredentials: true });
         setLoginStatus('success');
         return result;
       } catch (refreshError) {
@@ -49,14 +49,13 @@ export const withAuth = async <T>(
         return null;
       }
     } else {
-      // 401以外のエラー - onRefreshFailureがあればそれを、なければonAuthFailureを実行
       setLoginStatus('failure');
       if (onRefreshFailure) {
         await onRefreshFailure();
       } else {
         await onAuthFailure();
       }
-      return null; // 例外をスローせずnullを返す
+      return null;
     }
   }
 };
