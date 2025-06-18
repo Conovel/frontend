@@ -63,7 +63,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // sessionStorage.setItem('loginStatus', 'failure'); // 不要
   };
   
-  const getUserByMe = () => usersApi.getUserByMe();
+  const getUserByMe = (options?: { withCredentials?: boolean }) => 
+  usersApi.getUserByMe(options);
 
   const fetchCurrentUserId = async () => {
     // functional.tsの状態を参照
