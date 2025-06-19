@@ -2102,7 +2102,7 @@ export class UsersApi extends BaseAPI {
    *
    * @summary 自分自身のユーザーアカウント情報を取得
    * @param {*} [options] Override http request option.
-   * @param {Promise<void>} [onFailure] on authrization failured function
+   * @param {Promise<void>} [onFailure] on authorization failure handler
    * @throws {RequiredError}
    * @memberof UsersApi
    */
