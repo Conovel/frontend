@@ -21,8 +21,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    /* Types */
-    "types": ["vite/client"],
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "declaration": true
