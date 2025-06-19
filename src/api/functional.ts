@@ -1,8 +1,4 @@
-import { AuthApi } from './api';
-import { axiosConfig } from '../axiosConfig';
-
-const authApi = new AuthApi(axiosConfig);
-
+// src/api/functional.ts
 export type LoginStatus = 'idle' | 'checking' | 'success' | 'failure';
 
 let loginStatus: LoginStatus = 'idle';
@@ -11,7 +7,6 @@ let statusChangeCallbacks: ((status: LoginStatus) => void)[] = [];
 export const subscribeToAuthStatus = (callback: (status: LoginStatus) => void) => {
   statusChangeCallbacks.push(callback);
   callback(loginStatus);
-  
   return () => {
     statusChangeCallbacks = statusChangeCallbacks.filter(cb => cb !== callback);
   };
@@ -26,6 +21,7 @@ export const getLoginStatus = (): LoginStatus => loginStatus;
 
 export const withAuth = async <T>(
   fn: () => Promise<T>,
+  refreshToken: () => Promise<any>,
   onAuthFailure: () => Promise<void>,
   onRefreshFailure?: () => Promise<void>,
 ): Promise<T | null> => {
@@ -37,9 +33,8 @@ export const withAuth = async <T>(
     if (error?.response?.status === 401) {
       try {
         setLoginStatus('checking');
-        const refreshRes = await authApi.refreshToken();
+        const refreshRes = await refreshToken();
         if (refreshRes.status !== 200) throw new Error('Refresh failed');
-
         const result = await fn();
         setLoginStatus('success');
         return result;
