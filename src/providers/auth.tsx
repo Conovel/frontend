@@ -44,14 +44,6 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  // loginStatusはfunctional.tsで管理するのでsessionStorageは不要
-  // ただし、もともとのsetLoginStatusのインターフェースは維持
-  const setLoginStatus = (status: LoginStatus) => {
-    // 互換のため。UI用state管理はfunctional.ts側
-    // sessionStorage.setItem('loginStatus', status); // 不要
-    // functional.tsで管理されるため何もせず
-  };
-
   const logout = async () => {
     try {
       await authApi.logOut();
@@ -60,7 +52,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
     resetAuthStatus(); // functional.tsでloginStatusをidleに戻す
     setCurrentUser(null);
-    // sessionStorage.setItem('loginStatus', 'failure'); // 不要
   };
   
   const getUserByMe = () => usersApi.getUserByMe();
@@ -73,7 +64,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const response = await withAuth(getUserByMe, logout);
 
     if (response?.data?.user_id) {
-      // setLoginStatus('success'); // 管理はfunctional.ts側
       setCurrentUser(response.data as User);
       return;
     }
