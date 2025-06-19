@@ -47,15 +47,10 @@ export const novelViewHandlers = [
     return HttpResponse.json({ main: newSentence }, { status: 201 });
   }),
 
-  // 文を取得するハンドラー（GET id指定）
-  http.get('/v1/sentences/:id', ({ params }) => {
-    const { id } = params;
-    const found = sentences.find((s) => s.sentence_id === Number(id));
+  // 文を取得するハンドラー（GET sentence_id指定）
+  http.get('/v1/sentences/:sentence_id', ({ params }) => {
+    const { sentence_id } = params;
+    const found = sentences.find((s) => s.sentence_id === Number(sentence_id));
     return HttpResponse.json(found ?? sentences[0]);
-  }),
-
-  // 最新の文を返す（例: /v1/sentences/latest）
-  http.get('/v1/sentences/latest', () => {
-    return HttpResponse.json(sentences[0]);
   }),
 ];
