@@ -2102,13 +2102,18 @@ export class UsersApi extends BaseAPI {
    *
    * @summary 自分自身のユーザーアカウント情報を取得
    * @param {*} [options] Override http request option.
+   * @param {Promise<void>} [onFailure] on authrization failured function
    * @throws {RequiredError}
    * @memberof UsersApi
    */
-  public getUserByMe(options?: RawAxiosRequestConfig) {
-    return UsersApiFp(this.configuration)
+  public getUserByMe(options?: RawAxiosRequestConfig, onFailure?: () => Promise<void>) {
+    const f = () => UsersApiFp(this.configuration)
       .getUserByMe(options)
       .then((request) => request(this.axios, this.basePath));
+    const r = () => AuthApiFp(this.configuration)
+      .refreshToken(options)
+      .then((request) => request(this.axios, this.basePath));
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
   /**
