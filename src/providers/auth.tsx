@@ -54,7 +54,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async () => {
     try {
-      await authApi.logOut({ withCredentials: true });
+      await authApi.logOut();
     } catch (e) {
       console.error('ログアウトAPI呼び出しでエラー:', e);
     }
@@ -63,9 +63,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // sessionStorage.setItem('loginStatus', 'failure'); // 不要
   };
   
-  // const getUserByMe = (options?: { withCredentials?: boolean }) => 
-  // usersApi.getUserByMe(options);
-  const getUserByMe = () => usersApi.getUserByMe(); // 一旦引数なしに戻す
+  const getUserByMe = () => usersApi.getUserByMe();
 
   const fetchCurrentUserId = async () => {
     // functional.tsの状態を参照

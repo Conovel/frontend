@@ -728,7 +728,7 @@ export const AuthApiFp = function (configuration?: Configuration) {
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>
     > {
-      const localVarAxiosArgs = await localVarAxiosParamCreator.logOut(options);
+      const localVarAxiosArgs = await localVarAxiosParamCreator.logOut({...options, withCredentials: true});  // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['AuthApi.logOut']?.[localVarOperationServerIndex]
@@ -753,7 +753,7 @@ export const AuthApiFp = function (configuration?: Configuration) {
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.refreshToken(options);
+        await localVarAxiosParamCreator.refreshToken({...options, withCredentials: true});  // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['AuthApi.refreshToken']?.[
@@ -1880,7 +1880,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ViewMeUser>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.getUserByMe({...options, withCredentials: true}); // 手動で修正（本当は避けたい）
+        await localVarAxiosParamCreator.getUserByMe({...options, withCredentials: true}); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['UsersApi.getUserByMe']?.[

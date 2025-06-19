@@ -25,22 +25,22 @@ const setLoginStatus = (status: LoginStatus) => {
 export const getLoginStatus = (): LoginStatus => loginStatus;
 
 export const withAuth = async <T>(
-  fn: (options?: { withCredentials?: boolean }) => Promise<T>,
+  fn: () => Promise<T>,
   onAuthFailure: () => Promise<void>,
   onRefreshFailure?: () => Promise<void>,
 ): Promise<T | null> => {
   try {
-    const result = await fn({ withCredentials: true });
+    const result = await fn();
     setLoginStatus('success');
     return result;
   } catch (error: any) {
     if (error?.response?.status === 401) {
       try {
         setLoginStatus('checking');
-        const refreshRes = await authApi.refreshToken({ withCredentials: true });
+        const refreshRes = await authApi.refreshToken();
         if (refreshRes.status !== 200) throw new Error('Refresh failed');
 
-        const result = await fn({ withCredentials: true });
+        const result = await fn();
         setLoginStatus('success');
         return result;
       } catch (refreshError) {
