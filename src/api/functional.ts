@@ -1,4 +1,3 @@
-// src/api/functional.ts
 export type LoginStatus = 'idle' | 'checking' | 'success' | 'failure';
 
 let loginStatus: LoginStatus = 'idle';
