@@ -1880,7 +1880,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ViewMeUser>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.getUserByMe(options);
+        await localVarAxiosParamCreator.getUserByMe({...options, withCredentials: true}); // 手動で修正（本当は避けたい）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['UsersApi.getUserByMe']?.[
