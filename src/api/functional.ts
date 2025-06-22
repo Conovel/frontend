@@ -23,7 +23,7 @@ export const withAuth = async <T>(
   refreshToken: () => Promise<any>,
   onAuthFailure: () => Promise<void>,
   onRefreshFailure?: () => Promise<void>,
-): Promise<T | null> => {
+): Promise<T | null | undefined> => {
   try {
     return await fn();
   } catch (error: any) {
