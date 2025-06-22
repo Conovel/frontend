@@ -38,6 +38,7 @@ import {
   // RequiredError, // 未使用：一時的にコメントアウト
   operationServerMap,
 } from './base';
+import { withAuth } from './functional';
 
 /**
  *
@@ -2106,7 +2107,7 @@ export class UsersApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof UsersApi
    */
-  public getUserByMe(options?: RawAxiosRequestConfig, onFailure?: () => Promise<void>) {
+  public getUserByMe(onFailure?: () => Promise<void>, options?: RawAxiosRequestConfig) {
     const f = () => UsersApiFp(this.configuration)
       .getUserByMe(options)
       .then((request) => request(this.axios, this.basePath));
