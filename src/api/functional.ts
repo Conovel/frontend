@@ -1,4 +1,4 @@
-export type LoginStatus = 'idle' | 'checking' | 'success' | 'failure';
+type LoginStatus = 'idle' | 'checking' | 'failure';
 
 let loginStatus: LoginStatus = 'idle';
 let statusChangeCallbacks: ((status: LoginStatus) => void)[] = [];
@@ -16,7 +16,7 @@ const setLoginStatus = (status: LoginStatus) => {
   statusChangeCallbacks.forEach(callback => callback(status));
 };
 
-export const getLoginStatus = (): LoginStatus => loginStatus;
+const getLoginStatus = (): LoginStatus => loginStatus;
 
 export const withAuth = async <T>(
   fn: () => Promise<T>,
@@ -25,21 +25,22 @@ export const withAuth = async <T>(
   onRefreshFailure?: () => Promise<void>,
 ): Promise<T | null> => {
   try {
-    const result = await fn();
-    setLoginStatus('success');
-    return result;
+    return await fn();
   } catch (error: any) {
     if (error?.response?.status === 401) {
       try {
-        setLoginStatus('checking');
-        const refreshRes = await refreshToken();
-        if (refreshRes.status !== 200) throw new Error('Refresh failed');
-        const result = await fn();
-        setLoginStatus('success');
-        return result;
+        if (getLoginStatus() === 'idle') {
+          setLoginStatus('checking');
+          const refreshRes = await refreshToken();
+          if (refreshRes.status !== 200) throw new Error('Refresh failed');
+          const result = await fn();
+          setLoginStatus('idle');
+          return result;
+        }
       } catch (refreshError) {
         setLoginStatus('failure');
         await onAuthFailure();
+        setLoginStatus('idle');
         return null;
       }
     } else {
@@ -49,11 +50,8 @@ export const withAuth = async <T>(
       } else {
         await onAuthFailure();
       }
+      setLoginStatus('idle');
       return null;
     }
   }
-};
-
-export const resetAuthStatus = () => {
-  setLoginStatus('idle');
 };
