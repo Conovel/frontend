@@ -2107,14 +2107,14 @@ export class UsersApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof UsersApi
    */
-  public getUserByMe(onFailure?: () => Promise<void>, options?: RawAxiosRequestConfig) {
+  public getUserByMe(options?: RawAxiosRequestConfig) {
     const f = () => UsersApiFp(this.configuration)
       .getUserByMe(options)
       .then((request) => request(this.axios, this.basePath));
     const r = () => AuthApiFp(this.configuration)
       .refreshToken(options)
       .then((request) => request(this.axios, this.basePath));
-    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
+      return withAuth(f, r);
   }
 
   /**

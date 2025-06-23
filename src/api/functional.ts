@@ -21,7 +21,6 @@ const getLoginStatus = (): LoginStatus => loginStatus;
 export const withAuth = async <T>(
   fn: () => Promise<T>,
   refreshToken: () => Promise<any>,
-  onAuthFailure: () => Promise<void>,
   onRefreshFailure?: () => Promise<void>,
 ): Promise<T | null | undefined> => {
   try {
@@ -39,7 +38,6 @@ export const withAuth = async <T>(
         }
       } catch (refreshError) {
         setLoginStatus('failure');
-        await onAuthFailure();
         setLoginStatus('idle');
         return null;
       }
@@ -47,9 +45,7 @@ export const withAuth = async <T>(
       setLoginStatus('failure');
       if (onRefreshFailure) {
         await onRefreshFailure();
-      } else {
-        await onAuthFailure();
-      }
+      } 
       setLoginStatus('idle');
       return null;
     }
