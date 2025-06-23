@@ -38,6 +38,7 @@ import {
   // RequiredError, // 未使用：一時的にコメントアウト
   operationServerMap,
 } from './base';
+import { withAuth } from './functional';
 
 /**
  *
@@ -728,7 +729,7 @@ export const AuthApiFp = function (configuration?: Configuration) {
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>
     > {
-      const localVarAxiosArgs = await localVarAxiosParamCreator.logOut(options);
+      const localVarAxiosArgs = await localVarAxiosParamCreator.logOut({...options, withCredentials: true});  // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['AuthApi.logOut']?.[localVarOperationServerIndex]
@@ -753,7 +754,7 @@ export const AuthApiFp = function (configuration?: Configuration) {
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.refreshToken(options);
+        await localVarAxiosParamCreator.refreshToken({...options, withCredentials: true});  // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['AuthApi.refreshToken']?.[
@@ -1880,7 +1881,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ViewMeUser>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.getUserByMe(options);
+        await localVarAxiosParamCreator.getUserByMe({...options, withCredentials: true}); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['UsersApi.getUserByMe']?.[
@@ -2102,13 +2103,18 @@ export class UsersApi extends BaseAPI {
    *
    * @summary 自分自身のユーザーアカウント情報を取得
    * @param {*} [options] Override http request option.
+   * @param {Promise<void>} [onFailure] on authorization failure handler
    * @throws {RequiredError}
    * @memberof UsersApi
    */
   public getUserByMe(options?: RawAxiosRequestConfig) {
-    return UsersApiFp(this.configuration)
+    const f = () => UsersApiFp(this.configuration)
       .getUserByMe(options)
       .then((request) => request(this.axios, this.basePath));
+    const r = () => AuthApiFp(this.configuration)
+      .refreshToken(options)
+      .then((request) => request(this.axios, this.basePath));
+      return withAuth(f, r);
   }
 
   /**

@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { UsersApi } from '../api/api';
 import { AuthApi } from '../api/api';
 import { axiosConfig } from '../axiosConfig';
+import { useNavigate } from 'react-router';
 
 // 型定義
 export interface User {
@@ -20,7 +21,7 @@ export interface User {
 export interface AuthContextType {
   currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 export interface AuthProviderProps {
@@ -42,66 +43,36 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-
-  const setLoginStatus = (status: 'checking' | 'success' | 'failure') => {
-    sessionStorage.setItem('loginStatus', status);
-  };
+  const navigate = useNavigate();
 
   const logout = async () => {
     try {
-      await authApi.logOut({ withCredentials: true });
+      await authApi.logOut();
     } catch (e) {
       console.error('ログアウトAPI呼び出しでエラー:', e);
     }
-
-    setLoginStatus('failure');
     setCurrentUser(null);
-    sessionStorage.setItem('loginStatus', 'failure');
   };
-
+  
   const fetchCurrentUserId = async () => {
-    if (sessionStorage.getItem('loginStatus') !== 'checking') return;
-
     try {
-      const response = await usersApi.getUserByMe({ withCredentials: true });
-      if (response.data && response.data.user_id) {
-        setLoginStatus('success');
+      const response = await usersApi.getUserByMe();
+      // 認証成功時
+      if (response?.data?.user_id) {
         setCurrentUser(response.data as User);
         return;
       }
-      throw new Error('No user_id');
+      // 認証失敗時
+      navigate('/login');
     } catch (error) {
-      setLoginStatus('failure');
-      try {
-        const refreshRes = await authApi.refreshToken({
-          withCredentials: true,
-        });
-        if (refreshRes.status !== 200) {
-          throw new Error('Refresh failed');
-        }
-
-        setLoginStatus('checking');
-        const retryResponse = await usersApi.getUserByMe({
-          withCredentials: true,
-        });
-        if (!(retryResponse.data && retryResponse.data.user_id)) {
-          throw new Error('No user_id after refresh');
-        }
-
-        setLoginStatus('success');
-        setCurrentUser(retryResponse.data as User);
-        return;
-      } catch (refreshError) {
-        await logout();
-      }
+      // その他（ネットワークエラーなど）
+      navigate('/login');
     }
   };
 
   useEffect(() => {
-    setLoginStatus('checking');
-    setCurrentUser(null);
+    // 初期化時に現在のユーザー情報を取得
     fetchCurrentUserId();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
