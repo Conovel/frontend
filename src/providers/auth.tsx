@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { UsersApi } from '../api/api';
 import { AuthApi } from '../api/api';
 import { axiosConfig } from '../axiosConfig';
-import { withAuth, subscribeToAuthStatus, getLoginStatus, resetAuthStatus, LoginStatus } from '../api/functional';
+import { useNavigate } from 'react-router';
 
 // 型定義
 export interface User {
@@ -43,6 +43,7 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   const logout = async () => {
     try {
@@ -50,41 +51,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (e) {
       console.error('ログアウトAPI呼び出しでエラー:', e);
     }
-    resetAuthStatus(); // functional.tsでloginStatusをidleに戻す
     setCurrentUser(null);
   };
   
-  const getUserByMe = () => usersApi.getUserByMe();
-
   const fetchCurrentUserId = async () => {
-    // functional.tsの状態を参照
-    if (getLoginStatus() !== 'idle') return;
-
-    // logout自体がasync functionなのでそのまま渡す
-    const response = await withAuth(getUserByMe, logout);
-
-    if (response?.data?.user_id) {
-      setCurrentUser(response.data as User);
-      return;
+    try {
+      const response = await usersApi.getUserByMe();
+      // 認証成功時
+      if (response?.data?.user_id) {
+        setCurrentUser(response.data as User);
+        return;
+      }
+      // 認証失敗時
+      navigate('/login');
+    } catch (error) {
+      // その他（ネットワークエラーなど）
+      navigate('/login');
     }
-    // TODO: 認証エラー時の画面遷移などを記載すること！
   };
 
   useEffect(() => {
-    // functional.tsでloginStatusを初期化（idle）
-    resetAuthStatus(); // 必要に応じてloginStatusを初期化
-    // 📌 重要：unsubscribe関数を受け取る
-    const unsubscribe = subscribeToAuthStatus((status) => {
-      // 必要に応じて状態変更時の処理を追加
-      console.log('Auth status changed:', status);
-    });
-    setCurrentUser(null);
+    // 初期化時に現在のユーザー情報を取得
     fetchCurrentUserId();
-    
-    // 📌 重要：クリーンアップ関数でunsubscribe
-    return () => {
-      unsubscribe();
-    };
   }, []);
 
   return (
