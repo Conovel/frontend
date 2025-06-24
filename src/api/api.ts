@@ -20,10 +20,10 @@ import globalAxios from 'axios';
 import {
   DUMMY_BASE_URL,
   assertParamExists,
-  setApiKeyToObject,
-  setBasicAuthToObject,
-  setBearerAuthToObject,
-  setOAuthToObject,
+//   setApiKeyToObject, // 未使用：CI/CDエラーのためコメントアウト（手動で修正）
+//   setBasicAuthToObject, // 未使用：CI/CDエラーのためコメントアウト（手動で修正）
+//   setBearerAuthToObject, // 未使用：CI/CDエラーのためコメントアウト（手動で修正）
+//   setOAuthToObject, // 未使用：CI/CDエラーのためコメントアウト（手動で修正）
   setSearchParams,
   serializeDataIfNeeded,
   toPathString,
@@ -33,9 +33,9 @@ import type { RequestArgs } from './base';
 // @ts-ignore
 import {
   BASE_PATH,
-  COLLECTION_FORMATS,
+//   COLLECTION_FORMATS, // 未使用：CI/CDエラーのためコメントアウト（手動で修正）
   BaseAPI,
-  RequiredError,
+//   RequiredError, // 未使用：CI/CDエラーのためコメントアウト（手動で修正）
   operationServerMap,
 } from './base';
 import { withAuth } from './functional';
