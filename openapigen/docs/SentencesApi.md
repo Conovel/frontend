@@ -2,10 +2,10 @@
 
 All URIs are relative to _/v1_
 
-| Method                                  | HTTP request                     | Description                      |
-| --------------------------------------- | -------------------------------- | -------------------------------- |
-| [**getSentenceById**](#getsentencebyid) | **GET** /sentences/{sentence_id} | IDで投稿を取得                   |
-| [**postSentence**](#postsentence)       | **POST** /sentences              | メイン投稿の続きの新規投稿を作成 |
+| Method                                  | HTTP request                     | Description                                  |
+| --------------------------------------- | -------------------------------- | -------------------------------------------- |
+| [**getSentenceById**](#getsentencebyid) | **GET** /sentences/{sentence_id} | IDで投稿を取得（認証あり）                   |
+| [**postSentence**](#postsentence)       | **POST** /sentences              | メイン投稿の続きの新規投稿を作成（認証あり） |
 
 # **getSentenceById**
 

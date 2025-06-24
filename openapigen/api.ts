@@ -631,7 +631,7 @@ export const AuthApiAxiosParamCreator = function (
   return {
     /**
      *
-     * @summary ログアウト
+     * @summary ログアウト（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -670,7 +670,7 @@ export const AuthApiAxiosParamCreator = function (
     },
     /**
      *
-     * @summary トークンのリフレッシュ
+     * @summary トークンのリフレッシュ（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -719,7 +719,7 @@ export const AuthApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary ログアウト
+     * @summary ログアウト（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -743,7 +743,7 @@ export const AuthApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary トークンのリフレッシュ
+     * @summary トークンのリフレッシュ（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -783,7 +783,7 @@ export const AuthApiFactory = function (
   return {
     /**
      *
-     * @summary ログアウト
+     * @summary ログアウト（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -794,7 +794,7 @@ export const AuthApiFactory = function (
     },
     /**
      *
-     * @summary トークンのリフレッシュ
+     * @summary トークンのリフレッシュ（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -815,7 +815,7 @@ export const AuthApiFactory = function (
 export class AuthApi extends BaseAPI {
   /**
    *
-   * @summary ログアウト
+   * @summary ログアウト（認証あり）
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof AuthApi
@@ -828,7 +828,7 @@ export class AuthApi extends BaseAPI {
 
   /**
    *
-   * @summary トークンのリフレッシュ
+   * @summary トークンのリフレッシュ（認証あり）
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof AuthApi
@@ -850,7 +850,7 @@ export const EvaluationsApiAxiosParamCreator = function (
   return {
     /**
      *
-     * @summary 投稿に対する評価を追加
+     * @summary 投稿に対する評価を追加（認証あり）
      * @param {EvaluateSentence} evaluateSentence
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -915,7 +915,7 @@ export const EvaluationsApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary 投稿に対する評価を追加
+     * @summary 投稿に対する評価を追加（認証あり）
      * @param {EvaluateSentence} evaluateSentence
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -960,7 +960,7 @@ export const EvaluationsApiFactory = function (
   return {
     /**
      *
-     * @summary 投稿に対する評価を追加
+     * @summary 投稿に対する評価を追加（認証あり）
      * @param {EvaluateSentence} evaluateSentence
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -985,7 +985,7 @@ export const EvaluationsApiFactory = function (
 export class EvaluationsApi extends BaseAPI {
   /**
    *
-   * @summary 投稿に対する評価を追加
+   * @summary 投稿に対する評価を追加（認証あり）
    * @param {EvaluateSentence} evaluateSentence
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -1253,7 +1253,7 @@ export const SentencesApiAxiosParamCreator = function (
   return {
     /**
      *
-     * @summary IDで投稿を取得
+     * @summary IDで投稿を取得（認証あり）
      * @param {number} sentenceId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1299,7 +1299,7 @@ export const SentencesApiAxiosParamCreator = function (
     },
     /**
      *
-     * @summary メイン投稿の続きの新規投稿を作成
+     * @summary メイン投稿の続きの新規投稿を作成（認証あり）
      * @param {PostSentence} postSentence
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1360,7 +1360,7 @@ export const SentencesApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary IDで投稿を取得
+     * @summary IDで投稿を取得（認証あり）
      * @param {number} sentenceId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1390,7 +1390,7 @@ export const SentencesApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary メイン投稿の続きの新規投稿を作成
+     * @summary メイン投稿の続きの新規投稿を作成（認証あり）
      * @param {PostSentence} postSentence
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1434,7 +1434,7 @@ export const SentencesApiFactory = function (
   return {
     /**
      *
-     * @summary IDで投稿を取得
+     * @summary IDで投稿を取得（認証あり）
      * @param {number} sentenceId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1449,7 +1449,7 @@ export const SentencesApiFactory = function (
     },
     /**
      *
-     * @summary メイン投稿の続きの新規投稿を作成
+     * @summary メイン投稿の続きの新規投稿を作成（認証あり）
      * @param {PostSentence} postSentence
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1474,7 +1474,7 @@ export const SentencesApiFactory = function (
 export class SentencesApi extends BaseAPI {
   /**
    *
-   * @summary IDで投稿を取得
+   * @summary IDで投稿を取得（認証あり）
    * @param {number} sentenceId
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -1488,7 +1488,7 @@ export class SentencesApi extends BaseAPI {
 
   /**
    *
-   * @summary メイン投稿の続きの新規投稿を作成
+   * @summary メイン投稿の続きの新規投稿を作成（認証あり）
    * @param {PostSentence} postSentence
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -1514,7 +1514,7 @@ export const UsersApiAxiosParamCreator = function (
   return {
     /**
      *
-     * @summary 自分自身のユーザーアカウントを削除（論理削除）
+     * @summary 自分自身のユーザーアカウントを論理削除（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1645,7 +1645,7 @@ export const UsersApiAxiosParamCreator = function (
     },
     /**
      *
-     * @summary 自分自身のユーザーアカウント情報を取得
+     * @summary 自分自身のユーザーアカウント情報を取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1684,7 +1684,7 @@ export const UsersApiAxiosParamCreator = function (
     },
     /**
      *
-     * @summary 自分自身が閲覧している小説リストを取得
+     * @summary 自分自身が閲覧している小説リストを取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1723,7 +1723,7 @@ export const UsersApiAxiosParamCreator = function (
     },
     /**
      *
-     * @summary 自分自身のユーザーアカウント情報を更新
+     * @summary 自分自身のユーザーアカウント情報を更新（認証あり）
      * @param {UpdateUser} updateUser
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1783,7 +1783,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary 自分自身のユーザーアカウントを削除（論理削除）
+     * @summary 自分自身のユーザーアカウントを論理削除（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1870,7 +1870,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary 自分自身のユーザーアカウント情報を取得
+     * @summary 自分自身のユーザーアカウント情報を取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1896,7 +1896,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary 自分自身が閲覧している小説リストを取得
+     * @summary 自分自身が閲覧している小説リストを取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1925,7 +1925,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary 自分自身のユーザーアカウント情報を更新
+     * @summary 自分自身のユーザーアカウント情報を更新（認証あり）
      * @param {UpdateUser} updateUser
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1969,7 +1969,7 @@ export const UsersApiFactory = function (
   return {
     /**
      *
-     * @summary 自分自身のユーザーアカウントを削除（論理削除）
+     * @summary 自分自身のユーザーアカウントを論理削除（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -2010,7 +2010,7 @@ export const UsersApiFactory = function (
     },
     /**
      *
-     * @summary 自分自身のユーザーアカウント情報を取得
+     * @summary 自分自身のユーザーアカウント情報を取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -2021,7 +2021,7 @@ export const UsersApiFactory = function (
     },
     /**
      *
-     * @summary 自分自身が閲覧している小説リストを取得
+     * @summary 自分自身が閲覧している小説リストを取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -2034,7 +2034,7 @@ export const UsersApiFactory = function (
     },
     /**
      *
-     * @summary 自分自身のユーザーアカウント情報を更新
+     * @summary 自分自身のユーザーアカウント情報を更新（認証あり）
      * @param {UpdateUser} updateUser
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2059,7 +2059,7 @@ export const UsersApiFactory = function (
 export class UsersApi extends BaseAPI {
   /**
    *
-   * @summary 自分自身のユーザーアカウントを削除（論理削除）
+   * @summary 自分自身のユーザーアカウントを論理削除（認証あり）
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof UsersApi
@@ -2100,7 +2100,7 @@ export class UsersApi extends BaseAPI {
 
   /**
    *
-   * @summary 自分自身のユーザーアカウント情報を取得
+   * @summary 自分自身のユーザーアカウント情報を取得（認証あり）
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof UsersApi
@@ -2113,7 +2113,7 @@ export class UsersApi extends BaseAPI {
 
   /**
    *
-   * @summary 自分自身が閲覧している小説リストを取得
+   * @summary 自分自身が閲覧している小説リストを取得（認証あり）
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof UsersApi
@@ -2126,7 +2126,7 @@ export class UsersApi extends BaseAPI {
 
   /**
    *
-   * @summary 自分自身のユーザーアカウント情報を更新
+   * @summary 自分自身のユーザーアカウント情報を更新（認証あり）
    * @param {UpdateUser} updateUser
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}

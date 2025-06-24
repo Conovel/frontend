@@ -2,10 +2,10 @@
 
 All URIs are relative to _/v1_
 
-| Method                            | HTTP request           | Description            |
-| --------------------------------- | ---------------------- | ---------------------- |
-| [**logOut**](#logout)             | **POST** /auth/logout  | ログアウト             |
-| [**refreshToken**](#refreshtoken) | **POST** /auth/refresh | トークンのリフレッシュ |
+| Method                            | HTTP request           | Description                        |
+| --------------------------------- | ---------------------- | ---------------------------------- |
+| [**logOut**](#logout)             | **POST** /auth/logout  | ログアウト（認証あり）             |
+| [**refreshToken**](#refreshtoken) | **POST** /auth/refresh | トークンのリフレッシュ（認証あり） |
 
 # **logOut**
 

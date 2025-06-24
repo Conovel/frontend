@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
     setCurrentUser(null);
   };
-  
+
   const fetchCurrentUserId = async () => {
     try {
       const response = await usersApi.getUserByMe();

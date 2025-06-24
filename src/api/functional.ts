@@ -3,17 +3,21 @@ type LoginStatus = 'idle' | 'checking' | 'failure';
 let loginStatus: LoginStatus = 'idle';
 let statusChangeCallbacks: ((status: LoginStatus) => void)[] = [];
 
-export const subscribeToAuthStatus = (callback: (status: LoginStatus) => void) => {
+export const subscribeToAuthStatus = (
+  callback: (status: LoginStatus) => void,
+) => {
   statusChangeCallbacks.push(callback);
   callback(loginStatus);
   return () => {
-    statusChangeCallbacks = statusChangeCallbacks.filter(cb => cb !== callback);
+    statusChangeCallbacks = statusChangeCallbacks.filter(
+      (cb) => cb !== callback,
+    );
   };
 };
 
 const setLoginStatus = (status: LoginStatus) => {
   loginStatus = status;
-  statusChangeCallbacks.forEach(callback => callback(status));
+  statusChangeCallbacks.forEach((callback) => callback(status));
 };
 
 const getLoginStatus = (): LoginStatus => loginStatus;
@@ -45,7 +49,7 @@ export const withAuth = async <T>(
       setLoginStatus('failure');
       if (onRefreshFailure) {
         await onRefreshFailure();
-      } 
+      }
       setLoginStatus('idle');
       return null;
     }

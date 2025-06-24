@@ -2,9 +2,9 @@
 
 All URIs are relative to _/v1_
 
-| Method                                    | HTTP request          | Description            |
-| ----------------------------------------- | --------------------- | ---------------------- |
-| [**evaluateSentence**](#evaluatesentence) | **POST** /evaluations | 投稿に対する評価を追加 |
+| Method                                    | HTTP request          | Description                        |
+| ----------------------------------------- | --------------------- | ---------------------------------- |
+| [**evaluateSentence**](#evaluatesentence) | **POST** /evaluations | 投稿に対する評価を追加（認証あり） |
 
 # **evaluateSentence**
 
