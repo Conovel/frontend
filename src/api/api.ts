@@ -935,8 +935,11 @@ export const EvaluationsApiFp = function (configuration?: Configuration) {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.evaluateSentence(
           evaluateSentence,
-          options,
-        );
+          {
+            ...options,
+            withCredentials: true,
+          },
+        ); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['EvaluationsApi.evaluateSentence']?.[
@@ -1379,8 +1382,11 @@ export const SentencesApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.getSentenceById(
         sentenceId,
-        options,
-      );
+        {
+          ...options,
+          withCredentials: true,
+        },
+      ); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['SentencesApi.getSentenceById']?.[
@@ -1409,8 +1415,11 @@ export const SentencesApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.postSentence(
         postSentence,
-        options,
-      );
+        {
+          ...options,
+          withCredentials: true,
+        },
+      ); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['SentencesApi.postSentence']?.[
@@ -1799,7 +1808,10 @@ export const UsersApiFp = function (configuration?: Configuration) {
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.deleteUserByMe(options);
+        await localVarAxiosParamCreator.deleteUserByMe({
+        ...options,
+        withCredentials: true,
+      }); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['UsersApi.deleteUserByMe']?.[
@@ -1917,7 +1929,10 @@ export const UsersApiFp = function (configuration?: Configuration) {
       ) => AxiosPromise<Array<NovelListItem>>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.getViewedNovelsByMe(options);
+        await localVarAxiosParamCreator.getViewedNovelsByMe({
+        ...options,
+        withCredentials: true,
+      }); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['UsersApi.getViewedNovelsByMe']?.[
@@ -1946,8 +1961,11 @@ export const UsersApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.updateUserByMe(
         updateUser,
-        options,
-      );
+        {
+          ...options,
+          withCredentials: true,
+        },
+      ); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['UsersApi.updateUserByMe']?.[
