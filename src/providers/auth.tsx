@@ -54,19 +54,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setCurrentUser(null);
   };
 
-  const fetchCurrentUserId = async () => {
-    try {
-      const response = await usersApi.getUserByMe();
-      // 認証成功時
-      if (response?.data?.user_id) {
-        setCurrentUser(response.data as User);
-        return;
-      }
-      // 認証失敗時
-      navigate('/login');
-    } catch (error) {
-      // その他（ネットワークエラーなど）
-      navigate('/login');
+const fetchCurrentUserId = async () => {
+    const response = await usersApi.getUserByMe(async () => {
+    // jwt, refresh両方失敗時にはlgin画面へリダイレクト
+      navigate('/login'); }
+    );
+
+    // 認証成功時には現在のユーザー情報を設定
+    if (response?.data?.user_id) {
+      setCurrentUser(response.data as User);
+      return;
     }
   };
 
