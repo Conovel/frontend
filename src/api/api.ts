@@ -826,10 +826,20 @@ export class AuthApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof AuthApi
    */
-  public logOut(options?: RawAxiosRequestConfig) {
-    return AuthApiFp(this.configuration)
-      .logOut(options)
-      .then((request) => request(this.axios, this.basePath));
+  public logOut(
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig
+  ) {
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      AuthApiFp(this.configuration)
+        .logOut(options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = () =>
+      AuthApiFp(this.configuration)
+        .refreshToken(options)
+        .then((request) => request(this.axios, this.basePath));
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
   /**
@@ -839,10 +849,20 @@ export class AuthApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof AuthApi
    */
-  public refreshToken(options?: RawAxiosRequestConfig) {
-    return AuthApiFp(this.configuration)
-      .refreshToken(options)
-      .then((request) => request(this.axios, this.basePath));
+  public refreshToken(
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig
+  ) {
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      AuthApiFp(this.configuration)
+        .refreshToken(options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = () =>
+      AuthApiFp(this.configuration)
+        .refreshToken(options)
+        .then((request) => request(this.axios, this.basePath));
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
 
@@ -1002,11 +1022,19 @@ export class EvaluationsApi extends BaseAPI {
    */
   public evaluateSentence(
     evaluateSentence: EvaluateSentence,
-    options?: RawAxiosRequestConfig,
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig
   ) {
-    return EvaluationsApiFp(this.configuration)
-      .evaluateSentence(evaluateSentence, options)
-      .then((request) => request(this.axios, this.basePath));
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      EvaluationsApiFp(this.configuration)
+        .evaluateSentence(evaluateSentence, options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = () =>
+      AuthApiFp(this.configuration)
+        .refreshToken(options)
+        .then((request) => request(this.axios, this.basePath));
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
 
@@ -1495,10 +1523,21 @@ export class SentencesApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof SentencesApi
    */
-  public getSentenceById(sentenceId: number, options?: RawAxiosRequestConfig) {
-    return SentencesApiFp(this.configuration)
-      .getSentenceById(sentenceId, options)
-      .then((request) => request(this.axios, this.basePath));
+  public getSentenceById(
+    sentenceId: number,
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig
+  ) {
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      SentencesApiFp(this.configuration)
+        .getSentenceById(sentenceId, options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = () =>
+      AuthApiFp(this.configuration)
+        .refreshToken(options)
+        .then((request) => request(this.axios, this.basePath));
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
   /**
@@ -1511,11 +1550,19 @@ export class SentencesApi extends BaseAPI {
    */
   public postSentence(
     postSentence: PostSentence,
-    options?: RawAxiosRequestConfig,
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig
   ) {
-    return SentencesApiFp(this.configuration)
-      .postSentence(postSentence, options)
-      .then((request) => request(this.axios, this.basePath));
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      SentencesApiFp(this.configuration)
+        .postSentence(postSentence, options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = () =>
+      AuthApiFp(this.configuration)
+        .refreshToken(options)
+        .then((request) => request(this.axios, this.basePath));
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
 
@@ -2090,10 +2137,20 @@ export class UsersApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof UsersApi
    */
-  public deleteUserByMe(options?: RawAxiosRequestConfig) {
-    return UsersApiFp(this.configuration)
-      .deleteUserByMe(options)
-      .then((request) => request(this.axios, this.basePath));
+  public deleteUserByMe(
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig
+  ) {
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      UsersApiFp(this.configuration)
+        .deleteUserByMe(options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = () =>
+      AuthApiFp(this.configuration)
+        .refreshToken(options)
+        .then((request) => request(this.axios, this.basePath));
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
   /**
@@ -2154,11 +2211,22 @@ export class UsersApi extends BaseAPI {
    * @throws {RequiredError}
    * @memberof UsersApi
    */
-  public getViewedNovelsByMe(options?: RawAxiosRequestConfig) {
-    return UsersApiFp(this.configuration)
-      .getViewedNovelsByMe(options)
-      .then((request) => request(this.axios, this.basePath));
+  public getViewedNovelsByMe(
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig
+  ) {
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      UsersApiFp(this.configuration)
+        .getViewedNovelsByMe(options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = () =>
+      AuthApiFp(this.configuration)
+        .refreshToken(options)
+        .then((request) => request(this.axios, this.basePath));
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
+
 
   /**
    *
@@ -2170,10 +2238,18 @@ export class UsersApi extends BaseAPI {
    */
   public updateUserByMe(
     updateUser: UpdateUser,
-    options?: RawAxiosRequestConfig,
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig
   ) {
-    return UsersApiFp(this.configuration)
-      .updateUserByMe(updateUser, options)
-      .then((request) => request(this.axios, this.basePath));
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      UsersApiFp(this.configuration)
+        .updateUserByMe(updateUser, options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = () =>
+      AuthApiFp(this.configuration)
+        .refreshToken(options)
+        .then((request) => request(this.axios, this.basePath));
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
