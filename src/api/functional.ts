@@ -36,11 +36,11 @@ export const withAuth = async <T>(
     setLoginStatus('checking');
     try {
       const refreshRes = await refreshToken();
-      if (refreshRes.status !== 200) throw new Error('Refresh failed');
+      if (refreshRes?.status !== 200) throw new Error('Refresh failed');
       setLoginStatus('idle');
     } catch (refreshError) {
       setLoginStatus('failure');
-      await onRefreshFailure();
+      if (onRefreshFailure) await onRefreshFailure();
       setLoginStatus('idle');
       return null;
     }
@@ -49,7 +49,7 @@ export const withAuth = async <T>(
       return result;
     } catch (refreshError) {
       setLoginStatus('failure');
-      await onAuthFailure();
+      if (onAuthFailure) await onAuthFailure();
       setLoginStatus('idle');
       return null;
     }
