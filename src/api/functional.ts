@@ -31,29 +31,25 @@ export const withAuth = async <T>(
   try {
     return await fn();
   } catch (error: any) {
-    if (error?.response?.status === 401) {
-      try {
-        if (getLoginStatus() === 'idle') {
-          setLoginStatus('checking');
-          const refreshRes = await refreshToken();
-          if (refreshRes.status !== 200) throw new Error('Refresh failed');
-          const result = await fn();
-          setLoginStatus('idle');
-          return result;
-        }
-      } catch (refreshError) {
-        setLoginStatus('failure');
-        await onAuthFailure();
-        setLoginStatus('idle');
-        return null;
-      }
-    } else {
+    if (error?.response?.status !== 401) throw error;
+    if (getLoginStatus() !== 'idle') throw new Error('Refresh not Idle');
+    setLoginStatus('checking');
+    try {
+      const refreshRes = await refreshToken();
+      if (refreshRes.status !== 200) throw new Error('Refresh failed');
+      setLoginStatus('idle');
+    } catch (refreshError) {
       setLoginStatus('failure');
-      if (onRefreshFailure) {
-        await onRefreshFailure();
-      } else {
-        await onAuthFailure();
-      }
+      await onRefreshFailure();
+      setLoginStatus('idle');
+      return null;
+    }
+    try {
+      const result = await fn();
+      return result;
+    } catch (refreshError) {
+      setLoginStatus('failure');
+      await onAuthFailure();
       setLoginStatus('idle');
       return null;
     }
