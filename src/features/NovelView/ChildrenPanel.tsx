@@ -160,7 +160,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       const sentencesApi = new SentencesApi();
       const response = await sentencesApi.postSentence(postSentence);
 
-      if (response.status !== 201 || !response.data.main) {
+      if (!response || response.status !== 201 || !response.data?.main) { // 認証のためにresponseのチェックを追加
         throw new Error('Failed to create sentence');
       }
 
