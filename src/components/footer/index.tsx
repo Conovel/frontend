@@ -14,11 +14,8 @@ export const Footer = () => {
         padding: '8px',
         justifyContent: 'space-between',
         boxSizing: 'border-box',
-        position: 'fixed',
-        left: 0,
-        bottom: 0,
-        zIndex: 2000,
-        boxShadow: '0 -2px 8px rgba(0,0,0,0.15)',
+        position: 'sticky',
+        bottom: '0',
       }}
     >
       {/** 広告エリア */}

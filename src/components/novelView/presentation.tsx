@@ -57,7 +57,10 @@ export const NovelView: React.FC = () => {
             Author: {sentence.main?.sentence_user_name || 'Unknown'}
           </Typography>
           <Typography variant='subtitle2' color='text.secondary'>
-            Created: {sentence.main?.created_at ? new Date(sentence.main.created_at).toLocaleString() : 'Unknown'}
+            Created:{' '}
+            {sentence.main?.created_at
+              ? new Date(sentence.main.created_at).toLocaleString()
+              : 'Unknown'}
           </Typography>
         </Paper>
       </Box>
