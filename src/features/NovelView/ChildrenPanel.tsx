@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { Box } from '@mui/material';
+import { Box, Snackbar, Alert } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
@@ -86,6 +86,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setActiveIndex(0);
@@ -103,7 +104,14 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     );
     if (clickedSentence) {
       navigate(`/novelView/${titleId || '1'}/${clickedSentence.sentence_id}`);
+    } else {
+      console.error(`Sentence with ID ${sentenceId} not found in childrenPanel`);
+      setError(`投稿ID ${sentenceId} が見つかりませんでした`);
     }
+  };
+
+  const handleCloseError = () => {
+    setError(null);
   };
 
   const renderNovelCard = (panel: Sentence, index: number) => {
@@ -282,6 +290,17 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         onSubmit={handleSubmitPost}
         mainText={mainPanel[mainPanel.length - 1]?.sentence || ''}
       />
+
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={handleCloseError}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseError} severity="error" sx={{ width: '100%' }}>
+          {error}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
