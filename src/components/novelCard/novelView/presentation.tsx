@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ViewSentence, SentencesApi } from '../../api';
-import { axiosConfig } from '../../axiosConfig';
+import { ViewSentence, SentencesApi } from '../../../api';
+import { axiosConfig } from '../../../axiosConfig';
 import { Box, Typography, Container, Paper } from '@mui/material';
 
 export const NovelView: React.FC = () => {
