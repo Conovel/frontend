@@ -15,7 +15,7 @@ interface ParentPanelProps {
   setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
-  onClick?: () => void;
+  onClick: () => void;
 }
 
 const ParentPanel: React.FC<ParentPanelProps> = ({
@@ -75,7 +75,7 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
             parent: [],
             main: [],
           }}
-          onClick={onClick || (() => {})}
+          onClick={onClick}
           evaluation_good_count={evaluation_good_count}
           setEvaluation_good_count={setEvaluation_good_count}
           comment_count={comment_count}
