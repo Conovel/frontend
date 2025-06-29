@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 import Box from '@mui/material/Box';
@@ -17,7 +16,6 @@ interface NovelCardProps {
 }
 
 const NovelCard = ({ novel }: NovelCardProps) => {
-  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
 
   const handleCardClick = () => {

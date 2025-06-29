@@ -1,15 +1,4 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json",
-      "composite": true
-    },
-    {
-      "path": "./tsconfig.node.json",
-      "composite": true
-    }
-  ],
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable", "ESNext"],
