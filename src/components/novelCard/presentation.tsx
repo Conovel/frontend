@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -9,6 +10,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { NovelProps } from '../../types/types';
+import { NovelInfo } from '../../features/NovelInfo';
 
 interface NovelCardProps {
   novel: NovelProps;
@@ -16,9 +18,14 @@ interface NovelCardProps {
 
 const NovelCard = ({ novel }: NovelCardProps) => {
   const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
 
   const handleCardClick = () => {
-    navigate(`/novelView/${novel.title_id}/${novel.sentence_id}`);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
   };
 
   return (
@@ -115,6 +122,7 @@ const NovelCard = ({ novel }: NovelCardProps) => {
           </Box>
         </CardContent>
       </Card>
+      <NovelInfo open={openModal} onClose={handleCloseModal} novel={novel} />
     </Box>
   );
 };
