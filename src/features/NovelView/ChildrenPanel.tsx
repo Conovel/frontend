@@ -6,16 +6,9 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
-import { SentencesApi } from '../../api/api';
+import apiClient from '../../api/apiClient';
 import { Sentence } from '../../types/sentences';
 import { NovelProps } from '../../components/novelCard/presentation';
-
-// APIに送信するための型 (OpenAPI仕様に合わせる)
-export interface PostSentence {
-  parent_sentence_id: number;
-  parent_updated_at: string;
-  sentence: string;
-}
 
 // リクエスト用の新しい型
 export interface CreateSentenceRequest {
@@ -156,16 +149,12 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       const parentUpdatedAt =
         mainPanel[mainPanel.length - 1]?.updatedAt || new Date().toISOString();
 
-      // APIに送信するためのPostSentenceオブジェクトを作成
-      const postSentence: PostSentence = {
-        parent_sentence_id: parentId,
-        parent_updated_at: parentUpdatedAt,
-        sentence: sentenceRequest.text,
-      };
-
       // OpenAPIが生成したAPIクライアントを使用して新しい文章を投稿
-      const sentencesApi = new SentencesApi();
-      const response = await sentencesApi.postSentence(postSentence);
+      const response = await apiClient.post('/sentences', {
+        parentSentenceId: parentId,
+        parentUpdatedAt: parentUpdatedAt,
+        sentence: sentenceRequest.text,
+      });
 
       if (response.status !== 201 || !response.data.main) {
         throw new Error('Failed to create sentence');
