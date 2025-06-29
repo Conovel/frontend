@@ -14,7 +14,7 @@ export const Footer = () => {
         padding: '8px',
         justifyContent: 'space-between',
         boxSizing: 'border-box',
-        position: 'fixed',
+        position: 'sticky',
         left: 0,
         bottom: 0,
         zIndex: 2000,
