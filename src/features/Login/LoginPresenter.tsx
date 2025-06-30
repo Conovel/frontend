@@ -27,7 +27,6 @@ export const LoginPresenter = () => {
           ログイン
         </Typography>
         <>
-          {console.log('currentUser:', currentUser)}
           {currentUser ? (
             <>
               <img
