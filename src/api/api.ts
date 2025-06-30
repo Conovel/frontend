@@ -824,16 +824,12 @@ export class AuthApi extends BaseAPI {
     onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
     options?: RawAxiosRequestConfig
   ) {
-    // withAuthを一緒に実行（手動で修正）
+    // withAuthの処理は不要（リフレッシュ不要）
     const f = () =>
       AuthApiFp(this.configuration)
         .logOut(options)
         .then((request) => request(this.axios, this.basePath));
-    const r = () =>
-      AuthApiFp(this.configuration)
-        .refreshToken(options)
-        .then((request) => request(this.axios, this.basePath));
-    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
+    return f().catch(onFailure ?? (() => Promise.resolve()));
   }
 
   /**
