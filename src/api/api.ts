@@ -32,7 +32,23 @@ import {
   BaseAPI,
   operationServerMap,
 } from './base';
-import { withAuth } from './functional';
+import { withAuth } from './functional'; // 認証を一緒に実行（手動で追加）
+
+// リフレッシュを実行（手動で追加）
+export const createRefreshTokenRequest = (
+  configuration: Configuration | undefined,
+  axios: AxiosInstance,
+  basePath: string,
+  options?: RawAxiosRequestConfig,
+) => {
+  if (!configuration) {
+    throw new Error('Configuration is required');
+  }
+  return () =>
+    AuthApiFp(configuration)
+      .refreshToken(options)
+      .then((request) => request(axios, basePath));
+};
 
 /**
  *
@@ -824,7 +840,7 @@ export class AuthApi extends BaseAPI {
     onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
     options?: RawAxiosRequestConfig
   ) {
-    // withAuthの処理は不要（リフレッシュ不要）
+    // リフレッシュしないためwithAuthの処理は不要（手動で修正）
     const f = () =>
       AuthApiFp(this.configuration)
         .logOut(options)
@@ -848,10 +864,7 @@ export class AuthApi extends BaseAPI {
       AuthApiFp(this.configuration)
         .refreshToken(options)
         .then((request) => request(this.axios, this.basePath));
-    const r = () =>
-      AuthApiFp(this.configuration)
-        .refreshToken(options)
-        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
@@ -1020,10 +1033,7 @@ export class EvaluationsApi extends BaseAPI {
       EvaluationsApiFp(this.configuration)
         .evaluateSentence(evaluateSentence, options)
         .then((request) => request(this.axios, this.basePath));
-    const r = () =>
-      AuthApiFp(this.configuration)
-        .refreshToken(options)
-        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
@@ -1523,10 +1533,7 @@ export class SentencesApi extends BaseAPI {
       SentencesApiFp(this.configuration)
         .getSentenceById(sentenceId, options)
         .then((request) => request(this.axios, this.basePath));
-    const r = () =>
-      AuthApiFp(this.configuration)
-        .refreshToken(options)
-        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
@@ -1548,10 +1555,7 @@ export class SentencesApi extends BaseAPI {
       SentencesApiFp(this.configuration)
         .postSentence(postSentence, options)
         .then((request) => request(this.axios, this.basePath));
-    const r = () =>
-      AuthApiFp(this.configuration)
-        .refreshToken(options)
-        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
@@ -2136,10 +2140,7 @@ export class UsersApi extends BaseAPI {
       UsersApiFp(this.configuration)
         .deleteUserByMe(options)
         .then((request) => request(this.axios, this.basePath));
-    const r = () =>
-      AuthApiFp(this.configuration)
-        .refreshToken(options)
-        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
@@ -2187,10 +2188,7 @@ export class UsersApi extends BaseAPI {
       UsersApiFp(this.configuration)
         .getUserByMe(options)
         .then((request) => request(this.axios, this.basePath));
-    const r = () =>
-      AuthApiFp(this.configuration)
-        .refreshToken(options)
-        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
@@ -2210,10 +2208,7 @@ export class UsersApi extends BaseAPI {
       UsersApiFp(this.configuration)
         .getViewedNovelsByMe(options)
         .then((request) => request(this.axios, this.basePath));
-    const r = () =>
-      AuthApiFp(this.configuration)
-        .refreshToken(options)
-        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
@@ -2236,10 +2231,7 @@ export class UsersApi extends BaseAPI {
       UsersApiFp(this.configuration)
         .updateUserByMe(updateUser, options)
         .then((request) => request(this.axios, this.basePath));
-    const r = () =>
-      AuthApiFp(this.configuration)
-        .refreshToken(options)
-        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
