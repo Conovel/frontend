@@ -13,6 +13,9 @@ import {
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
 import { SentencesApi } from '../../api/api';
+import { axiosConfig } from '../../axiosConfig';
+
+const sentencesApi = new SentencesApi(axiosConfig);
 
 const carouselNavButtonStyle = {
   backgroundColor: '#BDBDBD',
@@ -157,7 +160,6 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       };
 
       // OpenAPIが生成したAPIクライアントを使用して新しい文章を投稿
-      const sentencesApi = new SentencesApi();
       const response = await sentencesApi.postSentence(postSentence);
 
       if (!response || response.status !== 201 || !response.data?.main) { // 認証のためにresponseのチェックを追加
