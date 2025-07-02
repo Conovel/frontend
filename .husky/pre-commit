@@ -24,20 +24,20 @@ if [ ! -d "node_modules" ]; then
   npm install
 fi
 
-# # Check if lint-staged is installed
-# if [ ! -f "node_modules/lint-staged/bin/lint-staged.js" ]; then
-#   echo "lint-staged not found. Installing..."
-#   npm install lint-staged
-# fi
+# Check if lint-staged is installed
+if [ ! -f "node_modules/lint-staged/bin/lint-staged.js" ]; then
+  echo "lint-staged not found. Installing..."
+  npm install lint-staged
+fi
 
-# # Run lint-staged with node
-# echo "Running lint-staged..."
-# node "$PROJECT_DIR/node_modules/lint-staged/bin/lint-staged.js"
+# Run lint-staged with node
+echo "Running lint-staged..."
+node "$PROJECT_DIR/node_modules/lint-staged/bin/lint-staged.js"
 
-# # Run format
-# echo "Running format..."
-# npm run format
+# Run format
+echo "Running format..."
+npm run format
 
-# # Run typecheck
-# echo "Running typecheck..."
-# npm run typecheck
+# Run typecheck
+echo "Running typecheck..."
+npm run typecheck
