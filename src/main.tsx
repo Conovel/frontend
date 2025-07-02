@@ -6,9 +6,7 @@ import './index.css';
 async function enableMocking() {
   if (!import.meta.env.PROD) {
     const { worker } = await import('./mock/browser');
-    await worker.start({
-      onUnhandledRequest: 'bypass', // 未処理のリクエストはそのまま通す
-    });
+    await worker.start();
   }
 }
 
