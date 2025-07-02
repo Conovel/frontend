@@ -105,7 +105,9 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     if (clickedSentence) {
       navigate(`/novelView/${titleId || '1'}/${clickedSentence.sentence_id}`);
     } else {
-      console.error(`Sentence with ID ${sentenceId} not found in childrenPanel`);
+      console.error(
+        `Sentence with ID ${sentenceId} not found in childrenPanel`,
+      );
       setError(`投稿ID ${sentenceId} が見つかりませんでした`);
     }
   };
@@ -297,7 +299,11 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         onClose={handleCloseError}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={handleCloseError} severity="error" sx={{ width: '100%' }}>
+        <Alert
+          onClose={handleCloseError}
+          severity='error'
+          sx={{ width: '100%' }}
+        >
           {error}
         </Alert>
       </Snackbar>
