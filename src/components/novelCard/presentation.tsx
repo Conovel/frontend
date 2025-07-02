@@ -18,12 +18,8 @@ interface NovelCardProps {
 const NovelCard = ({ novel }: NovelCardProps) => {
   const [openModal, setOpenModal] = useState(false);
 
-  const handleCardClick = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
+  const handleModalToggle = () => {
+    setOpenModal(!openModal);
   };
 
   return (
@@ -39,7 +35,7 @@ const NovelCard = ({ novel }: NovelCardProps) => {
             transition: 'all 0.2s ease-in-out',
           },
         }}
-        onClick={handleCardClick}
+        onClick={handleModalToggle}
       >
         <CardContent>
           <Typography
@@ -120,7 +116,7 @@ const NovelCard = ({ novel }: NovelCardProps) => {
           </Box>
         </CardContent>
       </Card>
-      <NovelInfo open={openModal} onClose={handleCloseModal} novel={novel} />
+      <NovelInfo open={openModal} onClose={handleModalToggle} novel={novel} />
     </Box>
   );
 };
