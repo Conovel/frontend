@@ -45,7 +45,7 @@ interface NovelViewPresentationProps {
   totalParallels: number;
   onParentClick: (clickedSentence: any) => void;
   onMainPanelNavigate: (direction: 'prev' | 'next') => void;
-  titleId?: string;
+  titleId: string;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -84,7 +84,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   onMainPanelNavigate,
   titleId,
 }) => {
-  const [start_index_main] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handlePost = async (sentenceRequest: CreateSentenceRequest) => {
@@ -207,7 +206,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
             <Box sx={{ mb: 0.5 }}>
               <MainPanel
                 mainPanel={mainPanel}
-                startIndex={start_index_main}
+                startIndex={0}
                 visibleTextCount={3}
                 evaluation_good_count={evaluation_good_count_main}
                 setEvaluation_good_count={setEvaluation_good_count_main}

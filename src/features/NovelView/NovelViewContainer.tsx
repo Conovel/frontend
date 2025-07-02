@@ -223,7 +223,7 @@ export const NovelViewContainer = () => {
       totalParallels={parallelSentences.length}
       onParentClick={handleParentClick}
       onMainPanelNavigate={handleMainPanelNavigate}
-      titleId={titleId}
+      titleId={titleId || '1'}
     />
   );
 };
