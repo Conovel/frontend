@@ -19,7 +19,7 @@ interface NovelInfoProps {
 }
 
 const modalStyle = {
-  position: 'absolute' as const,
+  position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -48,27 +48,34 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
     <Modal open={open} onClose={onClose}>
       <Fade in={open}>
         <Box sx={modalStyle}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-            <Typography variant="h4" component="h2" sx={{ flex: 1, mr: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              mb: 2,
+            }}
+          >
+            <Typography variant='h4' component='h2' sx={{ flex: 1, mr: 2 }}>
               {novel.title}
             </Typography>
             <Button
-              variant="contained"
+              variant='contained'
               startIcon={<OpenInNewIcon />}
               onClick={handleViewDetail}
-              size="small"
+              size='small'
             >
               詳細を見る
             </Button>
           </Box>
-          
-          <Typography variant="body1" paragraph>
+
+          <Typography variant='body1' paragraph>
             {novel.main_copy}
           </Typography>
 
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
             {novel.chips.map((chip, index) => (
-              <Chip key={index} label={chip.label} variant="outlined" />
+              <Chip key={index} label={chip.label} variant='outlined' />
             ))}
           </Box>
 
@@ -86,19 +93,23 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
               {novel.avatar.text}
             </Avatar>
             <Box>
-              <Typography variant="subtitle1">
-                {novel.avatar.alt}
-              </Typography>
+              <Typography variant='subtitle1'>{novel.avatar.alt}</Typography>
             </Box>
           </Box>
 
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
             {novel.tags.map((tag, index) => (
-              <Chip key={index} label={tag.label} size="small" />
+              <Chip key={index} label={tag.label} size='small' />
             ))}
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Typography sx={{ display: 'flex', alignItems: 'center' }}>
                 <VisibilityIcon sx={{ mr: 0.5 }} />
