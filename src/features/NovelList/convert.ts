@@ -8,7 +8,7 @@ export const convertNovelListResponse = (
   if (!response || !Array.isArray(response)) {
     return [];
   }
-  
+
   const converted = response.map((res) => {
     return {
       title_id: res.title_id || 0,
