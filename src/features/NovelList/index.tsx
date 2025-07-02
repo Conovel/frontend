@@ -15,14 +15,30 @@ const NovelList = () => {
     const fetchNovels = async () => {
       try {
         const response = await novelsApi.getNovels();
-        // response.dataが配列であることを確認
+        // response.dataが配列であることを確認し、undefined/nullの場合は空配列として扱う
         if (Array.isArray(response.data)) {
           const convertedResponse: NovelListItem[] = convertNovelListResponse(
             response.data,
           );
           setResponseNovels(convertedResponse);
+        } else if (response.data === undefined || response.data === null) {
+          // undefined/nullの場合は空配列として扱う
+          console.warn(
+            'Response data is undefined/null, treating as empty array',
+          );
+          setResponseNovels([]);
+        } else if (
+          response.data &&
+          typeof response.data === 'object' &&
+          'error' in response.data
+        ) {
+          // エラーレスポンスの場合
+          console.error('API Error:', (response.data as any).error);
+          setResponseNovels([]); // エラー時も空配列を設定
         } else {
-          console.error('Invalid response format:', response.data);
+          // 予期しない形式の場合
+          console.error('Unexpected response format:', response.data);
+          setResponseNovels([]); // 予期しない形式でも空配列を設定
         }
       } catch (error) {
         // TODO: エラー時の対応について要検討（エラーがわかるような画面にするかなど）
