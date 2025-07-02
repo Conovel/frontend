@@ -64,7 +64,7 @@ interface ChildrenPanelProps {
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
   novel: NovelProps;
   textIndex: number;
-  titleId?: string;
+  titleId: string;
 }
 
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
