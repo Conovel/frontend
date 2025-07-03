@@ -631,7 +631,7 @@ export const AuthApiAxiosParamCreator = function (
   return {
     /**
      *
-     * @summary ログアウト（認証あり）
+     * @summary ログアウト
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -719,7 +719,7 @@ export const AuthApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary ログアウト（認証あり）
+     * @summary ログアウト
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -783,7 +783,7 @@ export const AuthApiFactory = function (
   return {
     /**
      *
-     * @summary ログアウト（認証あり）
+     * @summary ログアウト
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -815,7 +815,7 @@ export const AuthApiFactory = function (
 export class AuthApi extends BaseAPI {
   /**
    *
-   * @summary ログアウト（認証あり）
+   * @summary ログアウト
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof AuthApi

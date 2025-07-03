@@ -27,11 +27,7 @@ import {
 } from './common';
 import type { RequestArgs } from './base';
 // @ts-ignore
-import {
-  BASE_PATH,
-  BaseAPI,
-  operationServerMap,
-} from './base';
+import { BASE_PATH, BaseAPI, operationServerMap } from './base';
 import { withAuth } from './functional'; // 認証を一緒に実行（手動で追加）
 
 // リフレッシュを実行（手動で追加）
@@ -642,7 +638,7 @@ export const AuthApiAxiosParamCreator = function (
   return {
     /**
      *
-     * @summary ログアウト（認証あり）
+     * @summary ログアウト
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -730,7 +726,7 @@ export const AuthApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary ログアウト（認証あり）
+     * @summary ログアウト
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -799,7 +795,7 @@ export const AuthApiFactory = function (
   return {
     /**
      *
-     * @summary ログアウト（認証あり）
+     * @summary ログアウト
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -831,21 +827,15 @@ export const AuthApiFactory = function (
 export class AuthApi extends BaseAPI {
   /**
    *
-   * @summary ログアウト（認証あり）
+   * @summary ログアウト
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof AuthApi
    */
-  public logOut(
-    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
-    options?: RawAxiosRequestConfig
-  ) {
-    // リフレッシュしないためwithAuthの処理は不要（手動で修正）
-    const f = () =>
-      AuthApiFp(this.configuration)
-        .logOut(options)
-        .then((request) => request(this.axios, this.basePath));
-    return f().catch(onFailure ?? (() => Promise.resolve()));
+  public logOut(options?: RawAxiosRequestConfig) {
+    return AuthApiFp(this.configuration)
+      .logOut(options)
+      .then((request) => request(this.axios, this.basePath));
   }
 
   /**
@@ -857,14 +847,19 @@ export class AuthApi extends BaseAPI {
    */
   public refreshToken(
     onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
-    options?: RawAxiosRequestConfig
+    options?: RawAxiosRequestConfig,
   ) {
     // withAuthを一緒に実行（手動で修正）
     const f = () =>
       AuthApiFp(this.configuration)
         .refreshToken(options)
         .then((request) => request(this.axios, this.basePath));
-    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
@@ -956,13 +951,10 @@ export const EvaluationsApiFp = function (configuration?: Configuration) {
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ViewEvaluation>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.evaluateSentence(
-          evaluateSentence,
-          {
-            ...options,
-            withCredentials: true,
-          },
-        ); // 認証時にクッキーを送る（手動で修正）
+        await localVarAxiosParamCreator.evaluateSentence(evaluateSentence, {
+          ...options,
+          withCredentials: true,
+        }); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['EvaluationsApi.evaluateSentence']?.[
@@ -1026,14 +1018,19 @@ export class EvaluationsApi extends BaseAPI {
   public evaluateSentence(
     evaluateSentence: EvaluateSentence,
     onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
-    options?: RawAxiosRequestConfig
+    options?: RawAxiosRequestConfig,
   ) {
     // withAuthを一緒に実行（手動で修正）
     const f = () =>
       EvaluationsApiFp(this.configuration)
         .evaluateSentence(evaluateSentence, options)
         .then((request) => request(this.axios, this.basePath));
-    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
@@ -1526,14 +1523,19 @@ export class SentencesApi extends BaseAPI {
   public getSentenceById(
     sentenceId: number,
     onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
-    options?: RawAxiosRequestConfig
+    options?: RawAxiosRequestConfig,
   ) {
     // withAuthを一緒に実行（手動で修正）
     const f = () =>
       SentencesApiFp(this.configuration)
         .getSentenceById(sentenceId, options)
         .then((request) => request(this.axios, this.basePath));
-    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
@@ -1548,14 +1550,19 @@ export class SentencesApi extends BaseAPI {
   public postSentence(
     postSentence: PostSentence,
     onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
-    options?: RawAxiosRequestConfig
+    options?: RawAxiosRequestConfig,
   ) {
     // withAuthを一緒に実行（手動で修正）
     const f = () =>
       SentencesApiFp(this.configuration)
         .postSentence(postSentence, options)
         .then((request) => request(this.axios, this.basePath));
-    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
@@ -1848,8 +1855,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>
     > {
-      const localVarAxiosArgs =
-        await localVarAxiosParamCreator.deleteUserByMe({
+      const localVarAxiosArgs = await localVarAxiosParamCreator.deleteUserByMe({
         ...options,
         withCredentials: true,
       }); // 認証時にクッキーを送る（手動で修正）
@@ -1971,9 +1977,9 @@ export const UsersApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.getViewedNovelsByMe({
-        ...options,
-        withCredentials: true,
-      }); // 認証時にクッキーを送る（手動で修正）
+          ...options,
+          withCredentials: true,
+        }); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['UsersApi.getViewedNovelsByMe']?.[
@@ -2133,14 +2139,19 @@ export class UsersApi extends BaseAPI {
    */
   public deleteUserByMe(
     onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
-    options?: RawAxiosRequestConfig
+    options?: RawAxiosRequestConfig,
   ) {
     // withAuthを一緒に実行（手動で修正）
     const f = () =>
       UsersApiFp(this.configuration)
         .deleteUserByMe(options)
         .then((request) => request(this.axios, this.basePath));
-    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
@@ -2181,14 +2192,19 @@ export class UsersApi extends BaseAPI {
    */
   public getUserByMe(
     onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
-    options?: RawAxiosRequestConfig
+    options?: RawAxiosRequestConfig,
   ) {
     // withAuthを一緒に実行（手動で修正）
     const f = () =>
       UsersApiFp(this.configuration)
         .getUserByMe(options)
         .then((request) => request(this.axios, this.basePath));
-    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
@@ -2201,17 +2217,21 @@ export class UsersApi extends BaseAPI {
    */
   public getViewedNovelsByMe(
     onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
-    options?: RawAxiosRequestConfig
+    options?: RawAxiosRequestConfig,
   ) {
     // withAuthを一緒に実行（手動で修正）
     const f = () =>
       UsersApiFp(this.configuration)
         .getViewedNovelsByMe(options)
         .then((request) => request(this.axios, this.basePath));
-    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
-
 
   /**
    *
@@ -2224,14 +2244,19 @@ export class UsersApi extends BaseAPI {
   public updateUserByMe(
     updateUser: UpdateUser,
     onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
-    options?: RawAxiosRequestConfig
+    options?: RawAxiosRequestConfig,
   ) {
     // withAuthを一緒に実行（手動で修正）
     const f = () =>
       UsersApiFp(this.configuration)
         .updateUserByMe(updateUser, options)
         .then((request) => request(this.axios, this.basePath));
-    const r = createRefreshTokenRequest(this.configuration, this.axios, this.basePath, options);
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
     return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }

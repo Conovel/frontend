@@ -162,7 +162,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       // OpenAPIが生成したAPIクライアントを使用して新しい文章を投稿
       const response = await sentencesApi.postSentence(postSentence);
 
-      if (!response || response.status !== 201 || !response.data?.main) { // 認証のためにresponseのチェックを追加
+      if (!response || response.status !== 201 || !response.data?.main) {
+        // 認証のためにresponseのチェックを追加
         throw new Error('Failed to create sentence');
       }
 
