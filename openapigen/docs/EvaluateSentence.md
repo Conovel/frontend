@@ -2,10 +2,10 @@
 
 ## Properties
 
-| Name            | Type       | Description        | Notes                             |
-| --------------- | ---------- | ------------------ | --------------------------------- |
-| **sentence_id** | **number** | 評価対象の投稿のID | [optional] [default to undefined] |
-| **evaluation**  | **string** | 評価の種類         | [optional] [default to undefined] |
+| Name           | Type       | Description        | Notes                             |
+| -------------- | ---------- | ------------------ | --------------------------------- |
+| **sentenceId** | **number** | 評価対象の投稿のID | [optional] [default to undefined] |
+| **evaluation** | **string** | 評価の種類         | [optional] [default to undefined] |
 
 ## Example
 
@@ -13,7 +13,7 @@
 import { EvaluateSentence } from "./api";
 
 const instance: EvaluateSentence = {
-  sentence_id,
+  sentenceId,
   evaluation,
 };
 ```

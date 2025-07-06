@@ -2,12 +2,12 @@
 
 ## Properties
 
-| Name                   | Type        | Description               | Notes                             |
-| ---------------------- | ----------- | ------------------------- | --------------------------------- |
-| **user_name**          | **string**  | ユーザーのペンネーム      | [optional] [default to undefined] |
-| **nick_name**          | **string**  | ユーザーのニックネーム    | [optional] [default to undefined] |
-| **is_anonymous**       | **boolean** | 匿名設定                  | [optional] [default to undefined] |
-| **profile_icon_image** | **string**  | ユーザーアイコン画像のurl | [optional] [default to undefined] |
+| Name                 | Type        | Description               | Notes                             |
+| -------------------- | ----------- | ------------------------- | --------------------------------- |
+| **userName**         | **string**  | ユーザーのペンネーム      | [optional] [default to undefined] |
+| **nickName**         | **string**  | ユーザーのニックネーム    | [optional] [default to undefined] |
+| **isAnonymous**      | **boolean** | 匿名設定                  | [optional] [default to undefined] |
+| **profileIconImage** | **string**  | ユーザーアイコン画像のurl | [optional] [default to undefined] |
 
 ## Example
 
@@ -15,10 +15,10 @@
 import { UpdateUser } from "./api";
 
 const instance: UpdateUser = {
-  user_name,
-  nick_name,
-  is_anonymous,
-  profile_icon_image,
+  userName,
+  nickName,
+  isAnonymous,
+  profileIconImage,
 };
 ```
 

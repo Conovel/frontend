@@ -2,10 +2,10 @@
 
 All URIs are relative to _/v1_
 
-| Method                            | HTTP request               | Description          |
-| --------------------------------- | -------------------------- | -------------------- |
-| [**getNovelById**](#getnovelbyid) | **GET** /novels/{title_id} | IDで小説の概要を取得 |
-| [**getNovels**](#getnovels)       | **GET** /novels            | 小説リストを取得     |
+| Method                            | HTTP request              | Description          |
+| --------------------------------- | ------------------------- | -------------------- |
+| [**getNovelById**](#getnovelbyid) | **GET** /novels/{titleId} | IDで小説の概要を取得 |
+| [**getNovels**](#getnovels)       | **GET** /novels           | 小説リストを取得     |
 
 # **getNovelById**
 
