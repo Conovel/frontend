@@ -1,43 +1,6 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-# Get the directory where this script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
-
-# Change to the project directory
-cd "$PROJECT_DIR"
-
-# Set environment variables for WSL
-export PATH="/usr/bin:/usr/local/bin:/usr/local/nodejs/bin:$PATH"
-export NODE_PATH="$PROJECT_DIR/node_modules"
-
-# Debug information
-echo "Current directory: $(pwd)"
-echo "Node version: $(node --version)"
-echo "NPM version: $(npm --version)"
-echo "NPX version: $(npx --version)"
-
-# Check if node_modules exists
-if [ ! -d "node_modules" ]; then
-  echo "node_modules not found. Running npm install..."
-  npm install
-fi
-
-# Check if lint-staged is installed
-if [ ! -f "node_modules/lint-staged/bin/lint-staged.js" ]; then
-  echo "lint-staged not found. Installing..."
-  npm install lint-staged
-fi
-
-# Run lint-staged with node
-echo "Running lint-staged..."
-node "$PROJECT_DIR/node_modules/lint-staged/bin/lint-staged.js"
-
-# Run format
-echo "Running format..."
+npx lint-staged
 npm run format
-
-# Run typecheck
-echo "Running typecheck..."
 npm run typecheck
