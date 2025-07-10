@@ -1298,8 +1298,8 @@ export const SentencesApiAxiosParamCreator = function (
     ): Promise<RequestArgs> => {
       // verify required parameter 'sentenceId' is not null or undefined
       assertParamExists('getSentenceById', 'sentenceId', sentenceId);
-      const localVarPath = `/sentences/{sentence_id}`.replace(
-        `{${'sentence_id'}}`,
+      const localVarPath = `/sentences/{sentenceId}`.replace(
+        `{${'sentenceId'}}`,
         encodeURIComponent(String(sentenceId)),
       );
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1627,7 +1627,7 @@ export const UsersApiAxiosParamCreator = function (
     ): Promise<RequestArgs> => {
       // verify required parameter 'userId' is not null or undefined
       assertParamExists('getNovelsByUserId', 'userId', userId);
-      const localVarPath = `/users/{userId}/posted_novels`.replace(
+      const localVarPath = `/users/{userId}/postedNovels`.replace(
         `{${'userId'}}`,
         encodeURIComponent(String(userId)),
       );
@@ -1754,7 +1754,7 @@ export const UsersApiAxiosParamCreator = function (
     getViewedNovelsByMe: async (
       options: RawAxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      const localVarPath = `/users/me/viewed_novels`;
+      const localVarPath = `/users/me/viewedNovels`;
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
       let baseOptions;
