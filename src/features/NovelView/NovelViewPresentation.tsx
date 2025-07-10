@@ -134,7 +134,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           {parentPanel.slice(0, -1).map((novel, index) => {
             const novelWithRelations: NovelProps = {
               ...novel,
-              title_id: novel.sentence_id,
+              title_id: novel.title_id,
               children: [],
               main: [],
               parent: [],
