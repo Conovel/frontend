@@ -1,5 +1,6 @@
 import NovelViewPresentation from './NovelViewPresentation';
 import { useState, useCallback, useEffect } from 'react';
+import { Sentence } from '../../types/types';
 import {
   mockContainerData,
   buildInitialData,
@@ -53,7 +54,7 @@ export const NovelViewContainer = () => {
 
   // パラレル投稿管理用の状態
   const [currentParallelIndex, setCurrentParallelIndex] = useState(0);
-  const [parallelSentences, setParallelSentences] = useState<any[]>([]);
+  const [parallelSentences, setParallelSentences] = useState<Sentence[]>([]);
 
   // URLが変更されたときにデータを更新
   useEffect(() => {
