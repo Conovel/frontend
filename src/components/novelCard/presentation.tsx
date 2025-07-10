@@ -13,13 +13,22 @@ import { NovelInfo } from '../../features/NovelInfo';
 
 interface NovelCardProps {
   novel: NovelProps;
+  onClick?: () => void;
 }
 
-const NovelCard = ({ novel }: NovelCardProps) => {
+const NovelCard = ({ novel, onClick }: NovelCardProps) => {
   const [openModal, setOpenModal] = useState(false);
 
   const handleModalToggle = () => {
     setOpenModal(!openModal);
+  };
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else {
+      handleModalToggle();
+    }
   };
 
   return (
@@ -35,7 +44,7 @@ const NovelCard = ({ novel }: NovelCardProps) => {
             transition: 'all 0.2s ease-in-out',
           },
         }}
-        onClick={handleModalToggle}
+        onClick={handleClick}
       >
         <CardContent>
           <Typography
