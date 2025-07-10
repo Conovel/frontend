@@ -15,18 +15,12 @@ const NovelList = () => {
     const fetchNovels = async () => {
       try {
         const response = await novelsApi.getNovels();
-        // response.dataが配列であることを確認し、undefined/nullの場合は空配列として扱う
+        // response.dataが配列であることを確認
         if (Array.isArray(response.data)) {
           const convertedResponse: NovelListItem[] = convertNovelListResponse(
             response.data,
           );
           setResponseNovels(convertedResponse);
-        } else if (response.data === undefined || response.data === null) {
-          // undefined/nullの場合は空配列として扱う
-          console.warn(
-            'Response data is undefined/null, treating as empty array',
-          );
-          setResponseNovels([]);
         } else if (
           response.data &&
           typeof response.data === 'object' &&
