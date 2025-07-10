@@ -2,14 +2,9 @@ import { NovelListItem as NovelListItemApi } from '../../api/api';
 import { NovelListItem } from '../../types/types';
 
 export const convertNovelListResponse = (
-  response: NovelListItemApi[] | undefined | null,
+  response: NovelListItemApi[],
 ): NovelListItem[] => {
-  // undefined/nullの場合は空配列を返す
-  if (!response || !Array.isArray(response)) {
-    return [];
-  }
-
-  const converted = response.map((res) => {
+  return response.map((res) => {
     return {
       title_id: res.title_id || 0,
       title: res.title || '',
@@ -26,6 +21,4 @@ export const convertNovelListResponse = (
       updated_at: res.updated_at || '',
     };
   });
-
-  return converted;
 };

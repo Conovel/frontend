@@ -15,28 +15,13 @@ const NovelList = () => {
     const fetchNovels = async () => {
       try {
         const response = await novelsApi.getNovels();
-        // response.dataが配列であることを確認
-        if (Array.isArray(response.data)) {
-          const convertedResponse: NovelListItem[] = convertNovelListResponse(
-            response.data,
-          );
-          setResponseNovels(convertedResponse);
-        } else if (
-          response.data &&
-          typeof response.data === 'object' &&
-          'error' in response.data
-        ) {
-          // エラーレスポンスの場合
-          console.error('API Error:', (response.data as any).error);
-          setResponseNovels([]); // エラー時も空配列を設定
-        } else {
-          // 予期しない形式の場合
-          console.error('Unexpected response format:', response.data);
-          setResponseNovels([]); // 予期しない形式でも空配列を設定
-        }
+        const convertedResponse: NovelListItem[] = convertNovelListResponse(
+          response.data,
+        );
+        setResponseNovels(convertedResponse);
       } catch (error) {
-        // TODO: エラー時の対応について要検討（エラーがわかるような画面にするかなど）
-        console.error('Error fetching sentences:', error);
+        console.error('Error fetching novels:', error);
+        setResponseNovels([]); // エラー時は空配列を設定
       }
     };
 
