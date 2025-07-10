@@ -103,7 +103,9 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       (sentence: Sentence) => sentence.sentence_id === sentenceId,
     );
     if (clickedSentence) {
-      navigate(`/novelView/${titleId || '1'}/${clickedSentence.sentence_id}`);
+      const defaultTitleId = '1';
+      const targetTitleId = titleId || defaultTitleId;
+      navigate(`/novelView/${targetTitleId}/${clickedSentence.sentence_id}`);
     } else {
       console.error(
         `Sentence with ID ${sentenceId} not found in childrenPanel`,
