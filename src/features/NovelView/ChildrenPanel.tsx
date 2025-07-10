@@ -12,7 +12,7 @@ import {
 } from '../../types/types';
 import { EditPost } from '../EditPost';
 import { SentencesApi } from '../../api/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 const carouselNavButtonStyle = {
   backgroundColor: '#BDBDBD',

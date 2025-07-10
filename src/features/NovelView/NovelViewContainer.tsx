@@ -7,14 +7,16 @@ import {
   addNewSentence,
   getParallelSentences,
 } from './mocks/data';
-import { useParams, useNavigate } from 'react-router-dom';
 
 export const NovelViewContainer = () => {
-  const { titleId, sentenceId } = useParams<{
-    titleId: string;
-    sentenceId: string;
-  }>();
-  const navigate = useNavigate();
+  // URLパラメータの代わりにpropsまたはstateで管理
+  const titleId = '1'; // デフォルト値
+  const sentenceId = INITIAL_SENTENCE_ID.toString(); // デフォルト値
+
+  // navigateの代わりにconsole.logでデバッグ出力
+  const navigate = (path: string, options?: any) => {
+    console.log('Navigation requested:', path, options);
+  };
 
   const [start_index_parent, setStart_index_parent] = useState(0);
   const [start_index_children, setStart_index_children] = useState(0);
