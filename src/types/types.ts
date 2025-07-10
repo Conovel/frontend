@@ -172,3 +172,6 @@ export interface PostSentence {
   parent_updated_at: string;
   sentence: string;
 }
+
+// ナビゲーション方向の型定義
+export type NavigationDirection = 'prev' | 'next';

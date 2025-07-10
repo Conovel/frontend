@@ -5,7 +5,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import ThumbUpButton from '../../components/buttonicon/ThumbsUpButton';
 import CommentButton from '../../components/buttonicon/CommentButton';
 import NextPlanButton from '../../components/buttonicon/NextPlanButton';
-import { Sentence } from '../../types/types';
+import { Sentence, NavigationDirection } from '../../types/types';
 
 interface MainPanelProps {
   mainPanel: Sentence[];
@@ -17,7 +17,7 @@ interface MainPanelProps {
   setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
-  onNavigate?: (direction: 'prev' | 'next') => void;
+  onNavigate?: (direction: NavigationDirection) => void;
   hasParallels?: boolean;
   onPrevParallel?: () => void;
   onNextParallel?: () => void;
@@ -38,10 +38,9 @@ const MainPanel: React.FC<MainPanelProps> = ({
   onPrevParallel,
   onNextParallel,
 }) => {
-  const [] = useState(false);
   const [localStartIndex, setLocalStartIndex] = useState(startIndex);
 
-  const handleNavigation = (direction: 'prev' | 'next') => {
+  const handleNavigation = (direction: NavigationDirection) => {
     if (onNavigate) {
       onNavigate(direction);
     } else {
