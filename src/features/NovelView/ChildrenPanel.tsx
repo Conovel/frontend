@@ -185,7 +185,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
           color: '',
           text: '',
         },
-        sentence_id: apiSentence.sentence_id || 0,
+        sentence_id: apiSentence.sentenceId || 0,
         sentence_user_count: 0,
         sentence_hierarchy_count: 0,
         sentence: apiSentence.sentence || '',
@@ -195,8 +195,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         profile_icon_image: '',
         evaluation_good_count: 0,
         evaluation_stay_count: 0,
-        created_at: apiSentence.created_at || '',
-        updated_at: apiSentence.updated_at || '',
+        created_at: apiSentence.createdAt || '',
+        updated_at: apiSentence.updatedAt || '',
       };
 
       // mainPanelを更新
