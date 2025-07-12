@@ -1,38 +1,16 @@
-import { NovelProps } from '../../../components/novelCard/presentation';
-import { Sentence } from '../../../types/sentences';
+import { Sentence } from '../../../api';
 
-export const mockParentPanel: NovelProps[] = [
+export const mockParentPanel: Sentence[] = [
   {
-    title: '',
-    textIndex: 0,
-    main_copy: '',
-    overview: '',
-    popular: false,
-    newArrival: false,
-    avatar: {
-      src: '',
-      alt: '',
-      color: '',
-      text: '',
-    },
-    author_user_name: '',
-    chips: [],
-    tags: [],
-    reader_count: 0,
-    updated_at: new Date().toISOString(),
-    sentence_user_count: 0,
-    sentence_hierarchy_count: 0,
+    sentenceUserId: 0,
+    sentenceUserName: '',
+    updatedAt: new Date().toISOString(),
     sentence: '',
-    sentence_id: 0,
-    userId: 0,
-    userName: '',
-    profile_icon_image: '',
-    evaluation_good_count: 0,
-    evaluation_stay_count: 0,
-    children: [],
-    parent: [],
-    main: [],
-    created_at: new Date().toISOString(),
+    sentenceId: 0,
+    profileIconImage: '',
+    evaluationGoodCount: 0,
+    evaluationStayCount: 0,
+    createdAt: new Date().toISOString(),
   },
 ];
 

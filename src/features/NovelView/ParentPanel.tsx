@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import NovelCard from '../../components/novelCard/NovelCard';
-import { Sentence } from '../../types/sentences';
+import { Sentence } from '../../api/api';
 
 interface ParentPanelProps {
   parentPanel: Sentence;
@@ -45,12 +45,12 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
           key={startIndex}
           index={0}
           textIndex={startIndex}
-          sentence={parentPanel.sentence}
+          sentence={parentPanel.sentence || ''}
           novel={{
-            sentenceId: parentPanel.sentenceId,
-            sentence: parentPanel.sentence,
+            sentenceId: parentPanel.sentenceId || 0,
+            sentence: parentPanel.sentence || '',
             createdAt: '',
-            updatedAt: parentPanel.updatedAt,
+            updatedAt: parentPanel.updatedAt || '',
             sentenceUserId: 0,
             sentenceUserName: '',
             profileIconImage: '',

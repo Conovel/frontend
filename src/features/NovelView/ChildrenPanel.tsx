@@ -9,7 +9,6 @@ import { EditPost } from '../EditPost';
 import { PostSentence, SentencesApi } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
 import { Sentence } from '../../types/sentences';
-import { NovelProps } from '../../components/novelCard/presentation';
 
 const sentencesApi = new SentencesApi(axiosConfig);
 
@@ -80,7 +79,7 @@ interface ChildrenPanelProps {
   setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
-  novel: NovelProps;
+  novel: Sentence;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   textIndex: number;
 }
