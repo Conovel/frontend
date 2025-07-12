@@ -15,6 +15,7 @@ const NovelList = () => {
     const fetchNovels = async () => {
       try {
         const response = await novelsApi.getNovels();
+
         const convertedResponse: NovelListItem[] = convertNovelListResponse(
           response.data,
         );

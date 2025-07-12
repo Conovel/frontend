@@ -1,61 +1,14 @@
-import {
-  Box,
-  Typography,
-  Container,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Divider,
-} from '@mui/material';
-import { GoogleLogin } from '@react-oauth/google';
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Box, Typography, Container, Button, Divider } from '@mui/material';
+import { useAuth } from '../../providers/auth';
+import { Link } from 'react-router';
 
 export const LoginPresenter = () => {
-  const [loginError, setLoginError] = useState<string | null>(null);
-  const [isFirstTimeLoginModalOpen, setIsFirstTimeLoginModalOpen] =
-    useState(false);
-  const [username, setUsername] = useState('');
-  const navigate = useNavigate();
+  const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
+  const { currentUser, logout } = useAuth();
 
-  // デモ用の簡易的な実装
-  const handleGoogleSuccess = (credentialResponse: any) => {
-    // 実際の認証処理はコメントアウト
-    // const { credential } = credentialResponse;
-    // TODO: バックエンドAPIとの連携
-    console.log('ログイン成功（デモ）:', credentialResponse);
-
-    // 通常のログイン後の処理
-    // 初回ログインの場合はモーダルを表示する
-    setIsFirstTimeLoginModalOpen(true);
-
-    // ログイン成功後にホームページに遷移
-    navigate('/');
-  };
-
-  const handleGoogleError = () => {
-    setLoginError('ログインに失敗しました。もう一度お試しください。');
-  };
-
-  const handleCompleteOnboarding = () => {
-    // ユーザー名など初回設定情報を保存する処理をここに追加
-    console.log('初回設定が完了しました。ユーザー名:', username);
-    setIsFirstTimeLoginModalOpen(false);
-
-    // ログイン完了後にホームページなどに遷移
-    navigate('/');
-  };
-
-  const handleSkipOnboarding = () => {
-    setIsFirstTimeLoginModalOpen(false);
-    navigate('/');
-  };
-
-  const openFirstTimeLoginModal = () => {
-    setIsFirstTimeLoginModalOpen(true);
+  const handleGoogleAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    window.location.href = `${authBaseUrl}/auth/google_oauth2`;
   };
 
   return (
@@ -66,73 +19,56 @@ export const LoginPresenter = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 3,
+          gap: 2,
+          textAlign: 'center',
         }}
       >
         <Typography variant='h4' component='h1'>
           ログイン
         </Typography>
+        <>
+          {currentUser ? (
+            <>
+              <img
+                src={currentUser.profileIconImage}
+                alt='プロフィールアイコン'
+                style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+              />
+              <p>
+                ようこそ、{currentUser.userName}さん！
+                <br />
+                （ユーザーID：{currentUser.userId}）
+              </p>
+              <Button
+                variant='outlined'
+                color='primary'
+                onClick={logout}
+                sx={{ width: '240px' }}
+              >
+                ログアウト
+              </Button>
 
-        <GoogleLogin
-          onSuccess={handleGoogleSuccess}
-          onError={handleGoogleError}
-          useOneTap
-          // デモ用の設定
-          text='signin_with'
-          theme='outline'
-        />
+              <Divider sx={{ width: '100%', my: 2 }}>または</Divider>
 
-        <Divider sx={{ width: '100%', my: 2 }}>または</Divider>
-
-        <Button
-          variant='outlined'
-          color='primary'
-          onClick={openFirstTimeLoginModal}
-          sx={{ width: '240px' }}
-        >
-          初回ログイン
-        </Button>
-
-        {loginError && <Typography color='error'>{loginError}</Typography>}
+              <Link to='/account' className='btn btn-accent gap-2 w-full'>
+                マイページへ
+              </Link>
+            </>
+          ) : (
+            <>
+              <p>ログインまたは新規登録してください</p>
+              <Button
+                variant='outlined'
+                color='primary'
+                onClick={handleGoogleAuth}
+                sx={{ width: '240px' }}
+              >
+                Googleログイン
+              </Button>
+            </>
+          )}
+        </>
       </Box>
-
-      {/* 初回ログイン用モーダル */}
-      <Dialog
-        open={isFirstTimeLoginModalOpen}
-        onClose={() => setIsFirstTimeLoginModalOpen(false)}
-      >
-        <DialogTitle>ようこそ！初回設定</DialogTitle>
-        <DialogContent>
-          <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 3 }}>
-            <Typography>
-              Conovelへようこそ！より良い体験のために、いくつかの設定をお願いします。
-            </Typography>
-
-            <TextField
-              label='ユーザー名'
-              variant='outlined'
-              fullWidth
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              helperText='あなたの活動に表示される名前です'
-            />
-
-            <Typography variant='body2' color='text.secondary'>
-              この設定はあとからいつでも変更できます。
-            </Typography>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleSkipOnboarding}>スキップ</Button>
-          <Button
-            onClick={handleCompleteOnboarding}
-            variant='contained'
-            disabled={!username.trim()}
-          >
-            設定を完了
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Container>
   );
 };
