@@ -6,7 +6,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
-import { SentencesApi } from '../../api/api';
+import { PostSentence, SentencesApi } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
 import { Sentence } from '../../types/sentences';
 import { NovelProps } from '../../components/novelCard/presentation';
@@ -59,13 +59,6 @@ const fabStyle = {
     backgroundColor: '#0E4DC7',
   },
 };
-
-// APIに送信するための型 (OpenAPI仕様に合わせる)
-export interface PostSentence {
-  parent_sentence_id: number;
-  parent_updated_at: string;
-  sentence: string;
-}
 
 // リクエスト用の新しい型
 export interface CreateSentenceRequest {
@@ -161,8 +154,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
 
       // APIに送信するためのPostSentenceオブジェクトを作成
       const postSentence: PostSentence = {
-        parent_sentence_id: parentId,
-        parent_updated_at: parentUpdatedAt,
+        parentSentenceId: parentId,
+        parentUpdatedAt: parentUpdatedAt,
         sentence: sentenceRequest.text,
       };
 
