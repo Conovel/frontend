@@ -7,20 +7,11 @@ import NovelCard from '../../components/novelCard/NovelCard';
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
 import { SentencesApi } from '../../api/api';
+import { axiosConfig } from '../../axiosConfig';
 import { Sentence } from '../../types/sentences';
 import { NovelProps } from '../../components/novelCard/presentation';
 
-// APIに送信するための型 (OpenAPI仕様に合わせる)
-export interface PostSentence {
-  parent_sentence_id: number;
-  parent_updated_at: string;
-  sentence: string;
-}
-
-// リクエスト用の新しい型
-export interface CreateSentenceRequest {
-  text: string;
-}
+const sentencesApi = new SentencesApi(axiosConfig);
 
 const carouselNavButtonStyle = {
   backgroundColor: '#BDBDBD',
@@ -68,6 +59,18 @@ const fabStyle = {
     backgroundColor: '#0E4DC7',
   },
 };
+
+// APIに送信するための型 (OpenAPI仕様に合わせる)
+export interface PostSentence {
+  parent_sentence_id: number;
+  parent_updated_at: string;
+  sentence: string;
+}
+
+// リクエスト用の新しい型
+export interface CreateSentenceRequest {
+  text: string;
+}
 
 interface ChildrenPanelProps {
   childrenPanel: Sentence[];
@@ -164,25 +167,25 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       };
 
       // OpenAPIが生成したAPIクライアントを使用して新しい文章を投稿
-      const sentencesApi = new SentencesApi();
       const response = await sentencesApi.postSentence(postSentence);
 
-      if (response.status !== 201 || !response.data.main) {
+      if (!response || response.status !== 201 || !response.data?.main) {
+        // 認証のためにresponseのチェックを追加
         throw new Error('Failed to create sentence');
       }
 
       // Convert API response Sentence to application Sentence type
       const apiSentence = response.data.main;
       const newSentence: Sentence = {
-        sentenceId: apiSentence.sentence_id || 0,
+        sentenceId: apiSentence.sentenceId || 0,
         sentence: apiSentence.sentence || '',
         sentenceUserId: 0,
         sentenceUserName: '',
         profileIconImage: '',
         evaluationGoodCount: 0,
         evaluationStayCount: 0,
-        createdAt: apiSentence.created_at || '',
-        updatedAt: apiSentence.updated_at || '',
+        createdAt: apiSentence.createdAt || '',
+        updatedAt: apiSentence.updatedAt || '',
       };
 
       // mainPanelを更新
