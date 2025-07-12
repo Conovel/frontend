@@ -1,21 +1,20 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-import { UsersApi } from '../api/api';
-import { AuthApi } from '../api/api';
+import { UsersApi, AuthApi } from '../api/api';
 import { axiosConfig } from '../axiosConfig';
 import { useNavigate } from 'react-router';
 
 // 型定義
 export interface User {
-  user_id: number;
-  user_name: string;
-  nick_name: string;
-  profile_icon_image: string;
-  evaluation_good_count: number;
-  created_at: string;
-  updated_at: string;
-  birth_year_and_month: string;
-  is_anonymous: boolean;
+  userId: number;
+  userName: string;
+  nickName: string;
+  profileIconImage: string;
+  evaluationGoodCount: number;
+  createdAt: string;
+  updatedAt: string;
+  birthYearAndMonth: string;
+  isAnonymous: boolean;
 }
 
 export interface AuthContextType {
@@ -61,7 +60,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     });
 
     // 認証成功時には現在のユーザー情報を設定
-    if (response?.data?.user_id) {
+    if (response?.data?.userId) {
       setCurrentUser(response.data as User);
       return;
     }

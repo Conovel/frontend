@@ -2,15 +2,15 @@
 
 ## Properties
 
-| Name                      | Type       | Description               | Notes                             |
-| ------------------------- | ---------- | ------------------------- | --------------------------------- |
-| **user_id**               | **number** | ユーザーの一意のid        | [optional] [default to undefined] |
-| **user_name**             | **string** | ユーザーのペンネーム      | [optional] [default to undefined] |
-| **nick_name**             | **string** | ユーザーのニックネーム    | [optional] [default to undefined] |
-| **profile_icon_image**    | **string** | ユーザーアイコン画像のurl | [optional] [default to undefined] |
-| **evaluation_good_count** | **number** | Good評価の数              | [optional] [default to undefined] |
-| **created_at**            | **string** | ユーザーの作成日時        | [optional] [default to undefined] |
-| **updated_at**            | **string** | ユーザーの修正日時        | [optional] [default to undefined] |
+| Name                    | Type       | Description               | Notes                             |
+| ----------------------- | ---------- | ------------------------- | --------------------------------- |
+| **userId**              | **number** | ユーザーの一意のid        | [optional] [default to undefined] |
+| **userName**            | **string** | ユーザーのペンネーム      | [optional] [default to undefined] |
+| **nickName**            | **string** | ユーザーのニックネーム    | [optional] [default to undefined] |
+| **profileIconImage**    | **string** | ユーザーアイコン画像のurl | [optional] [default to undefined] |
+| **evaluationGoodCount** | **number** | Good評価の数              | [optional] [default to undefined] |
+| **createdAt**           | **string** | ユーザーの作成日時        | [optional] [default to undefined] |
+| **updatedAt**           | **string** | ユーザーの修正日時        | [optional] [default to undefined] |
 
 ## Example
 
@@ -18,13 +18,13 @@
 import { User } from "./api";
 
 const instance: User = {
-  user_id,
-  user_name,
-  nick_name,
-  profile_icon_image,
-  evaluation_good_count,
-  created_at,
-  updated_at,
+  userId,
+  userName,
+  nickName,
+  profileIconImage,
+  evaluationGoodCount,
+  createdAt,
+  updatedAt,
 };
 ```
 

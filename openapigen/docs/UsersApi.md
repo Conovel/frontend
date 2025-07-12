@@ -2,14 +2,14 @@
 
 All URIs are relative to _/v1_
 
-| Method                                          | HTTP request                           | Description                                        |
-| ----------------------------------------------- | -------------------------------------- | -------------------------------------------------- |
-| [**deleteUserByMe**](#deleteuserbyme)           | **POST** /users/me/delete              | 自分自身のユーザーアカウントを論理削除（認証あり） |
-| [**getNovelsByUserId**](#getnovelsbyuserid)     | **GET** /users/{user_id}/posted_novels | ユーザーが投稿している小説リストを取得             |
-| [**getUserById**](#getuserbyid)                 | **GET** /users/{user_id}               | IDで自分以外のユーザーアカウント情報を取得         |
-| [**getUserByMe**](#getuserbyme)                 | **GET** /users/me                      | 自分自身のユーザーアカウント情報を取得（認証あり） |
-| [**getViewedNovelsByMe**](#getviewednovelsbyme) | **GET** /users/me/viewed_novels        | 自分自身が閲覧している小説リストを取得（認証あり） |
-| [**updateUserByMe**](#updateuserbyme)           | **POST** /users/me/update              | 自分自身のユーザーアカウント情報を更新（認証あり） |
+| Method                                          | HTTP request                         | Description                                        |
+| ----------------------------------------------- | ------------------------------------ | -------------------------------------------------- |
+| [**deleteUserByMe**](#deleteuserbyme)           | **POST** /users/me/delete            | 自分自身のユーザーアカウントを論理削除（認証あり） |
+| [**getNovelsByUserId**](#getnovelsbyuserid)     | **GET** /users/{userId}/postedNovels | ユーザーが投稿している小説リストを取得             |
+| [**getUserById**](#getuserbyid)                 | **GET** /users/{userId}              | IDで自分以外のユーザーアカウント情報を取得         |
+| [**getUserByMe**](#getuserbyme)                 | **GET** /users/me                    | 自分自身のユーザーアカウント情報を取得（認証あり） |
+| [**getViewedNovelsByMe**](#getviewednovelsbyme) | **GET** /users/me/viewedNovels       | 自分自身が閲覧している小説リストを取得（認証あり） |
+| [**updateUserByMe**](#updateuserbyme)           | **POST** /users/me/update            | 自分自身のユーザーアカウント情報を更新（認証あり） |
 
 # **deleteUserByMe**
 

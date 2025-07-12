@@ -30,14 +30,14 @@ export const LoginPresenter = () => {
           {currentUser ? (
             <>
               <img
-                src={currentUser.profile_icon_image}
+                src={currentUser.profileIconImage}
                 alt='プロフィールアイコン'
                 style={{ width: '100px', height: '100px', borderRadius: '50%' }}
               />
               <p>
-                ようこそ、{currentUser.user_name}さん！
+                ようこそ、{currentUser.userName}さん！
                 <br />
-                （ユーザーID：{currentUser.user_id}）
+                （ユーザーID：{currentUser.userId}）
               </p>
               <Button
                 variant='outlined'
