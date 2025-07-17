@@ -1,11 +1,13 @@
 import { http, HttpResponse } from 'msw';
 import { NovelListItem, PostSentence, Sentence } from '../../../api/api';
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+console.log('MSW API Base URL:', apiBaseUrl);
 
 export const novelListHandlers = [
   // 小説一覧を取得するハンドラー
   http.get(`${apiBaseUrl}/v1/novels`, () => {
+    console.log('MSW: Handling GET /v1/novels request');
     return HttpResponse.json([
       {
         title_id: 1,

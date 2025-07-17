@@ -5,8 +5,22 @@ import './index.css';
 
 async function enableMocking() {
   if (!import.meta.env.PROD) {
-    const { worker } = await import('./mock/browser');
-    await worker.start();
+    try {
+      console.log('Starting MSW...');
+      const { worker } = await import('./mock/browser');
+      console.log('MSW worker imported, starting...');
+      await worker.start({
+        onUnhandledRequest: 'bypass',
+        serviceWorker: {
+          url: '/mockServiceWorker.js',
+        },
+      });
+      console.log('MSW started successfully');
+    } catch (error) {
+      console.error('Failed to start MSW:', error);
+    }
+  } else {
+    console.log('MSW disabled in production');
   }
 }
 
