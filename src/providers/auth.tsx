@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const fetchCurrentUserId = async () => {
     const response = await usersApi.getUserByMe(async () => {
-      // jwt, refresh両方失敗時にはlgin画面へリダイレクト
+      // jwt, refresh両方失敗時にはlogin画面へリダイレクト
       navigate('/login');
     });
 
@@ -69,7 +69,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     // 初期化時に現在のユーザー情報を取得
     fetchCurrentUserId();
-  }, []);
+  }, [navigate]);
 
   return (
     <AuthContext.Provider value={{ logout, currentUser, setCurrentUser }}>
