@@ -1,34 +1,10 @@
 import { http, HttpResponse } from 'msw';
-import { PostSentence, Sentence } from '../../../types/types';
+import { PostSentence } from '../../../api/api';
+import { Sentence } from '../../../types/types';
+import { initialSampleSentence } from './data';
 
 // サーバー側で一元管理する文データ
-let sentences: Sentence[] = [
-  {
-    title_id: 1,
-    sentence_id: 1,
-    sentence: 'これは取得したサンプル文です',
-    profile_icon_image: '/path/to/avatar.jpg',
-    evaluation_good_count: 10,
-    evaluation_stay_count: 2,
-    created_at: '2024-06-01T00:00:00Z',
-    updated_at: '2024-06-01T00:00:00Z',
-    title: '',
-    main_copy: '',
-    overview: '',
-    popular: false,
-    newArrival: false,
-    author_user_name: '',
-    chips: [],
-    tags: [],
-    reader_count: 0,
-    avatar: { src: '', alt: '', color: '', text: '' },
-    sentence_user_count: 0,
-    sentence_hierarchy_count: 0,
-    textIndex: 0,
-    userId: 0,
-    userName: '',
-  },
-];
+let sentences: Sentence[] = [initialSampleSentence];
 
 let nextSentenceId = 2;
 
@@ -39,7 +15,7 @@ export const novelViewHandlers = [
     const newSentence: Sentence = {
       ...sentences[0],
       sentence_id: nextSentenceId++,
-      sentence: data.sentence,
+      sentence: data.sentence || '',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };

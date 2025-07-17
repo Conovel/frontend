@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
-import { NovelListItem, PostSentence, Sentence } from '../../../api/api';
+import { PostSentence, Sentence } from '../../../api/api';
+import { mockNovelListData } from './data';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 console.log('MSW API Base URL:', apiBaseUrl);
@@ -8,38 +9,7 @@ export const novelListHandlers = [
   // 小説一覧を取得するハンドラー
   http.get(`${apiBaseUrl}/v1/novels`, () => {
     console.log('MSW: Handling GET /v1/novels request');
-    return HttpResponse.json([
-      {
-        titleId: 1,
-        title: 'サンプル小説1',
-        famousSentenceText: 'これはサンプル小説1の名言です。',
-        authorUserId: 1,
-        authorUserName: '作者1',
-        profileIconImage: '/path/to/avatar1.jpg',
-        titleGenres: ['ファンタジー', '冒険'],
-        isNew: true,
-        isFamous: true,
-        viewCount: 100,
-        evaluationGoodCount: 50,
-        createdAt: '2024-01-01T00:00:00Z',
-        updatedAt: '2024-01-01T00:00:00Z',
-      },
-      {
-        titleId: 2,
-        title: 'サンプル小説2',
-        famousSentenceText: 'これはサンプル小説2の名言です。',
-        authorUserId: 2,
-        authorUserName: '作者2',
-        profileIconImage: '/path/to/avatar2.jpg',
-        titleGenres: ['SF', 'アクション'],
-        isNew: true,
-        isFamous: false,
-        viewCount: 50,
-        evaluationGoodCount: 25,
-        createdAt: '2024-01-02T00:00:00Z',
-        updatedAt: '2024-01-02T00:00:00Z',
-      },
-    ] as NovelListItem[]);
+    return HttpResponse.json(mockNovelListData);
   }),
 
   // ルートパスのハンドラー

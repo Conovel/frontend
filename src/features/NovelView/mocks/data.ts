@@ -831,3 +831,30 @@ export const mockContainerData = buildInitialData(INITIAL_SENTENCE_ID) || {
   parent: [],
   children: [],
 };
+
+// 初期サンプル文データ
+export const initialSampleSentence: Sentence = {
+  title_id: 1,
+  sentence_id: 1,
+  sentence: 'これは取得したサンプル文です',
+  profile_icon_image: '/path/to/avatar.jpg',
+  evaluation_good_count: 10,
+  evaluation_stay_count: 2,
+  created_at: '2024-06-01T00:00:00Z',
+  updated_at: '2024-06-01T00:00:00Z',
+  title: '',
+  main_copy: '',
+  overview: '',
+  popular: false,
+  newArrival: false,
+  author_user_name: '',
+  chips: [],
+  tags: [],
+  reader_count: 0,
+  avatar: { src: '', alt: '', color: '', text: '' },
+  sentence_user_count: 0,
+  sentence_hierarchy_count: 0,
+  textIndex: 0,
+  userId: 0,
+  userName: '',
+};

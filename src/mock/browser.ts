@@ -1,7 +1,8 @@
 import { setupWorker } from 'msw/browser';
 import { novelListHandlers } from '../features/NovelList/mocks/handlers';
+import { novelViewHandlers } from '../features/NovelView/mocks/handlers';
 
-const handlers = [...novelListHandlers];
+const handlers = [...novelListHandlers, ...novelViewHandlers];
 
 console.log('MSW handlers:', handlers);
 console.log('MSW handlers count:', handlers.length);
