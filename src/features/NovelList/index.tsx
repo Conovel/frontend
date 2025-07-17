@@ -16,7 +16,7 @@ const NovelList = () => {
       try {
         console.log('Fetching novels...');
         const response = await novelsApi.getNovels();
-        console.log('Novels response:', response);
+
         const convertedResponse: NovelListItem[] = convertNovelListResponse(
           response.data,
         );

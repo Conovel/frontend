@@ -27,8 +27,62 @@ import {
 } from './common';
 import type { RequestArgs } from './base';
 // @ts-ignore
-import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, operationServerMap } from './base';
+import { withAuth } from './functional'; // 認証を一緒に実行（手動で追加）
 
+// リフレッシュを実行（手動で追加）
+export const createRefreshTokenRequest = (
+  configuration: Configuration | undefined,
+  axios: AxiosInstance,
+  basePath: string,
+  options?: RawAxiosRequestConfig,
+) => {
+  if (!configuration) {
+    throw new Error('Configuration is required');
+  }
+  return () =>
+    AuthApiFp(configuration)
+      .refreshToken(options)
+      .then((request) => request(axios, basePath));
+};
+
+/**
+ *
+ * @export
+ * @interface ConflictSentence
+ */
+export interface ConflictSentence {
+  /**
+   *
+   * @type {ErrorResponseError}
+   * @memberof ConflictSentence
+   */
+  error?: ErrorResponseError;
+  /**
+   *
+   * @type {Sentence}
+   * @memberof ConflictSentence
+   */
+  main?: Sentence;
+  /**
+   *
+   * @type {Sentence}
+   * @memberof ConflictSentence
+   */
+  parent?: Sentence;
+  /**
+   *
+   * @type {Array<Sentence>}
+   * @memberof ConflictSentence
+   */
+  parallels?: Array<Sentence>;
+  /**
+   *
+   * @type {Array<Sentence>}
+   * @memberof ConflictSentence
+   */
+  children?: Array<Sentence>;
+}
 /**
  *
  * @export
@@ -72,7 +126,7 @@ export interface EvaluateSentence {
    * @type {number}
    * @memberof EvaluateSentence
    */
-  sentence_id?: number;
+  sentenceId?: number;
   /**
    * 評価の種類
    * @type {string}
@@ -101,7 +155,7 @@ export interface NovelDetail {
    * @type {number}
    * @memberof NovelDetail
    */
-  title_id?: number;
+  titleId?: number;
   /**
    * 小説のタイトル
    * @type {string}
@@ -113,91 +167,91 @@ export interface NovelDetail {
    * @type {string}
    * @memberof NovelDetail
    */
-  famous_sentence_text?: string;
+  famousSentenceText?: string;
   /**
    * 小説の作者のid
    * @type {number}
    * @memberof NovelDetail
    */
-  author_user_id?: number;
+  authorUserId?: number;
   /**
    * 小説の作者のペンネーム
    * @type {string}
    * @memberof NovelDetail
    */
-  author_user_name?: string;
+  authorUserName?: string;
   /**
    * 小説の作者のアイコン画像のurl
    * @type {string}
    * @memberof NovelDetail
    */
-  profile_icon_image?: string;
+  profileIconImage?: string;
   /**
    * 小説のジャンル
    * @type {Array<string>}
    * @memberof NovelDetail
    */
-  title_genres?: Array<string>;
+  titleGenres?: Array<string>;
   /**
    * 新着小説かどうか
    * @type {boolean}
    * @memberof NovelDetail
    */
-  is_new?: boolean;
+  isNew?: boolean;
   /**
    * 人気小説かどうか
    * @type {boolean}
    * @memberof NovelDetail
    */
-  is_famous?: boolean;
+  isFamous?: boolean;
   /**
    * 小説の閲覧数
    * @type {number}
    * @memberof NovelDetail
    */
-  view_count?: number;
+  viewCount?: number;
   /**
    * 小説のGood評価の数
    * @type {number}
    * @memberof NovelDetail
    */
-  evaluation_good_count?: number;
+  evaluationGoodCount?: number;
   /**
    * 小説の作成日時
    * @type {string}
    * @memberof NovelDetail
    */
-  created_at?: string;
+  createdAt?: string;
   /**
    * 小説の修正日時
    * @type {string}
    * @memberof NovelDetail
    */
-  updated_at?: string;
+  updatedAt?: string;
   /**
    * 小説の紹介文
    * @type {string}
    * @memberof NovelDetail
    */
-  main_copy?: string;
+  mainCopy?: string;
   /**
-   * 小説に投稿された投稿の数
+   * 小説に投稿している投稿者の数
    * @type {number}
    * @memberof NovelDetail
    */
-  sentence_user_count?: number;
+  sentenceUserCount?: number;
   /**
    * 小説に投稿された投稿の階層数
    * @type {number}
    * @memberof NovelDetail
    */
-  sentence_hierarchy_count?: number;
+  sentenceHierarchyCount?: number;
   /**
    * 小説を読んだユーザーの数
    * @type {number}
    * @memberof NovelDetail
    */
-  reader_count?: number;
+  readerCount?: number;
   /**
    * 小説のあらすじ
    * @type {string}
@@ -216,7 +270,7 @@ export interface NovelListItem {
    * @type {number}
    * @memberof NovelListItem
    */
-  title_id?: number;
+  titleId?: number;
   /**
    * 小説のタイトル
    * @type {string}
@@ -228,67 +282,67 @@ export interface NovelListItem {
    * @type {string}
    * @memberof NovelListItem
    */
-  famous_sentence_text?: string;
+  famousSentenceText?: string;
   /**
    * 小説の作者のid
    * @type {number}
    * @memberof NovelListItem
    */
-  author_user_id?: number;
+  authorUserId?: number;
   /**
    * 小説の作者のペンネーム
    * @type {string}
    * @memberof NovelListItem
    */
-  author_user_name?: string;
+  authorUserName?: string;
   /**
    * 小説の作者のアイコン画像のurl
    * @type {string}
    * @memberof NovelListItem
    */
-  profile_icon_image?: string;
+  profileIconImage?: string;
   /**
    * 小説のジャンル
    * @type {Array<string>}
    * @memberof NovelListItem
    */
-  title_genres?: Array<string>;
+  titleGenres?: Array<string>;
   /**
    * 新着小説かどうか
    * @type {boolean}
    * @memberof NovelListItem
    */
-  is_new?: boolean;
+  isNew?: boolean;
   /**
    * 人気小説かどうか
    * @type {boolean}
    * @memberof NovelListItem
    */
-  is_famous?: boolean;
+  isFamous?: boolean;
   /**
    * 小説の閲覧数
    * @type {number}
    * @memberof NovelListItem
    */
-  view_count?: number;
+  viewCount?: number;
   /**
    * 小説のGood評価の数
    * @type {number}
    * @memberof NovelListItem
    */
-  evaluation_good_count?: number;
+  evaluationGoodCount?: number;
   /**
    * 小説の作成日時
    * @type {string}
    * @memberof NovelListItem
    */
-  created_at?: string;
+  createdAt?: string;
   /**
    * 小説の修正日時
    * @type {string}
    * @memberof NovelListItem
    */
-  updated_at?: string;
+  updatedAt?: string;
 }
 /**
  *
@@ -301,13 +355,13 @@ export interface PostSentence {
    * @type {number}
    * @memberof PostSentence
    */
-  parent_sentence_id?: number;
+  parentSentenceId?: number;
   /**
    * 親投稿の修正日時(投稿中の親投稿の更新有無を確認するため)
    * @type {string}
    * @memberof PostSentence
    */
-  parent_updated_at?: string;
+  parentUpdatedAt?: string;
   /**
    * 新投稿の本文テキスト
    * @type {string}
@@ -326,7 +380,7 @@ export interface Sentence {
    * @type {number}
    * @memberof Sentence
    */
-  sentence_id?: number;
+  sentenceId?: number;
   /**
    * 投稿の本文テキスト
    * @type {string}
@@ -338,43 +392,43 @@ export interface Sentence {
    * @type {number}
    * @memberof Sentence
    */
-  sentence_user_id?: number;
+  sentenceUserId?: number;
   /**
    * 投稿ユーザーのペンネーム
    * @type {string}
    * @memberof Sentence
    */
-  sentence_user_name?: string;
+  sentenceUserName?: string;
   /**
    * 投稿ユーザーアイコン画像のurl
    * @type {string}
    * @memberof Sentence
    */
-  profile_icon_image?: string;
+  profileIconImage?: string;
   /**
    * 投稿に対するGood評価の数
    * @type {number}
    * @memberof Sentence
    */
-  evaluation_good_count?: number;
+  evaluationGoodCount?: number;
   /**
    * 投稿に対するStay評価の数
    * @type {number}
    * @memberof Sentence
    */
-  evaluation_stay_count?: number;
+  evaluationStayCount?: number;
   /**
    * 投稿日時
    * @type {string}
    * @memberof Sentence
    */
-  created_at?: string;
+  createdAt?: string;
   /**
    * 修正日時
    * @type {string}
    * @memberof Sentence
    */
-  updated_at?: string;
+  updatedAt?: string;
 }
 /**
  *
@@ -387,25 +441,25 @@ export interface UpdateUser {
    * @type {string}
    * @memberof UpdateUser
    */
-  user_name?: string;
+  userName?: string;
   /**
    * ユーザーのニックネーム
    * @type {string}
    * @memberof UpdateUser
    */
-  nick_name?: string;
+  nickName?: string;
   /**
    * 匿名設定
    * @type {boolean}
    * @memberof UpdateUser
    */
-  is_anonymous?: boolean;
+  isAnonymous?: boolean;
   /**
    * ユーザーアイコン画像のurl
    * @type {string}
    * @memberof UpdateUser
    */
-  profile_icon_image?: string;
+  profileIconImage?: string;
 }
 /**
  *
@@ -418,43 +472,43 @@ export interface User {
    * @type {number}
    * @memberof User
    */
-  user_id?: number;
+  userId?: number;
   /**
    * ユーザーのペンネーム
    * @type {string}
    * @memberof User
    */
-  user_name?: string;
+  userName?: string;
   /**
    * ユーザーのニックネーム
    * @type {string}
    * @memberof User
    */
-  nick_name?: string;
+  nickName?: string;
   /**
    * ユーザーアイコン画像のurl
    * @type {string}
    * @memberof User
    */
-  profile_icon_image?: string;
+  profileIconImage?: string;
   /**
    * Good評価の数
    * @type {number}
    * @memberof User
    */
-  evaluation_good_count?: number;
+  evaluationGoodCount?: number;
   /**
    * ユーザーの作成日時
    * @type {string}
    * @memberof User
    */
-  created_at?: string;
+  createdAt?: string;
   /**
    * ユーザーの修正日時
    * @type {string}
    * @memberof User
    */
-  updated_at?: string;
+  updatedAt?: string;
 }
 /**
  *
@@ -467,19 +521,19 @@ export interface ViewEvaluation {
    * @type {number}
    * @memberof ViewEvaluation
    */
-  sentence_id?: number;
+  sentenceId?: number;
   /**
    * Good評価の数
    * @type {number}
    * @memberof ViewEvaluation
    */
-  evaluation_good_count?: number;
+  evaluationGoodCount?: number;
   /**
    * Stay評価の数
    * @type {number}
    * @memberof ViewEvaluation
    */
-  evaluation_stay_count?: number;
+  evaluationStayCount?: number;
 }
 /**
  *
@@ -492,55 +546,55 @@ export interface ViewMeUser {
    * @type {number}
    * @memberof ViewMeUser
    */
-  user_id?: number;
+  userId?: number;
   /**
    * ユーザーのペンネーム
    * @type {string}
    * @memberof ViewMeUser
    */
-  user_name?: string;
+  userName?: string;
   /**
    * ユーザーのニックネーム
    * @type {string}
    * @memberof ViewMeUser
    */
-  nick_name?: string;
+  nickName?: string;
   /**
    * ユーザーアイコン画像のurl
    * @type {string}
    * @memberof ViewMeUser
    */
-  profile_icon_image?: string;
+  profileIconImage?: string;
   /**
    * Good評価の数
    * @type {number}
    * @memberof ViewMeUser
    */
-  evaluation_good_count?: number;
+  evaluationGoodCount?: number;
   /**
    * ユーザーの作成日時
    * @type {string}
    * @memberof ViewMeUser
    */
-  created_at?: string;
+  createdAt?: string;
   /**
    * ユーザーの修正日時
    * @type {string}
    * @memberof ViewMeUser
    */
-  updated_at?: string;
+  updatedAt?: string;
   /**
    * ユーザーの生年月（YYYY/MM）
    * @type {string}
    * @memberof ViewMeUser
    */
-  birth_year_and_month?: string;
+  birthYearAndMonth?: string;
   /**
    * 匿名設定
    * @type {boolean}
    * @memberof ViewMeUser
    */
-  is_anonymous?: boolean;
+  isAnonymous?: boolean;
 }
 /**
  *
@@ -621,6 +675,45 @@ export const AuthApiAxiosParamCreator = function (
         options: localVarRequestOptions,
       };
     },
+    /**
+     *
+     * @summary トークンのリフレッシュ（認証あり）
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    refreshToken: async (
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/auth/refresh`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'POST',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
   };
 };
 
@@ -655,6 +748,34 @@ export const AuthApiFp = function (configuration?: Configuration) {
           configuration,
         )(axios, localVarOperationServerBasePath || basePath);
     },
+    /**
+     *
+     * @summary トークンのリフレッシュ（認証あり）
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async refreshToken(
+      options?: RawAxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.refreshToken({
+        ...options,
+        withCredentials: true,
+      }); // 認証時にクッキーを送る（手動で修正）
+      const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+      const localVarOperationServerBasePath =
+        operationServerMap['AuthApi.refreshToken']?.[
+          localVarOperationServerIndex
+        ]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, localVarOperationServerBasePath || basePath);
+    },
   };
 };
 
@@ -680,6 +801,17 @@ export const AuthApiFactory = function (
         .logOut(options)
         .then((request) => request(axios, basePath));
     },
+    /**
+     *
+     * @summary トークンのリフレッシュ（認証あり）
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    refreshToken(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+      return localVarFp
+        .refreshToken(options)
+        .then((request) => request(axios, basePath));
+    },
   };
 };
 
@@ -702,6 +834,31 @@ export class AuthApi extends BaseAPI {
       .logOut(options)
       .then((request) => request(this.axios, this.basePath));
   }
+
+  /**
+   *
+   * @summary トークンのリフレッシュ（認証あり）
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthApi
+   */
+  public refreshToken(
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig,
+  ) {
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      AuthApiFp(this.configuration)
+        .refreshToken(options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
+  }
 }
 
 /**
@@ -714,7 +871,7 @@ export const EvaluationsApiAxiosParamCreator = function (
   return {
     /**
      *
-     * @summary 投稿に対する評価を追加
+     * @summary 投稿に対する評価を追加（認証あり）
      * @param {EvaluateSentence} evaluateSentence
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -779,7 +936,7 @@ export const EvaluationsApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary 投稿に対する評価を追加
+     * @summary 投稿に対する評価を追加（認証あり）
      * @param {EvaluateSentence} evaluateSentence
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -791,10 +948,10 @@ export const EvaluationsApiFp = function (configuration?: Configuration) {
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ViewEvaluation>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.evaluateSentence(
-          evaluateSentence,
-          options,
-        );
+        await localVarAxiosParamCreator.evaluateSentence(evaluateSentence, {
+          ...options,
+          withCredentials: true,
+        }); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['EvaluationsApi.evaluateSentence']?.[
@@ -824,7 +981,7 @@ export const EvaluationsApiFactory = function (
   return {
     /**
      *
-     * @summary 投稿に対する評価を追加
+     * @summary 投稿に対する評価を追加（認証あり）
      * @param {EvaluateSentence} evaluateSentence
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -849,7 +1006,7 @@ export const EvaluationsApiFactory = function (
 export class EvaluationsApi extends BaseAPI {
   /**
    *
-   * @summary 投稿に対する評価を追加
+   * @summary 投稿に対する評価を追加（認証あり）
    * @param {EvaluateSentence} evaluateSentence
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -857,11 +1014,21 @@ export class EvaluationsApi extends BaseAPI {
    */
   public evaluateSentence(
     evaluateSentence: EvaluateSentence,
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
     options?: RawAxiosRequestConfig,
   ) {
-    return EvaluationsApiFp(this.configuration)
-      .evaluateSentence(evaluateSentence, options)
-      .then((request) => request(this.axios, this.basePath));
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      EvaluationsApiFp(this.configuration)
+        .evaluateSentence(evaluateSentence, options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
 
@@ -886,8 +1053,8 @@ export const NovelsApiAxiosParamCreator = function (
     ): Promise<RequestArgs> => {
       // verify required parameter 'titleId' is not null or undefined
       assertParamExists('getNovelById', 'titleId', titleId);
-      const localVarPath = `/novels/{title_id}`.replace(
-        `{${'title_id'}}`,
+      const localVarPath = `/novels/{titleId}`.replace(
+        `{${'titleId'}}`,
         encodeURIComponent(String(titleId)),
       );
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1117,7 +1284,7 @@ export const SentencesApiAxiosParamCreator = function (
   return {
     /**
      *
-     * @summary IDで投稿を取得
+     * @summary IDで投稿を取得（認証あり）
      * @param {number} sentenceId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1128,8 +1295,8 @@ export const SentencesApiAxiosParamCreator = function (
     ): Promise<RequestArgs> => {
       // verify required parameter 'sentenceId' is not null or undefined
       assertParamExists('getSentenceById', 'sentenceId', sentenceId);
-      const localVarPath = `/sentences/{sentence_id}`.replace(
-        `{${'sentence_id'}}`,
+      const localVarPath = `/sentences/{sentenceId}`.replace(
+        `{${'sentenceId'}}`,
         encodeURIComponent(String(sentenceId)),
       );
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1163,7 +1330,7 @@ export const SentencesApiAxiosParamCreator = function (
     },
     /**
      *
-     * @summary メイン投稿の続きの新規投稿を作成
+     * @summary メイン投稿の続きの新規投稿を作成（認証あり）
      * @param {PostSentence} postSentence
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1224,7 +1391,7 @@ export const SentencesApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary IDで投稿を取得
+     * @summary IDで投稿を取得（認証あり）
      * @param {number} sentenceId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1237,8 +1404,11 @@ export const SentencesApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.getSentenceById(
         sentenceId,
-        options,
-      );
+        {
+          ...options,
+          withCredentials: true,
+        },
+      ); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['SentencesApi.getSentenceById']?.[
@@ -1254,7 +1424,7 @@ export const SentencesApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary メイン投稿の続きの新規投稿を作成
+     * @summary メイン投稿の続きの新規投稿を作成（認証あり）
      * @param {PostSentence} postSentence
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1267,8 +1437,11 @@ export const SentencesApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.postSentence(
         postSentence,
-        options,
-      );
+        {
+          ...options,
+          withCredentials: true,
+        },
+      ); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['SentencesApi.postSentence']?.[
@@ -1298,7 +1471,7 @@ export const SentencesApiFactory = function (
   return {
     /**
      *
-     * @summary IDで投稿を取得
+     * @summary IDで投稿を取得（認証あり）
      * @param {number} sentenceId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1313,7 +1486,7 @@ export const SentencesApiFactory = function (
     },
     /**
      *
-     * @summary メイン投稿の続きの新規投稿を作成
+     * @summary メイン投稿の続きの新規投稿を作成（認証あり）
      * @param {PostSentence} postSentence
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1338,21 +1511,34 @@ export const SentencesApiFactory = function (
 export class SentencesApi extends BaseAPI {
   /**
    *
-   * @summary IDで投稿を取得
+   * @summary IDで投稿を取得（認証あり）
    * @param {number} sentenceId
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof SentencesApi
    */
-  public getSentenceById(sentenceId: number, options?: RawAxiosRequestConfig) {
-    return SentencesApiFp(this.configuration)
-      .getSentenceById(sentenceId, options)
-      .then((request) => request(this.axios, this.basePath));
+  public getSentenceById(
+    sentenceId: number,
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig,
+  ) {
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      SentencesApiFp(this.configuration)
+        .getSentenceById(sentenceId, options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
   /**
    *
-   * @summary メイン投稿の続きの新規投稿を作成
+   * @summary メイン投稿の続きの新規投稿を作成（認証あり）
    * @param {PostSentence} postSentence
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -1360,11 +1546,21 @@ export class SentencesApi extends BaseAPI {
    */
   public postSentence(
     postSentence: PostSentence,
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
     options?: RawAxiosRequestConfig,
   ) {
-    return SentencesApiFp(this.configuration)
-      .postSentence(postSentence, options)
-      .then((request) => request(this.axios, this.basePath));
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      SentencesApiFp(this.configuration)
+        .postSentence(postSentence, options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }
 
@@ -1378,7 +1574,7 @@ export const UsersApiAxiosParamCreator = function (
   return {
     /**
      *
-     * @summary 自分自身のユーザーアカウントを削除（論理削除）
+     * @summary 自分自身のユーザーアカウントを論理削除（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1428,8 +1624,8 @@ export const UsersApiAxiosParamCreator = function (
     ): Promise<RequestArgs> => {
       // verify required parameter 'userId' is not null or undefined
       assertParamExists('getNovelsByUserId', 'userId', userId);
-      const localVarPath = `/users/{user_id}/posted_novels`.replace(
-        `{${'user_id'}}`,
+      const localVarPath = `/users/{userId}/postedNovels`.replace(
+        `{${'userId'}}`,
         encodeURIComponent(String(userId)),
       );
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1474,8 +1670,8 @@ export const UsersApiAxiosParamCreator = function (
     ): Promise<RequestArgs> => {
       // verify required parameter 'userId' is not null or undefined
       assertParamExists('getUserById', 'userId', userId);
-      const localVarPath = `/users/{user_id}`.replace(
-        `{${'user_id'}}`,
+      const localVarPath = `/users/{userId}`.replace(
+        `{${'userId'}}`,
         encodeURIComponent(String(userId)),
       );
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1509,7 +1705,7 @@ export const UsersApiAxiosParamCreator = function (
     },
     /**
      *
-     * @summary 自分自身のユーザーアカウント情報を取得
+     * @summary 自分自身のユーザーアカウント情報を取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1548,14 +1744,14 @@ export const UsersApiAxiosParamCreator = function (
     },
     /**
      *
-     * @summary 自分自身が閲覧している小説リストを取得
+     * @summary 自分自身が閲覧している小説リストを取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     getViewedNovelsByMe: async (
       options: RawAxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      const localVarPath = `/users/me/viewed_novels`;
+      const localVarPath = `/users/me/viewedNovels`;
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
       let baseOptions;
@@ -1587,7 +1783,7 @@ export const UsersApiAxiosParamCreator = function (
     },
     /**
      *
-     * @summary 自分自身のユーザーアカウント情報を更新
+     * @summary 自分自身のユーザーアカウント情報を更新（認証あり）
      * @param {UpdateUser} updateUser
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1647,7 +1843,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
   return {
     /**
      *
-     * @summary 自分自身のユーザーアカウントを削除（論理削除）
+     * @summary 自分自身のユーザーアカウントを論理削除（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1656,8 +1852,10 @@ export const UsersApiFp = function (configuration?: Configuration) {
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>
     > {
-      const localVarAxiosArgs =
-        await localVarAxiosParamCreator.deleteUserByMe(options);
+      const localVarAxiosArgs = await localVarAxiosParamCreator.deleteUserByMe({
+        ...options,
+        withCredentials: true,
+      }); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['UsersApi.deleteUserByMe']?.[
@@ -1734,7 +1932,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary 自分自身のユーザーアカウント情報を取得
+     * @summary 自分自身のユーザーアカウント情報を取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1743,8 +1941,10 @@ export const UsersApiFp = function (configuration?: Configuration) {
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ViewMeUser>
     > {
-      const localVarAxiosArgs =
-        await localVarAxiosParamCreator.getUserByMe(options);
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getUserByMe({
+        ...options,
+        withCredentials: true,
+      }); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['UsersApi.getUserByMe']?.[
@@ -1760,7 +1960,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary 自分自身が閲覧している小説リストを取得
+     * @summary 自分自身が閲覧している小説リストを取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1773,7 +1973,10 @@ export const UsersApiFp = function (configuration?: Configuration) {
       ) => AxiosPromise<Array<NovelListItem>>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.getViewedNovelsByMe(options);
+        await localVarAxiosParamCreator.getViewedNovelsByMe({
+          ...options,
+          withCredentials: true,
+        }); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['UsersApi.getViewedNovelsByMe']?.[
@@ -1789,7 +1992,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @summary 自分自身のユーザーアカウント情報を更新
+     * @summary 自分自身のユーザーアカウント情報を更新（認証あり）
      * @param {UpdateUser} updateUser
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1802,8 +2005,11 @@ export const UsersApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.updateUserByMe(
         updateUser,
-        options,
-      );
+        {
+          ...options,
+          withCredentials: true,
+        },
+      ); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['UsersApi.updateUserByMe']?.[
@@ -1833,7 +2039,7 @@ export const UsersApiFactory = function (
   return {
     /**
      *
-     * @summary 自分自身のユーザーアカウントを削除（論理削除）
+     * @summary 自分自身のユーザーアカウントを論理削除（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1874,7 +2080,7 @@ export const UsersApiFactory = function (
     },
     /**
      *
-     * @summary 自分自身のユーザーアカウント情報を取得
+     * @summary 自分自身のユーザーアカウント情報を取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1885,7 +2091,7 @@ export const UsersApiFactory = function (
     },
     /**
      *
-     * @summary 自分自身が閲覧している小説リストを取得
+     * @summary 自分自身が閲覧している小説リストを取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1898,7 +2104,7 @@ export const UsersApiFactory = function (
     },
     /**
      *
-     * @summary 自分自身のユーザーアカウント情報を更新
+     * @summary 自分自身のユーザーアカウント情報を更新（認証あり）
      * @param {UpdateUser} updateUser
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1923,15 +2129,27 @@ export const UsersApiFactory = function (
 export class UsersApi extends BaseAPI {
   /**
    *
-   * @summary 自分自身のユーザーアカウントを削除（論理削除）
+   * @summary 自分自身のユーザーアカウントを論理削除（認証あり）
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof UsersApi
    */
-  public deleteUserByMe(options?: RawAxiosRequestConfig) {
-    return UsersApiFp(this.configuration)
-      .deleteUserByMe(options)
-      .then((request) => request(this.axios, this.basePath));
+  public deleteUserByMe(
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig,
+  ) {
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      UsersApiFp(this.configuration)
+        .deleteUserByMe(options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
   /**
@@ -1964,33 +2182,57 @@ export class UsersApi extends BaseAPI {
 
   /**
    *
-   * @summary 自分自身のユーザーアカウント情報を取得
+   * @summary 自分自身のユーザーアカウント情報を取得（認証あり）
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof UsersApi
    */
-  public getUserByMe(options?: RawAxiosRequestConfig) {
-    return UsersApiFp(this.configuration)
-      .getUserByMe(options)
-      .then((request) => request(this.axios, this.basePath));
+  public getUserByMe(
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig,
+  ) {
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      UsersApiFp(this.configuration)
+        .getUserByMe(options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
   /**
    *
-   * @summary 自分自身が閲覧している小説リストを取得
+   * @summary 自分自身が閲覧している小説リストを取得（認証あり）
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof UsersApi
    */
-  public getViewedNovelsByMe(options?: RawAxiosRequestConfig) {
-    return UsersApiFp(this.configuration)
-      .getViewedNovelsByMe(options)
-      .then((request) => request(this.axios, this.basePath));
+  public getViewedNovelsByMe(
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig,
+  ) {
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      UsersApiFp(this.configuration)
+        .getViewedNovelsByMe(options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
   /**
    *
-   * @summary 自分自身のユーザーアカウント情報を更新
+   * @summary 自分自身のユーザーアカウント情報を更新（認証あり）
    * @param {UpdateUser} updateUser
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -1998,10 +2240,20 @@ export class UsersApi extends BaseAPI {
    */
   public updateUserByMe(
     updateUser: UpdateUser,
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
     options?: RawAxiosRequestConfig,
   ) {
-    return UsersApiFp(this.configuration)
-      .updateUserByMe(updateUser, options)
-      .then((request) => request(this.axios, this.basePath));
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      UsersApiFp(this.configuration)
+        .updateUserByMe(updateUser, options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 }

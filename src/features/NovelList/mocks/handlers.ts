@@ -10,34 +10,34 @@ export const novelListHandlers = [
     console.log('MSW: Handling GET /v1/novels request');
     return HttpResponse.json([
       {
-        title_id: 1,
+        titleId: 1,
         title: 'サンプル小説1',
-        famous_sentence_text: 'これはサンプル小説1の名言です。',
-        author_user_id: 1,
-        author_user_name: '作者1',
-        profile_icon_image: '/path/to/avatar1.jpg',
-        title_genres: ['ファンタジー', '冒険'],
-        is_new: true,
-        is_famous: true,
-        view_count: 100,
-        evaluation_good_count: 50,
-        created_at: '2024-03-20T00:00:00Z',
-        updated_at: '2024-03-20T00:00:00Z',
+        famousSentenceText: 'これはサンプル小説1の名言です。',
+        authorUserId: 1,
+        authorUserName: '作者1',
+        profileIconImage: '/path/to/avatar1.jpg',
+        titleGenres: ['ファンタジー', '冒険'],
+        isNew: true,
+        isFamous: true,
+        viewCount: 100,
+        evaluationGoodCount: 50,
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
       },
       {
-        title_id: 2,
+        titleId: 2,
         title: 'サンプル小説2',
-        famous_sentence_text: 'これはサンプル小説2の名言です。',
-        author_user_id: 2,
-        author_user_name: '作者2',
-        profile_icon_image: '/path/to/avatar2.jpg',
-        title_genres: ['SF', 'アクション'],
-        is_new: true,
-        is_famous: false,
-        view_count: 50,
-        evaluation_good_count: 25,
-        created_at: '2024-03-20T00:00:00Z',
-        updated_at: '2024-03-20T00:00:00Z',
+        famousSentenceText: 'これはサンプル小説2の名言です。',
+        authorUserId: 2,
+        authorUserName: '作者2',
+        profileIconImage: '/path/to/avatar2.jpg',
+        titleGenres: ['SF', 'アクション'],
+        isNew: true,
+        isFamous: false,
+        viewCount: 50,
+        evaluationGoodCount: 25,
+        createdAt: '2024-01-02T00:00:00Z',
+        updatedAt: '2024-01-02T00:00:00Z',
       },
     ] as NovelListItem[]);
   }),
@@ -59,7 +59,7 @@ export const novelListHandlers = [
       );
     }
 
-    if (!postData.parent_sentence_id) {
+    if (!postData.parentSentenceId) {
       return HttpResponse.json(
         { error: '親投稿IDは必須です' },
         { status: 400 },
@@ -68,15 +68,15 @@ export const novelListHandlers = [
 
     // モックの投稿レスポンス
     const newSentence: Sentence = {
-      sentence_id: Math.floor(Math.random() * 10000) + 1000, // ランダムなID
+      sentenceId: Math.floor(Math.random() * 10000) + 1000, // ランダムなID
       sentence: postData.sentence,
-      sentence_user_id: 1, // モックユーザーID
-      sentence_user_name: 'モックユーザー',
-      profile_icon_image: '/path/to/avatar.jpg',
-      evaluation_good_count: 0,
-      evaluation_stay_count: 0,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      sentenceUserId: 1, // モックユーザーID
+      sentenceUserName: 'モックユーザー',
+      profileIconImage: '/path/to/avatar.jpg',
+      evaluationGoodCount: 0,
+      evaluationStayCount: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     return HttpResponse.json(newSentence, { status: 201 });
