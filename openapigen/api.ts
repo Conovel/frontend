@@ -453,6 +453,24 @@ export interface UpdateUser {
    * @memberof UpdateUser
    */
   profileIconImage?: string;
+  /**
+   * ユーザーの生年月（YYYY/MM）
+   * @type {string}
+   * @memberof UpdateUser
+   */
+  birth_ym?: string;
+  /**
+   * 同意した利用規約のバージョン
+   * @type {number}
+   * @memberof UpdateUser
+   */
+  agreed_terms_version?: number;
+  /**
+   * ユーザーの備考
+   * @type {string}
+   * @memberof UpdateUser
+   */
+  remarks?: string;
 }
 /**
  *
