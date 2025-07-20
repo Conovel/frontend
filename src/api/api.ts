@@ -455,11 +455,11 @@ export interface UpdateUser {
    */
   isAnonymous: boolean;
   /**
-   * ユーザーアイコン画像のurl（必須）
+   * ユーザーアイコン画像のurl
    * @type {string}
    * @memberof UpdateUser
    */
-  profileIconImage: string;
+  profileIconImage?: string;
   /**
    * ユーザーの生年月（YYYY/MM）（必須）
    * @type {string}
