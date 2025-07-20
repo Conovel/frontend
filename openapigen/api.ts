@@ -430,41 +430,41 @@ export interface Sentence {
  */
 export interface UpdateUser {
   /**
-   * ユーザーのペンネーム
+   * ユーザーのペンネーム（必須）
    * @type {string}
    * @memberof UpdateUser
    */
-  userName?: string;
+  userName: string;
   /**
-   * ユーザーのニックネーム
+   * ユーザーのニックネーム（必須）
    * @type {string}
    * @memberof UpdateUser
    */
-  nickName?: string;
+  nickName: string;
   /**
-   * 匿名設定
+   * 匿名設定（必須）
    * @type {boolean}
    * @memberof UpdateUser
    */
-  isAnonymous?: boolean;
+  isAnonymous: boolean;
   /**
-   * ユーザーアイコン画像のurl
+   * ユーザーアイコン画像のurl（必須）
    * @type {string}
    * @memberof UpdateUser
    */
-  profileIconImage?: string;
+  profileIconImage: string;
   /**
-   * ユーザーの生年月（YYYY/MM）
+   * ユーザーの生年月（YYYY/MM）（必須）
    * @type {string}
    * @memberof UpdateUser
    */
-  birth_ym?: string;
+  birth_ym: string;
   /**
-   * 同意した利用規約のバージョン
+   * 同意した利用規約のバージョン（必須）
    * @type {number}
    * @memberof UpdateUser
    */
-  agreed_terms_version?: number;
+  agreed_terms_version: number;
   /**
    * ユーザーの備考
    * @type {string}
