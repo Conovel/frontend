@@ -465,13 +465,13 @@ export interface UpdateUser {
    * @type {string}
    * @memberof UpdateUser
    */
-  birth_ym: string;
+  birthYm: string;
   /**
    * 同意した利用規約のバージョン（必須）
    * @type {number}
    * @memberof UpdateUser
    */
-  agreed_terms_version: number;
+  agreedTermsVersion: number;
   /**
    * ユーザーの備考
    * @type {string}
