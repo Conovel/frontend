@@ -344,23 +344,23 @@ export interface NovelListItem {
  */
 export interface PostSentence {
   /**
-   * 親投稿のid
+   * 親投稿のid（必須）
    * @type {number}
    * @memberof PostSentence
    */
-  parentSentenceId?: number;
+  parentSentenceId: number;
   /**
-   * 親投稿の修正日時(投稿中の親投稿の更新有無を確認するため)
+   * 親投稿の修正日時(投稿中の親投稿の更新有無を確認するため)（必須）
    * @type {string}
    * @memberof PostSentence
    */
-  parentUpdatedAt?: string;
+  parentUpdatedAt: string;
   /**
-   * 新投稿の本文テキスト
+   * 新投稿の本文テキスト（必須）
    * @type {string}
    * @memberof PostSentence
    */
-  sentence?: string;
+  sentence: string;
 }
 /**
  *
