@@ -6,9 +6,8 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
-import { PostSentence, SentencesApi } from '../../api/api';
+import { PostSentence, Sentence, SentencesApi } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
-import { Sentence } from '../../types/sentences';
 
 const sentencesApi = new SentencesApi(axiosConfig);
 
@@ -84,7 +83,7 @@ interface ChildrenPanelProps {
   textIndex: number;
 }
 
-const handleClick = (sentenceId: number) => {
+const handleClick = (sentenceId: number | undefined) => {
   // Your logic here, using sentenceId
   console.log(sentenceId);
 };
@@ -139,7 +138,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         setComment_count={setComment_count}
         evaluation_stay_count={evaluation_stay_count}
         setEvaluation_stay_count={setEvaluation_stay_count}
-        sentence={panel.sentence}
+        sentence={panel.sentence || ''}
       />
     </Box>
   );
