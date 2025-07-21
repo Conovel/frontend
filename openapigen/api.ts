@@ -172,7 +172,7 @@ export interface NovelDetail {
    * @type {string}
    * @memberof NovelDetail
    */
-  authorUserName?: string;
+  authorPenName?: string;
   /**
    * 小説の作者のアイコン画像のurl
    * @type {string}
@@ -287,7 +287,7 @@ export interface NovelListItem {
    * @type {string}
    * @memberof NovelListItem
    */
-  authorUserName?: string;
+  authorPenName?: string;
   /**
    * 小説の作者のアイコン画像のurl
    * @type {string}
@@ -391,7 +391,7 @@ export interface Sentence {
    * @type {string}
    * @memberof Sentence
    */
-  sentenceUserName?: string;
+  sentencePenName?: string;
   /**
    * 投稿ユーザーアイコン画像のurl
    * @type {string}
@@ -434,7 +434,7 @@ export interface UpdateUser {
    * @type {string}
    * @memberof UpdateUser
    */
-  userName: string;
+  penName: string;
   /**
    * ユーザーのニックネーム（必須）
    * @type {string}
@@ -489,7 +489,7 @@ export interface User {
    * @type {string}
    * @memberof User
    */
-  userName?: string;
+  penName?: string;
   /**
    * ユーザーのニックネーム
    * @type {string}
@@ -563,7 +563,7 @@ export interface ViewMeUser {
    * @type {string}
    * @memberof ViewMeUser
    */
-  userName?: string;
+  penName?: string;
   /**
    * ユーザーのニックネーム
    * @type {string}
