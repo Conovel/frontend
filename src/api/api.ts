@@ -122,17 +122,17 @@ export interface ErrorResponseError {
  */
 export interface EvaluateSentence {
   /**
-   * 評価対象の投稿のID
+   * 評価対象の投稿のID（必須）
    * @type {number}
    * @memberof EvaluateSentence
    */
-  sentenceId?: number;
+  sentenceId: number;
   /**
-   * 評価の種類
+   * 評価の種類（必須）
    * @type {string}
    * @memberof EvaluateSentence
    */
-  evaluation?: EvaluateSentenceEvaluationEnum;
+  evaluation: EvaluateSentenceEvaluationEnum;
 }
 
 export const EvaluateSentenceEvaluationEnum = {

@@ -2,10 +2,10 @@
 
 ## Properties
 
-| Name           | Type       | Description        | Notes                             |
-| -------------- | ---------- | ------------------ | --------------------------------- |
-| **sentenceId** | **number** | 評価対象の投稿のID | [optional] [default to undefined] |
-| **evaluation** | **string** | 評価の種類         | [optional] [default to undefined] |
+| Name           | Type       | Description                | Notes                  |
+| -------------- | ---------- | -------------------------- | ---------------------- |
+| **sentenceId** | **number** | 評価対象の投稿のID（必須） | [default to undefined] |
+| **evaluation** | **string** | 評価の種類（必須）         | [default to undefined] |
 
 ## Example
 
