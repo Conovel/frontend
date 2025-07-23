@@ -3,6 +3,7 @@ import { useAuth } from '../../providers/auth';
 import { Link } from 'react-router';
 import { useEffect } from 'react';
 import { useLastVisitedPage } from '../../hooks/useLastVisitedPage';
+import { GoogleLogo } from '../../components/icons/GoogleLogo';
 
 export const LoginPresenter = () => {
   const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
@@ -79,12 +80,32 @@ export const LoginPresenter = () => {
             <>
               <p>ログインまたは新規登録してください</p>
               <Button
-                variant='outlined'
-                color='primary'
+                variant='contained'
                 onClick={handleGoogleAuth}
-                sx={{ width: '240px' }}
+                startIcon={<GoogleLogo size={18} />}
+                sx={{
+                  width: '240px',
+                  backgroundColor: '#ffffff',
+                  color: '#1f1f1f',
+                  border: '1px solid #747775',
+                  boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.12)',
+                  fontFamily: 'Roboto, sans-serif',
+                  fontWeight: 500,
+                  fontSize: '14px',
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor: '#f8f9fa',
+                    boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.15)',
+                  },
+                  '&:focus': {
+                    backgroundColor: '#f8f9fa',
+                  },
+                  '&:active': {
+                    backgroundColor: '#e8eaed',
+                  },
+                }}
               >
-                Googleログイン
+                Googleでログイン
               </Button>
             </>
           )}

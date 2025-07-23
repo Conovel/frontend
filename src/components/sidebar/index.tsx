@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router';
+import { Link } from 'react-router';
 
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -15,117 +15,74 @@ import PersonIcon from '@mui/icons-material/Person';
 import BusinessIcon from '@mui/icons-material/Business';
 import BalanceIcon from '@mui/icons-material/Balance';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Typography } from '@mui/material';
-import Button from '@mui/material/Button';
-import GoogleIcon from '@mui/icons-material/Google';
-import Modal from '@mui/material/Modal';
-import DialogTitle from '@mui/material/DialogTitle';
 import LoginIcon from '@mui/icons-material/Login';
+import { Typography } from '@mui/material';
+import { useAuth, User } from '../../providers/auth';
+
+interface MenuItem {
+  name: string;
+  icon: React.ReactElement;
+  link?: string;
+  onClick?: () => void;
+}
 
 const getMenuItems = (
-  isLoggedIn: boolean,
-  setIsLoggedIn: (value?: boolean) => void,
-) => [
-  { name: 'ホーム', icon: <HomeIcon />, link: '/' },
-  { name: 'アカウント', icon: <PersonIcon />, link: '/account' },
-  { name: '運営会社', icon: <BusinessIcon />, link: '/company' },
-  { name: 'ポリシー', icon: <BalanceIcon />, link: '/terms' },
-  ...(isLoggedIn
-    ? [
-        {
-          name: 'ログアウト',
-          icon: <LogoutIcon />,
-          onClick: () => setIsLoggedIn(false),
-          link: null,
-        },
-      ]
-    : []),
-];
+  currentUser: User | null,
+  logout: () => Promise<void>,
+): MenuItem[] => {
+  const baseItems: MenuItem[] = [
+    { name: 'ホーム', icon: <HomeIcon />, link: '/' },
+    { name: 'アカウント', icon: <PersonIcon />, link: '/account' },
+    { name: '運営会社', icon: <BusinessIcon />, link: '/company' },
+    { name: 'ポリシー', icon: <BalanceIcon />, link: '/terms' },
+  ];
+
+  if (currentUser) {
+    // If user is logged in, show logout option
+    return [
+      ...baseItems,
+      {
+        name: 'ログアウト',
+        icon: <LogoutIcon />,
+        onClick: logout,
+      },
+    ];
+  } else {
+    // If user is not logged in, show login option
+    return [
+      ...baseItems,
+      {
+        name: 'ログイン',
+        icon: <LoginIcon />,
+        link: '/login',
+      },
+    ];
+  }
+};
 
 const ListComponent: React.FC<{
   selectedIndex: number;
   onSelect: (index: number) => void;
-  isLoggedIn: boolean;
-  setIsLoggedIn: (value?: boolean) => void;
-}> = ({ selectedIndex, onSelect, isLoggedIn, setIsLoggedIn }) => {
-  const menuItems = getMenuItems(isLoggedIn, setIsLoggedIn);
-  const [isOpenModal, setIsOpenModal] = useState(false);
-
-  const handleGoogleLoginClick = () => {
-    setIsOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsOpenModal(false);
-  };
+}> = ({ selectedIndex, onSelect }) => {
+  const { currentUser, logout } = useAuth();
+  const menuItems = getMenuItems(currentUser, logout);
 
   return (
-    <>
-      <Box sx={{ width: 80 }} role='presentation'>
-        <List sx={{ pt: 8 }}>
-          {menuItems.map(({ name, icon, link, onClick }, index) => (
-            <ListItem key={name} disablePadding>
-              {link !== null ? (
-                <Link
-                  to={link}
-                  style={{
-                    color: 'inherit',
-                    width: '100%',
-                    textDecoration: 'none',
-                  }}
-                >
-                  <ListItemButton
-                    onClick={() => onSelect(index)}
-                    sx={{
-                      position: 'relative',
-                      backgroundColor:
-                        selectedIndex === index
-                          ? 'rgba(0, 0, 0, 0.1)'
-                          : 'transparent',
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        textAlign: 'center',
-                        width: '100%',
-                      }}
-                    >
-                      <Box sx={{ fontSize: 20 }}>{icon}</Box>
-                      <Typography
-                        variant='caption'
-                        sx={{
-                          textAlign: 'center',
-                          fontSize: 8,
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        {name}
-                      </Typography>
-                    </Box>
-                    {selectedIndex === index && (
-                      <Box
-                        sx={{
-                          position: 'absolute',
-                          right: 0,
-                          top: 0,
-                          bottom: 0,
-                          width: 8,
-                          backgroundColor: '#467DCC',
-                        }}
-                      />
-                    )}
-                  </ListItemButton>
-                </Link>
-              ) : (
+    <Box sx={{ width: 80 }} role='presentation'>
+      <List sx={{ pt: 8 }}>
+        {menuItems.map(({ name, icon, link, onClick }, index) => (
+          <ListItem key={name} disablePadding>
+            {link ? (
+              <Link
+                to={link}
+                style={{
+                  color: 'inherit',
+                  width: '100%',
+                  textDecoration: 'none',
+                }}
+              >
                 <ListItemButton
-                  onClick={() => {
-                    onSelect(index);
-                    if (onClick) onClick();
-                  }}
+                  onClick={() => onSelect(index)}
                   sx={{
                     position: 'relative',
                     backgroundColor:
@@ -169,123 +126,67 @@ const ListComponent: React.FC<{
                     />
                   )}
                 </ListItemButton>
-              )}
-            </ListItem>
-          ))}
-
-          {!isLoggedIn && (
-            <>
-              <ListItem disablePadding>
-                <ListItemButton
-                  onClick={handleGoogleLoginClick}
+              </Link>
+            ) : (
+              <ListItemButton
+                onClick={() => {
+                  if (onClick) onClick();
+                  onSelect(index);
+                }}
+                sx={{
+                  position: 'relative',
+                  backgroundColor:
+                    selectedIndex === index
+                      ? 'rgba(0, 0, 0, 0.1)'
+                      : 'transparent',
+                }}
+              >
+                <Box
                   sx={{
-                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    width: '100%',
                   }}
                 >
-                  <Box
+                  <Box sx={{ fontSize: 20 }}>{icon}</Box>
+                  <Typography
+                    variant='caption'
                     sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
                       textAlign: 'center',
-                      width: '100%',
+                      fontSize: 8,
+                      fontWeight: 'bold',
                     }}
                   >
-                    <Box sx={{ fontSize: 20 }}>
-                      <GoogleIcon />
-                    </Box>
-                    <Typography
-                      variant='caption'
-                      sx={{
-                        textAlign: 'center',
-                        fontSize: 8,
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      Googleログイン
-                    </Typography>
-                  </Box>
-                </ListItemButton>
-              </ListItem>
-            </>
-          )}
-        </List>
-      </Box>
-
-      <Modal
-        open={isOpenModal}
-        onClose={handleCloseModal}
-        aria-labelledby='google-login-dialog'
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 2,
-            borderRadius: 1,
-            width: 300,
-          }}
-        >
-          <DialogTitle>Googleアカウントでログイン</DialogTitle>
-
-          <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Button
-              variant='contained'
-              startIcon={<GoogleIcon />}
-              onClick={() => {
-                setIsLoggedIn(true);
-                handleCloseModal();
-              }}
-              sx={{
-                backgroundColor: '#fff',
-                color: '#757575',
-                '&:hover': {
-                  backgroundColor: '#f1f1f1',
-                },
-                boxShadow: '0 2px 4px 0 rgba(0,0,0,.25)',
-                px: 4,
-                py: 1,
-              }}
-            >
-              Googleでログイン
-            </Button>
-            <Button
-              variant='contained'
-              startIcon={<LoginIcon />}
-              onClick={() => {
-                setIsLoggedIn(true);
-                handleCloseModal();
-              }}
-            >
-              初回ログイン
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
-    </>
+                    {name}
+                  </Typography>
+                </Box>
+                {selectedIndex === index && (
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      width: 8,
+                      backgroundColor: '#467DCC',
+                    }}
+                  />
+                )}
+              </ListItemButton>
+            )}
+          </ListItem>
+        ))}
+      </List>
+    </Box>
   );
 };
 
 export const MenuButton: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [isLoggedIn, setIsLoggedInState] = useState(false);
-  const navigate = useNavigate();
-
-  const setIsLoggedIn = (value?: boolean) => {
-    const newLoginStatus = value !== undefined ? value : !isLoggedIn;
-    setIsLoggedInState(newLoginStatus);
-    setIsOpen(false);
-
-    if (!newLoginStatus) {
-      navigate('/');
-    }
-  };
 
   const toggleDrawer =
     (isOpen: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -320,8 +221,6 @@ export const MenuButton: React.FC = () => {
         <ListComponent
           selectedIndex={selectedIndex ?? 0}
           onSelect={setSelectedIndex}
-          isLoggedIn={isLoggedIn}
-          setIsLoggedIn={setIsLoggedIn}
         />
       </Drawer>
     </>

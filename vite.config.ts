@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
+      host: '0.0.0.0', // Docker環境でのアクセスを許可
+      port: 3000,
+      strictPort: true,
       watch: {
         usePolling: mode === "development",
       },
