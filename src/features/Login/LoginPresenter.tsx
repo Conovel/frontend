@@ -1,15 +1,29 @@
 import { Box, Typography, Container, Button, Divider } from '@mui/material';
 import { useAuth } from '../../providers/auth';
 import { Link } from 'react-router';
+import { useEffect } from 'react';
+import { useLastVisitedPage } from '../../hooks/useLastVisitedPage';
 
 export const LoginPresenter = () => {
   const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
   const { currentUser, logout } = useAuth();
+  const { navigateToLastVisitedPage } = useLastVisitedPage();
 
   const handleGoogleAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     window.location.href = `${authBaseUrl}/auth/google_oauth2`;
   };
+
+  // ログイン済みの場合、前回のページに自動遷移
+  useEffect(() => {
+    if (currentUser) {
+      const timer = setTimeout(() => {
+        navigateToLastVisitedPage();
+      }, 2000); // 2秒後に自動遷移
+
+      return () => clearTimeout(timer);
+    }
+  }, [currentUser, navigateToLastVisitedPage]);
 
   return (
     <Container maxWidth='sm'>
@@ -39,6 +53,13 @@ export const LoginPresenter = () => {
                 <br />
                 （ユーザーID：{currentUser.userId}）
               </p>
+              <Typography
+                variant='body2'
+                color='primary'
+                sx={{ fontWeight: 'bold' }}
+              >
+                2秒後に前回のページに自動で戻ります...
+              </Typography>
               <Button
                 variant='outlined'
                 color='primary'

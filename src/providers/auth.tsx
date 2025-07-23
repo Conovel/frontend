@@ -2,7 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { UsersApi, AuthApi } from '../api/api';
 import { axiosConfig } from '../axiosConfig';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
+import { useLastVisitedPage } from '../hooks/useLastVisitedPage';
 
 // 型定義
 export interface User {
@@ -43,6 +44,8 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { navigateToLastVisitedPage } = useLastVisitedPage();
 
   const logout = async () => {
     try {
@@ -62,6 +65,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // 認証成功時には現在のユーザー情報を設定
     if (response?.data?.userId) {
       setCurrentUser(response.data as User);
+
+      // ログインページから来た場合は、前回訪問したページに遷移
+      if (location.pathname === '/login') {
+        navigateToLastVisitedPage();
+      }
       return;
     }
   };

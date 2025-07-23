@@ -10,6 +10,7 @@ import { DeleteAccountPage } from '../pages/deleteAccount';
 import { AccountDeleted } from '../features/DeleteAccount/AccountDeleted';
 import Login from '../pages/login';
 import { NovelViewContainer } from '../features/NovelView/NovelViewContainer';
+import { useLastVisitedPage } from '../hooks/useLastVisitedPage';
 
 /**
  * ルーティング
@@ -35,6 +36,9 @@ export const Routing = () => {
 };
 
 const Layout = () => {
+  // ページ遷移を監視してcookieに保存
+  useLastVisitedPage();
+
   return (
     <Box display='flex' flexDirection='column' minHeight='100vh'>
       <HeaderBar />
