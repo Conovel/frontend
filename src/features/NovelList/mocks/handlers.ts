@@ -1,6 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import { NovelListItem } from '../../../api/api';
-import { PostSentence } from '../../../types/types';
+import { NovelListItem, PostSentence } from '../../../api/api';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 

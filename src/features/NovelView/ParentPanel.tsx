@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import NovelCard from '../../components/novelCard/NovelCard';
-import { NovelProps } from '../../types/types';
+import { Sentence } from '../../api/api';
 
 interface ParentPanelProps {
-  parentPanel: NovelProps;
+  parentPanel: Sentence;
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
@@ -45,33 +45,17 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
           key={startIndex}
           index={0}
           textIndex={startIndex}
-          sentence={parentPanel.sentence}
+          sentence={parentPanel.sentence || ''}
           novel={{
-            main_copy: parentPanel.main_copy,
-            overview: parentPanel.overview,
-            title: parentPanel.title,
-            author_user_name: parentPanel.author_user_name,
-            chips: parentPanel.chips,
-            avatar: parentPanel.avatar,
-            popular: parentPanel.popular,
-            newArrival: parentPanel.newArrival,
-            reader_count: parentPanel.reader_count,
-            updated_at: parentPanel.updated_at,
-            sentence_user_count: parentPanel.sentence_user_count,
-            sentence_hierarchy_count: parentPanel.sentence_hierarchy_count,
-            tags: parentPanel.tags,
-            sentence: parentPanel.sentence,
-            sentence_id: 0,
-            userId: 0,
-            userName: '',
-            profile_icon_image: '',
-            evaluation_good_count: 0,
-            evaluation_stay_count: 0,
-            created_at: '',
-            textIndex: 0,
-            children: [],
-            parent: [],
-            main: [],
+            sentenceId: parentPanel.sentenceId || 0,
+            sentence: parentPanel.sentence || '',
+            createdAt: '',
+            updatedAt: parentPanel.updatedAt || '',
+            sentenceUserId: 0,
+            sentenceUserName: '',
+            profileIconImage: '',
+            evaluationGoodCount: 0,
+            evaluationStayCount: 0,
           }}
           onClick={() => {}}
           evaluation_good_count={evaluation_good_count}

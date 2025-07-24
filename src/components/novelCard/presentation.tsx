@@ -7,10 +7,15 @@ import Avatar from '@mui/material/Avatar';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import { NovelProps } from '../../types/types';
 import { NovelInfo } from '../../features/NovelInfo';
+import { NovelListItem } from '../../api';
 
-const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
+const NovelCard = ({
+  novel,
+}: {
+  novel: NovelListItem;
+  onClick: () => void;
+}) => {
   const [openModal, setOpenModal] = React.useState(false);
 
   const handleOpenModal = () => setOpenModal(true);
@@ -38,7 +43,7 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
               textOverflow: 'ellipsis',
             }}
           >
-            {novel.main_copy}
+            {novel.famousSentenceText}
           </Typography>
           <Typography
             variant='h5'
@@ -55,8 +60,8 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
             {novel.title}
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
-            {novel.chips.map((chip, index) => (
-              <Box key={index}>{chip.label}</Box>
+            {novel.titleGenres?.map((chip, index) => (
+              <Box key={index}>{chip}</Box>
             ))}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -65,23 +70,23 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
               color='text.secondary'
             >
               <Avatar
-                alt={novel.avatar.alt}
+                alt={novel.profileIconImage}
                 sx={{
                   width: 24,
                   height: 24,
-                  backgroundColor: novel.avatar.color,
+                  backgroundColor: 'white',
                 }}
-                src={novel.avatar.src}
+                src={novel.profileIconImage}
               >
-                {novel.avatar.text}
+                あああ
               </Avatar>
             </Box>
             <Box
               sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
               color='text.secondary'
             >
-              {novel.tags.map((tag, index) => (
-                <Box key={index}>{tag.label}</Box>
+              {novel.titleGenres?.map((tag, index) => (
+                <Box key={index}>{tag}</Box>
               ))}
             </Box>
           </Box>
@@ -89,15 +94,15 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick: () => void }) => {
           <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1.5 }}>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <VisibilityIcon />
-              {novel.reader_count}
+              {novel.viewCount}
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <AccessTimeFilledIcon />
-              {novel.updated_at}
+              {novel.updatedAt}
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center' }}>
               <EditNoteIcon />
-              {novel.sentence_user_count}
+              {novel.viewCount}
             </Typography>
           </Box>
         </CardContent>
