@@ -10,7 +10,7 @@ export const novels: NovelDetail[] = [
     isFamous: true,
     isNew: true,
     profileIconImage: '/static/images/avatar/1.jpg',
-    authorUserName: 'Remy Sharp',
+    authorPenName: 'Remy Sharp',
     titleGenres: ['人気', '新着'],
     readerCount: 100,
     updatedAt: '2024/08/20',

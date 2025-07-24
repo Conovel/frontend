@@ -125,7 +125,7 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
             sentence: '',
             sentenceId: 0,
             sentenceUserId: 0,
-            sentenceUserName: '',
+            sentencePenName: '',
             profileIconImage: '',
             evaluationGoodCount: 0,
             evaluationStayCount: 0,

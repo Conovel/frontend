@@ -171,7 +171,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         sentenceId: apiSentence.sentenceId || 0,
         sentence: apiSentence.sentence || '',
         sentenceUserId: 0,
-        sentenceUserName: '',
+        sentencePenName: '',
         profileIconImage: '',
         evaluationGoodCount: 0,
         evaluationStayCount: 0,

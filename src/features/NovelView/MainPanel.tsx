@@ -77,7 +77,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
                 {mainPanel.sentenceUserId}
               </Avatar>
               <Box sx={{ marginLeft: '1vh', fontSize: '1.2rem' }}>
-                {mainPanel.sentenceUserName}
+                {mainPanel.sentencePenName}
               </Box>
             </Box>
           </Box>

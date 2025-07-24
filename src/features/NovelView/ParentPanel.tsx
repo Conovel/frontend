@@ -52,7 +52,7 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
             createdAt: '',
             updatedAt: parentPanel.updatedAt || '',
             sentenceUserId: 0,
-            sentenceUserName: '',
+            sentencePenName: '',
             profileIconImage: '',
             evaluationGoodCount: 0,
             evaluationStayCount: 0,
