@@ -5,14 +5,14 @@ import { useAuth } from '../../providers/auth';
 import { useNavigate } from 'react-router';
 
 export const NovelViewContainer = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, isLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!isLoading && !currentUser) {
       navigate('/login');
     }
-  }, [currentUser, navigate]);
+  }, [currentUser, isLoading, navigate]);
 
   const [start_index_parent, setStart_index_parent] = useState(0);
   const [start_index_children, setStart_index_children] = useState(0);
@@ -34,6 +34,10 @@ export const NovelViewContainer = () => {
   const [comment_count_main, setComment_count_main] = useState<number>(0);
   const [evaluation_stay_count_main, setEvaluation_stay_count_main] =
     useState<number>(0);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!currentUser) {
     return null;

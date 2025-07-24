@@ -22,6 +22,7 @@ export interface AuthContextType {
   currentUser: User | null;
   setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
   logout: () => Promise<void>;
+  isLoading: boolean;
 }
 
 export interface AuthProviderProps {
@@ -43,6 +44,7 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const location = useLocation();
   const { navigateToLastVisitedPage } = useLastVisitedPage();
@@ -57,20 +59,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const fetchCurrentUserId = async () => {
-    const response = await usersApi.getUserByMe(async () => {
-      // jwt, refresh両方失敗時にはlgin画面へリダイレクト
-      navigate('/login');
-    });
+    try {
+      const response = await usersApi.getUserByMe(async () => {
+        // jwt, refresh両方失敗時にはlgin画面へリダイレクト
+        navigate('/login');
+      });
 
-    // 認証成功時には現在のユーザー情報を設定
-    if (response?.data?.userId) {
-      setCurrentUser(response.data as User);
+      // 認証成功時には現在のユーザー情報を設定
+      if (response?.data?.userId) {
+        setCurrentUser(response.data as User);
 
-      // ログインページから来た場合は、前回訪問したページに遷移
-      if (location.pathname === '/login') {
-        navigateToLastVisitedPage();
+        // ログインページから来た場合は、前回訪問したページに遷移
+        if (location.pathname === '/login') {
+          navigateToLastVisitedPage();
+        }
       }
-      return;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -80,7 +85,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ logout, currentUser, setCurrentUser }}>
+    <AuthContext.Provider
+      value={{ logout, currentUser, setCurrentUser, isLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );
