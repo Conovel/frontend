@@ -1,8 +1,19 @@
 import { NovelViewPresentation } from './NovelViewPresentation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { mockContainerData } from './mocks/data';
+import { useAuth } from '../../providers/auth';
+import { useNavigate } from 'react-router';
 
 export const NovelViewContainer = () => {
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!currentUser) {
+      navigate('/login');
+    }
+  }, [currentUser, navigate]);
+
   const [start_index_parent, setStart_index_parent] = useState(0);
   const [start_index_children, setStart_index_children] = useState(0);
   const [evaluation_good_count_parent, setEvaluation_good_count_parent] =
@@ -23,6 +34,10 @@ export const NovelViewContainer = () => {
   const [comment_count_main, setComment_count_main] = useState<number>(0);
   const [evaluation_stay_count_main, setEvaluation_stay_count_main] =
     useState<number>(0);
+
+  if (!currentUser) {
+    return null;
+  }
 
   return (
     <NovelViewPresentation

@@ -10,6 +10,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { NovelProps } from '../../types/types';
+import { useAuth } from '../../providers/auth';
 
 interface NovelInfoProps {
   open: boolean;
@@ -22,8 +23,14 @@ interface NovelInfoProps {
  */
 export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
   const navigate = useNavigate(); // historyを初期化
+  const { currentUser } = useAuth();
+
   const handleReadMore = () => {
-    navigate('/novelView'); // novelViewページに遷移
+    if (!currentUser) {
+      navigate('/login'); // 未ログインの場合はログインページに遷移
+    } else {
+      navigate('/novelView'); // ログイン済みの場合はnovelViewページに遷移
+    }
   };
 
   return (
