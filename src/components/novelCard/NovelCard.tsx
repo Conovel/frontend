@@ -3,7 +3,7 @@ import { Avatar, Box, Typography } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import CommentButton from '../buttonicon/CommentButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
-import { NovelProps } from '../../types/types';
+import { Sentence } from '../../api/api';
 
 interface NovelCardProps {
   key: number;
@@ -16,8 +16,8 @@ interface NovelCardProps {
   setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
-  novel: NovelProps;
-  onClick: (sentence_id: number) => void;
+  novel: Sentence;
+  onClick: (sentenceId: number | undefined) => void;
 }
 
 const NovelCard = ({ novel, onClick }: NovelCardProps) => {
@@ -33,7 +33,7 @@ const NovelCard = ({ novel, onClick }: NovelCardProps) => {
         position: 'relative',
         backgroundColor: '#fff',
       }}
-      onClick={() => onClick(novel.sentence_id)}
+      onClick={() => onClick(novel.sentenceId)}
     >
       <Box
         sx={{

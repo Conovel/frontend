@@ -9,12 +9,12 @@ import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import GroupsIcon from '@mui/icons-material/Groups';
-import { NovelProps } from '../../types/types';
+import { NovelListItem } from '../../api/api';
 
 interface NovelInfoProps {
   open: boolean;
   onClose: () => void;
-  novel: NovelProps;
+  novel: NovelListItem;
 }
 
 /**
@@ -56,21 +56,20 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
               color='text.secondary'
             >
               <Avatar
-                alt={novel.avatar.alt}
                 sx={{
                   width: 24,
                   height: 24,
-                  backgroundColor: novel.avatar.color,
+                  backgroundColor: 'white',
                 }}
-                src={novel.avatar.src}
+                src={novel.profileIconImage}
               >
-                {novel.avatar.text}
+                あああ
               </Avatar>
-              <Typography sx={{ ml: 1 }}>{novel.author_user_name}</Typography>
+              <Typography sx={{ ml: 1 }}>{novel.authorUserName}</Typography>
             </Box>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
-              {novel.chips.map((chip, index) => (
-                <Box key={index}>{chip.label}</Box>
+              {novel.titleGenres?.map((genre, index) => (
+                <Box key={index}>{genre}</Box>
               ))}
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -78,33 +77,33 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
                 sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
                 color='text.secondary'
               >
-                {novel.tags.map((tag, index) => (
-                  <Box key={index}>{tag.label}</Box>
+                {novel.titleGenres?.map((tag, index) => (
+                  <Box key={index}>{tag}</Box>
                 ))}
               </Box>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1 }}>
               <Typography sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
                 <VisibilityIcon />
-                {novel.reader_count}
+                {novel.viewCount}
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
                 <AccessTimeFilledIcon />
-                {novel.updated_at}
+                {novel.updatedAt}
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center' }}>
                 <EditNoteIcon />
-                {novel.sentence_user_count}
+                {novel.viewCount}
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 1 }}>
               <Typography sx={{ display: 'flex', alignItems: 'center' }}>
                 <DynamicFeedIcon />
-                {novel.sentence_hierarchy_count}
+                {novel.viewCount}
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center' }}>
                 <GroupsIcon />
-                {novel.sentence_user_count}
+                {novel.viewCount}
               </Typography>
             </Box>
             <TextField
@@ -112,7 +111,7 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
               multiline
               rows={4}
               variant='outlined'
-              value={novel.overview}
+              value={novel.famousSentenceText}
               InputProps={{
                 readOnly: true,
               }}

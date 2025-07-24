@@ -1,9 +1,7 @@
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
-import { NovelsApi } from '../../api/api';
+import { NovelListItem, NovelsApi } from '../../api/api';
 import NovelCardContainer from '../../components/novelCard/container';
-import { NovelListItem } from '../../types/types';
-import { convertNovelListResponse } from './convert';
 import { axiosConfig } from '../../axiosConfig';
 
 const novelsApi = new NovelsApi(axiosConfig);
@@ -16,10 +14,7 @@ const NovelList = () => {
       try {
         const response = await novelsApi.getNovels();
 
-        const convertedResponse: NovelListItem[] = convertNovelListResponse(
-          response.data,
-        );
-        setResponseNovels(convertedResponse);
+        setResponseNovels(response.data);
       } catch (error) {
         // TODO: エラー時の対応について要検討（エラーがわかるような画面にするかなど）
         console.error('Error fetching sentences:', error);
@@ -33,38 +28,9 @@ const NovelList = () => {
     <>
       <Grid container spacing={2}>
         {responseNovels.map((novel) => (
-          <Grid item xs={12} sm={6} md={4} key={novel.title_id}>
+          <Grid item xs={12} sm={6} md={4} key={novel.titleId}>
             <NovelCardContainer
-              novel={{
-                ...novel,
-                sentence: novel.famous_sentence_text,
-                sentence_id: 0,
-                userId: novel.author_user_id,
-                userName: novel.author_user_name,
-                profile_icon_image: novel.profile_icon_image,
-                evaluation_good_count: novel.evaluation_good_count,
-                evaluation_stay_count: 0,
-                textIndex: 0,
-                created_at: novel.created_at,
-                children: [],
-                parent: [],
-                main: [],
-                chips: [],
-                tags: novel.title_genres.map((genre) => ({ label: genre })),
-                main_copy: novel.famous_sentence_text,
-                overview: '',
-                popular: novel.is_famous,
-                newArrival: novel.is_new,
-                reader_count: novel.view_count,
-                avatar: {
-                  src: novel.profile_icon_image,
-                  alt: novel.author_user_name,
-                  color: '#000000',
-                  text: novel.author_user_name,
-                },
-                sentence_user_count: 0,
-                sentence_hierarchy_count: 0,
-              }}
+              novel={novel}
               onClick={() => {
                 // TODO：不要なonClick削除する
               }}

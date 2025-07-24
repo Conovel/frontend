@@ -1,11 +1,11 @@
-import { NovelProps } from '../../types/types';
+import { NovelListItem } from '../../api';
 import NovelCard from './presentation';
 
 const NovelCardContainer = ({
   novel,
   onClick,
 }: {
-  novel: NovelProps;
+  novel: NovelListItem;
   onClick: () => void;
 }) => {
   return <NovelCard novel={novel} onClick={onClick} key={0} />;

@@ -4,15 +4,9 @@ import { Box, Fab } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
-import {
-  Sentence,
-  NovelProps,
-  CreateSentenceRequest,
-  PostSentence,
-} from '../../types/types';
 import CreateIcon from '@mui/icons-material/Create';
 import { EditPost } from '../EditPost';
-import { SentencesApi } from '../../api/api';
+import { PostSentence, Sentence, SentencesApi } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
 
 const sentencesApi = new SentencesApi(axiosConfig);
@@ -64,6 +58,11 @@ const fabStyle = {
   },
 };
 
+// リクエスト用の新しい型
+export interface CreateSentenceRequest {
+  text: string;
+}
+
 interface ChildrenPanelProps {
   childrenPanel: Sentence[];
   setChildrenPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
@@ -79,12 +78,12 @@ interface ChildrenPanelProps {
   setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
-  novel: NovelProps;
+  novel: Sentence;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   textIndex: number;
 }
 
-const handleClick = (sentenceId: number) => {
+const handleClick = (sentenceId: number | undefined) => {
   // Your logic here, using sentenceId
   console.log(sentenceId);
 };
@@ -103,7 +102,6 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   setComment_count,
   evaluation_stay_count,
   setEvaluation_stay_count,
-  novel,
   textIndex,
 }) => {
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
@@ -127,10 +125,10 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   };
 
   const renderNovelCard = (panel: Sentence, index: number) => (
-    <Box key={panel.sentence_id} sx={novelCardBoxStyle}>
+    <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
       <NovelCard
-        novel={novel}
-        onClick={() => handleClick(panel.sentence_id)}
+        novel={panel}
+        onClick={() => handleClick(panel.sentenceId)}
         key={index}
         index={index}
         textIndex={textIndex}
@@ -140,7 +138,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         setComment_count={setComment_count}
         evaluation_stay_count={evaluation_stay_count}
         setEvaluation_stay_count={setEvaluation_stay_count}
-        sentence={panel.sentence}
+        sentence={panel.sentence || ''}
       />
     </Box>
   );
@@ -148,14 +146,14 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   const handleSubmitPost = async (sentenceRequest: CreateSentenceRequest) => {
     try {
       // 親投稿のIDと更新日時を取得
-      const parentId = mainPanel[mainPanel.length - 1]?.sentence_id || 0;
+      const parentId = mainPanel[mainPanel.length - 1]?.sentenceId || 0;
       const parentUpdatedAt =
-        mainPanel[mainPanel.length - 1]?.updated_at || new Date().toISOString();
+        mainPanel[mainPanel.length - 1]?.updatedAt || new Date().toISOString();
 
       // APIに送信するためのPostSentenceオブジェクトを作成
       const postSentence: PostSentence = {
-        parent_sentence_id: parentId,
-        parent_updated_at: parentUpdatedAt,
+        parentSentenceId: parentId,
+        parentUpdatedAt: parentUpdatedAt,
         sentence: sentenceRequest.text,
       };
 
@@ -170,33 +168,15 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       // Convert API response Sentence to application Sentence type
       const apiSentence = response.data.main;
       const newSentence: Sentence = {
-        title: '',
-        main_copy: '',
-        overview: '',
-        popular: false,
-        newArrival: false,
-        author_user_name: '',
-        chips: [],
-        tags: [],
-        reader_count: 0,
-        avatar: {
-          src: '',
-          alt: '',
-          color: '',
-          text: '',
-        },
-        sentence_id: apiSentence.sentenceId || 0,
-        sentence_user_count: 0,
-        sentence_hierarchy_count: 0,
+        sentenceId: apiSentence.sentenceId || 0,
         sentence: apiSentence.sentence || '',
-        textIndex: 0,
-        userId: 0,
-        userName: '',
-        profile_icon_image: '',
-        evaluation_good_count: 0,
-        evaluation_stay_count: 0,
-        created_at: apiSentence.createdAt || '',
-        updated_at: apiSentence.updatedAt || '',
+        sentenceUserId: 0,
+        sentenceUserName: '',
+        profileIconImage: '',
+        evaluationGoodCount: 0,
+        evaluationStayCount: 0,
+        createdAt: apiSentence.createdAt || '',
+        updatedAt: apiSentence.updatedAt || '',
       };
 
       // mainPanelを更新
