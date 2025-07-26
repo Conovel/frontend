@@ -59,12 +59,12 @@ interface ChildrenPanelProps {
   setMainPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
-  evaluation_good_count: number;
-  setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
-  comment_count: number;
-  setComment_count: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count: number;
-  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCount: number;
+  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
+  commentCount: number;
+  setCommentCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCount: number;
+  setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
   novel: NovelProps;
   textIndex: number;
   titleId: string;
@@ -76,12 +76,12 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   setMainPanel,
   setStartIndex,
   visibleTextCount,
-  evaluation_good_count,
-  setEvaluation_good_count,
-  comment_count,
-  setComment_count,
-  evaluation_stay_count,
-  setEvaluation_stay_count,
+  evaluationGoodCount,
+  setEvaluationGoodCount,
+  commentCount,
+  setCommentCount,
+  evaluationStayCount,
+  setEvaluationStayCount,
   novel,
   textIndex,
   titleId,
@@ -103,12 +103,12 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
 
   const handleClick = (sentenceId: number) => {
     const clickedSentence = childrenPanel.find(
-      (sentence: Sentence) => sentence.sentence_id === sentenceId,
+      (sentence: Sentence) => sentence.sentenceId === sentenceId,
     );
     if (clickedSentence) {
       const defaultTitleId = '1';
       const targetTitleId = titleId || defaultTitleId;
-      navigate(`/novelView/${targetTitleId}/${clickedSentence.sentence_id}`);
+      navigate(`/novelView/${targetTitleId}/${clickedSentence.sentenceId}`);
     } else {
       console.error(
         `Sentence with ID ${sentenceId} not found in childrenPanel`,
@@ -136,19 +136,19 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       ),
     };
     return (
-      <Box key={panel.sentence_id} sx={novelCardBoxStyle}>
+      <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
         <NovelCard
           novel={panelAsNovelProps}
-          onClick={() => handleClick(panel.sentence_id)}
+          onClick={() => handleClick(panel.sentenceId)}
           key={index}
           index={index}
           textIndex={textIndex}
-          evaluation_good_count={evaluation_good_count}
-          setEvaluation_good_count={setEvaluation_good_count}
-          comment_count={comment_count}
-          setComment_count={setComment_count}
-          evaluation_stay_count={evaluation_stay_count}
-          setEvaluation_stay_count={setEvaluation_stay_count}
+          evaluationGoodCount={evaluationGoodCount}
+          setEvaluationGoodCount={setEvaluationGoodCount}
+          commentCount={commentCount}
+          setCommentCount={setCommentCount}
+          evaluationStayCount={evaluationStayCount}
+          setEvaluationStayCount={setEvaluationStayCount}
           sentence={panel.sentence}
         />
       </Box>
@@ -158,14 +158,14 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   const handleSubmitPost = async (sentenceRequest: CreateSentenceRequest) => {
     try {
       // 親投稿のIDと更新日時を取得
-      const parentId = mainPanel[mainPanel.length - 1]?.sentence_id || 0;
+      const parentId = mainPanel[mainPanel.length - 1]?.sentenceId || 0;
       const parentUpdatedAt =
-        mainPanel[mainPanel.length - 1]?.updated_at || new Date().toISOString();
+        mainPanel[mainPanel.length - 1]?.updatedAt || new Date().toISOString();
 
       // APIに送信するためのPostSentenceオブジェクトを作成
       const postSentence: PostSentence = {
-        parent_sentence_id: parentId,
-        parent_updated_at: parentUpdatedAt,
+        parentSentenceId: parentId,
+        parentUpdatedAt: parentUpdatedAt,
         sentence: sentenceRequest.text,
       };
 
@@ -181,30 +181,28 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       const apiSentence = response.data.main;
       const newSentence: Sentence = {
         title: '',
-        main_copy: '',
+        mainCopy: '',
         overview: '',
         popular: false,
         newArrival: false,
-        author_user_name: '',
+        authorUserName: '',
         chips: [],
         tags: [],
-        reader_count: 0,
+        readerCount: 0,
         avatar: {
           src: '',
           alt: '',
           color: '',
           text: '',
         },
-        sentence_id: apiSentence.sentenceId || 0,
-        title_id: novel.title_id,
-        sentence_user_count: 0,
-        sentence_hierarchy_count: 0,
+        sentenceId: apiSentence.sentenceId || 0,
+        titleId: novel.titleId,
+        sentenceUserCount: 0,
+        sentenceHierarchyCount: 0,
         sentence: apiSentence.sentence || '',
         textIndex: 0,
         userId: 0,
         userName: '',
-        sentenceUserId: 0,
-        sentencePenName: '',
         profileIconImage: '',
         evaluationGoodCount: 0,
         evaluationStayCount: 0,

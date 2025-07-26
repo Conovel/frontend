@@ -41,7 +41,7 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
 
   const handleViewDetail = () => {
     onClose();
-    navigate(`/novelView/${novel.title_id}/${novel.sentence_id}`);
+    navigate(`/novelView/${novel.titleId}/${novel.sentenceId}`);
   };
 
   return (
@@ -70,7 +70,7 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
           </Box>
 
           <Typography variant='body1' paragraph>
-            {novel.main_copy}
+            {novel.mainCopy}
           </Typography>
 
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
@@ -90,12 +90,10 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
               }}
               src={novel.avatar.src}
             >
-
               {novel.avatar.text}
             </Avatar>
             <Box>
               <Typography variant='subtitle1'>{novel.avatar.alt}</Typography>
-
             </Box>
           </Box>
 
@@ -115,15 +113,15 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Typography sx={{ display: 'flex', alignItems: 'center' }}>
                 <VisibilityIcon sx={{ mr: 0.5 }} />
-                {novel.reader_count}
+                {novel.readerCount}
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccessTimeFilledIcon sx={{ mr: 0.5 }} />
-                {novel.updated_at}
+                {novel.updatedAt}
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center' }}>
                 <EditNoteIcon sx={{ mr: 0.5 }} />
-                {novel.sentence_user_count}
+                {novel.sentenceUserCount}
               </Typography>
             </Box>
           </Box>

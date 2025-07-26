@@ -41,7 +41,7 @@ export const novelListHandlers = [
       sentenceId: Math.floor(Math.random() * 10000) + 1000, // ランダムなID
       sentence: postData.sentence,
       sentenceUserId: 1, // モックユーザーID
-      sentenceUserName: 'モックユーザー',
+      sentencePenName: 'モックユーザー',
       profileIconImage: '/path/to/avatar.jpg',
       evaluationGoodCount: 0,
       evaluationStayCount: 0,

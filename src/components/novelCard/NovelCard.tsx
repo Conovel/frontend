@@ -10,21 +10,21 @@ interface NovelCardProps {
   index: number;
   textIndex: number;
   sentence: string;
-  evaluation_good_count: number;
-  setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
-  comment_count: number;
-  setComment_count: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count: number;
-  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCount: number;
+  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
+  commentCount: number;
+  setCommentCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCount: number;
+  setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
   novel: NovelProps;
-  onClick: (sentence_id: number) => void;
+  onClick: (sentenceId: number) => void;
 }
 
 const NovelCard = ({ novel, onClick }: NovelCardProps) => {
   // Local state for counts
-  const [evaluation_good_count, setEvaluation_good_count] = useState(0);
-  const [comment_count, setComment_count] = useState(0);
-  const [evaluation_stay_count, setEvaluation_stay_count] = useState(0);
+  const [evaluationGoodCount, setEvaluationGoodCount] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
+  const [evaluationStayCount, setEvaluationStayCount] = useState(0);
   return (
     <Box
       component='div'
@@ -33,7 +33,7 @@ const NovelCard = ({ novel, onClick }: NovelCardProps) => {
         position: 'relative',
         backgroundColor: '#fff',
       }}
-      onClick={() => onClick(novel.sentence_id)}
+      onClick={() => onClick(novel.sentenceId)}
     >
       <Box
         sx={{
@@ -72,16 +72,16 @@ const NovelCard = ({ novel, onClick }: NovelCardProps) => {
       >
         <>
           <ThumbUpButton
-            evaluation_good_count={evaluation_good_count}
-            setEvaluation_good_count={setEvaluation_good_count}
+            evaluationGoodCount={evaluationGoodCount}
+            setEvaluationGoodCount={setEvaluationGoodCount}
           />
           <CommentButton
-            comment_count={comment_count}
-            setComment_count={setComment_count}
+            commentCount={commentCount}
+            setCommentCount={setCommentCount}
           />
           <NextPlanButton
-            evaluation_stay_count={evaluation_stay_count}
-            setEvaluation_stay_count={setEvaluation_stay_count}
+            evaluationStayCount={evaluationStayCount}
+            setEvaluationStayCount={setEvaluationStayCount}
           />
         </>
       </Box>

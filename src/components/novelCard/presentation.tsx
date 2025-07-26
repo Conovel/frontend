@@ -61,7 +61,7 @@ const NovelCard = ({ novel, onClick }: NovelCardProps) => {
               textOverflow: 'ellipsis',
             }}
           >
-            {novel.main_copy}
+            {novel.mainCopy}
           </Typography>
           <Typography
             variant='h5'
@@ -112,15 +112,15 @@ const NovelCard = ({ novel, onClick }: NovelCardProps) => {
           <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1.5 }}>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <VisibilityIcon />
-              {novel.reader_count}
+              {novel.readerCount}
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <AccessTimeFilledIcon />
-              {novel.updated_at}
+              {novel.updatedAt}
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center' }}>
               <EditNoteIcon />
-              {novel.sentence_user_count}
+              {novel.sentenceUserCount}
             </Typography>
           </Box>
         </CardContent>

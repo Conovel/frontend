@@ -37,37 +37,37 @@ const NovelList = () => {
     <>
       <Grid container spacing={2}>
         {responseNovels.map((novel) => (
-          <Grid item xs={12} sm={6} md={4} key={novel.title_id}>
+          <Grid item xs={12} sm={6} md={4} key={novel.titleId}>
             <NovelCardContainer
               novel={{
                 ...novel,
-                sentence: novel.famous_sentence_text,
-                sentence_id: 2,
-                userId: novel.author_user_id,
-                userName: novel.author_user_name,
-                profile_icon_image: novel.profile_icon_image,
-                evaluation_good_count: novel.evaluation_good_count,
-                evaluation_stay_count: 0,
+                sentence: novel.famousSentenceText,
+                sentenceId: 2,
+                userId: novel.authorUserId,
+                userName: novel.authorUserName,
+                profileIconImage: novel.profileIconImage,
+                evaluationGoodCount: novel.evaluationGoodCount,
+                evaluationStayCount: 0,
                 textIndex: 0,
-                created_at: novel.created_at,
+                createdAt: novel.createdAt,
                 children: [],
                 parent: [],
                 main: [],
                 chips: [],
-                tags: novel.title_genres.map((genre) => ({ label: genre })),
-                main_copy: novel.famous_sentence_text,
+                tags: novel.titleGenres.map((genre) => ({ label: genre })),
+                mainCopy: novel.famousSentenceText,
                 overview: '',
-                popular: novel.is_famous,
-                newArrival: novel.is_new,
-                reader_count: novel.view_count,
+                popular: novel.isFamous,
+                newArrival: novel.isNew,
+                readerCount: novel.viewCount,
                 avatar: {
-                  src: novel.profile_icon_image,
-                  alt: novel.author_user_name,
+                  src: novel.profileIconImage,
+                  alt: novel.authorUserName,
                   color: '#000000',
-                  text: novel.author_user_name,
+                  text: novel.authorUserName,
                 },
-                sentence_user_count: 0,
-                sentence_hierarchy_count: 0,
+                sentenceUserCount: 0,
+                sentenceHierarchyCount: 0,
               }}
             />
           </Grid>

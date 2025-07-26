@@ -10,32 +10,28 @@ interface NovelViewPresentationProps {
   mainPanel: Sentence[];
   parentPanel: Sentence[];
   childrenPanel: Sentence[];
-  start_index_parent: number;
-  setStart_index_parent: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_count_parent: number;
-  setEvaluation_good_count_parent: React.Dispatch<React.SetStateAction<number>>;
-  comment_count_parent: number;
-  setComment_count_parent: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count_parent: number;
-  setEvaluation_stay_count_parent: React.Dispatch<React.SetStateAction<number>>;
-  start_index_children: number;
-  setStart_index_children: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_count_children: number;
-  setEvaluation_good_count_children: React.Dispatch<
-    React.SetStateAction<number>
-  >;
-  comment_count_children: number;
-  setComment_count_children: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count_children: number;
-  setEvaluation_stay_count_children: React.Dispatch<
-    React.SetStateAction<number>
-  >;
-  evaluation_good_count_main: number;
-  setEvaluation_good_count_main: React.Dispatch<React.SetStateAction<number>>;
-  comment_count_main: number;
-  setComment_count_main: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count_main: number;
-  setEvaluation_stay_count_main: React.Dispatch<React.SetStateAction<number>>;
+  startIndexParent: number;
+  setStartIndexParent: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCountParent: number;
+  setEvaluationGoodCountParent: React.Dispatch<React.SetStateAction<number>>;
+  commentCountParent: number;
+  setCommentCountParent: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCountParent: number;
+  setEvaluationStayCountParent: React.Dispatch<React.SetStateAction<number>>;
+  startIndexChildren: number;
+  setStartIndexChildren: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCountChildren: number;
+  setEvaluationGoodCountChildren: React.Dispatch<React.SetStateAction<number>>;
+  commentCountChildren: number;
+  setCommentCountChildren: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCountChildren: number;
+  setEvaluationStayCountChildren: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCountMain: number;
+  setEvaluationGoodCountMain: React.Dispatch<React.SetStateAction<number>>;
+  commentCountMain: number;
+  setCommentCountMain: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCountMain: number;
+  setEvaluationStayCountMain: React.Dispatch<React.SetStateAction<number>>;
   textCount: number;
   onPost: (newSentence: string) => Promise<void>;
   onNextParallel: () => void;
@@ -52,27 +48,27 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   mainPanel,
   parentPanel,
   childrenPanel,
-  start_index_parent,
-  setStart_index_parent,
-  evaluation_good_count_parent,
-  setEvaluation_good_count_parent,
-  comment_count_parent,
-  setComment_count_parent,
-  evaluation_stay_count_parent,
-  setEvaluation_stay_count_parent,
-  setStart_index_children,
-  evaluation_good_count_children,
-  setEvaluation_good_count_children,
-  comment_count_children,
-  setComment_count_children,
-  evaluation_stay_count_children,
-  setEvaluation_stay_count_children,
-  evaluation_good_count_main,
-  setEvaluation_good_count_main,
-  comment_count_main,
-  setComment_count_main,
-  evaluation_stay_count_main,
-  setEvaluation_stay_count_main,
+  startIndexParent,
+  setStartIndexParent,
+  evaluationGoodCountParent,
+  setEvaluationGoodCountParent,
+  commentCountParent,
+  setCommentCountParent,
+  evaluationStayCountParent,
+  setEvaluationStayCountParent,
+  setStartIndexChildren,
+  evaluationGoodCountChildren,
+  setEvaluationGoodCountChildren,
+  commentCountChildren,
+  setCommentCountChildren,
+  evaluationStayCountChildren,
+  setEvaluationStayCountChildren,
+  evaluationGoodCountMain,
+  setEvaluationGoodCountMain,
+  commentCountMain,
+  setCommentCountMain,
+  evaluationStayCountMain,
+  setEvaluationStayCountMain,
   textCount,
   onPost,
   onNextParallel,
@@ -134,7 +130,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           {parentPanel.slice(0, -1).map((novel, index) => {
             const novelWithRelations: NovelProps = {
               ...novel,
-              title_id: novel.title_id,
+              titleId: novel.titleId,
               children: [],
               main: [],
               parent: [],
@@ -154,12 +150,12 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
                   setStartIndex={() => {}}
                   visibleTextCount={1}
                   textCount={1}
-                  evaluation_good_count={novel.evaluation_good_count}
-                  setEvaluation_good_count={() => {}}
-                  comment_count={0}
-                  setComment_count={() => {}}
-                  evaluation_stay_count={novel.evaluation_stay_count}
-                  setEvaluation_stay_count={() => {}}
+                  evaluationGoodCount={novel.evaluationGoodCount}
+                  setEvaluationGoodCount={() => {}}
+                  commentCount={0}
+                  setCommentCount={() => {}}
+                  evaluationStayCount={novel.evaluationStayCount}
+                  setEvaluationStayCount={() => {}}
                   onClick={() => onParentClick(novel)}
                 />
               </Box>
@@ -171,7 +167,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       {parentPanel.slice(-1).map((novel, index) => {
         const novelWithRelations: NovelProps = {
           ...novel,
-          title_id: Number(novel.title_id) || novel.sentence_id,
+          titleId: Number(novel.titleId) || novel.sentenceId,
           children: childrenPanel,
           main: mainPanel,
           parent: parentPanel,
@@ -188,16 +184,16 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
             <Box sx={{ mb: 6 }}>
               <ParentPanel
                 parentPanel={novelWithRelations}
-                startIndex={start_index_parent}
-                setStartIndex={setStart_index_parent}
+                startIndex={startIndexParent}
+                setStartIndex={setStartIndexParent}
                 visibleTextCount={3}
                 textCount={textCount}
-                evaluation_good_count={evaluation_good_count_parent}
-                setEvaluation_good_count={setEvaluation_good_count_parent}
-                comment_count={comment_count_parent}
-                setComment_count={setComment_count_parent}
-                evaluation_stay_count={evaluation_stay_count_parent}
-                setEvaluation_stay_count={setEvaluation_stay_count_parent}
+                evaluationGoodCount={evaluationGoodCountParent}
+                setEvaluationGoodCount={setEvaluationGoodCountParent}
+                commentCount={commentCountParent}
+                setCommentCount={setCommentCountParent}
+                evaluationStayCount={evaluationStayCountParent}
+                setEvaluationStayCount={setEvaluationStayCountParent}
                 onClick={() => onParentClick(novel)}
               />
             </Box>
@@ -208,12 +204,12 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
                 mainPanel={mainPanel}
                 startIndex={0}
                 visibleTextCount={3}
-                evaluation_good_count={evaluation_good_count_main}
-                setEvaluation_good_count={setEvaluation_good_count_main}
-                comment_count={comment_count_main}
-                setComment_count={setComment_count_main}
-                evaluation_stay_count={evaluation_stay_count_main}
-                setEvaluation_stay_count={setEvaluation_stay_count_main}
+                evaluationGoodCount={evaluationGoodCountMain}
+                setEvaluationGoodCount={setEvaluationGoodCountMain}
+                commentCount={commentCountMain}
+                setCommentCount={setCommentCountMain}
+                evaluationStayCount={evaluationStayCountMain}
+                setEvaluationStayCount={setEvaluationStayCountMain}
                 onNavigate={hasParallels ? onMainPanelNavigate : undefined}
                 hasParallels={hasParallels}
                 onPrevParallel={onPrevParallel}
@@ -249,14 +245,14 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
               setChildrenPanel={() => {}}
               mainPanel={mainPanel}
               setMainPanel={() => {}}
-              setStartIndex={setStart_index_children}
+              setStartIndex={setStartIndexChildren}
               visibleTextCount={3}
-              evaluation_good_count={evaluation_good_count_children}
-              setEvaluation_good_count={setEvaluation_good_count_children}
-              comment_count={comment_count_children}
-              setComment_count={setComment_count_children}
-              evaluation_stay_count={evaluation_stay_count_children}
-              setEvaluation_stay_count={setEvaluation_stay_count_children}
+              evaluationGoodCount={evaluationGoodCountChildren}
+              setEvaluationGoodCount={setEvaluationGoodCountChildren}
+              commentCount={commentCountChildren}
+              setCommentCount={setCommentCountChildren}
+              evaluationStayCount={evaluationStayCountChildren}
+              setEvaluationStayCount={setEvaluationStayCountChildren}
               novel={novelWithRelations}
               textIndex={index}
               titleId={titleId || ''}

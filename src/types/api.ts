@@ -1,8 +1,8 @@
 export interface ViewSentence {
   id: string;
-  title_id: string;
+  titleId: string;
   title: string;
   content: string;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 }

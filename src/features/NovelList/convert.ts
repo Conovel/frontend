@@ -6,19 +6,19 @@ export const convertNovelListResponse = (
 ): NovelListItem[] => {
   return response.map((res) => {
     return {
-      title_id: res.titleId || 0,
+      titleId: res.titleId || 0,
       title: res.title || '',
-      famous_sentence_text: res.famousSentenceText || '',
-      author_user_id: res.authorUserId || 0,
-      author_user_name: res.authorUserName || '',
-      profile_icon_image: res.profileIconImage || '',
-      title_genres: res.titleGenres || [],
-      is_new: res.isNew || false,
-      is_famous: res.isFamous || false,
-      view_count: res.viewCount || 0,
-      evaluation_good_count: res.evaluationGoodCount || 0,
-      created_at: res.createdAt || '',
-      updated_at: res.updatedAt || '',
+      famousSentenceText: res.famousSentenceText || '',
+      authorUserId: res.authorUserId || 0,
+      authorUserName: res.authorPenName || '',
+      profileIconImage: res.profileIconImage || '',
+      titleGenres: res.titleGenres || [],
+      isNew: res.isNew || false,
+      isFamous: res.isFamous || false,
+      viewCount: res.viewCount || 0,
+      evaluationGoodCount: res.evaluationGoodCount || 0,
+      createdAt: res.createdAt || '',
+      updatedAt: res.updatedAt || '',
     };
   });
 };

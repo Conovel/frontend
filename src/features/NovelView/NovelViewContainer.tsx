@@ -19,25 +19,24 @@ export const NovelViewContainer = () => {
     console.log('Navigation requested:', path, options);
   };
 
-  const [start_index_parent, setStart_index_parent] = useState(0);
-  const [start_index_children, setStart_index_children] = useState(0);
-  const [evaluation_good_count_parent, setEvaluation_good_count_parent] =
+  const [startIndexParent, setStartIndexParent] = useState(0);
+  const [startIndexChildren, setStartIndexChildren] = useState(0);
+  const [evaluationGoodCountParent, setEvaluationGoodCountParent] =
     useState<number>(0);
-  const [comment_count_parent, setComment_count_parent] = useState<number>(0);
-  const [evaluation_stay_count_parent, setEvaluation_stay_count_parent] =
+  const [commentCountParent, setCommentCountParent] = useState<number>(0);
+  const [evaluationStayCountParent, setEvaluationStayCountParent] =
     useState<number>(0);
-  const [evaluation_good_count_children, setEvaluation_good_count_children] =
+  const [evaluationGoodCountChildren, setEvaluationGoodCountChildren] =
     useState<number>(0);
-  const [comment_count_children, setComment_count_children] =
-    useState<number>(0);
-  const [evaluation_stay_count_children, setEvaluation_stay_count_children] =
+  const [commentCountChildren, setCommentCountChildren] = useState<number>(0);
+  const [evaluationStayCountChildren, setEvaluationStayCountChildren] =
     useState<number>(0);
 
   // MainPanelに関する状態を定義
-  const [evaluation_good_count_main, setEvaluation_good_count_main] =
+  const [evaluationGoodCountMain, setEvaluationGoodCountMain] =
     useState<number>(0);
-  const [comment_count_main, setComment_count_main] = useState<number>(0);
-  const [evaluation_stay_count_main, setEvaluation_stay_count_main] =
+  const [commentCountMain, setCommentCountMain] = useState<number>(0);
+  const [evaluationStayCountMain, setEvaluationStayCountMain] =
     useState<number>(0);
 
   // データの状態管理
@@ -74,12 +73,12 @@ export const NovelViewContainer = () => {
         // パラレル投稿を取得
         const parentSentence = newData.parent[newData.parent.length - 1];
         if (parentSentence) {
-          const parallels = getParallelSentences(parentSentence.sentence_id);
+          const parallels = getParallelSentences(parentSentence.sentenceId);
           setParallelSentences(parallels);
 
           // 現在のsentenceがパラレル投稿の中にある場合、そのインデックスを設定
           const currentIndex = parallels.findIndex(
-            (p) => p.sentence_id === targetId,
+            (p) => p.sentenceId === targetId,
           );
           setCurrentParallelIndex(Math.max(0, currentIndex));
         }
@@ -92,7 +91,7 @@ export const NovelViewContainer = () => {
     async (newSentence: string) => {
       try {
         // 現在のmainPanelのIDを親IDとして取得
-        const currentMainId = mainPanel[0].sentence_id;
+        const currentMainId = mainPanel[0].sentenceId;
 
         // 新しい文章を追加し、親子関係を管理
         const { newSentence: createdSentence } = addNewSentence(
@@ -114,12 +113,9 @@ export const NovelViewContainer = () => {
         setCurrentParallelIndex(0);
 
         // URLを新しい投稿のIDに更新
-        navigate(
-          `/novelView/${titleId || '1'}/${createdSentence.sentence_id}`,
-          {
-            replace: false,
-          },
-        );
+        navigate(`/novelView/${titleId || '1'}/${createdSentence.sentenceId}`, {
+          replace: false,
+        });
       } catch (error) {
         console.error('投稿に失敗しました:', error);
       }
@@ -135,7 +131,7 @@ export const NovelViewContainer = () => {
       setCurrentParallelIndex(nextIndex);
 
       // URLを更新
-      navigate(`/novelView/${titleId || '1'}/${nextSentence.sentence_id}`, {
+      navigate(`/novelView/${titleId || '1'}/${nextSentence.sentenceId}`, {
         replace: true,
       });
     }
@@ -151,7 +147,7 @@ export const NovelViewContainer = () => {
       setCurrentParallelIndex(prevIndex);
 
       // URLを更新
-      navigate(`/novelView/${titleId || '1'}/${prevSentence.sentence_id}`, {
+      navigate(`/novelView/${titleId || '1'}/${prevSentence.sentenceId}`, {
         replace: true,
       });
     }
@@ -162,7 +158,7 @@ export const NovelViewContainer = () => {
     (clickedSentence: any) => {
       console.log('Parent clicked:', clickedSentence);
       // ParentPanelの投稿をクリックしたときは、その投稿をmainに移動
-      navigate(`/novelView/${titleId || '1'}/${clickedSentence.sentence_id}`);
+      navigate(`/novelView/${titleId || '1'}/${clickedSentence.sentenceId}`);
     },
     [navigate, titleId],
   );
@@ -185,9 +181,9 @@ export const NovelViewContainer = () => {
     childrenPanel,
     parallelSentences,
     currentParallelIndex,
-    mainPanelIds: mainPanel.map((p) => p.sentence_id),
-    parentPanelIds: parentPanel.map((p) => p.sentence_id),
-    childrenPanelIds: childrenPanel.map((p) => p.sentence_id),
+    mainPanelIds: mainPanel.map((p) => p.sentenceId),
+    parentPanelIds: parentPanel.map((p) => p.sentenceId),
+    childrenPanelIds: childrenPanel.map((p) => p.sentenceId),
   });
 
   return (
@@ -195,28 +191,28 @@ export const NovelViewContainer = () => {
       mainPanel={mainPanel}
       parentPanel={parentPanel}
       childrenPanel={childrenPanel}
-      start_index_parent={start_index_parent}
-      setStart_index_parent={setStart_index_parent}
-      evaluation_good_count_parent={evaluation_good_count_parent}
-      setEvaluation_good_count_parent={setEvaluation_good_count_parent}
-      comment_count_parent={comment_count_parent}
-      setComment_count_parent={setComment_count_parent}
-      evaluation_stay_count_parent={evaluation_stay_count_parent}
-      setEvaluation_stay_count_parent={setEvaluation_stay_count_parent}
-      start_index_children={start_index_children}
-      setStart_index_children={setStart_index_children}
-      evaluation_good_count_children={evaluation_good_count_children}
-      setEvaluation_good_count_children={setEvaluation_good_count_children}
-      comment_count_children={comment_count_children}
-      setComment_count_children={setComment_count_children}
-      evaluation_stay_count_children={evaluation_stay_count_children}
-      setEvaluation_stay_count_children={setEvaluation_stay_count_children}
-      evaluation_good_count_main={evaluation_good_count_main}
-      setEvaluation_good_count_main={setEvaluation_good_count_main}
-      comment_count_main={comment_count_main}
-      setComment_count_main={setComment_count_main}
-      evaluation_stay_count_main={evaluation_stay_count_main}
-      setEvaluation_stay_count_main={setEvaluation_stay_count_main}
+      startIndexParent={startIndexParent}
+      setStartIndexParent={setStartIndexParent}
+      evaluationGoodCountParent={evaluationGoodCountParent}
+      setEvaluationGoodCountParent={setEvaluationGoodCountParent}
+      commentCountParent={commentCountParent}
+      setCommentCountParent={setCommentCountParent}
+      evaluationStayCountParent={evaluationStayCountParent}
+      setEvaluationStayCountParent={setEvaluationStayCountParent}
+      startIndexChildren={startIndexChildren}
+      setStartIndexChildren={setStartIndexChildren}
+      evaluationGoodCountChildren={evaluationGoodCountChildren}
+      setEvaluationGoodCountChildren={setEvaluationGoodCountChildren}
+      commentCountChildren={commentCountChildren}
+      setCommentCountChildren={setCommentCountChildren}
+      evaluationStayCountChildren={evaluationStayCountChildren}
+      setEvaluationStayCountChildren={setEvaluationStayCountChildren}
+      evaluationGoodCountMain={evaluationGoodCountMain}
+      setEvaluationGoodCountMain={setEvaluationGoodCountMain}
+      commentCountMain={commentCountMain}
+      setCommentCountMain={setCommentCountMain}
+      evaluationStayCountMain={evaluationStayCountMain}
+      setEvaluationStayCountMain={setEvaluationStayCountMain}
       textCount={15} // モックデータの総数
       onPost={handlePost}
       onNextParallel={handleNextParallel}

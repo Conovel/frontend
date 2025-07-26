@@ -11,12 +11,12 @@ interface MainPanelProps {
   mainPanel: Sentence[];
   startIndex: number;
   visibleTextCount: number;
-  evaluation_good_count: number;
-  setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
-  comment_count: number;
-  setComment_count: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count: number;
-  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCount: number;
+  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
+  commentCount: number;
+  setCommentCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCount: number;
+  setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
   onNavigate?: (direction: NavigationDirection) => void;
   hasParallels?: boolean;
   onPrevParallel?: () => void;
@@ -27,12 +27,12 @@ const MainPanel: React.FC<MainPanelProps> = ({
   mainPanel,
   startIndex,
   visibleTextCount,
-  evaluation_good_count,
-  setEvaluation_good_count,
-  comment_count,
-  setComment_count,
-  evaluation_stay_count,
-  setEvaluation_stay_count,
+  evaluationGoodCount,
+  setEvaluationGoodCount,
+  commentCount,
+  setCommentCount,
+  evaluationStayCount,
+  setEvaluationStayCount,
   onNavigate,
   hasParallels,
   onPrevParallel,
@@ -103,7 +103,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
           .slice(currentStartIndex, currentStartIndex + visibleTextCount)
           .map((panel) => (
             <Box
-              key={panel.sentence_id}
+              key={panel.sentenceId}
               sx={{
                 backgroundColor: '#fff',
                 position: 'relative',
@@ -153,16 +153,16 @@ const MainPanel: React.FC<MainPanelProps> = ({
         }}
       >
         <ThumbUpButton
-          evaluation_good_count={evaluation_good_count}
-          setEvaluation_good_count={setEvaluation_good_count}
+          evaluationGoodCount={evaluationGoodCount}
+          setEvaluationGoodCount={setEvaluationGoodCount}
         />
         <CommentButton
-          comment_count={comment_count}
-          setComment_count={setComment_count}
+          commentCount={commentCount}
+          setCommentCount={setCommentCount}
         />
         <NextPlanButton
-          evaluation_stay_count={evaluation_stay_count}
-          setEvaluation_stay_count={setEvaluation_stay_count}
+          evaluationStayCount={evaluationStayCount}
+          setEvaluationStayCount={setEvaluationStayCount}
         />
       </Box>
 

@@ -14,19 +14,19 @@ export const novelViewHandlers = [
     const data = (await request.json()) as PostSentence;
     const newSentence: Sentence = {
       ...sentences[0],
-      sentence_id: nextSentenceId++,
+      sentenceId: nextSentenceId++,
       sentence: data.sentence || '',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
     sentences.unshift(newSentence);
     return HttpResponse.json({ main: newSentence }, { status: 201 });
   }),
 
-  // 文を取得するハンドラー（GET sentence_id指定）
-  http.get('/v1/sentences/:sentence_id', ({ params }) => {
-    const { sentence_id } = params;
-    const found = sentences.find((s) => s.sentence_id === Number(sentence_id));
+  // 文を取得するハンドラー（GET sentenceId指定）
+  http.get('/v1/sentences/:sentenceId', ({ params }) => {
+    const { sentenceId } = params;
+    const found = sentences.find((s) => s.sentenceId === Number(sentenceId));
     return HttpResponse.json(found ?? sentences[0]);
   }),
 ];

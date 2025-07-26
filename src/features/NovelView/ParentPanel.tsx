@@ -9,12 +9,12 @@ interface ParentPanelProps {
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
   textCount: number;
-  evaluation_good_count: number;
-  setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
-  comment_count: number;
-  setComment_count: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count: number;
-  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCount: number;
+  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
+  commentCount: number;
+  setCommentCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCount: number;
+  setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
   onClick: () => void;
 }
 
@@ -22,12 +22,12 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
   parentPanel,
   startIndex,
   textCount,
-  evaluation_good_count,
-  setEvaluation_good_count,
-  comment_count,
-  setComment_count,
-  evaluation_stay_count,
-  setEvaluation_stay_count,
+  evaluationGoodCount,
+  setEvaluationGoodCount,
+  commentCount,
+  setCommentCount,
+  evaluationStayCount,
+  setEvaluationStayCount,
   onClick,
 }) => {
   return (
@@ -48,19 +48,19 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
           textIndex={startIndex}
           sentence={parentPanel.sentence}
           novel={{
-            title_id: parentPanel.title_id,
-            main_copy: parentPanel.main_copy,
+            titleId: parentPanel.titleId,
+            mainCopy: parentPanel.mainCopy,
             overview: parentPanel.overview,
             title: parentPanel.title,
-            author_user_name: parentPanel.author_user_name,
+            authorUserName: parentPanel.authorUserName,
             chips: parentPanel.chips,
             avatar: parentPanel.avatar,
             popular: parentPanel.popular,
             newArrival: parentPanel.newArrival,
-            reader_count: parentPanel.reader_count,
-            updated_at: parentPanel.updated_at,
-            sentence_user_count: parentPanel.sentence_user_count,
-            sentence_hierarchy_count: parentPanel.sentence_hierarchy_count,
+            readerCount: parentPanel.readerCount,
+            updatedAt: parentPanel.updatedAt,
+            sentenceUserCount: parentPanel.sentenceUserCount,
+            sentenceHierarchyCount: parentPanel.sentenceHierarchyCount,
             tags: parentPanel.tags,
             userId: 0,
             userName: '',
@@ -71,20 +71,17 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
             sentenceId: parentPanel.sentenceId || 0,
             sentence: parentPanel.sentence || '',
             createdAt: '',
-            updatedAt: parentPanel.updatedAt || '',
-            sentenceUserId: 0,
-            sentencePenName: '',
             profileIconImage: '',
             evaluationGoodCount: 0,
             evaluationStayCount: 0,
           }}
           onClick={onClick}
-          evaluation_good_count={evaluation_good_count}
-          setEvaluation_good_count={setEvaluation_good_count}
-          comment_count={comment_count}
-          setComment_count={setComment_count}
-          evaluation_stay_count={evaluation_stay_count}
-          setEvaluation_stay_count={setEvaluation_stay_count}
+          evaluationGoodCount={evaluationGoodCount}
+          setEvaluationGoodCount={setEvaluationGoodCount}
+          commentCount={commentCount}
+          setCommentCount={setCommentCount}
+          evaluationStayCount={evaluationStayCount}
+          setEvaluationStayCount={setEvaluationStayCount}
         />
       ) : null}
     </Box>
