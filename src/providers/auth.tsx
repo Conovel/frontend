@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 // 型定義
 export interface User {
   userId: number;
-  userName: string;
+  penName: string;
   nickName: string;
   profileIconImage: string;
   evaluationGoodCount: number;

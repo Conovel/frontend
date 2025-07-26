@@ -65,7 +65,7 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
               >
                 あああ
               </Avatar>
-              <Typography sx={{ ml: 1 }}>{novel.authorUserName}</Typography>
+              <Typography sx={{ ml: 1 }}>{novel.authorPenName}</Typography>
             </Box>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
               {novel.titleGenres?.map((genre, index) => (

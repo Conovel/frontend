@@ -5,7 +5,7 @@
 | Name                    | Type       | Description               | Notes                             |
 | ----------------------- | ---------- | ------------------------- | --------------------------------- |
 | **userId**              | **number** | ユーザーの一意のid        | [optional] [default to undefined] |
-| **userName**            | **string** | ユーザーのペンネーム      | [optional] [default to undefined] |
+| **penName**             | **string** | ユーザーのペンネーム      | [optional] [default to undefined] |
 | **nickName**            | **string** | ユーザーのニックネーム    | [optional] [default to undefined] |
 | **profileIconImage**    | **string** | ユーザーアイコン画像のurl | [optional] [default to undefined] |
 | **evaluationGoodCount** | **number** | Good評価の数              | [optional] [default to undefined] |
@@ -19,7 +19,7 @@ import { User } from "./api";
 
 const instance: User = {
   userId,
-  userName,
+  penName,
   nickName,
   profileIconImage,
   evaluationGoodCount,
