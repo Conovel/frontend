@@ -8,7 +8,7 @@
 | **title**                  | **string**              | 小説のタイトル                                               | [optional] [default to undefined] |
 | **famousSentenceText**     | **string**              | 名言・印象に残るシーン                                       | [optional] [default to undefined] |
 | **authorUserId**           | **number**              | 小説の作者のid                                               | [optional] [default to undefined] |
-| **authorUserName**         | **string**              | 小説の作者のペンネーム                                       | [optional] [default to undefined] |
+| **authorPenName**          | **string**              | 小説の作者のペンネーム                                       | [optional] [default to undefined] |
 | **profileIconImage**       | **string**              | 小説の作者のアイコン画像のurl                                | [optional] [default to undefined] |
 | **titleGenres**            | **Array&lt;string&gt;** | 小説のジャンル                                               | [optional] [default to undefined] |
 | **isNew**                  | **boolean**             | 新着小説かどうか                                             | [optional] [default to undefined] |
@@ -33,7 +33,7 @@ const instance: NovelDetail = {
   title,
   famousSentenceText,
   authorUserId,
-  authorUserName,
+  authorPenName,
   profileIconImage,
   titleGenres,
   isNew,

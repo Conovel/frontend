@@ -35,7 +35,7 @@ export const LoginPresenter = () => {
                 style={{ width: '100px', height: '100px', borderRadius: '50%' }}
               />
               <p>
-                ようこそ、{currentUser.userName}さん！
+                ようこそ、{currentUser.penName}さん！
                 <br />
                 （ユーザーID：{currentUser.userId}）
               </p>

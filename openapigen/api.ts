@@ -115,17 +115,17 @@ export interface ErrorResponseError {
  */
 export interface EvaluateSentence {
   /**
-   * 評価対象の投稿のID
+   * 評価対象の投稿のID（必須）
    * @type {number}
    * @memberof EvaluateSentence
    */
-  sentenceId?: number;
+  sentenceId: number;
   /**
-   * 評価の種類
+   * 評価の種類（必須）
    * @type {string}
    * @memberof EvaluateSentence
    */
-  evaluation?: EvaluateSentenceEvaluationEnum;
+  evaluation: EvaluateSentenceEvaluationEnum;
 }
 
 export const EvaluateSentenceEvaluationEnum = {
@@ -172,7 +172,7 @@ export interface NovelDetail {
    * @type {string}
    * @memberof NovelDetail
    */
-  authorUserName?: string;
+  authorPenName?: string;
   /**
    * 小説の作者のアイコン画像のurl
    * @type {string}
@@ -287,7 +287,7 @@ export interface NovelListItem {
    * @type {string}
    * @memberof NovelListItem
    */
-  authorUserName?: string;
+  authorPenName?: string;
   /**
    * 小説の作者のアイコン画像のurl
    * @type {string}
@@ -344,23 +344,23 @@ export interface NovelListItem {
  */
 export interface PostSentence {
   /**
-   * 親投稿のid
+   * 親投稿のid（必須）
    * @type {number}
    * @memberof PostSentence
    */
-  parentSentenceId?: number;
+  parentSentenceId: number;
   /**
-   * 親投稿の修正日時(投稿中の親投稿の更新有無を確認するため)
+   * 親投稿の修正日時(投稿中の親投稿の更新有無を確認するため)（必須）
    * @type {string}
    * @memberof PostSentence
    */
-  parentUpdatedAt?: string;
+  parentUpdatedAt: string;
   /**
-   * 新投稿の本文テキスト
+   * 新投稿の本文テキスト（必須）
    * @type {string}
    * @memberof PostSentence
    */
-  sentence?: string;
+  sentence: string;
 }
 /**
  *
@@ -391,7 +391,7 @@ export interface Sentence {
    * @type {string}
    * @memberof Sentence
    */
-  sentenceUserName?: string;
+  sentencePenName?: string;
   /**
    * 投稿ユーザーアイコン画像のurl
    * @type {string}
@@ -430,29 +430,47 @@ export interface Sentence {
  */
 export interface UpdateUser {
   /**
-   * ユーザーのペンネーム
+   * ユーザーのペンネーム（必須）
    * @type {string}
    * @memberof UpdateUser
    */
-  userName?: string;
+  penName: string;
   /**
-   * ユーザーのニックネーム
+   * ユーザーのニックネーム（必須）
    * @type {string}
    * @memberof UpdateUser
    */
-  nickName?: string;
+  nickName: string;
   /**
-   * 匿名設定
+   * 匿名設定（必須）
    * @type {boolean}
    * @memberof UpdateUser
    */
-  isAnonymous?: boolean;
+  isAnonymous: boolean;
   /**
    * ユーザーアイコン画像のurl
    * @type {string}
    * @memberof UpdateUser
    */
   profileIconImage?: string;
+  /**
+   * ユーザーの生年月（YYYY/MM）（必須）
+   * @type {string}
+   * @memberof UpdateUser
+   */
+  birthYm: string;
+  /**
+   * 同意した利用規約のバージョン（必須）
+   * @type {number}
+   * @memberof UpdateUser
+   */
+  agreedTermsVersion: number;
+  /**
+   * ユーザーの備考
+   * @type {string}
+   * @memberof UpdateUser
+   */
+  remarks?: string;
 }
 /**
  *
@@ -471,7 +489,7 @@ export interface User {
    * @type {string}
    * @memberof User
    */
-  userName?: string;
+  penName?: string;
   /**
    * ユーザーのニックネーム
    * @type {string}
@@ -545,7 +563,7 @@ export interface ViewMeUser {
    * @type {string}
    * @memberof ViewMeUser
    */
-  userName?: string;
+  penName?: string;
   /**
    * ユーザーのニックネーム
    * @type {string}

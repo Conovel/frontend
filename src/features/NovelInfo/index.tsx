@@ -90,10 +90,12 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
               }}
               src={novel.avatar.src}
             >
+
               {novel.avatar.text}
             </Avatar>
             <Box>
               <Typography variant='subtitle1'>{novel.avatar.alt}</Typography>
+
             </Box>
           </Box>
 

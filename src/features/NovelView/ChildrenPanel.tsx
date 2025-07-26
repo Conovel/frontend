@@ -203,11 +203,13 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         textIndex: 0,
         userId: 0,
         userName: '',
-        profile_icon_image: '',
-        evaluation_good_count: 0,
-        evaluation_stay_count: 0,
-        created_at: apiSentence.createdAt || '',
-        updated_at: apiSentence.updatedAt || '',
+        sentenceUserId: 0,
+        sentencePenName: '',
+        profileIconImage: '',
+        evaluationGoodCount: 0,
+        evaluationStayCount: 0,
+        createdAt: apiSentence.createdAt || '',
+        updatedAt: apiSentence.updatedAt || '',
       };
 
       // mainPanelを更新
