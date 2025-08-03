@@ -20,8 +20,9 @@ export const AccountSettings: React.FC = () => {
     nickName: 'HANAAAAAAAAAAAAAAAAAAAAAAAAA32文字',
     profileIconImage: '',
     evaluationGoodCount: 100,
-    birthYearAndMonth: new Date('1998/02'),
+    birthYm: new Date('1998/02'),
     isAnonymous: false,
+    agreedTermsVersion: 1,
   };
 
   return (

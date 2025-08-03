@@ -29,8 +29,9 @@ export interface AccountInfo {
   nickName: string;
   profileIconImage: string;
   evaluationGoodCount: number;
-  birthYearAndMonth: Date;
+  birthYm: Date;
   isAnonymous: boolean;
+  agreedTermsVersion: number;
 }
 
 interface AccountSettingsPresenterProps {
@@ -313,7 +314,7 @@ export const AccountSettingsPresenter = ({
               hasTooltip
               tooltipText='生年月は一度登録したら変更できません'
             />
-            <Typography>{`${accountInfo.birthYearAndMonth.getFullYear()}/${accountInfo.birthYearAndMonth.getMonth() + 1}`}</Typography>
+            <Typography>{`${accountInfo.birthYm.getFullYear()}/${accountInfo.birthYm.getMonth() + 1}`}</Typography>
           </Box>
 
           <Box

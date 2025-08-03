@@ -599,13 +599,19 @@ export interface ViewMeUser {
    * @type {string}
    * @memberof ViewMeUser
    */
-  birthYearAndMonth?: string;
+  birthYm?: string;
   /**
    * 匿名設定
    * @type {boolean}
    * @memberof ViewMeUser
    */
   isAnonymous?: boolean;
+  /**
+   * 同意した利用規約のバージョン
+   * @type {number}
+   * @memberof ViewMeUser
+   */
+  agreedTermsVersion?: number;
 }
 /**
  *
