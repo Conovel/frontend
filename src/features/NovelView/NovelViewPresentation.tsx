@@ -1,150 +1,273 @@
-import React from 'react';
-import { Box, Container } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Button } from '@mui/material';
 import ParentPanel from './ParentPanel';
-import ChildrenPanel from './ChildrenPanel';
 import MainPanel from './MainPanel';
-import { mockContainerData } from './mocks/data';
-import { Sentence } from '../../api/api';
+import ChildrenPanel from './ChildrenPanel';
+import { NovelProps, Sentence, CreateSentenceRequest } from '../../types/types';
+import { EditPost } from '../EditPost';
 
 interface NovelViewPresentationProps {
   mainPanel: Sentence[];
   parentPanel: Sentence[];
   childrenPanel: Sentence[];
-  start_index_parent: number;
-  setStart_index_parent: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_count_parent: number;
-  setEvaluation_good_count_parent: React.Dispatch<React.SetStateAction<number>>;
-  comment_count_parent: number;
-  setComment_count_parent: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count_parent: number;
-  setEvaluation_stay_count_parent: React.Dispatch<React.SetStateAction<number>>;
-  start_index_children: number;
-  setStart_index_children: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_count_children: number;
-  setEvaluation_good_count_children: React.Dispatch<
-    React.SetStateAction<number>
-  >;
-  comment_count_children: number;
-  setComment_count_children: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count_children: number;
-  setEvaluation_stay_count_children: React.Dispatch<
-    React.SetStateAction<number>
-  >;
-  start_index_main?: number;
-  setStart_index_main?: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_count_main: number;
-  setEvaluation_good_count_main: React.Dispatch<React.SetStateAction<number>>;
-  comment_count_main: number;
-  setComment_count_main: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count_main: number;
-  setEvaluation_stay_count_main: React.Dispatch<React.SetStateAction<number>>;
+  startIndexParent: number;
+  setStartIndexParent: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCountParent: number;
+  setEvaluationGoodCountParent: React.Dispatch<React.SetStateAction<number>>;
+  commentCountParent: number;
+  setCommentCountParent: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCountParent: number;
+  setEvaluationStayCountParent: React.Dispatch<React.SetStateAction<number>>;
+  startIndexChildren: number;
+  setStartIndexChildren: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCountChildren: number;
+  setEvaluationGoodCountChildren: React.Dispatch<React.SetStateAction<number>>;
+  commentCountChildren: number;
+  setCommentCountChildren: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCountChildren: number;
+  setEvaluationStayCountChildren: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCountMain: number;
+  setEvaluationGoodCountMain: React.Dispatch<React.SetStateAction<number>>;
+  commentCountMain: number;
+  setCommentCountMain: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCountMain: number;
+  setEvaluationStayCountMain: React.Dispatch<React.SetStateAction<number>>;
   textCount: number;
+  onPost: (newSentence: string) => Promise<void>;
+  onNextParallel: () => void;
+  onPrevParallel: () => void;
+  hasParallels: boolean;
+  currentParallelIndex: number;
+  totalParallels: number;
+  onParentClick: (clickedSentence: any) => void;
+  onMainPanelNavigate: (direction: 'prev' | 'next') => void;
+  onCreateParallel?: () => void;
+  titleId: string;
 }
 
-export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
-  start_index_parent,
-  setStart_index_parent,
-  comment_count_parent,
-  setComment_count_parent,
-  evaluation_stay_count_parent,
-  setEvaluation_stay_count_parent,
-  start_index_children,
-  setStart_index_children,
-  evaluation_good_count_parent,
-  setEvaluation_good_count_parent,
-  evaluation_good_count_children,
-  setEvaluation_good_count_children,
-  comment_count_children,
-  setComment_count_children,
-  evaluation_stay_count_children,
-  setEvaluation_stay_count_children,
-  evaluation_good_count_main,
-  setEvaluation_good_count_main,
-  comment_count_main,
-  setComment_count_main,
-  evaluation_stay_count_main,
-  setEvaluation_stay_count_main,
+const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
+  mainPanel,
+  parentPanel,
+  childrenPanel,
+  startIndexParent,
+  setStartIndexParent,
+  evaluationGoodCountParent,
+  setEvaluationGoodCountParent,
+  commentCountParent,
+  setCommentCountParent,
+  evaluationStayCountParent,
+  setEvaluationStayCountParent,
+  setStartIndexChildren,
+  evaluationGoodCountChildren,
+  setEvaluationGoodCountChildren,
+  commentCountChildren,
+  setCommentCountChildren,
+  evaluationStayCountChildren,
+  setEvaluationStayCountChildren,
+  evaluationGoodCountMain,
+  setEvaluationGoodCountMain,
+  commentCountMain,
+  setCommentCountMain,
+  evaluationStayCountMain,
+  setEvaluationStayCountMain,
+  textCount,
+  onPost,
+  onNextParallel,
+  onPrevParallel,
+  hasParallels,
+  currentParallelIndex,
+  totalParallels,
+  onParentClick,
+  onMainPanelNavigate,
+  onCreateParallel,
+  titleId,
 }) => {
-  const parentTextCount = 10;
-  const childrenTextCount = 10;
-  const visibleTextCount = 3;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handlePost = async (sentenceRequest: CreateSentenceRequest) => {
+    if (sentenceRequest.text.trim()) {
+      await onPost(sentenceRequest.text);
+      setIsModalOpen(false);
+    }
+  };
 
   return (
-    <Container sx={{ position: 'relative', alignItems: 'center' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minHeight: '100vh',
+        backgroundColor: '#f5f5f5',
+        position: 'relative',
+        pt: 0,
+        pb: 16,
+      }}
+    >
       <Box
         sx={{
           position: 'absolute',
-          top: '10vh',
-          bottom: '5vh',
           left: '50%',
+          top: 0,
+          bottom: 0,
           width: '2px',
-          backgroundColor: '#000',
-          zIndex: 1,
+          backgroundColor: '#e0e0e0',
+          zIndex: 0,
         }}
-      ></Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '20px',
-        }}
-      >
-        {mockContainerData.parent.map((NovelProps, index) => (
-          <ParentPanel
-            key={index}
-            parentPanel={NovelProps}
-            startIndex={start_index_parent}
-            setStartIndex={setStart_index_parent}
-            visibleTextCount={visibleTextCount}
-            textCount={parentTextCount}
-            evaluation_good_count={evaluation_good_count_parent}
-            setEvaluation_good_count={setEvaluation_good_count_parent}
-            comment_count={comment_count_parent}
-            setComment_count={setComment_count_parent}
-            evaluation_stay_count={evaluation_stay_count_parent}
-            setEvaluation_stay_count={setEvaluation_stay_count_parent}
-          />
-        ))}
-        <MainPanel
-          mainPanel={mockContainerData.main[0]}
-          evaluation_good_count={evaluation_good_count_main}
-          setEvaluation_good_count={setEvaluation_good_count_main}
-          comment_count={comment_count_main}
-          setComment_count={setComment_count_main}
-          evaluation_stay_count={evaluation_stay_count_main}
-          setEvaluation_stay_count={setEvaluation_stay_count_main}
-        />
-        <ChildrenPanel
-          mainPanel={[]}
-          childrenPanel={[]}
-          setChildrenPanel={() => {}}
-          setMainPanel={() => {}}
-          novel={{
-            updatedAt: new Date().toISOString(),
-            sentence: '',
-            sentenceId: 0,
-            sentenceUserId: 0,
-            sentencePenName: '',
-            profileIconImage: '',
-            evaluationGoodCount: 0,
-            evaluationStayCount: 0,
-            createdAt: new Date().toISOString(),
-          }}
-          onClick={() => {}}
-          textIndex={0}
-          startIndex={start_index_children}
-          setStartIndex={setStart_index_children}
-          visibleTextCount={visibleTextCount}
-          textCount={childrenTextCount}
-          evaluation_good_count={evaluation_good_count_children}
-          setEvaluation_good_count={setEvaluation_good_count_children}
-          comment_count={comment_count_children}
-          setComment_count={setComment_count_children}
-          evaluation_stay_count={evaluation_stay_count_children}
-          setEvaluation_stay_count={setEvaluation_stay_count_children}
-        />
-      </Box>
-    </Container>
+      />
+
+      {/* 履歴表示エリア */}
+      {parentPanel.length > 1 && (
+        <Box sx={{ mb: 4, width: '100%', maxWidth: '600px' }}>
+          <Box
+            sx={{
+              mb: 2,
+              textAlign: 'center',
+              color: 'text.secondary',
+              fontSize: '0.875rem',
+            }}
+          >
+            過去の投稿
+          </Box>
+          {parentPanel.slice(0, -1).map((novel, index) => {
+            const novelWithRelations: NovelProps = {
+              ...novel,
+              titleId: novel.titleId,
+              children: [],
+              main: [],
+              parent: [],
+              chips: novel.chips.map((chip) => ({
+                label: chip.label || '',
+              })),
+              tags: novel.tags.map((tag) => ({
+                label: tag.label || '',
+              })),
+            };
+
+            return (
+              <Box key={index} sx={{ mb: 2, opacity: 0.7 }}>
+                <ParentPanel
+                  parentPanel={novelWithRelations}
+                  startIndex={0}
+                  setStartIndex={() => {}}
+                  visibleTextCount={1}
+                  textCount={1}
+                  evaluationGoodCount={novel.evaluationGoodCount}
+                  setEvaluationGoodCount={() => {}}
+                  commentCount={0}
+                  setCommentCount={() => {}}
+                  evaluationStayCount={novel.evaluationStayCount}
+                  setEvaluationStayCount={() => {}}
+                  onClick={() => onParentClick(novel)}
+                />
+              </Box>
+            );
+          })}
+        </Box>
+      )}
+
+      {parentPanel.slice(-1).map((novel, index) => {
+        const novelWithRelations: NovelProps = {
+          ...novel,
+          titleId: Number(novel.titleId) || novel.sentenceId,
+          children: childrenPanel,
+          main: mainPanel,
+          parent: [],
+          chips: novel.chips.map((chip) => ({
+            label: chip.label || '',
+          })),
+          tags: novel.tags.map((tag) => ({
+            label: tag.label || '',
+          })),
+        };
+
+        return (
+          <React.Fragment key={index}>
+            <Box sx={{ mb: 6 }}>
+              <ParentPanel
+                parentPanel={novelWithRelations}
+                startIndex={startIndexParent}
+                setStartIndex={setStartIndexParent}
+                visibleTextCount={3}
+                textCount={textCount}
+                evaluationGoodCount={evaluationGoodCountParent}
+                setEvaluationGoodCount={setEvaluationGoodCountParent}
+                commentCount={commentCountParent}
+                setCommentCount={setCommentCountParent}
+                evaluationStayCount={evaluationStayCountParent}
+                setEvaluationStayCount={setEvaluationStayCountParent}
+                onClick={() => onParentClick(novel)}
+              />
+            </Box>
+
+            {/* MainPanel */}
+            <Box sx={{ mb: 0.5 }}>
+              <MainPanel
+                mainPanel={mainPanel}
+                startIndex={0}
+                visibleTextCount={3}
+                evaluationGoodCount={evaluationGoodCountMain}
+                setEvaluationGoodCount={setEvaluationGoodCountMain}
+                commentCount={commentCountMain}
+                setCommentCount={setCommentCountMain}
+                evaluationStayCount={evaluationStayCountMain}
+                setEvaluationStayCount={setEvaluationStayCountMain}
+                onNavigate={
+                  hasParallels ? (onMainPanelNavigate as any) : undefined
+                }
+                hasParallels={hasParallels}
+                onPrevParallel={onPrevParallel}
+                onNextParallel={onNextParallel}
+                onCreateParallel={onCreateParallel}
+              />
+            </Box>
+
+            {/* パラレル投稿インジケーター */}
+            {hasParallels && (
+              <Box
+                sx={{ mb: 0.5, fontSize: '0.75rem', color: 'text.secondary' }}
+              >
+                パラレル投稿 {currentParallelIndex + 1} / {totalParallels}
+              </Box>
+            )}
+
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={() => setIsModalOpen(true)}
+              sx={{ mt: 0.5, mb: 0.5, zIndex: 2, position: 'relative' }}
+            >
+              続きを書く
+            </Button>
+            <EditPost
+              open={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              onSubmit={handlePost}
+              mainText={mainPanel[0]?.sentence || ''}
+              sentenceId={mainPanel[0]?.sentenceId || 0}
+            />
+            <ChildrenPanel
+              childrenPanel={childrenPanel}
+              setChildrenPanel={() => {}}
+              mainPanel={mainPanel}
+              setMainPanel={() => {}}
+              setStartIndex={setStartIndexChildren}
+              visibleTextCount={3}
+              evaluationGoodCount={evaluationGoodCountChildren}
+              setEvaluationGoodCount={setEvaluationGoodCountChildren}
+              commentCount={commentCountChildren}
+              setCommentCount={setCommentCountChildren}
+              evaluationStayCount={evaluationStayCountChildren}
+              setEvaluationStayCount={setEvaluationStayCountChildren}
+              novel={novelWithRelations}
+              textIndex={index}
+              titleId={titleId || ''}
+            />
+          </React.Fragment>
+        );
+      })}
+    </Box>
   );
 };
+
+export default NovelViewPresentation;
