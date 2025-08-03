@@ -1,24 +1,107 @@
-import { NovelDetail } from '../../../api';
+import { NovelProps, NovelListItem } from '../../../types/types';
 
-export const novels: NovelDetail[] = [
+export const novels: NovelProps[] = [
   {
+    titleId: 1,
     mainCopy: '目を覚ますとエンジニアに転生していた',
     overview:
       '雪山で目を覚ますとエンジニアに転生していた.雪山ながら密林からガジェットを取り寄せて悠々生活・快適ライフを送っている',
     title:
       '山暮らし聖女の異世界スローライフ～聖女召喚された私，偽物だとして雪山に廃棄されるも，目が覚めるとエンジニアに転生していたことにより本当の「聖女」になる～',
-    isFamous: true,
-    isNew: true,
-    profileIconImage: '/static/images/avatar/1.jpg',
-    authorPenName: 'Remy Sharp',
-    titleGenres: ['人気', '新着'],
+    popular: true,
+    newArrival: true,
+    avatar: {
+      src: '/static/images/avatar/1.jpg',
+      alt: 'Remy Sharp',
+      color: 'magenta',
+      text: 'RS',
+    },
+    authorUserName: 'Remy Sharp',
+    chips: [{ label: '人気' }, { label: '新着' }],
+    tags: [{ label: 'ラブストーリー' }, { label: 'ファンタジー' }],
     readerCount: 100,
     updatedAt: '2024/08/20',
     sentenceUserCount: 150,
     sentenceHierarchyCount: 1000,
     createdAt: new Date().toISOString(),
-    titleId: 1,
-    authorUserId: 1,
+    sentenceId: 1,
+    sentence: '',
+    userId: 1,
+    userName: 'Remy Sharp',
+    profileIconImage: '/static/images/avatar/1.jpg',
     evaluationGoodCount: 0,
+    evaluationStayCount: 0,
+    textIndex: 0,
+    children: [],
+    main: [],
+    parent: [],
+  },
+];
+
+// NovelList用のモックデータ（src/types/types.tsのNovelListItem型に合わせる）
+export const mockNovelListData: NovelListItem[] = [
+  {
+    titleId: 1,
+    title: 'サンプル小説1',
+    famousSentenceText: 'これはサンプル小説1の名言です。',
+    authorUserId: 1,
+    authorUserName: '作者1',
+    profileIconImage: '/path/to/avatar1.jpg',
+    titleGenres: ['ファンタジー', '冒険'],
+    isNew: true,
+    isFamous: true,
+    viewCount: 100,
+    evaluationGoodCount: 50,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
+  },
+  {
+    titleId: 2,
+    title: 'サンプル小説2',
+    famousSentenceText: 'これはサンプル小説2の名言です。',
+    authorUserId: 2,
+    authorUserName: '作者2',
+    profileIconImage: '/path/to/avatar2.jpg',
+    titleGenres: ['SF', 'アクション'],
+    isNew: true,
+    isFamous: false,
+    viewCount: 50,
+    evaluationGoodCount: 25,
+    createdAt: '2024-01-02T00:00:00Z',
+    updatedAt: '2024-01-02T00:00:00Z',
+  },
+];
+
+// エラー時のフォールバックデータ
+export const fallbackNovelListData: NovelListItem[] = [
+  {
+    titleId: 1,
+    title: 'サンプル小説1',
+    famousSentenceText: 'これはサンプル小説1の名言です。',
+    authorUserId: 1,
+    authorUserName: '作者1',
+    profileIconImage: '/path/to/avatar1.jpg',
+    titleGenres: ['ファンタジー', '冒険'],
+    isNew: true,
+    isFamous: true,
+    viewCount: 100,
+    evaluationGoodCount: 50,
+    createdAt: '2024-03-20T00:00:00Z',
+    updatedAt: '2024-03-20T00:00:00Z',
+  },
+  {
+    titleId: 2,
+    title: 'サンプル小説2',
+    famousSentenceText: 'これはサンプル小説2の名言です。',
+    authorUserId: 2,
+    authorUserName: '作者2',
+    profileIconImage: '/path/to/avatar2.jpg',
+    titleGenres: ['SF', 'アクション'],
+    isNew: true,
+    isFamous: false,
+    viewCount: 50,
+    evaluationGoodCount: 25,
+    createdAt: '2024-03-20T00:00:00Z',
+    updatedAt: '2024-03-20T00:00:00Z',
   },
 ];
