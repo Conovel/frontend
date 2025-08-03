@@ -9,13 +9,14 @@ import {
 import { z } from 'zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CreateSentenceRequest } from '../NovelView/ChildrenPanel';
+import { CreateSentenceRequest } from '../../types/types';
 
 interface EditPostProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (sentenceRequest: CreateSentenceRequest) => void;
   mainText: string;
+  sentenceId: number;
 }
 
 // バリデーションスキーマを定義
@@ -31,6 +32,7 @@ export const EditPost: React.FC<EditPostProps> = ({
   onClose,
   onSubmit,
   mainText,
+  sentenceId,
 }) => {
   const {
     register,
@@ -48,6 +50,7 @@ export const EditPost: React.FC<EditPostProps> = ({
     const text = data.text;
     const sentenceRequest: CreateSentenceRequest = {
       text: text,
+      sentenceId: sentenceId,
     };
     onSubmit(sentenceRequest);
     onClose();
