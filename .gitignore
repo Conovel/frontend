@@ -25,3 +25,10 @@ dist-ssr
 
 # env
 .env
+
+# Claude AI settings
+.claude/
+
+# TypeScript declaration files
+*.d.ts
+*.tsbuildinfo

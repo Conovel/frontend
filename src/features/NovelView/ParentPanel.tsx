@@ -9,24 +9,24 @@ interface ParentPanelProps {
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
   textCount: number;
-  evaluation_good_count: number;
-  setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
-  comment_count: number;
-  setComment_count: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count: number;
-  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCount: number;
+  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
+  commentCount: number;
+  setCommentCount: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCount: number;
+  setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ParentPanel: React.FC<ParentPanelProps> = ({
   parentPanel,
   startIndex,
   textCount,
-  evaluation_good_count,
-  setEvaluation_good_count,
-  comment_count,
-  setComment_count,
-  evaluation_stay_count,
-  setEvaluation_stay_count,
+  evaluationGoodCount,
+  setEvaluationGoodCount,
+  commentCount,
+  setCommentCount,
+  evaluationStayCount,
+  setEvaluationStayCount,
 }) => {
   return (
     <Box
@@ -58,12 +58,12 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
             evaluationStayCount: 0,
           }}
           onClick={() => {}}
-          evaluation_good_count={evaluation_good_count}
-          setEvaluation_good_count={setEvaluation_good_count}
-          comment_count={comment_count}
-          setComment_count={setComment_count}
-          evaluation_stay_count={evaluation_stay_count}
-          setEvaluation_stay_count={setEvaluation_stay_count}
+          evaluationGoodCount={evaluationGoodCount}
+          setEvaluationGoodCount={setEvaluationGoodCount}
+          commentCount={commentCount}
+          setCommentCount={setCommentCount}
+          evaluationStayCount={evaluationStayCount}
+          setEvaluationStayCount={setEvaluationStayCount}
         />
       ) : null}
     </Box>

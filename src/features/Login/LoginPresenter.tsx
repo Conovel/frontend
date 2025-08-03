@@ -8,7 +8,7 @@ export const LoginPresenter = () => {
 
   const handleGoogleAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    window.location.href = `${authBaseUrl}/auth/google_oauth2`;
+    window.location.href = `${authBaseUrl}/auth/googleOauth2`;
   };
 
   return (
