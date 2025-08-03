@@ -25,3 +25,26 @@ dist-ssr
 
 # env
 .env
+
+# TypeScript build files
+*.d.ts
+*.tsbuildinfo
+
+# Coverage reports
+coverage/
+*.lcov
+
+# AI assistant settings
+.claude/
+
+# Editor generated files
+.vscode/settings.json
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
