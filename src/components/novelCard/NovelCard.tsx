@@ -3,7 +3,7 @@ import { Avatar, Box, Typography } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import CommentButton from '../buttonicon/CommentButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
-import { Sentence } from '../../api/api';
+import { Sentence } from '../../types/types';
 
 interface NovelCardProps {
   key: number;
