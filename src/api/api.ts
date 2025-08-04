@@ -1935,7 +1935,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
       userId: number,
       options?: RawAxiosRequestConfig,
     ): Promise<
-      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ViewMeUser>
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.getUserById(
         userId,
