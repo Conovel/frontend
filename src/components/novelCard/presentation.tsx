@@ -8,14 +8,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { NovelInfo } from '../../features/NovelInfo';
-import { NovelListItem } from '../../api';
+import { NovelProps } from '../../types/types';
 
-const NovelCard = ({
-  novel,
-}: {
-  novel: NovelListItem;
-  onClick: () => void;
-}) => {
+const NovelCard = ({ novel }: { novel: NovelProps; onClick?: () => void }) => {
   const [openModal, setOpenModal] = React.useState(false);
 
   const handleOpenModal = () => setOpenModal(true);
@@ -43,7 +38,7 @@ const NovelCard = ({
               textOverflow: 'ellipsis',
             }}
           >
-            {novel.famousSentenceText}
+            {novel.sentence || novel.mainCopy}
           </Typography>
           <Typography
             variant='h5'
@@ -60,8 +55,8 @@ const NovelCard = ({
             {novel.title}
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
-            {novel.titleGenres?.map((chip, index) => (
-              <Box key={index}>{chip}</Box>
+            {novel.chips?.map((chip, index) => (
+              <Box key={index}>{chip.label}</Box>
             ))}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -70,23 +65,23 @@ const NovelCard = ({
               color='text.secondary'
             >
               <Avatar
-                alt={novel.profileIconImage}
+                alt={novel.avatar.alt}
                 sx={{
                   width: 24,
                   height: 24,
-                  backgroundColor: 'white',
+                  backgroundColor: novel.avatar.color || 'white',
                 }}
-                src={novel.profileIconImage}
+                src={novel.avatar.src || novel.profileIconImage}
               >
-                あああ
+                {novel.avatar.text}
               </Avatar>
             </Box>
             <Box
               sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
               color='text.secondary'
             >
-              {novel.titleGenres?.map((tag, index) => (
-                <Box key={index}>{tag}</Box>
+              {novel.tags?.map((tag, index) => (
+                <Box key={index}>{tag.label}</Box>
               ))}
             </Box>
           </Box>
@@ -94,7 +89,7 @@ const NovelCard = ({
           <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1.5 }}>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <VisibilityIcon />
-              {novel.viewCount}
+              {novel.readerCount}
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <AccessTimeFilledIcon />
@@ -102,7 +97,7 @@ const NovelCard = ({
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center' }}>
               <EditNoteIcon />
-              {novel.viewCount}
+              {novel.sentenceUserCount}
             </Typography>
           </Box>
         </CardContent>
