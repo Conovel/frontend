@@ -8,6 +8,8 @@ import {
   INITIAL_SENTENCE_ID,
   addNewSentence,
   getParallelSentences as getMockParallelSentences,
+  updateSentenceEvaluation,
+  getSentenceEvaluation,
 } from './mocks/data';
 
 export const NovelViewContainer = () => {
@@ -24,13 +26,15 @@ export const NovelViewContainer = () => {
 
   const [startIndexParent, setStartIndexParent] = useState(0);
   const [startIndexChildren, setStartIndexChildren] = useState(0);
+
+  // ParentPanelの評価状態（Sentenceデータから取得）
   const [evaluationGoodCountParent, setEvaluationGoodCountParent] =
     useState<number>(0);
-  const [commentCountParent, setCommentCountParent] = useState<number>(0);
   const [evaluationStayCountParent, setEvaluationStayCountParent] =
     useState<number>(0);
-  const [isGoodEvaluatedParent] = useState(false);
-  const [isStayEvaluatedParent] = useState(false);
+  const [isGoodEvaluatedParent, setIsGoodEvaluatedParent] = useState(false);
+  const [isStayEvaluatedParent, setIsStayEvaluatedParent] = useState(false);
+
   const [evaluationGoodCountChildren, setEvaluationGoodCountChildren] =
     useState<number>(0);
   const [commentCountChildren, setCommentCountChildren] = useState<number>(0);
@@ -111,6 +115,31 @@ export const NovelViewContainer = () => {
             // 現在のセンテンスを元のセンテンスとして保存
             setOriginalMainSentence(currentMainSentence);
           }
+
+          // ParentPanelの評価状態をSentenceデータから取得
+          if (newData.parent.length > 0) {
+            const parentEvaluation = getSentenceEvaluation(
+              newData.parent[0].sentenceId,
+            );
+            setEvaluationGoodCountParent(parentEvaluation.goodCount);
+            setEvaluationStayCountParent(parentEvaluation.stayCount);
+            setIsGoodEvaluatedParent(parentEvaluation.isGoodEvaluated);
+            setIsStayEvaluatedParent(parentEvaluation.isStayEvaluated);
+          }
+
+          // MainPanelの評価状態をSentenceデータから取得
+          if (newData.main.length > 0) {
+            const mainEvaluation = getSentenceEvaluation(
+              newData.main[0].sentenceId,
+            );
+            setEvaluationGoodCountMain(mainEvaluation.goodCount);
+            setEvaluationStayCountMain(mainEvaluation.stayCount);
+            setIsGoodEvaluatedMain(mainEvaluation.isGoodEvaluated);
+            setIsStayEvaluatedMain(mainEvaluation.isStayEvaluated);
+            setHasMainPanelEvaluation(
+              mainEvaluation.isGoodEvaluated || mainEvaluation.isStayEvaluated,
+            );
+          }
         }
       }
     }
@@ -118,23 +147,36 @@ export const NovelViewContainer = () => {
 
   // MainPanelの評価状態を更新する関数
   const handleMainPanelEvaluation = useCallback(
-    (type: 'good' | 'stay', value: React.SetStateAction<number>) => {
-      const newValue = typeof value === 'function' ? value(0) : value;
+    (type: 'good' | 'stay') => {
+      const currentSentenceId = mainPanel[0]?.sentenceId;
+      if (!currentSentenceId) return;
 
-      if (type === 'good') {
-        setEvaluationGoodCountMain(value);
-        setIsGoodEvaluatedMain(newValue > 0);
-      } else {
-        setEvaluationStayCountMain(value);
-        setIsStayEvaluatedMain(newValue > 0);
-      }
+      // Sentenceデータの評価を更新
+      const updatedSentence = updateSentenceEvaluation(
+        currentSentenceId,
+        type,
+        true,
+      );
+      if (!updatedSentence) return;
+
+      // 更新された評価状態を取得
+      const evaluation = getSentenceEvaluation(currentSentenceId);
+
+      // 状態を更新
+      setEvaluationGoodCountMain(evaluation.goodCount);
+      setEvaluationStayCountMain(evaluation.stayCount);
+      setIsGoodEvaluatedMain(evaluation.isGoodEvaluated);
+      setIsStayEvaluatedMain(evaluation.isStayEvaluated);
 
       // どちらかの評価が行われた場合、評価済みフラグを設定
-      if (newValue > 0) {
+      if (evaluation.isGoodEvaluated || evaluation.isStayEvaluated) {
         setHasMainPanelEvaluation(true);
       }
+
+      // MainPanelのSentenceデータを更新
+      setMainPanel([updatedSentence]);
     },
-    [],
+    [mainPanel],
   );
 
   // 統合された投稿処理
@@ -150,11 +192,21 @@ export const NovelViewContainer = () => {
           currentMainId,
         );
 
-        // 現在のmainPanelの内容をparentPanelに移動
+        // 現在のmainPanelの内容をparentPanelに移動（評価はSentenceデータに紐づいているため自動的に保持される）
         setParentPanel(mainPanel);
 
         // 新しい投稿をmainPanelに設定
         setMainPanel([createdSentence]);
+
+        // 新しい投稿の評価状態を取得
+        const newEvaluation = getSentenceEvaluation(createdSentence.sentenceId);
+        setEvaluationGoodCountMain(newEvaluation.goodCount);
+        setEvaluationStayCountMain(newEvaluation.stayCount);
+        setIsGoodEvaluatedMain(newEvaluation.isGoodEvaluated);
+        setIsStayEvaluatedMain(newEvaluation.isStayEvaluated);
+        setHasMainPanelEvaluation(
+          newEvaluation.isGoodEvaluated || newEvaluation.isStayEvaluated,
+        );
 
         // 新規投稿の場合、childrenPanelを空にする
         setChildrenPanel([]);
@@ -292,8 +344,6 @@ export const NovelViewContainer = () => {
       setStartIndexParent={setStartIndexParent}
       evaluationGoodCountParent={evaluationGoodCountParent}
       setEvaluationGoodCountParent={setEvaluationGoodCountParent}
-      commentCountParent={commentCountParent}
-      setCommentCountParent={setCommentCountParent}
       evaluationStayCountParent={evaluationStayCountParent}
       setEvaluationStayCountParent={setEvaluationStayCountParent}
       isGoodEvaluatedParent={isGoodEvaluatedParent}
@@ -309,13 +359,9 @@ export const NovelViewContainer = () => {
       isGoodEvaluatedChildren={isGoodEvaluatedChildren}
       isStayEvaluatedChildren={isStayEvaluatedChildren}
       evaluationGoodCountMain={evaluationGoodCountMain}
-      setEvaluationGoodCountMain={(value) =>
-        handleMainPanelEvaluation('good', value)
-      }
+      setEvaluationGoodCountMain={() => handleMainPanelEvaluation('good')}
       evaluationStayCountMain={evaluationStayCountMain}
-      setEvaluationStayCountMain={(value) =>
-        handleMainPanelEvaluation('stay', value)
-      }
+      setEvaluationStayCountMain={() => handleMainPanelEvaluation('stay')}
       isGoodEvaluatedMain={isGoodEvaluatedMain}
       isStayEvaluatedMain={isStayEvaluatedMain}
       hasMainPanelEvaluation={hasMainPanelEvaluation}

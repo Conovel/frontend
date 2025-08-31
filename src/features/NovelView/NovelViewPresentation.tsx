@@ -14,8 +14,6 @@ interface NovelViewPresentationProps {
   setStartIndexParent: React.Dispatch<React.SetStateAction<number>>;
   evaluationGoodCountParent: number;
   setEvaluationGoodCountParent: React.Dispatch<React.SetStateAction<number>>;
-  commentCountParent: number;
-  setCommentCountParent: React.Dispatch<React.SetStateAction<number>>;
   evaluationStayCountParent: number;
   setEvaluationStayCountParent: React.Dispatch<React.SetStateAction<number>>;
   isGoodEvaluatedParent: boolean;
@@ -59,8 +57,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setStartIndexParent,
   evaluationGoodCountParent,
   setEvaluationGoodCountParent,
-  commentCountParent,
-  setCommentCountParent,
   evaluationStayCountParent,
   setEvaluationStayCountParent,
   isGoodEvaluatedParent,
@@ -156,8 +152,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
                   textCount={textCount}
                   evaluationGoodCount={evaluationGoodCountParent}
                   setEvaluationGoodCount={setEvaluationGoodCountParent}
-                  commentCount={commentCountParent}
-                  setCommentCount={setCommentCountParent}
                   evaluationStayCount={evaluationStayCountParent}
                   setEvaluationStayCount={setEvaluationStayCountParent}
                   isGoodEvaluated={isGoodEvaluatedParent}

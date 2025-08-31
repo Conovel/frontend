@@ -9,14 +9,14 @@ interface NovelCardProps {
   index: number;
   textIndex: number;
   sentence: string;
-  evaluation_good_count: number;
-  setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
-  comment_count: number;
-  setComment_count: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count: number;
-  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
-  isGoodEvaluated: boolean;
-  isStayEvaluated: boolean;
+  evaluation_good_count?: number;
+  setEvaluation_good_count?: React.Dispatch<React.SetStateAction<number>>;
+  comment_count?: number;
+  setComment_count?: React.Dispatch<React.SetStateAction<number>>;
+  evaluation_stay_count?: number;
+  setEvaluation_stay_count?: React.Dispatch<React.SetStateAction<number>>;
+  isGoodEvaluated?: boolean;
+  isStayEvaluated?: boolean;
   novel: Sentence;
   onClick: (sentenceId: number | undefined) => void;
 }
@@ -31,27 +31,33 @@ const NovelCard = ({
   isGoodEvaluated,
   isStayEvaluated,
 }: NovelCardProps) => {
-  const [evaluation_good_count, setEvaluation_good_count] =
-    useState(initialGoodCount);
-  const [evaluation_stay_count, setEvaluation_stay_count] =
-    useState(initialStayCount);
+  const [evaluation_good_count, setEvaluation_good_count] = useState(
+    initialGoodCount || 0,
+  );
+  const [evaluation_stay_count, setEvaluation_stay_count] = useState(
+    initialStayCount || 0,
+  );
 
   useEffect(() => {
-    setEvaluation_good_count(initialGoodCount);
+    setEvaluation_good_count(initialGoodCount || 0);
   }, [initialGoodCount]);
 
   useEffect(() => {
-    setEvaluation_stay_count(initialStayCount);
+    setEvaluation_stay_count(initialStayCount || 0);
   }, [initialStayCount]);
 
   const handleSetGoodCount = (value: React.SetStateAction<number>): void => {
     setEvaluation_good_count(value);
-    setParentGoodCount(value);
+    if (setParentGoodCount) {
+      setParentGoodCount(value);
+    }
   };
 
   const handleSetStayCount = (value: React.SetStateAction<number>): void => {
     setEvaluation_stay_count(value);
-    setParentStayCount(value);
+    if (setParentStayCount) {
+      setParentStayCount(value);
+    }
   };
 
   return (
@@ -91,6 +97,7 @@ const NovelCard = ({
         </Box>
       </Box>
 
+      {/* 評価ボタンは常に表示し、評価関連のプロパティが存在しない場合は無効化 */}
       <Box
         sx={{
           display: 'flex',
@@ -99,18 +106,18 @@ const NovelCard = ({
           backgroundColor: 'transparent',
         }}
       >
-        <>
-          <ThumbUpButton
-            evaluation_good_count={evaluation_good_count}
-            setEvaluation_good_count={handleSetGoodCount}
-            isEvaluated={isGoodEvaluated}
-          />
-          <NextPlanButton
-            evaluation_stay_count={evaluation_stay_count}
-            setEvaluation_stay_count={handleSetStayCount}
-            isEvaluated={isStayEvaluated}
-          />
-        </>
+        <ThumbUpButton
+          evaluation_good_count={evaluation_good_count}
+          setEvaluation_good_count={handleSetGoodCount}
+          isEvaluated={isGoodEvaluated || false}
+          disabled={!setParentGoodCount}
+        />
+        <NextPlanButton
+          evaluation_stay_count={evaluation_stay_count}
+          setEvaluation_stay_count={handleSetStayCount}
+          isEvaluated={isStayEvaluated || false}
+          disabled={!setParentStayCount}
+        />
       </Box>
     </Box>
   );

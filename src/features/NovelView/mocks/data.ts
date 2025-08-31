@@ -736,6 +736,15 @@ export const parallelSentences: ParallelSentences = {
   14: [15], // sentenceId=14から結末へ
 };
 
+// 現在のユーザー情報を取得する関数（モック）
+const getCurrentUserInfo = () => {
+  return {
+    userId: 999, // 現在のユーザーID
+    userName: '現在のユーザー', // 現在のユーザーのペンネーム
+    profileIconImage: 'https://via.placeholder.com/40', // 現在のユーザーのアイコン
+  };
+};
+
 // 新しい文章を投稿する関数
 export const addNewSentence = (
   sentenceText: string,
@@ -751,11 +760,17 @@ export const addNewSentence = (
   // 親センテンスの情報を取得
   const parentSentence = sentencesData[parentSentenceId];
 
+  // 現在のユーザー情報を取得
+  const currentUser = getCurrentUserInfo();
+
   // 新しいセンテンスオブジェクトを作成
   const newSentence: Sentence = {
-    ...parentSentence, // 親の情報を継承
+    ...parentSentence, // 基本的な情報を継承
     sentence: sentenceText,
     sentenceId: nextId,
+    userId: currentUser.userId,
+    userName: currentUser.userName,
+    profileIconImage: currentUser.profileIconImage,
     createdAt: now,
     updatedAt: now,
     evaluationGoodCount: 0,
@@ -809,6 +824,65 @@ export const getParallelSentences = (sentenceId: number): Sentence[] => {
     const bIndex = parallelIds.indexOf(b.sentenceId);
     return aIndex - bIndex;
   });
+};
+
+// センテンスの評価を更新する関数
+export const updateSentenceEvaluation = (
+  sentenceId: number,
+  evaluationType: 'good' | 'stay',
+  increment: boolean = true,
+): Sentence | null => {
+  const sentence = sentencesData[sentenceId];
+  if (!sentence) return null;
+
+  // 評価を更新
+  if (evaluationType === 'good') {
+    if (increment) {
+      sentence.evaluationGoodCount += 1;
+      // Stay評価をリセット
+      sentence.evaluationStayCount = 0;
+    } else {
+      sentence.evaluationGoodCount = Math.max(
+        0,
+        sentence.evaluationGoodCount - 1,
+      );
+    }
+  } else {
+    if (increment) {
+      sentence.evaluationStayCount += 1;
+      // Good評価をリセット
+      sentence.evaluationGoodCount = 0;
+    } else {
+      sentence.evaluationStayCount = Math.max(
+        0,
+        sentence.evaluationStayCount - 1,
+      );
+    }
+  }
+
+  // 更新日時を更新
+  sentence.updatedAt = new Date().toISOString();
+
+  return sentence;
+};
+
+// センテンスの評価状態を取得する関数
+export const getSentenceEvaluation = (sentenceId: number) => {
+  const sentence = sentencesData[sentenceId];
+  if (!sentence)
+    return {
+      goodCount: 0,
+      stayCount: 0,
+      isGoodEvaluated: false,
+      isStayEvaluated: false,
+    };
+
+  return {
+    goodCount: sentence.evaluationGoodCount,
+    stayCount: sentence.evaluationStayCount,
+    isGoodEvaluated: sentence.evaluationGoodCount > 0,
+    isStayEvaluated: sentence.evaluationStayCount > 0,
+  };
 };
 
 // 初期データの構築
