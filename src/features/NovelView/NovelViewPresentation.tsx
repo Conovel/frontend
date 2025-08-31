@@ -134,12 +134,14 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
               children: childrenPanel,
               main: mainPanel,
               parent: [],
-              chips: novel.chips.map((chip) => ({
-                label: chip.label || '',
-              })),
-              tags: novel.tags.map((tag) => ({
-                label: tag.label || '',
-              })),
+              chips:
+                novel.chips?.map((chip) => ({
+                  label: chip.label || '',
+                })) || [],
+              tags:
+                novel.tags?.map((tag) => ({
+                  label: tag.label || '',
+                })) || [],
             };
 
             return (
@@ -256,6 +258,8 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
             text: '',
           },
           sentenceId: 0,
+          sentenceUserId: 0,
+          sentenceUserName: '',
           sentenceUserCount: 0,
           sentenceHierarchyCount: 0,
           sentence: '',

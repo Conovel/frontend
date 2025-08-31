@@ -43,6 +43,8 @@ const NovelList = () => {
                 ...novel,
                 sentence: novel.famousSentenceText,
                 sentenceId: 2,
+                sentenceUserId: novel.authorUserId,
+                sentenceUserName: novel.authorUserName,
                 userId: novel.authorUserId,
                 userName: novel.authorUserName,
                 profileIconImage: novel.profileIconImage,

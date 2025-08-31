@@ -215,7 +215,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
                       },
                     }}
                   >
-                    {panel.userName.charAt(0)}
+                    {(panel.userName || panel.sentenceUserName || '').charAt(0)}
                   </Avatar>
                   <Box
                     sx={{

@@ -65,15 +65,16 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick?: () => void }) => {
               color='text.secondary'
             >
               <Avatar
-                alt={novel.avatar.alt}
+                alt={novel.avatar?.alt || ''}
                 sx={{
                   width: 24,
                   height: 24,
-                  backgroundColor: novel.avatar.color || 'white',
+                  backgroundColor: novel.avatar?.color || 'white',
                 }}
-                src={novel.avatar.src || novel.profileIconImage}
+                src={novel.avatar?.src || novel.profileIconImage}
               >
-                {novel.avatar.text}
+                {novel.avatar?.text ||
+                  (novel.sentenceUserName || novel.userName || '').charAt(0)}
               </Avatar>
             </Box>
             <Box
