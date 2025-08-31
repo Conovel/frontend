@@ -1,14 +1,16 @@
 import React from 'react';
-import NextPlanIcon from '@mui/icons-material/NextPlan';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 interface NextPlanButtonProps {
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  isEvaluated: boolean;
 }
 
 const NextPlanButton: React.FC<NextPlanButtonProps> = ({
   evaluation_stay_count,
   setEvaluation_stay_count,
+  isEvaluated,
 }) => {
   const handleClick = () => {
     setEvaluation_stay_count(evaluation_stay_count + 1);
@@ -20,8 +22,10 @@ const NextPlanButton: React.FC<NextPlanButtonProps> = ({
       onClick={handleClick}
       style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}
     >
-      <NextPlanIcon />
-      <span>{evaluation_stay_count}</span>
+      <SentimentVeryDissatisfiedIcon
+        color={isEvaluated ? 'primary' : 'action'}
+      />
+      <span style={{ marginLeft: '4px' }}>{evaluation_stay_count}</span>
     </div>
   );
 };

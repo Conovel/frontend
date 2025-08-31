@@ -18,6 +18,8 @@ interface NovelViewPresentationProps {
   setCommentCountParent: React.Dispatch<React.SetStateAction<number>>;
   evaluationStayCountParent: number;
   setEvaluationStayCountParent: React.Dispatch<React.SetStateAction<number>>;
+  isGoodEvaluatedParent: boolean;
+  isStayEvaluatedParent: boolean;
   startIndexChildren: number;
   setStartIndexChildren: React.Dispatch<React.SetStateAction<number>>;
   evaluationGoodCountChildren: number;
@@ -26,12 +28,14 @@ interface NovelViewPresentationProps {
   setCommentCountChildren: React.Dispatch<React.SetStateAction<number>>;
   evaluationStayCountChildren: number;
   setEvaluationStayCountChildren: React.Dispatch<React.SetStateAction<number>>;
+  isGoodEvaluatedChildren: boolean;
+  isStayEvaluatedChildren: boolean;
   evaluationGoodCountMain: number;
   setEvaluationGoodCountMain: React.Dispatch<React.SetStateAction<number>>;
-  commentCountMain: number;
-  setCommentCountMain: React.Dispatch<React.SetStateAction<number>>;
   evaluationStayCountMain: number;
   setEvaluationStayCountMain: React.Dispatch<React.SetStateAction<number>>;
+  isGoodEvaluatedMain: boolean;
+  isStayEvaluatedMain: boolean;
   textCount: number;
   onPost: (newSentence: string) => Promise<void>;
   onNextParallel: () => void;
@@ -41,7 +45,6 @@ interface NovelViewPresentationProps {
   totalParallels: number;
   onParentClick: (clickedSentence: any) => void;
   onMainPanelNavigate: (direction: 'prev' | 'next') => void;
-  onCreateParallel?: () => void;
   titleId: string;
 }
 
@@ -57,6 +60,8 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setCommentCountParent,
   evaluationStayCountParent,
   setEvaluationStayCountParent,
+  isGoodEvaluatedParent,
+  isStayEvaluatedParent,
   setStartIndexChildren,
   evaluationGoodCountChildren,
   setEvaluationGoodCountChildren,
@@ -64,12 +69,14 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setCommentCountChildren,
   evaluationStayCountChildren,
   setEvaluationStayCountChildren,
+  isGoodEvaluatedChildren,
+  isStayEvaluatedChildren,
   evaluationGoodCountMain,
   setEvaluationGoodCountMain,
-  commentCountMain,
-  setCommentCountMain,
   evaluationStayCountMain,
   setEvaluationStayCountMain,
+  isGoodEvaluatedMain,
+  isStayEvaluatedMain,
   textCount,
   onPost,
   onNextParallel,
@@ -79,7 +86,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   totalParallels,
   onParentClick,
   onMainPanelNavigate,
-  onCreateParallel,
   titleId,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -116,25 +122,15 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         }}
       />
 
-      {/* 履歴表示エリア */}
-      {parentPanel.length > 1 && (
+      {/* Parent Panel */}
+      {parentPanel.length > 0 && (
         <Box sx={{ mb: 4, width: '100%', maxWidth: '600px' }}>
-          <Box
-            sx={{
-              mb: 2,
-              textAlign: 'center',
-              color: 'text.secondary',
-              fontSize: '0.875rem',
-            }}
-          >
-            過去の投稿
-          </Box>
-          {parentPanel.slice(0, -1).map((novel, index) => {
+          {parentPanel.slice(-1).map((novel, index) => {
             const novelWithRelations: NovelProps = {
               ...novel,
-              titleId: novel.titleId,
-              children: [],
-              main: [],
+              titleId: Number(novel.titleId) || novel.sentenceId,
+              children: childrenPanel,
+              main: mainPanel,
               parent: [],
               chips: novel.chips.map((chip) => ({
                 label: chip.label || '',
@@ -145,19 +141,21 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
             };
 
             return (
-              <Box key={index} sx={{ mb: 2, opacity: 0.7 }}>
+              <Box key={index} sx={{ mb: 2 }}>
                 <ParentPanel
                   parentPanel={novelWithRelations}
-                  startIndex={0}
-                  setStartIndex={() => {}}
+                  startIndex={startIndexParent}
+                  setStartIndex={setStartIndexParent}
                   visibleTextCount={1}
-                  textCount={1}
-                  evaluationGoodCount={novel.evaluationGoodCount}
-                  setEvaluationGoodCount={() => {}}
-                  commentCount={0}
-                  setCommentCount={() => {}}
-                  evaluationStayCount={novel.evaluationStayCount}
-                  setEvaluationStayCount={() => {}}
+                  textCount={textCount}
+                  evaluationGoodCount={evaluationGoodCountParent}
+                  setEvaluationGoodCount={setEvaluationGoodCountParent}
+                  commentCount={commentCountParent}
+                  setCommentCount={setCommentCountParent}
+                  evaluationStayCount={evaluationStayCountParent}
+                  setEvaluationStayCount={setEvaluationStayCountParent}
+                  isGoodEvaluated={isGoodEvaluatedParent}
+                  isStayEvaluated={isStayEvaluatedParent}
                   onClick={() => onParentClick(novel)}
                 />
               </Box>
@@ -166,106 +164,102 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         </Box>
       )}
 
-      {parentPanel.slice(-1).map((novel, index) => {
-        const novelWithRelations: NovelProps = {
-          ...novel,
-          titleId: Number(novel.titleId) || novel.sentenceId,
+      {/* Main Panel */}
+      <Box sx={{ mb: 4, width: '100%', maxWidth: '600px' }}>
+        <MainPanel
+          mainPanel={mainPanel}
+          startIndex={0}
+          visibleTextCount={1}
+          evaluationGoodCount={evaluationGoodCountMain}
+          setEvaluationGoodCount={setEvaluationGoodCountMain}
+          evaluationStayCount={evaluationStayCountMain}
+          setEvaluationStayCount={setEvaluationStayCountMain}
+          isGoodEvaluated={isGoodEvaluatedMain}
+          isStayEvaluated={isStayEvaluatedMain}
+          onNavigate={hasParallels ? (onMainPanelNavigate as any) : undefined}
+          hasParallels={hasParallels}
+          onPrevParallel={onPrevParallel}
+          onNextParallel={onNextParallel}
+        />
+      </Box>
+
+      {/* パラレル投稿インジケーター */}
+      {hasParallels && (
+        <Box sx={{ mb: 2, fontSize: '0.75rem', color: 'text.secondary' }}>
+          パラレル投稿 {currentParallelIndex + 1} / {totalParallels}
+        </Box>
+      )}
+
+      {/* 統合された投稿ボタン */}
+      <Button
+        variant='contained'
+        color='primary'
+        onClick={() => setIsModalOpen(true)}
+        sx={{ mb: 4, zIndex: 2, position: 'relative' }}
+      >
+        投稿を作成
+      </Button>
+
+      <EditPost
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handlePost}
+        mainText={mainPanel[0]?.sentence || ''}
+        sentenceId={mainPanel[0]?.sentenceId || 0}
+      />
+
+      {/* Children Panel */}
+      <Box sx={{ width: '100%', maxWidth: '600px' }}></Box>
+      <ChildrenPanel
+        childrenPanel={childrenPanel}
+        setChildrenPanel={() => {}}
+        mainPanel={mainPanel}
+        setStartIndex={setStartIndexChildren}
+        visibleTextCount={3}
+        evaluationGoodCount={evaluationGoodCountChildren}
+        setEvaluationGoodCount={setEvaluationGoodCountChildren}
+        commentCount={commentCountChildren}
+        setCommentCount={setCommentCountChildren}
+        evaluationStayCount={evaluationStayCountChildren}
+        setEvaluationStayCount={setEvaluationStayCountChildren}
+        isGoodEvaluated={isGoodEvaluatedChildren}
+        isStayEvaluated={isStayEvaluatedChildren}
+        novel={{
+          titleId: Number(titleId) || 1,
           children: childrenPanel,
           main: mainPanel,
           parent: [],
-          chips: novel.chips.map((chip) => ({
-            label: chip.label || '',
-          })),
-          tags: novel.tags.map((tag) => ({
-            label: tag.label || '',
-          })),
-        };
-
-        return (
-          <React.Fragment key={index}>
-            <Box sx={{ mb: 6 }}>
-              <ParentPanel
-                parentPanel={novelWithRelations}
-                startIndex={startIndexParent}
-                setStartIndex={setStartIndexParent}
-                visibleTextCount={3}
-                textCount={textCount}
-                evaluationGoodCount={evaluationGoodCountParent}
-                setEvaluationGoodCount={setEvaluationGoodCountParent}
-                commentCount={commentCountParent}
-                setCommentCount={setCommentCountParent}
-                evaluationStayCount={evaluationStayCountParent}
-                setEvaluationStayCount={setEvaluationStayCountParent}
-                onClick={() => onParentClick(novel)}
-              />
-            </Box>
-
-            {/* MainPanel */}
-            <Box sx={{ mb: 0.5 }}>
-              <MainPanel
-                mainPanel={mainPanel}
-                startIndex={0}
-                visibleTextCount={3}
-                evaluationGoodCount={evaluationGoodCountMain}
-                setEvaluationGoodCount={setEvaluationGoodCountMain}
-                commentCount={commentCountMain}
-                setCommentCount={setCommentCountMain}
-                evaluationStayCount={evaluationStayCountMain}
-                setEvaluationStayCount={setEvaluationStayCountMain}
-                onNavigate={
-                  hasParallels ? (onMainPanelNavigate as any) : undefined
-                }
-                hasParallels={hasParallels}
-                onPrevParallel={onPrevParallel}
-                onNextParallel={onNextParallel}
-                onCreateParallel={onCreateParallel}
-              />
-            </Box>
-
-            {/* パラレル投稿インジケーター */}
-            {hasParallels && (
-              <Box
-                sx={{ mb: 0.5, fontSize: '0.75rem', color: 'text.secondary' }}
-              >
-                パラレル投稿 {currentParallelIndex + 1} / {totalParallels}
-              </Box>
-            )}
-
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={() => setIsModalOpen(true)}
-              sx={{ mt: 0.5, mb: 0.5, zIndex: 2, position: 'relative' }}
-            >
-              続きを書く
-            </Button>
-            <EditPost
-              open={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              onSubmit={handlePost}
-              mainText={mainPanel[0]?.sentence || ''}
-              sentenceId={mainPanel[0]?.sentenceId || 0}
-            />
-            <ChildrenPanel
-              childrenPanel={childrenPanel}
-              setChildrenPanel={() => {}}
-              mainPanel={mainPanel}
-              setMainPanel={() => {}}
-              setStartIndex={setStartIndexChildren}
-              visibleTextCount={3}
-              evaluationGoodCount={evaluationGoodCountChildren}
-              setEvaluationGoodCount={setEvaluationGoodCountChildren}
-              commentCount={commentCountChildren}
-              setCommentCount={setCommentCountChildren}
-              evaluationStayCount={evaluationStayCountChildren}
-              setEvaluationStayCount={setEvaluationStayCountChildren}
-              novel={novelWithRelations}
-              textIndex={index}
-              titleId={titleId || ''}
-            />
-          </React.Fragment>
-        );
-      })}
+          chips: [],
+          tags: [],
+          title: '',
+          mainCopy: '',
+          overview: '',
+          popular: false,
+          newArrival: false,
+          authorUserName: '',
+          readerCount: 0,
+          avatar: {
+            src: '',
+            alt: '',
+            color: '',
+            text: '',
+          },
+          sentenceId: 0,
+          sentenceUserCount: 0,
+          sentenceHierarchyCount: 0,
+          sentence: '',
+          textIndex: 0,
+          userId: 0,
+          userName: '',
+          profileIconImage: '',
+          evaluationGoodCount: 0,
+          evaluationStayCount: 0,
+          createdAt: '',
+          updatedAt: '',
+        }}
+        textIndex={0}
+        titleId={titleId || ''}
+      />
     </Box>
   );
 };

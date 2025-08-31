@@ -15,6 +15,8 @@ interface ParentPanelProps {
   setCommentCount: React.Dispatch<React.SetStateAction<number>>;
   evaluationStayCount: number;
   setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
+  isGoodEvaluated: boolean;
+  isStayEvaluated: boolean;
   onClick: () => void;
 }
 
@@ -28,6 +30,8 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
   setCommentCount,
   evaluationStayCount,
   setEvaluationStayCount,
+  isGoodEvaluated,
+  isStayEvaluated,
   onClick,
 }) => {
   return (
@@ -55,6 +59,8 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
           setComment_count={setCommentCount}
           evaluation_stay_count={evaluationStayCount}
           setEvaluation_stay_count={setEvaluationStayCount}
+          isGoodEvaluated={isGoodEvaluated}
+          isStayEvaluated={isStayEvaluated}
         />
       ) : null}
     </Box>

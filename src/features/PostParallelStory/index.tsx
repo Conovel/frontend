@@ -104,9 +104,6 @@ export const PostParallelStory: React.FC<PostParallelStoryProps> = ({
                 border: '1px solid #d0d0d0',
               }}
             >
-              <Typography variant='caption' color='text.secondary'>
-                親投稿
-              </Typography>
               <Typography variant='body2'>{parentText}</Typography>
             </Box>
           )}

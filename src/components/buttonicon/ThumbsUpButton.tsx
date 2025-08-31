@@ -1,14 +1,16 @@
 import React from 'react';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 
 interface ThumbUpButtonProps {
   evaluation_good_count: number;
   setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
+  isEvaluated: boolean;
 }
 
 const ThumbUpButton: React.FC<ThumbUpButtonProps> = ({
   evaluation_good_count,
   setEvaluation_good_count,
+  isEvaluated,
 }) => {
   const handleClick = () => {
     setEvaluation_good_count(evaluation_good_count + 1);
@@ -20,8 +22,8 @@ const ThumbUpButton: React.FC<ThumbUpButtonProps> = ({
       onClick={handleClick}
       style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}
     >
-      <ThumbUpIcon />
-      <span>{evaluation_good_count}</span>
+      <SentimentSatisfiedAltIcon color={isEvaluated ? 'primary' : 'action'} />
+      <span style={{ marginLeft: '4px' }}>{evaluation_good_count}</span>
     </div>
   );
 };

@@ -56,7 +56,6 @@ interface ChildrenPanelProps {
   childrenPanel: Sentence[];
   setChildrenPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
   mainPanel: Sentence[];
-  setMainPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
   evaluationGoodCount: number;
@@ -65,6 +64,8 @@ interface ChildrenPanelProps {
   setCommentCount: React.Dispatch<React.SetStateAction<number>>;
   evaluationStayCount: number;
   setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
+  isGoodEvaluated: boolean;
+  isStayEvaluated: boolean;
   novel: NovelProps;
   textIndex: number;
   titleId: string;
@@ -72,8 +73,8 @@ interface ChildrenPanelProps {
 
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   childrenPanel,
+  setChildrenPanel,
   mainPanel,
-  setMainPanel,
   setStartIndex,
   visibleTextCount,
   evaluationGoodCount,
@@ -82,12 +83,15 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   setCommentCount,
   evaluationStayCount,
   setEvaluationStayCount,
+  isGoodEvaluated,
+  isStayEvaluated,
   novel,
   textIndex,
   titleId,
 }) => {
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
@@ -122,20 +126,51 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   };
 
   const renderNovelCard = (panel: Sentence, index: number) => {
+    const isExpanded = expandedCards.has(panel.sentenceId);
+    const previewText =
+      panel.sentence.length > 50
+        ? panel.sentence.substring(0, 50) + '...'
+        : panel.sentence;
+
+    const handleCardClick = (sentenceId: number | undefined) => {
+      if (sentenceId) {
+        handleClick(sentenceId);
+      }
+    };
+
+    const handleEvaluationClick = (sentenceId: number) => {
+      setExpandedCards((prev) => {
+        const newSet = new Set(prev);
+        newSet.add(sentenceId);
+        return newSet;
+      });
+    };
+
     return (
       <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
         <NovelCard
-          novel={panel}
-          onClick={() => handleClick(panel.sentenceId)}
+          novel={{
+            ...panel,
+            sentence: isExpanded ? panel.sentence : previewText,
+          }}
+          onClick={handleCardClick}
           key={index}
           index={index}
           textIndex={textIndex}
           evaluation_good_count={evaluationGoodCount}
-          setEvaluation_good_count={setEvaluationGoodCount}
+          setEvaluation_good_count={(value) => {
+            setEvaluationGoodCount(value);
+            handleEvaluationClick(panel.sentenceId);
+          }}
           comment_count={commentCount}
           setComment_count={setCommentCount}
           evaluation_stay_count={evaluationStayCount}
-          setEvaluation_stay_count={setEvaluationStayCount}
+          setEvaluation_stay_count={(value) => {
+            setEvaluationStayCount(value);
+            handleEvaluationClick(panel.sentenceId);
+          }}
+          isGoodEvaluated={isGoodEvaluated}
+          isStayEvaluated={isStayEvaluated}
           sentence={panel.sentence}
         />
       </Box>
@@ -197,8 +232,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         updatedAt: apiSentence.updatedAt || '',
       };
 
-      // mainPanelを更新
-      setMainPanel((prev) => [...prev, newSentence]);
+      // childrenPanelを更新
+      setChildrenPanel((prev: Sentence[]) => [...prev, newSentence]);
       const newIndex = Math.max(0, childrenPanel.length + 1 - visibleTextCount);
       setStartIndex(newIndex);
 

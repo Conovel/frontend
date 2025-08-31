@@ -1,7 +1,7 @@
 import NovelViewPresentation from './NovelViewPresentation';
 import { useState, useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Sentence, CreateSentenceRequest } from '../../types/types';
+import { Sentence } from '../../types/types';
 import {
   mockContainerData,
   buildInitialData,
@@ -9,7 +9,6 @@ import {
   addNewSentence,
   getParallelSentences,
 } from './mocks/data';
-import { PostParallelStory } from '../PostParallelStory';
 
 export const NovelViewContainer = () => {
   // URLパラメータを取得
@@ -30,18 +29,29 @@ export const NovelViewContainer = () => {
   const [commentCountParent, setCommentCountParent] = useState<number>(0);
   const [evaluationStayCountParent, setEvaluationStayCountParent] =
     useState<number>(0);
+  const [isGoodEvaluatedParent] = useState(false);
+  const [isStayEvaluatedParent] = useState(false);
   const [evaluationGoodCountChildren, setEvaluationGoodCountChildren] =
     useState<number>(0);
   const [commentCountChildren, setCommentCountChildren] = useState<number>(0);
   const [evaluationStayCountChildren, setEvaluationStayCountChildren] =
     useState<number>(0);
+  // @ts-ignore
+  const [isGoodEvaluatedChildren, _setIsGoodEvaluatedChildren] =
+    useState(false);
+  // @ts-ignore
+  const [isStayEvaluatedChildren, _setIsStayEvaluatedChildren] =
+    useState(false);
 
   // MainPanelに関する状態を定義
   const [evaluationGoodCountMain, setEvaluationGoodCountMain] =
     useState<number>(0);
-  const [commentCountMain, setCommentCountMain] = useState<number>(0);
   const [evaluationStayCountMain, setEvaluationStayCountMain] =
     useState<number>(0);
+  // @ts-ignore
+  const [isGoodEvaluatedMain, _setIsGoodEvaluatedMain] = useState(false);
+  // @ts-ignore
+  const [isStayEvaluatedMain, _setIsStayEvaluatedMain] = useState(false);
 
   // データの状態管理
   const [mainPanel, setMainPanel] = useState(mockContainerData.main);
@@ -58,7 +68,6 @@ export const NovelViewContainer = () => {
   // パラレル投稿管理用の状態
   const [currentParallelIndex, setCurrentParallelIndex] = useState(0);
   const [parallelSentences, setParallelSentences] = useState<Sentence[]>([]);
-  const [isParallelModalOpen, setIsParallelModalOpen] = useState(false);
 
   // URLが変更されたときにデータを更新
   useEffect(() => {
@@ -91,7 +100,7 @@ export const NovelViewContainer = () => {
     }
   }, [sentenceId, currentSentenceId]);
 
-  // 投稿処理
+  // 統合された投稿処理
   const handlePost = useCallback(
     async (newSentence: string) => {
       try {
@@ -175,47 +184,6 @@ export const NovelViewContainer = () => {
     console.log('MainPanel navigate:', direction);
   }, []);
 
-  // パラレル投稿モーダルを開く
-  const handleOpenParallelModal = useCallback(() => {
-    setIsParallelModalOpen(true);
-  }, []);
-
-  // パラレル投稿の作成
-  const handleCreateParallel = useCallback(
-    async (sentenceRequest: CreateSentenceRequest) => {
-      try {
-        // 現在のmainPanelのIDを親IDとして取得
-        const parentId = parentPanel[parentPanel.length - 1]?.sentenceId || 0;
-
-        // 新しいパラレル投稿を追加
-        const { newSentence: createdSentence } = addNewSentence(
-          sentenceRequest.text,
-          parentId,
-        );
-
-        // パラレル投稿リストを更新
-        const updatedParallels = getParallelSentences(parentId);
-        setParallelSentences(updatedParallels);
-
-        // 新しく作成したパラレル投稿に切り替え
-        const newIndex = updatedParallels.findIndex(
-          (p) => p.sentenceId === createdSentence.sentenceId,
-        );
-        if (newIndex >= 0) {
-          setCurrentParallelIndex(newIndex);
-          navigate(
-            `/novelView/${titleId || '1'}/${createdSentence.sentenceId}`,
-          );
-        }
-
-        console.log('パラレル投稿を作成しました:', createdSentence);
-      } catch (error) {
-        console.error('パラレル投稿の作成に失敗しました:', error);
-      }
-    },
-    [parentPanel, navigate, titleId],
-  );
-
   // パラレル投稿が存在するかどうか
   const hasParallels = parallelSentences.length > 1;
 
@@ -233,55 +201,46 @@ export const NovelViewContainer = () => {
   });
 
   return (
-    <>
-      <NovelViewPresentation
-        mainPanel={mainPanel}
-        parentPanel={parentPanel}
-        childrenPanel={childrenPanel}
-        startIndexParent={startIndexParent}
-        setStartIndexParent={setStartIndexParent}
-        evaluationGoodCountParent={evaluationGoodCountParent}
-        setEvaluationGoodCountParent={setEvaluationGoodCountParent}
-        commentCountParent={commentCountParent}
-        setCommentCountParent={setCommentCountParent}
-        evaluationStayCountParent={evaluationStayCountParent}
-        setEvaluationStayCountParent={setEvaluationStayCountParent}
-        startIndexChildren={startIndexChildren}
-        setStartIndexChildren={setStartIndexChildren}
-        evaluationGoodCountChildren={evaluationGoodCountChildren}
-        setEvaluationGoodCountChildren={setEvaluationGoodCountChildren}
-        commentCountChildren={commentCountChildren}
-        setCommentCountChildren={setCommentCountChildren}
-        evaluationStayCountChildren={evaluationStayCountChildren}
-        setEvaluationStayCountChildren={setEvaluationStayCountChildren}
-        evaluationGoodCountMain={evaluationGoodCountMain}
-        setEvaluationGoodCountMain={setEvaluationGoodCountMain}
-        commentCountMain={commentCountMain}
-        setCommentCountMain={setCommentCountMain}
-        evaluationStayCountMain={evaluationStayCountMain}
-        setEvaluationStayCountMain={setEvaluationStayCountMain}
-        textCount={15} // モックデータの総数
-        onPost={handlePost}
-        onNextParallel={handleNextParallel}
-        onPrevParallel={handlePrevParallel}
-        hasParallels={hasParallels}
-        currentParallelIndex={currentParallelIndex}
-        totalParallels={parallelSentences.length}
-        onParentClick={handleParentClick}
-        onMainPanelNavigate={handleMainPanelNavigate}
-        onCreateParallel={handleOpenParallelModal}
-        titleId={titleId || '1'}
-      />
-
-      {/* パラレル投稿モーダル */}
-      <PostParallelStory
-        open={isParallelModalOpen}
-        onClose={() => setIsParallelModalOpen(false)}
-        onSubmit={handleCreateParallel}
-        parentText={parentPanel[parentPanel.length - 1]?.sentence || ''}
-        mainText={mainPanel[0]?.sentence || ''}
-        sentenceId={mainPanel[0]?.sentenceId || 0}
-      />
-    </>
+    <NovelViewPresentation
+      mainPanel={mainPanel}
+      parentPanel={parentPanel}
+      childrenPanel={childrenPanel}
+      startIndexParent={startIndexParent}
+      setStartIndexParent={setStartIndexParent}
+      evaluationGoodCountParent={evaluationGoodCountParent}
+      setEvaluationGoodCountParent={setEvaluationGoodCountParent}
+      commentCountParent={commentCountParent}
+      setCommentCountParent={setCommentCountParent}
+      evaluationStayCountParent={evaluationStayCountParent}
+      setEvaluationStayCountParent={setEvaluationStayCountParent}
+      isGoodEvaluatedParent={isGoodEvaluatedParent}
+      isStayEvaluatedParent={isStayEvaluatedParent}
+      startIndexChildren={startIndexChildren}
+      setStartIndexChildren={setStartIndexChildren}
+      evaluationGoodCountChildren={evaluationGoodCountChildren}
+      setEvaluationGoodCountChildren={setEvaluationGoodCountChildren}
+      commentCountChildren={commentCountChildren}
+      setCommentCountChildren={setCommentCountChildren}
+      evaluationStayCountChildren={evaluationStayCountChildren}
+      setEvaluationStayCountChildren={setEvaluationStayCountChildren}
+      isGoodEvaluatedChildren={isGoodEvaluatedChildren}
+      isStayEvaluatedChildren={isStayEvaluatedChildren}
+      evaluationGoodCountMain={evaluationGoodCountMain}
+      setEvaluationGoodCountMain={setEvaluationGoodCountMain}
+      evaluationStayCountMain={evaluationStayCountMain}
+      setEvaluationStayCountMain={setEvaluationStayCountMain}
+      isGoodEvaluatedMain={isGoodEvaluatedMain}
+      isStayEvaluatedMain={isStayEvaluatedMain}
+      textCount={15} // モックデータの総数
+      onPost={handlePost}
+      onNextParallel={handleNextParallel}
+      onPrevParallel={handlePrevParallel}
+      hasParallels={hasParallels}
+      currentParallelIndex={currentParallelIndex}
+      totalParallels={parallelSentences.length}
+      onParentClick={handleParentClick}
+      onMainPanelNavigate={handleMainPanelNavigate}
+      titleId={titleId || '1'}
+    />
   );
 };

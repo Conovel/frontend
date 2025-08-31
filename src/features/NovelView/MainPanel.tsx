@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Avatar, Box, IconButton, Button } from '@mui/material';
+import { Avatar, Box, IconButton } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import ForkRightIcon from '@mui/icons-material/ForkRight';
 import ThumbUpButton from '../../components/buttonicon/ThumbsUpButton';
-import CommentButton from '../../components/buttonicon/CommentButton';
 import NextPlanButton from '../../components/buttonicon/NextPlanButton';
 import { Sentence, NavigationDirection } from '../../types/types';
 
@@ -14,15 +12,14 @@ interface MainPanelProps {
   visibleTextCount: number;
   evaluationGoodCount: number;
   setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
-  commentCount: number;
-  setCommentCount: React.Dispatch<React.SetStateAction<number>>;
   evaluationStayCount: number;
   setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
+  isGoodEvaluated: boolean;
+  isStayEvaluated: boolean;
   onNavigate?: (direction: NavigationDirection) => void;
   hasParallels?: boolean;
   onPrevParallel?: () => void;
   onNextParallel?: () => void;
-  onCreateParallel?: () => void;
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
@@ -31,15 +28,14 @@ const MainPanel: React.FC<MainPanelProps> = ({
   visibleTextCount,
   evaluationGoodCount,
   setEvaluationGoodCount,
-  commentCount,
-  setCommentCount,
   evaluationStayCount,
   setEvaluationStayCount,
+  isGoodEvaluated,
+  isStayEvaluated,
   onNavigate,
   hasParallels,
   onPrevParallel,
   onNextParallel,
-  onCreateParallel,
 }) => {
   const [localStartIndex, setLocalStartIndex] = useState(startIndex);
 
@@ -74,31 +70,34 @@ const MainPanel: React.FC<MainPanelProps> = ({
         position: 'relative',
       }}
     >
-      {/* 左ナビゲーションボタン - パラレル投稿がある場合はその切り替え、ない場合は通常のナビゲーション */}
-      {(hasParallels || showPrevButton) && (
-        <IconButton
-          onClick={() => {
-            if (hasParallels && onPrevParallel) {
-              onPrevParallel();
-            } else {
-              handleNavigation('prev');
-            }
-          }}
-          sx={{
-            position: 'absolute',
-            left: '-50px',
-            zIndex: 10,
-            backgroundColor: '#BDBDBD',
-            color: '#fff',
-            '&:hover': {
-              backgroundColor: '#9E9E9E',
-            },
-          }}
-          size='small'
-        >
-          <KeyboardArrowLeftIcon />
-        </IconButton>
-      )}
+      {/* 左ナビゲーションボタン - 常に表示 */}
+      <IconButton
+        onClick={() => {
+          if (hasParallels && onPrevParallel) {
+            onPrevParallel();
+          } else {
+            handleNavigation('prev');
+          }
+        }}
+        disabled={!hasParallels && !showPrevButton}
+        sx={{
+          position: 'absolute',
+          left: '-50px',
+          zIndex: 10,
+          backgroundColor: '#BDBDBD',
+          color: '#fff',
+          '&:hover': {
+            backgroundColor: '#9E9E9E',
+          },
+          '&:disabled': {
+            backgroundColor: '#E0E0E0',
+            color: '#BDBDBD',
+          },
+        }}
+        size='small'
+      >
+        <KeyboardArrowLeftIcon />
+      </IconButton>
 
       {/* メインコンテンツ */}
       <Box>
@@ -159,62 +158,43 @@ const MainPanel: React.FC<MainPanelProps> = ({
         <ThumbUpButton
           evaluation_good_count={evaluationGoodCount}
           setEvaluation_good_count={setEvaluationGoodCount}
-        />
-        <CommentButton
-          comment_count={commentCount}
-          setComment_count={setCommentCount}
+          isEvaluated={isGoodEvaluated}
         />
         <NextPlanButton
           evaluation_stay_count={evaluationStayCount}
           setEvaluation_stay_count={setEvaluationStayCount}
+          isEvaluated={isStayEvaluated}
         />
-        {/* パラレル投稿ボタン */}
-        {onCreateParallel && (
-          <Button
-            variant='outlined'
-            size='small'
-            startIcon={<ForkRightIcon />}
-            onClick={onCreateParallel}
-            sx={{
-              ml: 1,
-              borderColor: 'text.secondary',
-              color: 'text.secondary',
-              '&:hover': {
-                borderColor: 'primary.main',
-                color: 'primary.main',
-              },
-            }}
-          >
-            パラレル
-          </Button>
-        )}
       </Box>
 
-      {/* 右ナビゲーションボタン - パラレル投稿がある場合はその切り替え、ない場合は通常のナビゲーション */}
-      {(hasParallels || showNextButton) && (
-        <IconButton
-          onClick={() => {
-            if (hasParallels && onNextParallel) {
-              onNextParallel();
-            } else {
-              handleNavigation('next');
-            }
-          }}
-          sx={{
-            position: 'absolute',
-            right: '-50px',
-            zIndex: 10,
-            backgroundColor: '#BDBDBD',
-            color: '#fff',
-            '&:hover': {
-              backgroundColor: '#9E9E9E',
-            },
-          }}
-          size='small'
-        >
-          <KeyboardArrowRightIcon />
-        </IconButton>
-      )}
+      {/* 右ナビゲーションボタン - 常に表示 */}
+      <IconButton
+        onClick={() => {
+          if (hasParallels && onNextParallel) {
+            onNextParallel();
+          } else {
+            handleNavigation('next');
+          }
+        }}
+        disabled={!hasParallels && !showNextButton}
+        sx={{
+          position: 'absolute',
+          right: '-50px',
+          zIndex: 10,
+          backgroundColor: '#BDBDBD',
+          color: '#fff',
+          '&:hover': {
+            backgroundColor: '#9E9E9E',
+          },
+          '&:disabled': {
+            backgroundColor: '#E0E0E0',
+            color: '#BDBDBD',
+          },
+        }}
+        size='small'
+      >
+        <KeyboardArrowRightIcon />
+      </IconButton>
     </Box>
   );
 };
