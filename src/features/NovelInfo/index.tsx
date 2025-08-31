@@ -61,9 +61,12 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
                   height: 24,
                   backgroundColor: 'white',
                 }}
-                src={novel.avatar.src || novel.profileIconImage}
+                src={novel.avatar?.src || novel.profileIconImage}
               >
-                {novel.avatar.text}
+                {novel.avatar?.text ||
+                  (novel.sentenceUserName || novel.authorUserName || '').charAt(
+                    0,
+                  )}
               </Avatar>
               <Typography sx={{ ml: 1 }}>{novel.authorUserName}</Typography>
             </Box>

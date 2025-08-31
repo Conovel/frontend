@@ -245,6 +245,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
           text: '',
         },
         sentenceId: apiSentence.sentenceId || 0,
+        sentenceUserId: apiSentence.sentenceUserId || 0,
+        sentenceUserName: apiSentence.sentencePenName || '',
         titleId: novel.titleId,
         sentenceUserCount: 0,
         sentenceHierarchyCount: 0,
