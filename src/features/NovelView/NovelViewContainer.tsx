@@ -402,8 +402,37 @@ export const NovelViewContainer = () => {
     [mainPanel, navigate, titleId],
   );
 
+  // 新しいmainパネルのchildrenデータを取得する共通関数
+  const updateChildrenPanelForMain = useCallback(async (sentenceId: number) => {
+    try {
+      const response = await sentencesApi.getSentenceById(sentenceId);
+      if (response && response.data && response.data.children) {
+        const convertToSentence = (apiSentence: any): Sentence => ({
+          sentenceId: apiSentence.sentenceId,
+          sentence: apiSentence.sentence,
+          sentenceUserId: apiSentence.sentenceUserId,
+          sentenceUserName:
+            apiSentence.sentencePenName || apiSentence.sentenceUserName || '',
+          profileIconImage: apiSentence.profileIconImage || '',
+          evaluationGoodCount: apiSentence.evaluationGoodCount || 0,
+          evaluationStayCount: apiSentence.evaluationStayCount || 0,
+          createdAt: apiSentence.createdAt,
+          updatedAt: apiSentence.updatedAt,
+        });
+        setChildrenPanel(response.data.children.map(convertToSentence));
+      } else {
+        setChildrenPanel([]);
+      }
+    } catch (error) {
+      console.error('Error fetching children data:', error);
+      // エラー時はモックデータを使用
+      const mockChildren = getMockParallelSentences(sentenceId);
+      setChildrenPanel(mockChildren);
+    }
+  }, []);
+
   // パラレル投稿のナビゲーション関数
-  const handleNextParallel = useCallback(() => {
+  const handleNextParallel = useCallback(async () => {
     console.log('handleNextParallel called:', {
       parallelSentencesLength: parallelSentences.length,
       currentParallelIndex,
@@ -420,15 +449,35 @@ export const NovelViewContainer = () => {
 
       // MainPanelの内容を更新（URLは変更しない）
       setMainPanel([nextSentence]);
+
+      // 新しいmainパネルのchildrenデータを取得
+      await updateChildrenPanelForMain(nextSentence.sentenceId);
+
+      // 評価状態をリセット
+      setEvaluationGoodCountMain(nextSentence.evaluationGoodCount || 0);
+      setEvaluationStayCountMain(nextSentence.evaluationStayCount || 0);
+      setIsGoodEvaluatedMain(false);
+      setIsStayEvaluatedMain(false);
+      setHasMainPanelEvaluation(false);
     } else if (parallelSentences.length > 0 && currentParallelIndex === -1) {
       // 初期状態から最初のパラレル投稿に遷移
       const firstSentence = parallelSentences[0];
       setCurrentParallelIndex(0);
       setMainPanel([firstSentence]);
-    }
-  }, [currentParallelIndex, parallelSentences]);
 
-  const handlePrevParallel = useCallback(() => {
+      // 新しいmainパネルのchildrenデータを取得
+      await updateChildrenPanelForMain(firstSentence.sentenceId);
+
+      // 評価状態をリセット
+      setEvaluationGoodCountMain(firstSentence.evaluationGoodCount || 0);
+      setEvaluationStayCountMain(firstSentence.evaluationStayCount || 0);
+      setIsGoodEvaluatedMain(false);
+      setIsStayEvaluatedMain(false);
+      setHasMainPanelEvaluation(false);
+    }
+  }, [currentParallelIndex, parallelSentences, updateChildrenPanelForMain]);
+
+  const handlePrevParallel = useCallback(async () => {
     console.log('handlePrevParallel called:', {
       parallelSentencesLength: parallelSentences.length,
       currentParallelIndex,
@@ -441,6 +490,20 @@ export const NovelViewContainer = () => {
         if (originalMainSentence) {
           setMainPanel([originalMainSentence]);
           setCurrentParallelIndex(-1);
+
+          // 元のmainパネルのchildrenデータを取得
+          await updateChildrenPanelForMain(originalMainSentence.sentenceId);
+
+          // 評価状態をリセット
+          setEvaluationGoodCountMain(
+            originalMainSentence.evaluationGoodCount || 0,
+          );
+          setEvaluationStayCountMain(
+            originalMainSentence.evaluationStayCount || 0,
+          );
+          setIsGoodEvaluatedMain(false);
+          setIsStayEvaluatedMain(false);
+          setHasMainPanelEvaluation(false);
         }
       } else {
         // それ以外の場合は前のパラレル投稿に移動
@@ -450,20 +513,45 @@ export const NovelViewContainer = () => {
 
         // MainPanelの内容を更新（URLは変更しない）
         setMainPanel([prevSentence]);
+
+        // 新しいmainパネルのchildrenデータを取得
+        await updateChildrenPanelForMain(prevSentence.sentenceId);
+
+        // 評価状態をリセット
+        setEvaluationGoodCountMain(prevSentence.evaluationGoodCount || 0);
+        setEvaluationStayCountMain(prevSentence.evaluationStayCount || 0);
+        setIsGoodEvaluatedMain(false);
+        setIsStayEvaluatedMain(false);
+        setHasMainPanelEvaluation(false);
       }
     }
-  }, [currentParallelIndex, parallelSentences, originalMainSentence]);
+  }, [
+    currentParallelIndex,
+    parallelSentences,
+    originalMainSentence,
+    updateChildrenPanelForMain,
+  ]);
 
   // 元のMainPanelに戻る関数
-  const handleBackToOriginal = useCallback(() => {
+  const handleBackToOriginal = useCallback(async () => {
     if (originalMainSentence) {
       // 元のMainPanelの内容に戻す
       setMainPanel([originalMainSentence]);
 
       // パラレル投稿の状態をリセット（初期状態に戻す）
       setCurrentParallelIndex(-1);
+
+      // 元のmainパネルのchildrenデータを取得
+      await updateChildrenPanelForMain(originalMainSentence.sentenceId);
+
+      // 評価状態をリセット
+      setEvaluationGoodCountMain(originalMainSentence.evaluationGoodCount || 0);
+      setEvaluationStayCountMain(originalMainSentence.evaluationStayCount || 0);
+      setIsGoodEvaluatedMain(false);
+      setIsStayEvaluatedMain(false);
+      setHasMainPanelEvaluation(false);
     }
-  }, [originalMainSentence]);
+  }, [originalMainSentence, updateChildrenPanelForMain]);
 
   // ParentPanelがクリックされたときのハンドラー
   const handleParentClick = useCallback(
