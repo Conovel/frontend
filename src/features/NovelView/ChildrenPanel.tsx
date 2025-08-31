@@ -66,6 +66,7 @@ interface ChildrenPanelProps {
   setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
   isGoodEvaluated: boolean;
   isStayEvaluated: boolean;
+  hasMainPanelEvaluation: boolean;
   novel: NovelProps;
   textIndex: number;
   titleId: string;
@@ -85,6 +86,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   setEvaluationStayCount,
   isGoodEvaluated,
   isStayEvaluated,
+  hasMainPanelEvaluation,
   novel,
   textIndex,
   titleId,
@@ -106,6 +108,14 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   };
 
   const handleClick = (sentenceId: number) => {
+    // MainPanelで評価が行われていない場合はエラーメッセージを表示
+    if (!hasMainPanelEvaluation) {
+      setError(
+        'メインパネルで評価を行ってから、続きの投稿をクリックしてください',
+      );
+      return;
+    }
+
     const clickedSentence = childrenPanel.find(
       (sentence: Sentence) => sentence.sentenceId === sentenceId,
     );
@@ -153,7 +163,15 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
             ...panel,
             sentence: isExpanded ? panel.sentence : previewText,
           }}
-          onClick={handleCardClick}
+          onClick={
+            hasMainPanelEvaluation
+              ? handleCardClick
+              : () => {
+                  setError(
+                    'メインパネルで評価を行ってから、続きの投稿をクリックしてください',
+                  );
+                }
+          }
           key={index}
           index={index}
           textIndex={textIndex}

@@ -36,6 +36,7 @@ interface NovelViewPresentationProps {
   setEvaluationStayCountMain: React.Dispatch<React.SetStateAction<number>>;
   isGoodEvaluatedMain: boolean;
   isStayEvaluatedMain: boolean;
+  hasMainPanelEvaluation: boolean;
   textCount: number;
   onPost: (newSentence: string) => Promise<void>;
   onNextParallel: () => void;
@@ -77,11 +78,14 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setEvaluationStayCountMain,
   isGoodEvaluatedMain,
   isStayEvaluatedMain,
+  hasMainPanelEvaluation,
   textCount,
   onPost,
   onNextParallel,
   onPrevParallel,
   hasParallels,
+  currentParallelIndex,
+  totalParallels,
   onParentClick,
   onMainPanelNavigate,
   titleId,
@@ -181,6 +185,13 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         />
       </Box>
 
+      {/* パラレル投稿インジケーター */}
+      {hasParallels && (
+        <Box sx={{ mb: 2, fontSize: '0.75rem', color: 'text.secondary' }}>
+          パラレル投稿 {currentParallelIndex + 1} / {totalParallels}
+        </Box>
+      )}
+
       {/* 統合された投稿ボタン */}
       <Button
         variant='contained'
@@ -215,6 +226,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         setEvaluationStayCount={setEvaluationStayCountChildren}
         isGoodEvaluated={isGoodEvaluatedChildren}
         isStayEvaluated={isStayEvaluatedChildren}
+        hasMainPanelEvaluation={hasMainPanelEvaluation}
         novel={{
           titleId: Number(titleId) || 1,
           children: childrenPanel,

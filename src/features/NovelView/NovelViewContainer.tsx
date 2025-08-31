@@ -48,10 +48,11 @@ export const NovelViewContainer = () => {
     useState<number>(0);
   const [evaluationStayCountMain, setEvaluationStayCountMain] =
     useState<number>(0);
-  // @ts-ignore
-  const [isGoodEvaluatedMain, _setIsGoodEvaluatedMain] = useState(false);
-  // @ts-ignore
-  const [isStayEvaluatedMain, _setIsStayEvaluatedMain] = useState(false);
+  const [isGoodEvaluatedMain, setIsGoodEvaluatedMain] = useState(false);
+  const [isStayEvaluatedMain, setIsStayEvaluatedMain] = useState(false);
+
+  // MainPanelの評価状態を追跡
+  const [hasMainPanelEvaluation, setHasMainPanelEvaluation] = useState(false);
 
   // データの状態管理
   const [mainPanel, setMainPanel] = useState(mockContainerData.main);
@@ -99,6 +100,27 @@ export const NovelViewContainer = () => {
       }
     }
   }, [sentenceId, currentSentenceId]);
+
+  // MainPanelの評価状態を更新する関数
+  const handleMainPanelEvaluation = useCallback(
+    (type: 'good' | 'stay', value: React.SetStateAction<number>) => {
+      const newValue = typeof value === 'function' ? value(0) : value;
+
+      if (type === 'good') {
+        setEvaluationGoodCountMain(value);
+        setIsGoodEvaluatedMain(newValue > 0);
+      } else {
+        setEvaluationStayCountMain(value);
+        setIsStayEvaluatedMain(newValue > 0);
+      }
+
+      // どちらかの評価が行われた場合、評価済みフラグを設定
+      if (newValue > 0) {
+        setHasMainPanelEvaluation(true);
+      }
+    },
+    [],
+  );
 
   // 統合された投稿処理
   const handlePost = useCallback(
@@ -185,7 +207,7 @@ export const NovelViewContainer = () => {
   }, []);
 
   // パラレル投稿が存在するかどうか
-  const hasParallels = parallelSentences.length > 1;
+  const hasParallels = parallelSentences.length > 0;
 
   // デバッグ用のログ出力
   console.log('Current sentence ID:', sentenceId);
@@ -226,11 +248,16 @@ export const NovelViewContainer = () => {
       isGoodEvaluatedChildren={isGoodEvaluatedChildren}
       isStayEvaluatedChildren={isStayEvaluatedChildren}
       evaluationGoodCountMain={evaluationGoodCountMain}
-      setEvaluationGoodCountMain={setEvaluationGoodCountMain}
+      setEvaluationGoodCountMain={(value) =>
+        handleMainPanelEvaluation('good', value)
+      }
       evaluationStayCountMain={evaluationStayCountMain}
-      setEvaluationStayCountMain={setEvaluationStayCountMain}
+      setEvaluationStayCountMain={(value) =>
+        handleMainPanelEvaluation('stay', value)
+      }
       isGoodEvaluatedMain={isGoodEvaluatedMain}
       isStayEvaluatedMain={isStayEvaluatedMain}
+      hasMainPanelEvaluation={hasMainPanelEvaluation}
       textCount={15} // モックデータの総数
       onPost={handlePost}
       onNextParallel={handleNextParallel}

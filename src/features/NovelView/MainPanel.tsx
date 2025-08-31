@@ -82,10 +82,14 @@ const MainPanel: React.FC<MainPanelProps> = ({
         disabled={!hasParallels && !showPrevButton}
         sx={{
           position: 'absolute',
-          left: '-50px',
+          left: '-60px',
+          top: '50%',
+          transform: 'translateY(-50%)',
           zIndex: 10,
           backgroundColor: '#BDBDBD',
           color: '#fff',
+          width: '40px',
+          height: '40px',
           '&:hover': {
             backgroundColor: '#9E9E9E',
           },
@@ -149,7 +153,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
         sx={{
           display: 'flex',
           position: 'absolute',
-          bottom: '20px',
+          bottom: '-20px',
           right: '20px',
           zIndex: 10,
           gap: 1,
@@ -179,10 +183,14 @@ const MainPanel: React.FC<MainPanelProps> = ({
         disabled={!hasParallels && !showNextButton}
         sx={{
           position: 'absolute',
-          right: '-50px',
+          right: '-60px',
+          top: '50%',
+          transform: 'translateY(-50%)',
           zIndex: 10,
           backgroundColor: '#BDBDBD',
           color: '#fff',
+          width: '40px',
+          height: '40px',
           '&:hover': {
             backgroundColor: '#9E9E9E',
           },
