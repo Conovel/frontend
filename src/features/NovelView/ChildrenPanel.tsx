@@ -33,8 +33,8 @@ const carouselNavButtonStyle = {
 const mainBoxStyle = {
   backgroundColor: '#fff',
   justifyContent: 'space-between',
-  margin: '5vh auto',
-  height: '23vh',
+  margin: '2vh auto',
+  height: '25vh',
   width: '70vw',
   alignItems: 'center',
   zIndex: 2,
