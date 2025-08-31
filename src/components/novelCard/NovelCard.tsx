@@ -19,6 +19,7 @@ interface NovelCardProps {
   isStayEvaluated?: boolean;
   novel: Sentence;
   onClick: (sentenceId: number | undefined) => void;
+  disabled?: boolean;
 }
 
 const NovelCard = ({
@@ -30,6 +31,7 @@ const NovelCard = ({
   setEvaluation_stay_count: setParentStayCount,
   isGoodEvaluated,
   isStayEvaluated,
+  disabled = false,
 }: NovelCardProps) => {
   const [evaluation_good_count, setEvaluation_good_count] = useState(
     initialGoodCount || 0,
@@ -67,8 +69,14 @@ const NovelCard = ({
         fontSize: '0.8rem',
         position: 'relative',
         backgroundColor: '#fff',
+        opacity: disabled ? 0.6 : 1,
+        cursor: disabled ? 'not-allowed' : 'pointer',
       }}
-      onClick={() => onClick(novel.sentenceId)}
+      onClick={() => {
+        if (!disabled) {
+          onClick(novel.sentenceId);
+        }
+      }}
     >
       <Box
         sx={{

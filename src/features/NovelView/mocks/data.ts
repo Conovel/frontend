@@ -745,6 +745,19 @@ const getCurrentUserInfo = () => {
   };
 };
 
+// ユーザーごとの評価状態を管理
+export const userEvaluations: { [key: string]: 'good' | 'stay' | null } = {};
+
+// 現在のユーザーIDを取得
+const getCurrentUserId = (): number => {
+  return getCurrentUserInfo().userId;
+};
+
+// ユーザーの評価キーを生成
+const getUserEvaluationKey = (userId: number, sentenceId: number): string => {
+  return `${userId}_${sentenceId}`;
+};
+
 // 新しい文章を投稿する関数
 export const addNewSentence = (
   sentenceText: string,
@@ -835,28 +848,54 @@ export const updateSentenceEvaluation = (
   const sentence = sentencesData[sentenceId];
   if (!sentence) return null;
 
-  // 評価を更新
-  if (evaluationType === 'good') {
-    if (increment) {
-      sentence.evaluationGoodCount += 1;
-      // Stay評価をリセット
-      sentence.evaluationStayCount = 0;
-    } else {
+  const currentUserId = getCurrentUserId();
+  const userKey = getUserEvaluationKey(currentUserId, sentenceId);
+  const currentUserEvaluation = userEvaluations[userKey] || null;
+
+  // 一人一評価制のチェック
+  if (increment) {
+    // 既に同じ評価をしている場合は何もしない
+    if (currentUserEvaluation === evaluationType) {
+      return sentence;
+    }
+
+    // 既に別の評価をしている場合は、その評価を減らす
+    if (currentUserEvaluation === 'good') {
       sentence.evaluationGoodCount = Math.max(
         0,
         sentence.evaluationGoodCount - 1,
       );
-    }
-  } else {
-    if (increment) {
-      sentence.evaluationStayCount += 1;
-      // Good評価をリセット
-      sentence.evaluationGoodCount = 0;
-    } else {
+    } else if (currentUserEvaluation === 'stay') {
       sentence.evaluationStayCount = Math.max(
         0,
         sentence.evaluationStayCount - 1,
       );
+    }
+
+    // 新しい評価を追加
+    if (evaluationType === 'good') {
+      sentence.evaluationGoodCount += 1;
+    } else {
+      sentence.evaluationStayCount += 1;
+    }
+
+    // ユーザーの評価状態を更新
+    userEvaluations[userKey] = evaluationType;
+  } else {
+    // 評価を取り消す場合
+    if (currentUserEvaluation === evaluationType) {
+      if (evaluationType === 'good') {
+        sentence.evaluationGoodCount = Math.max(
+          0,
+          sentence.evaluationGoodCount - 1,
+        );
+      } else {
+        sentence.evaluationStayCount = Math.max(
+          0,
+          sentence.evaluationStayCount - 1,
+        );
+      }
+      userEvaluations[userKey] = null;
     }
   }
 
@@ -877,11 +916,15 @@ export const getSentenceEvaluation = (sentenceId: number) => {
       isStayEvaluated: false,
     };
 
+  const currentUserId = getCurrentUserId();
+  const userKey = getUserEvaluationKey(currentUserId, sentenceId);
+  const currentUserEvaluation = userEvaluations[userKey] || null;
+
   return {
     goodCount: sentence.evaluationGoodCount,
     stayCount: sentence.evaluationStayCount,
-    isGoodEvaluated: sentence.evaluationGoodCount > 0,
-    isStayEvaluated: sentence.evaluationStayCount > 0,
+    isGoodEvaluated: currentUserEvaluation === 'good',
+    isStayEvaluated: currentUserEvaluation === 'stay',
   };
 };
 

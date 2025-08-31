@@ -219,6 +219,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
 
       {/* Children Panel */}
       <Box sx={{ width: '100%', maxWidth: '600px' }}></Box>
+
       <ChildrenPanel
         childrenPanel={childrenPanel}
         setChildrenPanel={() => {}}
