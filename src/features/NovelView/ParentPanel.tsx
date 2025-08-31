@@ -15,6 +15,8 @@ interface ParentPanelProps {
   setCommentCount: React.Dispatch<React.SetStateAction<number>>;
   evaluationStayCount: number;
   setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
+  isGoodEvaluated: boolean;
+  isStayEvaluated: boolean;
   onClick: () => void;
 }
 
@@ -28,17 +30,29 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
   setCommentCount,
   evaluationStayCount,
   setEvaluationStayCount,
+  isGoodEvaluated,
+  isStayEvaluated,
   onClick,
 }) => {
   return (
     <Box
       sx={{
         backgroundColor: '#fff',
-        justifyContent: 'space-between',
-        margin: '0.5vh auto',
-        width: '70vw',
+        margin: '2vh auto',
+        height: '23vh',
+        width: {
+          xs: '90vw', // スマホ
+          sm: '80vw', // タブレット
+          md: '70vw', // デスクトップ
+        },
+        maxWidth: '600px',
         alignItems: 'center',
         zIndex: 2,
+        borderRadius: '10px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
       }}
     >
       {startIndex < textCount ? (
@@ -55,6 +69,8 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
           setComment_count={setCommentCount}
           evaluation_stay_count={evaluationStayCount}
           setEvaluation_stay_count={setEvaluationStayCount}
+          isGoodEvaluated={isGoodEvaluated}
+          isStayEvaluated={isStayEvaluated}
         />
       ) : null}
     </Box>

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
-import CommentButton from '../buttonicon/CommentButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
 import { Sentence } from '../../types/types';
 
@@ -16,15 +15,45 @@ interface NovelCardProps {
   setComment_count: React.Dispatch<React.SetStateAction<number>>;
   evaluation_stay_count: number;
   setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  isGoodEvaluated: boolean;
+  isStayEvaluated: boolean;
   novel: Sentence;
   onClick: (sentenceId: number | undefined) => void;
 }
 
-const NovelCard = ({ novel, onClick }: NovelCardProps) => {
-  // Local state for counts
-  const [evaluation_good_count, setEvaluation_good_count] = useState(0);
-  const [comment_count, setComment_count] = useState(0);
-  const [evaluation_stay_count, setEvaluation_stay_count] = useState(0);
+const NovelCard = ({
+  novel,
+  onClick,
+  evaluation_good_count: initialGoodCount,
+  setEvaluation_good_count: setParentGoodCount,
+  evaluation_stay_count: initialStayCount,
+  setEvaluation_stay_count: setParentStayCount,
+  isGoodEvaluated,
+  isStayEvaluated,
+}: NovelCardProps) => {
+  const [evaluation_good_count, setEvaluation_good_count] =
+    useState(initialGoodCount);
+  const [evaluation_stay_count, setEvaluation_stay_count] =
+    useState(initialStayCount);
+
+  useEffect(() => {
+    setEvaluation_good_count(initialGoodCount);
+  }, [initialGoodCount]);
+
+  useEffect(() => {
+    setEvaluation_stay_count(initialStayCount);
+  }, [initialStayCount]);
+
+  const handleSetGoodCount = (value: React.SetStateAction<number>): void => {
+    setEvaluation_good_count(value);
+    setParentGoodCount(value);
+  };
+
+  const handleSetStayCount = (value: React.SetStateAction<number>): void => {
+    setEvaluation_stay_count(value);
+    setParentStayCount(value);
+  };
+
   return (
     <Box
       component='div'
@@ -46,7 +75,7 @@ const NovelCard = ({ novel, onClick }: NovelCardProps) => {
         <Box
           sx={{
             alignItems: 'flex-start',
-            height: '15vh',
+            height: '20vh',
           }}
         >
           <Avatar sx={{ width: 24, height: 24, zIndex: 2 }}>C</Avatar>
@@ -54,7 +83,7 @@ const NovelCard = ({ novel, onClick }: NovelCardProps) => {
             sx={{
               marginTop: '0.5vh',
               fontSize: '1rem',
-              height: '10vh',
+              height: '8vh',
             }}
           >
             {novel.sentence}
@@ -66,22 +95,20 @@ const NovelCard = ({ novel, onClick }: NovelCardProps) => {
         sx={{
           display: 'flex',
           justifyContent: 'flex-start',
-          marginTop: '0.2vh',
+          marginTop: '0.1vh',
           backgroundColor: 'transparent',
         }}
       >
         <>
           <ThumbUpButton
             evaluation_good_count={evaluation_good_count}
-            setEvaluation_good_count={setEvaluation_good_count}
-          />
-          <CommentButton
-            comment_count={comment_count}
-            setComment_count={setComment_count}
+            setEvaluation_good_count={handleSetGoodCount}
+            isEvaluated={isGoodEvaluated}
           />
           <NextPlanButton
             evaluation_stay_count={evaluation_stay_count}
-            setEvaluation_stay_count={setEvaluation_stay_count}
+            setEvaluation_stay_count={handleSetStayCount}
+            isEvaluated={isStayEvaluated}
           />
         </>
       </Box>

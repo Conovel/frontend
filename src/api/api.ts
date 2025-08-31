@@ -1396,6 +1396,52 @@ export const SentencesApiAxiosParamCreator = function (
         options: localVarRequestOptions,
       };
     },
+    /**
+     *
+     * @summary 投稿のパラレル投稿を取得（認証あり）
+     * @param {number} sentenceId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getParallelSentences: async (
+      sentenceId: number,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'sentenceId' is not null or undefined
+      assertParamExists('getParallelSentences', 'sentenceId', sentenceId);
+      const localVarPath = `/sentences/{sentenceId}/parallels`.replace(
+        `{${'sentenceId'}}`,
+        encodeURIComponent(String(sentenceId)),
+      );
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'GET',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
   };
 };
 

@@ -727,6 +727,8 @@ export const parallelSentences: ParallelSentences = {
   5: [6, 7], // sentenceId=5から決意と迷いの2つのパラレル
   6: [8, 9], // sentenceId=6から行動と対話の2つの選択
   7: [8, 9], // sentenceId=7からも同様の選択
+  8: [10, 11], // sentenceId=8からコーヒーと感謝へ
+  9: [12, 13], // sentenceId=9から対話と現実へ
   10: [11, 12], // sentenceId=10から感謝と対話へ
   11: [12, 14], // sentenceId=11から対話と新しい始まりへ
   12: [13, 14], // sentenceId=12から現実的視点と希望的視点へ
@@ -783,7 +785,10 @@ export const addNewSentence = (
   if (!parallelSentences[parentSentenceId]) {
     parallelSentences[parentSentenceId] = [];
   }
-  parallelSentences[parentSentenceId].push(nextId);
+  // 重複を避けてパラレル投稿に追加
+  if (!parallelSentences[parentSentenceId].includes(nextId)) {
+    parallelSentences[parentSentenceId].push(nextId);
+  }
 
   return {
     newSentence,
@@ -794,7 +799,16 @@ export const addNewSentence = (
 // パラレル投稿を取得する関数
 export const getParallelSentences = (sentenceId: number): Sentence[] => {
   const parallelIds = parallelSentences[sentenceId] || [];
-  return parallelIds.map((id) => sentencesData[id]).filter(Boolean);
+  const parallelSentencesList = parallelIds
+    .map((id) => sentencesData[id])
+    .filter(Boolean);
+
+  // パラレル投稿の順序を保持し、存在しないIDを除外
+  return parallelSentencesList.sort((a, b) => {
+    const aIndex = parallelIds.indexOf(a.sentenceId);
+    const bIndex = parallelIds.indexOf(b.sentenceId);
+    return aIndex - bIndex;
+  });
 };
 
 // 初期データの構築
