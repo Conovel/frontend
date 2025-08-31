@@ -7,7 +7,7 @@ import {
   buildInitialData,
   INITIAL_SENTENCE_ID,
   addNewSentence,
-  getParallelSentences,
+  getParallelSentences as getMockParallelSentences,
 } from './mocks/data';
 
 export const NovelViewContainer = () => {
@@ -69,6 +69,8 @@ export const NovelViewContainer = () => {
   // パラレル投稿管理用の状態
   const [currentParallelIndex, setCurrentParallelIndex] = useState(0);
   const [parallelSentences, setParallelSentences] = useState<Sentence[]>([]);
+  const [originalMainSentence, setOriginalMainSentence] =
+    useState<Sentence | null>(null);
 
   // URLが変更されたときにデータを更新
   useEffect(() => {
@@ -85,17 +87,30 @@ export const NovelViewContainer = () => {
         setParentPanel(newData.parent);
         setChildrenPanel(newData.children);
 
-        // パラレル投稿を取得
-        const parentSentence = newData.parent[newData.parent.length - 1];
-        if (parentSentence) {
-          const parallels = getParallelSentences(parentSentence.sentenceId);
+        // パラレル投稿を取得（現在のMainPanelのセンテンスから）
+        const currentMainSentence = newData.main[0];
+        if (currentMainSentence) {
+          const parallels = getMockParallelSentences(
+            currentMainSentence.sentenceId,
+          );
           setParallelSentences(parallels);
 
           // 現在のsentenceがパラレル投稿の中にある場合、そのインデックスを設定
           const currentIndex = parallels.findIndex(
             (p) => p.sentenceId === targetId,
           );
-          setCurrentParallelIndex(Math.max(0, currentIndex));
+
+          if (currentIndex >= 0) {
+            // パラレル投稿の中にある場合
+            setCurrentParallelIndex(currentIndex);
+            // 元のセンテンスを保存（パラレル投稿の親センテンス）
+            setOriginalMainSentence(currentMainSentence);
+          } else {
+            // パラレル投稿の中にない場合
+            setCurrentParallelIndex(-1); // 初期状態を示す
+            // 現在のセンテンスを元のセンテンスとして保存
+            setOriginalMainSentence(currentMainSentence);
+          }
         }
       }
     }
@@ -161,33 +176,66 @@ export const NovelViewContainer = () => {
 
   // パラレル投稿のナビゲーション関数
   const handleNextParallel = useCallback(() => {
-    if (parallelSentences.length > 0) {
-      const nextIndex = (currentParallelIndex + 1) % parallelSentences.length;
+    console.log('handleNextParallel called:', {
+      parallelSentencesLength: parallelSentences.length,
+      currentParallelIndex,
+      canGoNext: currentParallelIndex < parallelSentences.length - 1,
+    });
+
+    if (
+      parallelSentences.length > 0 &&
+      currentParallelIndex < parallelSentences.length - 1
+    ) {
+      const nextIndex = currentParallelIndex + 1;
       const nextSentence = parallelSentences[nextIndex];
       setCurrentParallelIndex(nextIndex);
 
-      // URLを更新
-      navigate(`/novelView/${titleId || '1'}/${nextSentence.sentenceId}`, {
-        replace: true,
-      });
+      // MainPanelの内容を更新（URLは変更しない）
+      setMainPanel([nextSentence]);
+    } else if (parallelSentences.length > 0 && currentParallelIndex === -1) {
+      // 初期状態から最初のパラレル投稿に遷移
+      const firstSentence = parallelSentences[0];
+      setCurrentParallelIndex(0);
+      setMainPanel([firstSentence]);
     }
-  }, [currentParallelIndex, parallelSentences, navigate, titleId]);
+  }, [currentParallelIndex, parallelSentences]);
 
   const handlePrevParallel = useCallback(() => {
-    if (parallelSentences.length > 0) {
-      const prevIndex =
-        currentParallelIndex === 0
-          ? parallelSentences.length - 1
-          : currentParallelIndex - 1;
-      const prevSentence = parallelSentences[prevIndex];
-      setCurrentParallelIndex(prevIndex);
+    console.log('handlePrevParallel called:', {
+      parallelSentencesLength: parallelSentences.length,
+      currentParallelIndex,
+      canGoPrev: currentParallelIndex >= 0,
+    });
 
-      // URLを更新
-      navigate(`/novelView/${titleId || '1'}/${prevSentence.sentenceId}`, {
-        replace: true,
-      });
+    if (parallelSentences.length > 0 && currentParallelIndex >= 0) {
+      if (currentParallelIndex === 0) {
+        // 最初のパラレル投稿の場合は元の投稿に戻る
+        if (originalMainSentence) {
+          setMainPanel([originalMainSentence]);
+          setCurrentParallelIndex(-1);
+        }
+      } else {
+        // それ以外の場合は前のパラレル投稿に移動
+        const prevIndex = currentParallelIndex - 1;
+        const prevSentence = parallelSentences[prevIndex];
+        setCurrentParallelIndex(prevIndex);
+
+        // MainPanelの内容を更新（URLは変更しない）
+        setMainPanel([prevSentence]);
+      }
     }
-  }, [currentParallelIndex, parallelSentences, navigate, titleId]);
+  }, [currentParallelIndex, parallelSentences, originalMainSentence]);
+
+  // 元のMainPanelに戻る関数
+  const handleBackToOriginal = useCallback(() => {
+    if (originalMainSentence) {
+      // 元のMainPanelの内容に戻す
+      setMainPanel([originalMainSentence]);
+
+      // パラレル投稿の状態をリセット（初期状態に戻す）
+      setCurrentParallelIndex(-1);
+    }
+  }, [originalMainSentence]);
 
   // ParentPanelがクリックされたときのハンドラー
   const handleParentClick = useCallback(
@@ -206,8 +254,19 @@ export const NovelViewContainer = () => {
     console.log('MainPanel navigate:', direction);
   }, []);
 
-  // パラレル投稿が存在するかどうか
+  // パラレル投稿が存在するかどうか（1つ以上のパラレル投稿がある場合）
   const hasParallels = parallelSentences.length > 0;
+
+  // パラレルモードかどうか（パラレル投稿に遷移しているかどうか）
+  const isInParallelMode =
+    parallelSentences.length > 0 && currentParallelIndex >= 0;
+
+  // パラレル投稿のナビゲーション状態
+  const canGoNext =
+    parallelSentences.length > 0 &&
+    (currentParallelIndex === -1 ||
+      currentParallelIndex < parallelSentences.length - 1);
+  const canGoPrev = parallelSentences.length > 0 && currentParallelIndex >= 0;
 
   // デバッグ用のログ出力
   console.log('Current sentence ID:', sentenceId);
@@ -217,6 +276,8 @@ export const NovelViewContainer = () => {
     childrenPanel,
     parallelSentences,
     currentParallelIndex,
+    hasParallels,
+    isInParallelMode,
     mainPanelIds: mainPanel.map((p) => p.sentenceId),
     parentPanelIds: parentPanel.map((p) => p.sentenceId),
     childrenPanelIds: childrenPanel.map((p) => p.sentenceId),
@@ -263,10 +324,12 @@ export const NovelViewContainer = () => {
       onNextParallel={handleNextParallel}
       onPrevParallel={handlePrevParallel}
       hasParallels={hasParallels}
-      currentParallelIndex={currentParallelIndex}
-      totalParallels={parallelSentences.length}
       onParentClick={handleParentClick}
       onMainPanelNavigate={handleMainPanelNavigate}
+      onBackToOriginal={handleBackToOriginal}
+      isInParallelMode={isInParallelMode}
+      canGoNext={canGoNext}
+      canGoPrev={canGoPrev}
       titleId={titleId || '1'}
     />
   );

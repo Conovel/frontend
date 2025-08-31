@@ -20,6 +20,10 @@ interface MainPanelProps {
   hasParallels?: boolean;
   onPrevParallel?: () => void;
   onNextParallel?: () => void;
+  onBackToOriginal?: () => void;
+  isInParallelMode?: boolean;
+  canGoNext?: boolean;
+  canGoPrev?: boolean;
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
@@ -36,6 +40,10 @@ const MainPanel: React.FC<MainPanelProps> = ({
   hasParallels,
   onPrevParallel,
   onNextParallel,
+  onBackToOriginal,
+  isInParallelMode = false,
+  canGoNext = false,
+  canGoPrev = false,
 }) => {
   const [localStartIndex, setLocalStartIndex] = useState(startIndex);
 
@@ -56,9 +64,22 @@ const MainPanel: React.FC<MainPanelProps> = ({
   };
 
   const currentStartIndex = onNavigate ? startIndex : localStartIndex;
-  const showPrevButton = currentStartIndex > 0;
-  const showNextButton =
-    currentStartIndex + visibleTextCount < mainPanel.length;
+  const showPrevButton = hasParallels ? true : currentStartIndex > 0;
+  const showNextButton = hasParallels
+    ? true
+    : currentStartIndex + visibleTextCount < mainPanel.length;
+
+  // デバッグ用のログ出力
+  console.log('MainPanel Debug:', {
+    hasParallels,
+    showPrevButton,
+    showNextButton,
+    canGoPrev,
+    canGoNext,
+    mainPanelLength: mainPanel.length,
+    currentStartIndex,
+    visibleTextCount,
+  });
 
   return (
     <Box
@@ -68,30 +89,58 @@ const MainPanel: React.FC<MainPanelProps> = ({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
+        maxWidth: '800px',
+        margin: '0 auto',
       }}
     >
       {/* 左ナビゲーションボタン - 常に表示 */}
       <IconButton
         onClick={() => {
+          console.log(
+            'Left button clicked, hasParallels:',
+            hasParallels,
+            'isInParallelMode:',
+            isInParallelMode,
+            'canGoPrev:',
+            canGoPrev,
+          );
           if (hasParallels && onPrevParallel) {
             onPrevParallel();
+          } else if (isInParallelMode && onBackToOriginal) {
+            onBackToOriginal();
           } else {
             handleNavigation('prev');
           }
         }}
-        disabled={!hasParallels && !showPrevButton}
+        disabled={hasParallels ? !canGoPrev : !showPrevButton}
         sx={{
           position: 'absolute',
-          left: '-60px',
+          left: {
+            xs: '10px', // スマホ
+            sm: '15px', // タブレット
+            md: '20px', // デスクトップ
+          },
           top: '50%',
           transform: 'translateY(-50%)',
           zIndex: 10,
-          backgroundColor: '#BDBDBD',
+          backgroundColor:
+            hasParallels || isInParallelMode ? '#1976d2' : '#BDBDBD',
           color: '#fff',
-          width: '40px',
-          height: '40px',
+          width: {
+            xs: '32px', // スマホ
+            sm: '36px', // タブレット
+            md: '40px', // デスクトップ
+          },
+          height: {
+            xs: '32px', // スマホ
+            sm: '36px', // タブレット
+            md: '40px', // デスクトップ
+          },
+          border: '2px solid #fff',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
           '&:hover': {
-            backgroundColor: '#9E9E9E',
+            backgroundColor:
+              hasParallels || isInParallelMode ? '#1565c0' : '#9E9E9E',
           },
           '&:disabled': {
             backgroundColor: '#E0E0E0',
@@ -104,7 +153,17 @@ const MainPanel: React.FC<MainPanelProps> = ({
       </IconButton>
 
       {/* メインコンテンツ */}
-      <Box>
+      <Box
+        sx={{
+          width: {
+            xs: '85vw', // スマホ
+            sm: '80vw', // タブレット
+            md: '75vw', // デスクトップ
+          },
+          maxWidth: '700px',
+          position: 'relative',
+        }}
+      >
         {mainPanel
           .slice(currentStartIndex, currentStartIndex + visibleTextCount)
           .map((panel) => (
@@ -116,8 +175,12 @@ const MainPanel: React.FC<MainPanelProps> = ({
                 textAlign: 'left',
                 border: '1px solid #000',
                 borderRadius: '10px',
-                height: '35vh',
-                width: '80vw',
+                height: {
+                  xs: '30vh', // スマホ
+                  sm: '32vh', // タブレット
+                  md: '35vh', // デスクトップ
+                },
+                width: '100%',
                 alignItems: 'center',
                 zIndex: 2,
                 overflowY: 'auto',
@@ -133,17 +196,53 @@ const MainPanel: React.FC<MainPanelProps> = ({
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar sx={{ fontSize: '1.2rem', width: 32, height: 32 }}>
+                  <Avatar
+                    sx={{
+                      fontSize: {
+                        xs: '1rem', // スマホ
+                        sm: '1.1rem', // タブレット
+                        md: '1.2rem', // デスクトップ
+                      },
+                      width: {
+                        xs: 28, // スマホ
+                        sm: 30, // タブレット
+                        md: 32, // デスクトップ
+                      },
+                      height: {
+                        xs: 28, // スマホ
+                        sm: 30, // タブレット
+                        md: 32, // デスクトップ
+                      },
+                    }}
+                  >
                     {panel.userName.charAt(0)}
                   </Avatar>
-                  <Box sx={{ marginLeft: '1vh', fontSize: '1.2rem' }}>
+                  <Box
+                    sx={{
+                      marginLeft: '1vh',
+                      fontSize: {
+                        xs: '1rem', // スマホ
+                        sm: '1.1rem', // タブレット
+                        md: '1.2rem', // デスクトップ
+                      },
+                    }}
+                  >
                     {panel.userName}
                   </Box>
                 </Box>
               </Box>
-              <p style={{ margin: '1vh 1vh', fontSize: '1.6rem' }}>
+              <Box
+                sx={{
+                  margin: '1vh 1vh',
+                  fontSize: {
+                    xs: '1.2rem', // スマホ
+                    sm: '1.4rem', // タブレット
+                    md: '1.6rem', // デスクトップ
+                  },
+                }}
+              >
                 {panel.sentence}
-              </p>
+              </Box>
             </Box>
           ))}
       </Box>
@@ -174,25 +273,51 @@ const MainPanel: React.FC<MainPanelProps> = ({
       {/* 右ナビゲーションボタン - 常に表示 */}
       <IconButton
         onClick={() => {
+          console.log(
+            'Right button clicked, hasParallels:',
+            hasParallels,
+            'isInParallelMode:',
+            isInParallelMode,
+            'canGoNext:',
+            canGoNext,
+          );
           if (hasParallels && onNextParallel) {
             onNextParallel();
+          } else if (isInParallelMode && onBackToOriginal) {
+            onBackToOriginal();
           } else {
             handleNavigation('next');
           }
         }}
-        disabled={!hasParallels && !showNextButton}
+        disabled={hasParallels ? !canGoNext : !showNextButton}
         sx={{
           position: 'absolute',
-          right: '-60px',
+          right: {
+            xs: '10px', // スマホ
+            sm: '15px', // タブレット
+            md: '20px', // デスクトップ
+          },
           top: '50%',
           transform: 'translateY(-50%)',
           zIndex: 10,
-          backgroundColor: '#BDBDBD',
+          backgroundColor:
+            hasParallels || isInParallelMode ? '#1976d2' : '#BDBDBD',
           color: '#fff',
-          width: '40px',
-          height: '40px',
+          width: {
+            xs: '32px', // スマホ
+            sm: '36px', // タブレット
+            md: '40px', // デスクトップ
+          },
+          height: {
+            xs: '32px', // スマホ
+            sm: '36px', // タブレット
+            md: '40px', // デスクトップ
+          },
+          border: '2px solid #fff',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
           '&:hover': {
-            backgroundColor: '#9E9E9E',
+            backgroundColor:
+              hasParallels || isInParallelMode ? '#1565c0' : '#9E9E9E',
           },
           '&:disabled': {
             backgroundColor: '#E0E0E0',

@@ -785,7 +785,10 @@ export const addNewSentence = (
   if (!parallelSentences[parentSentenceId]) {
     parallelSentences[parentSentenceId] = [];
   }
-  parallelSentences[parentSentenceId].push(nextId);
+  // 重複を避けてパラレル投稿に追加
+  if (!parallelSentences[parentSentenceId].includes(nextId)) {
+    parallelSentences[parentSentenceId].push(nextId);
+  }
 
   return {
     newSentence,
@@ -796,7 +799,16 @@ export const addNewSentence = (
 // パラレル投稿を取得する関数
 export const getParallelSentences = (sentenceId: number): Sentence[] => {
   const parallelIds = parallelSentences[sentenceId] || [];
-  return parallelIds.map((id) => sentencesData[id]).filter(Boolean);
+  const parallelSentencesList = parallelIds
+    .map((id) => sentencesData[id])
+    .filter(Boolean);
+
+  // パラレル投稿の順序を保持し、存在しないIDを除外
+  return parallelSentencesList.sort((a, b) => {
+    const aIndex = parallelIds.indexOf(a.sentenceId);
+    const bIndex = parallelIds.indexOf(b.sentenceId);
+    return aIndex - bIndex;
+  });
 };
 
 // 初期データの構築

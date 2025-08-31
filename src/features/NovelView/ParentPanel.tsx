@@ -38,12 +38,21 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
     <Box
       sx={{
         backgroundColor: '#fff',
-        justifyContent: 'space-between',
-        margin: '1vh auto',
+        margin: '2vh auto',
         height: '23vh',
-        width: '70vw',
+        width: {
+          xs: '90vw', // スマホ
+          sm: '80vw', // タブレット
+          md: '70vw', // デスクトップ
+        },
+        maxWidth: '600px',
         alignItems: 'center',
         zIndex: 2,
+        borderRadius: '10px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
       }}
     >
       {startIndex < textCount ? (

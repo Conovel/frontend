@@ -42,10 +42,12 @@ interface NovelViewPresentationProps {
   onNextParallel: () => void;
   onPrevParallel: () => void;
   hasParallels: boolean;
-  currentParallelIndex: number;
-  totalParallels: number;
   onParentClick: (clickedSentence: any) => void;
   onMainPanelNavigate: (direction: 'prev' | 'next') => void;
+  onBackToOriginal: () => void;
+  isInParallelMode: boolean;
+  canGoNext: boolean;
+  canGoPrev: boolean;
   titleId: string;
 }
 
@@ -84,10 +86,12 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   onNextParallel,
   onPrevParallel,
   hasParallels,
-  currentParallelIndex,
-  totalParallels,
   onParentClick,
   onMainPanelNavigate,
+  onBackToOriginal,
+  isInParallelMode,
+  canGoNext,
+  canGoPrev,
   titleId,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -167,7 +171,19 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       )}
 
       {/* Main Panel */}
-      <Box sx={{ mb: 4, width: '100%', maxWidth: '600px' }}>
+      <Box
+        sx={{
+          mb: 4,
+          width: '100%',
+          maxWidth: {
+            xs: '95vw', // スマホ
+            sm: '90vw', // タブレット
+            md: '800px', // デスクトップ
+          },
+          position: 'relative',
+          margin: '0 auto',
+        }}
+      >
         <MainPanel
           mainPanel={mainPanel}
           startIndex={0}
@@ -182,15 +198,12 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           hasParallels={hasParallels}
           onPrevParallel={onPrevParallel}
           onNextParallel={onNextParallel}
+          onBackToOriginal={onBackToOriginal}
+          isInParallelMode={isInParallelMode}
+          canGoNext={canGoNext}
+          canGoPrev={canGoPrev}
         />
       </Box>
-
-      {/* パラレル投稿インジケーター */}
-      {hasParallels && (
-        <Box sx={{ mb: 2, fontSize: '0.75rem', color: 'text.secondary' }}>
-          パラレル投稿 {currentParallelIndex + 1} / {totalParallels}
-        </Box>
-      )}
 
       {/* 統合された投稿ボタン */}
       <Button
