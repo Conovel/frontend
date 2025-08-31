@@ -34,7 +34,7 @@ const mainBoxStyle = {
   backgroundColor: '#fff',
   justifyContent: 'space-between',
   margin: '5vh auto',
-  height: '20vh',
+  height: '23vh',
   width: '70vw',
   alignItems: 'center',
   zIndex: 2,

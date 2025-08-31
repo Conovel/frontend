@@ -75,7 +75,7 @@ const NovelCard = ({
         <Box
           sx={{
             alignItems: 'flex-start',
-            height: '15vh',
+            height: '20vh',
           }}
         >
           <Avatar sx={{ width: 24, height: 24, zIndex: 2 }}>C</Avatar>
@@ -83,7 +83,7 @@ const NovelCard = ({
             sx={{
               marginTop: '0.5vh',
               fontSize: '1rem',
-              height: '10vh',
+              height: '8vh',
             }}
           >
             {novel.sentence}
@@ -95,7 +95,7 @@ const NovelCard = ({
         sx={{
           display: 'flex',
           justifyContent: 'flex-start',
-          marginTop: '0.2vh',
+          marginTop: '0.1vh',
           backgroundColor: 'transparent',
         }}
       >

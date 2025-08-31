@@ -89,7 +89,7 @@ export const PostParallelStory: React.FC<PostParallelStoryProps> = ({
         }}
       >
         <DialogContent>
-          <Typography variant='h6' sx={{ mb: 2 }}>
+          <Typography variant='h6' sx={{ mb: 1 }}>
             パラレル投稿を作成
           </Typography>
 
@@ -112,7 +112,7 @@ export const PostParallelStory: React.FC<PostParallelStoryProps> = ({
           <Box
             sx={{
               p: 2,
-              mb: 2,
+              mb: 1,
               backgroundColor: '#f5f5f5',
               borderRadius: 1,
               border: '1px solid #e0e0e0',

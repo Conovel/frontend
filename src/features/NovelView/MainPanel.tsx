@@ -112,7 +112,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
                 textAlign: 'left',
                 border: '1px solid #000',
                 borderRadius: '10px',
-                height: '30vh',
+                height: '35vh',
                 width: '80vw',
                 alignItems: 'center',
                 zIndex: 2,

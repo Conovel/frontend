@@ -82,8 +82,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   onNextParallel,
   onPrevParallel,
   hasParallels,
-  currentParallelIndex,
-  totalParallels,
   onParentClick,
   onMainPanelNavigate,
   titleId,
@@ -183,19 +181,12 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         />
       </Box>
 
-      {/* パラレル投稿インジケーター */}
-      {hasParallels && (
-        <Box sx={{ mb: 2, fontSize: '0.75rem', color: 'text.secondary' }}>
-          パラレル投稿 {currentParallelIndex + 1} / {totalParallels}
-        </Box>
-      )}
-
       {/* 統合された投稿ボタン */}
       <Button
         variant='contained'
         color='primary'
         onClick={() => setIsModalOpen(true)}
-        sx={{ mb: 4, zIndex: 2, position: 'relative' }}
+        sx={{ mb: 2, zIndex: 2, position: 'relative' }}
       >
         投稿を作成
       </Button>
