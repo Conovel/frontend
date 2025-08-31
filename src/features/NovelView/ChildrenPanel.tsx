@@ -183,15 +183,15 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
           key={index}
           index={index}
           textIndex={textIndex}
-          evaluation_good_count={evaluationGoodCount}
-          setEvaluation_good_count={(value) => {
+          evaluationGoodCount={evaluationGoodCount}
+          setEvaluationGoodCount={(value) => {
             setEvaluationGoodCount(value);
             handleEvaluationClick(panel.sentenceId);
           }}
-          comment_count={commentCount}
-          setComment_count={setCommentCount}
-          evaluation_stay_count={evaluationStayCount}
-          setEvaluation_stay_count={(value) => {
+          commentCount={commentCount}
+          setCommentCount={setCommentCount}
+          evaluationStayCount={evaluationStayCount}
+          setEvaluationStayCount={(value) => {
             setEvaluationStayCount(value);
             handleEvaluationClick(panel.sentenceId);
           }}

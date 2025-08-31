@@ -9,12 +9,12 @@ interface NovelCardProps {
   index: number;
   textIndex: number;
   sentence: string;
-  evaluation_good_count?: number;
-  setEvaluation_good_count?: React.Dispatch<React.SetStateAction<number>>;
-  comment_count?: number;
-  setComment_count?: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count?: number;
-  setEvaluation_stay_count?: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCount?: number;
+  setEvaluationGoodCount?: React.Dispatch<React.SetStateAction<number>>;
+  commentCount?: number;
+  setCommentCount?: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCount?: number;
+  setEvaluationStayCount?: React.Dispatch<React.SetStateAction<number>>;
   isGoodEvaluated?: boolean;
   isStayEvaluated?: boolean;
   novel: Sentence;
@@ -25,38 +25,38 @@ interface NovelCardProps {
 const NovelCard = ({
   novel,
   onClick,
-  evaluation_good_count: initialGoodCount,
-  setEvaluation_good_count: setParentGoodCount,
-  evaluation_stay_count: initialStayCount,
-  setEvaluation_stay_count: setParentStayCount,
+  evaluationGoodCount: initialGoodCount,
+  setEvaluationGoodCount: setParentGoodCount,
+  evaluationStayCount: initialStayCount,
+  setEvaluationStayCount: setParentStayCount,
   isGoodEvaluated,
   isStayEvaluated,
   disabled = false,
 }: NovelCardProps) => {
-  const [evaluation_good_count, setEvaluation_good_count] = useState(
+  const [evaluationGoodCount, setEvaluationGoodCount] = useState(
     initialGoodCount || 0,
   );
-  const [evaluation_stay_count, setEvaluation_stay_count] = useState(
+  const [evaluationStayCount, setEvaluationStayCount] = useState(
     initialStayCount || 0,
   );
 
   useEffect(() => {
-    setEvaluation_good_count(initialGoodCount || 0);
+    setEvaluationGoodCount(initialGoodCount || 0);
   }, [initialGoodCount]);
 
   useEffect(() => {
-    setEvaluation_stay_count(initialStayCount || 0);
+    setEvaluationStayCount(initialStayCount || 0);
   }, [initialStayCount]);
 
   const handleSetGoodCount = (value: React.SetStateAction<number>): void => {
-    setEvaluation_good_count(value);
+    setEvaluationGoodCount(value);
     if (setParentGoodCount) {
       setParentGoodCount(value);
     }
   };
 
   const handleSetStayCount = (value: React.SetStateAction<number>): void => {
-    setEvaluation_stay_count(value);
+    setEvaluationStayCount(value);
     if (setParentStayCount) {
       setParentStayCount(value);
     }
@@ -115,14 +115,14 @@ const NovelCard = ({
         }}
       >
         <ThumbUpButton
-          evaluation_good_count={evaluation_good_count}
-          setEvaluation_good_count={handleSetGoodCount}
+          evaluationGoodCount={evaluationGoodCount}
+          setEvaluationGoodCount={handleSetGoodCount}
           isEvaluated={isGoodEvaluated || false}
           disabled={!setParentGoodCount}
         />
         <NextPlanButton
-          evaluation_stay_count={evaluation_stay_count}
-          setEvaluation_stay_count={handleSetStayCount}
+          evaluationStayCount={evaluationStayCount}
+          setEvaluationStayCount={handleSetStayCount}
           isEvaluated={isStayEvaluated || false}
           disabled={!setParentStayCount}
         />

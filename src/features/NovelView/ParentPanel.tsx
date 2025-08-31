@@ -54,10 +54,10 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
           sentence={parentPanel.sentence}
           novel={parentPanel}
           onClick={onClick}
-          evaluation_good_count={evaluationGoodCount}
-          setEvaluation_good_count={setEvaluationGoodCount}
-          evaluation_stay_count={evaluationStayCount}
-          setEvaluation_stay_count={setEvaluationStayCount}
+          evaluationGoodCount={evaluationGoodCount}
+          setEvaluationGoodCount={setEvaluationGoodCount}
+          evaluationStayCount={evaluationStayCount}
+          setEvaluationStayCount={setEvaluationStayCount}
           isGoodEvaluated={isGoodEvaluated}
           isStayEvaluated={isStayEvaluated}
         />

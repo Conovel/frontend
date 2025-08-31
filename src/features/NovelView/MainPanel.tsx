@@ -259,13 +259,13 @@ const MainPanel: React.FC<MainPanelProps> = ({
         }}
       >
         <ThumbUpButton
-          evaluation_good_count={evaluationGoodCount}
-          setEvaluation_good_count={setEvaluationGoodCount}
+          evaluationGoodCount={evaluationGoodCount}
+          setEvaluationGoodCount={setEvaluationGoodCount}
           isEvaluated={isGoodEvaluated}
         />
         <NextPlanButton
-          evaluation_stay_count={evaluationStayCount}
-          setEvaluation_stay_count={setEvaluationStayCount}
+          evaluationStayCount={evaluationStayCount}
+          setEvaluationStayCount={setEvaluationStayCount}
           isEvaluated={isStayEvaluated}
         />
       </Box>

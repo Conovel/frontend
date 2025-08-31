@@ -2,21 +2,21 @@ import React from 'react';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 interface NextPlanButtonProps {
-  evaluation_stay_count: number;
-  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCount: number;
+  setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
   isEvaluated: boolean;
   disabled?: boolean;
 }
 
 const NextPlanButton: React.FC<NextPlanButtonProps> = ({
-  evaluation_stay_count,
-  setEvaluation_stay_count,
+  evaluationStayCount,
+  setEvaluationStayCount,
   isEvaluated,
   disabled = false,
 }) => {
   const handleClick = () => {
     if (!disabled) {
-      setEvaluation_stay_count(evaluation_stay_count + 1);
+      setEvaluationStayCount(evaluationStayCount + 1);
       // ここにバックエンド処理を追加
     }
   };
@@ -35,7 +35,7 @@ const NextPlanButton: React.FC<NextPlanButtonProps> = ({
       <SentimentVeryDissatisfiedIcon
         color={isEvaluated ? 'primary' : 'action'}
       />
-      <span style={{ marginLeft: '4px' }}>{evaluation_stay_count}</span>
+      <span style={{ marginLeft: '4px' }}>{evaluationStayCount}</span>
     </div>
   );
 };
