@@ -42,16 +42,15 @@ const NovelCard = ({
 
   useEffect(() => {
     setEvaluationGoodCount(initialGoodCount || 0);
-  }, [initialGoodCount]);
-
-  useEffect(() => {
     setEvaluationStayCount(initialStayCount || 0);
-  }, [initialStayCount]);
+  }, [initialGoodCount, initialStayCount]);
 
-  const handleSetGoodCount = (value: React.SetStateAction<number>): void => {
-    setEvaluationGoodCount(value);
-    if (setParentGoodCount) {
-      setParentGoodCount(value);
+  const handleGoodCountClick = (): void => {
+    if (!disabled && setParentGoodCount) {
+      const newCount = evaluationGoodCount + 1;
+      setEvaluationGoodCount(newCount);
+      setParentGoodCount(newCount);
+      // ここにバックエンド処理を追加
     }
   };
 
@@ -116,9 +115,9 @@ const NovelCard = ({
       >
         <ThumbUpButton
           evaluationGoodCount={evaluationGoodCount}
-          setEvaluationGoodCount={handleSetGoodCount}
           isEvaluated={isGoodEvaluated || false}
           disabled={!setParentGoodCount}
+          onClick={handleGoodCountClick}
         />
         <NextPlanButton
           evaluationStayCount={evaluationStayCount}

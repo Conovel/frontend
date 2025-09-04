@@ -63,6 +63,12 @@ const MainPanel: React.FC<MainPanelProps> = ({
     }
   };
 
+  const handleGoodCountClick = () => {
+    const newCount = evaluationGoodCount + 1;
+    setEvaluationGoodCount(newCount);
+    // ここにバックエンド処理を追加
+  };
+
   const currentStartIndex = onNavigate ? startIndex : localStartIndex;
   const showPrevButton = hasParallels ? true : currentStartIndex > 0;
   const showNextButton = hasParallels
@@ -260,8 +266,8 @@ const MainPanel: React.FC<MainPanelProps> = ({
       >
         <ThumbUpButton
           evaluationGoodCount={evaluationGoodCount}
-          setEvaluationGoodCount={setEvaluationGoodCount}
           isEvaluated={isGoodEvaluated}
+          onClick={handleGoodCountClick}
         />
         <NextPlanButton
           evaluationStayCount={evaluationStayCount}
