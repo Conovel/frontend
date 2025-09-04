@@ -11,31 +11,34 @@ export interface Chip {
   label: string;
 }
 
-// Base Sentence type
+// Base Sentence type (matches OpenAPI specification)
 export interface Sentence {
-  titleId: number;
-  title: string;
-  sentence: string;
-  textIndex: number;
-  overview: string;
-  popular: boolean;
-  newArrival: boolean;
-  avatar: Avatar;
-  authorUserName: string;
-  chips: Chip[];
-  tags: Chip[];
-  readerCount: number;
-  sentenceUserCount: number;
-  sentenceHierarchyCount: number;
-  mainCopy: string;
   sentenceId: number;
-  userId: number;
-  userName: string;
+  sentence: string;
+  sentenceUserId: number;
+  sentenceUserName: string;
   profileIconImage: string;
   evaluationGoodCount: number;
   evaluationStayCount: number;
   createdAt: string;
   updatedAt: string;
+  // Additional fields for UI compatibility (optional)
+  titleId?: number;
+  title?: string;
+  textIndex?: number;
+  overview?: string;
+  popular?: boolean;
+  newArrival?: boolean;
+  avatar?: Avatar;
+  authorUserName?: string;
+  chips?: Chip[];
+  tags?: Chip[];
+  readerCount?: number;
+  sentenceUserCount?: number;
+  sentenceHierarchyCount?: number;
+  mainCopy?: string;
+  userId?: number;
+  userName?: string;
 }
 
 // NovelProps extends Sentence and includes relationships

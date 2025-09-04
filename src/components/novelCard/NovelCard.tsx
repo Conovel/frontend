@@ -9,49 +9,56 @@ interface NovelCardProps {
   index: number;
   textIndex: number;
   sentence: string;
-  evaluation_good_count: number;
-  setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
-  comment_count: number;
-  setComment_count: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count: number;
-  setEvaluation_stay_count: React.Dispatch<React.SetStateAction<number>>;
-  isGoodEvaluated: boolean;
-  isStayEvaluated: boolean;
+  evaluationGoodCount?: number;
+  setEvaluationGoodCount?: React.Dispatch<React.SetStateAction<number>>;
+  commentCount?: number;
+  setCommentCount?: React.Dispatch<React.SetStateAction<number>>;
+  evaluationStayCount?: number;
+  setEvaluationStayCount?: React.Dispatch<React.SetStateAction<number>>;
+  isGoodEvaluated?: boolean;
+  isStayEvaluated?: boolean;
   novel: Sentence;
   onClick: (sentenceId: number | undefined) => void;
+  disabled?: boolean;
 }
 
 const NovelCard = ({
   novel,
   onClick,
-  evaluation_good_count: initialGoodCount,
-  setEvaluation_good_count: setParentGoodCount,
-  evaluation_stay_count: initialStayCount,
-  setEvaluation_stay_count: setParentStayCount,
+  evaluationGoodCount: initialGoodCount,
+  setEvaluationGoodCount: setParentGoodCount,
+  evaluationStayCount: initialStayCount,
+  setEvaluationStayCount: setParentStayCount,
   isGoodEvaluated,
   isStayEvaluated,
+  disabled = false,
 }: NovelCardProps) => {
-  const [evaluation_good_count, setEvaluation_good_count] =
-    useState(initialGoodCount);
-  const [evaluation_stay_count, setEvaluation_stay_count] =
-    useState(initialStayCount);
+  const [evaluationGoodCount, setEvaluationGoodCount] = useState(
+    initialGoodCount || 0,
+  );
+  const [evaluationStayCount, setEvaluationStayCount] = useState(
+    initialStayCount || 0,
+  );
 
   useEffect(() => {
-    setEvaluation_good_count(initialGoodCount);
-  }, [initialGoodCount]);
+    setEvaluationGoodCount(initialGoodCount || 0);
+    setEvaluationStayCount(initialStayCount || 0);
+  }, [initialGoodCount, initialStayCount]);
 
-  useEffect(() => {
-    setEvaluation_stay_count(initialStayCount);
-  }, [initialStayCount]);
-
-  const handleSetGoodCount = (value: React.SetStateAction<number>): void => {
-    setEvaluation_good_count(value);
-    setParentGoodCount(value);
+  const handleGoodCountClick = (): void => {
+    if (!disabled && setParentGoodCount) {
+      const newCount = evaluationGoodCount + 1;
+      setEvaluationGoodCount(newCount);
+      setParentGoodCount(newCount);
+      // ここにバックエンド処理を追加
+    }
   };
 
   const handleSetStayCount = (value: React.SetStateAction<number>): void => {
-    setEvaluation_stay_count(value);
-    setParentStayCount(value);
+    setEvaluationStayCount(value);
+    if (setParentStayCount) {
+      setParentStayCount(value);
+    }
   };
 
   return (
@@ -61,8 +68,14 @@ const NovelCard = ({
         fontSize: '0.8rem',
         position: 'relative',
         backgroundColor: '#fff',
+        opacity: disabled ? 0.6 : 1,
+        cursor: disabled ? 'not-allowed' : 'pointer',
       }}
-      onClick={() => onClick(novel.sentenceId)}
+      onClick={() => {
+        if (!disabled) {
+          onClick(novel.sentenceId);
+        }
+      }}
     >
       <Box
         sx={{
@@ -91,6 +104,7 @@ const NovelCard = ({
         </Box>
       </Box>
 
+      {/* 評価ボタンは常に表示し、評価関連のプロパティが存在しない場合は無効化 */}
       <Box
         sx={{
           display: 'flex',
@@ -99,18 +113,18 @@ const NovelCard = ({
           backgroundColor: 'transparent',
         }}
       >
-        <>
-          <ThumbUpButton
-            evaluation_good_count={evaluation_good_count}
-            setEvaluation_good_count={handleSetGoodCount}
-            isEvaluated={isGoodEvaluated}
-          />
-          <NextPlanButton
-            evaluation_stay_count={evaluation_stay_count}
-            setEvaluation_stay_count={handleSetStayCount}
-            isEvaluated={isStayEvaluated}
-          />
-        </>
+        <ThumbUpButton
+          evaluationGoodCount={evaluationGoodCount}
+          isEvaluated={isGoodEvaluated || false}
+          disabled={!setParentGoodCount}
+          onClick={handleGoodCountClick}
+        />
+        <NextPlanButton
+          evaluationStayCount={evaluationStayCount}
+          setEvaluationStayCount={handleSetStayCount}
+          isEvaluated={isStayEvaluated || false}
+          disabled={!setParentStayCount}
+        />
       </Box>
     </Box>
   );

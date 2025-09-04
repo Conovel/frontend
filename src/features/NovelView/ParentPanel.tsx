@@ -11,8 +11,6 @@ interface ParentPanelProps {
   textCount: number;
   evaluationGoodCount: number;
   setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
-  commentCount: number;
-  setCommentCount: React.Dispatch<React.SetStateAction<number>>;
   evaluationStayCount: number;
   setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
   isGoodEvaluated: boolean;
@@ -26,8 +24,6 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
   textCount,
   evaluationGoodCount,
   setEvaluationGoodCount,
-  commentCount,
-  setCommentCount,
   evaluationStayCount,
   setEvaluationStayCount,
   isGoodEvaluated,
@@ -40,12 +36,7 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
         backgroundColor: '#fff',
         margin: '2vh auto',
         height: '23vh',
-        width: {
-          xs: '90vw', // スマホ
-          sm: '80vw', // タブレット
-          md: '70vw', // デスクトップ
-        },
-        maxWidth: '600px',
+        width: '70vw',
         alignItems: 'center',
         zIndex: 2,
         borderRadius: '10px',
@@ -63,12 +54,10 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
           sentence={parentPanel.sentence}
           novel={parentPanel}
           onClick={onClick}
-          evaluation_good_count={evaluationGoodCount}
-          setEvaluation_good_count={setEvaluationGoodCount}
-          comment_count={commentCount}
-          setComment_count={setCommentCount}
-          evaluation_stay_count={evaluationStayCount}
-          setEvaluation_stay_count={setEvaluationStayCount}
+          evaluationGoodCount={evaluationGoodCount}
+          setEvaluationGoodCount={setEvaluationGoodCount}
+          evaluationStayCount={evaluationStayCount}
+          setEvaluationStayCount={setEvaluationStayCount}
           isGoodEvaluated={isGoodEvaluated}
           isStayEvaluated={isStayEvaluated}
         />

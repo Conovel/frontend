@@ -14,8 +14,6 @@ interface NovelViewPresentationProps {
   setStartIndexParent: React.Dispatch<React.SetStateAction<number>>;
   evaluationGoodCountParent: number;
   setEvaluationGoodCountParent: React.Dispatch<React.SetStateAction<number>>;
-  commentCountParent: number;
-  setCommentCountParent: React.Dispatch<React.SetStateAction<number>>;
   evaluationStayCountParent: number;
   setEvaluationStayCountParent: React.Dispatch<React.SetStateAction<number>>;
   isGoodEvaluatedParent: boolean;
@@ -59,8 +57,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setStartIndexParent,
   evaluationGoodCountParent,
   setEvaluationGoodCountParent,
-  commentCountParent,
-  setCommentCountParent,
   evaluationStayCountParent,
   setEvaluationStayCountParent,
   isGoodEvaluatedParent,
@@ -138,12 +134,14 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
               children: childrenPanel,
               main: mainPanel,
               parent: [],
-              chips: novel.chips.map((chip) => ({
-                label: chip.label || '',
-              })),
-              tags: novel.tags.map((tag) => ({
-                label: tag.label || '',
-              })),
+              chips:
+                novel.chips?.map((chip) => ({
+                  label: chip.label || '',
+                })) || [],
+              tags:
+                novel.tags?.map((tag) => ({
+                  label: tag.label || '',
+                })) || [],
             };
 
             return (
@@ -156,8 +154,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
                   textCount={textCount}
                   evaluationGoodCount={evaluationGoodCountParent}
                   setEvaluationGoodCount={setEvaluationGoodCountParent}
-                  commentCount={commentCountParent}
-                  setCommentCount={setCommentCountParent}
                   evaluationStayCount={evaluationStayCountParent}
                   setEvaluationStayCount={setEvaluationStayCountParent}
                   isGoodEvaluated={isGoodEvaluatedParent}
@@ -225,6 +221,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
 
       {/* Children Panel */}
       <Box sx={{ width: '100%', maxWidth: '600px' }}></Box>
+
       <ChildrenPanel
         childrenPanel={childrenPanel}
         setChildrenPanel={() => {}}
@@ -261,6 +258,8 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
             text: '',
           },
           sentenceId: 0,
+          sentenceUserId: 0,
+          sentenceUserName: '',
           sentenceUserCount: 0,
           sentenceHierarchyCount: 0,
           sentence: '',

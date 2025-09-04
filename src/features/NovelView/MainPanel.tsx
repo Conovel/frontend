@@ -63,6 +63,12 @@ const MainPanel: React.FC<MainPanelProps> = ({
     }
   };
 
+  const handleGoodCountClick = () => {
+    const newCount = evaluationGoodCount + 1;
+    setEvaluationGoodCount(newCount);
+    // ここにバックエンド処理を追加
+  };
+
   const currentStartIndex = onNavigate ? startIndex : localStartIndex;
   const showPrevButton = hasParallels ? true : currentStartIndex > 0;
   const showNextButton = hasParallels
@@ -215,7 +221,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
                       },
                     }}
                   >
-                    {panel.userName.charAt(0)}
+                    {(panel.userName || panel.sentenceUserName || '').charAt(0)}
                   </Avatar>
                   <Box
                     sx={{
@@ -259,13 +265,13 @@ const MainPanel: React.FC<MainPanelProps> = ({
         }}
       >
         <ThumbUpButton
-          evaluation_good_count={evaluationGoodCount}
-          setEvaluation_good_count={setEvaluationGoodCount}
+          evaluationGoodCount={evaluationGoodCount}
           isEvaluated={isGoodEvaluated}
+          onClick={handleGoodCountClick}
         />
         <NextPlanButton
-          evaluation_stay_count={evaluationStayCount}
-          setEvaluation_stay_count={setEvaluationStayCount}
+          evaluationStayCount={evaluationStayCount}
+          setEvaluationStayCount={setEvaluationStayCount}
           isEvaluated={isStayEvaluated}
         />
       </Box>

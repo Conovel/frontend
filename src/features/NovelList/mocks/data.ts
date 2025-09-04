@@ -26,6 +26,8 @@ export const novels: NovelProps[] = [
     createdAt: new Date().toISOString(),
     sentenceId: 1,
     sentence: '',
+    sentenceUserId: 1,
+    sentenceUserName: 'Remy Sharp',
     userId: 1,
     userName: 'Remy Sharp',
     profileIconImage: '/static/images/avatar/1.jpg',

@@ -2,28 +2,31 @@ import React from 'react';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 
 interface ThumbUpButtonProps {
-  evaluation_good_count: number;
-  setEvaluation_good_count: React.Dispatch<React.SetStateAction<number>>;
+  evaluationGoodCount: number;
   isEvaluated: boolean;
+  disabled?: boolean;
+  onClick: () => void;
 }
 
 const ThumbUpButton: React.FC<ThumbUpButtonProps> = ({
-  evaluation_good_count,
-  setEvaluation_good_count,
+  evaluationGoodCount,
   isEvaluated,
+  disabled = false,
+  onClick,
 }) => {
-  const handleClick = () => {
-    setEvaluation_good_count(evaluation_good_count + 1);
-    // ここにバックエンド処理を追加
-  };
-
   return (
     <div
-      onClick={handleClick}
-      style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}
+      onClick={onClick}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        marginRight: '10px',
+        opacity: disabled ? 0.5 : 1,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+      }}
     >
       <SentimentSatisfiedAltIcon color={isEvaluated ? 'primary' : 'action'} />
-      <span style={{ marginLeft: '4px' }}>{evaluation_good_count}</span>
+      <span style={{ marginLeft: '4px' }}>{evaluationGoodCount}</span>
     </div>
   );
 };

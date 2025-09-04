@@ -33,8 +33,8 @@ const carouselNavButtonStyle = {
 const mainBoxStyle = {
   backgroundColor: '#fff',
   justifyContent: 'space-between',
-  margin: '5vh auto',
-  height: '23vh',
+  margin: '2vh auto',
+  height: '25vh',
   width: '70vw',
   alignItems: 'center',
   zIndex: 2,
@@ -44,6 +44,7 @@ const innerBoxStyle = {
   justifyContent: 'center',
   overflow: 'hidden',
   position: 'relative',
+  height: '100%',
 };
 
 const novelCardBoxStyle = {
@@ -101,6 +102,18 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     setActiveIndex(0);
   }, [childrenPanel.length]);
 
+  // 評価状態に応じてカードの展開状態を制御する
+  useEffect(() => {
+    if (hasMainPanelEvaluation) {
+      // 評価が行われた場合はすべてのカードを展開
+      const allCardIds = childrenPanel.map((panel) => panel.sentenceId);
+      setExpandedCards(new Set(allCardIds));
+    } else {
+      // 評価が行われていない場合はすべてのカードを折りたたみ
+      setExpandedCards(new Set());
+    }
+  }, [hasMainPanelEvaluation, childrenPanel]);
+
   const handleCarouselChange = (now?: number) => {
     if (now !== undefined) {
       setActiveIndex(now);
@@ -149,11 +162,14 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     };
 
     const handleEvaluationClick = (sentenceId: number) => {
-      setExpandedCards((prev) => {
-        const newSet = new Set(prev);
-        newSet.add(sentenceId);
-        return newSet;
-      });
+      // 評価が行われている場合のみ展開する
+      if (hasMainPanelEvaluation) {
+        setExpandedCards((prev) => {
+          const newSet = new Set(prev);
+          newSet.add(sentenceId);
+          return newSet;
+        });
+      }
     };
 
     return (
@@ -163,33 +179,26 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
             ...panel,
             sentence: isExpanded ? panel.sentence : previewText,
           }}
-          onClick={
-            hasMainPanelEvaluation
-              ? handleCardClick
-              : () => {
-                  setError(
-                    'メインパネルで評価を行ってから、続きの投稿をクリックしてください',
-                  );
-                }
-          }
+          onClick={handleCardClick}
           key={index}
           index={index}
           textIndex={textIndex}
-          evaluation_good_count={evaluationGoodCount}
-          setEvaluation_good_count={(value) => {
+          evaluationGoodCount={evaluationGoodCount}
+          setEvaluationGoodCount={(value) => {
             setEvaluationGoodCount(value);
             handleEvaluationClick(panel.sentenceId);
           }}
-          comment_count={commentCount}
-          setComment_count={setCommentCount}
-          evaluation_stay_count={evaluationStayCount}
-          setEvaluation_stay_count={(value) => {
+          commentCount={commentCount}
+          setCommentCount={setCommentCount}
+          evaluationStayCount={evaluationStayCount}
+          setEvaluationStayCount={(value) => {
             setEvaluationStayCount(value);
             handleEvaluationClick(panel.sentenceId);
           }}
           isGoodEvaluated={isGoodEvaluated}
           isStayEvaluated={isStayEvaluated}
           sentence={panel.sentence}
+          disabled={!hasMainPanelEvaluation}
         />
       </Box>
     );
@@ -236,6 +245,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
           text: '',
         },
         sentenceId: apiSentence.sentenceId || 0,
+        sentenceUserId: apiSentence.sentenceUserId || 0,
+        sentenceUserName: apiSentence.sentencePenName || '',
         titleId: novel.titleId,
         sentenceUserCount: 0,
         sentenceHierarchyCount: 0,
@@ -269,6 +280,54 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   return (
     <Box sx={mainBoxStyle}>
       <Box sx={innerBoxStyle}>
+        {/* 評価が行われていない場合のモザイクオーバーレイ */}
+        {!hasMainPanelEvaluation && (
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '50%',
+              background: `
+                linear-gradient(
+                  to bottom,
+                  transparent 0%,
+                  rgba(255, 255, 255, 0.3) 10%,
+                  rgba(255, 255, 255, 0.6) 30%,
+                  rgba(255, 255, 255, 0.9) 50%,
+                  rgba(255, 255, 255, 1) 70%,
+                  rgba(255, 255, 255, 1) 100%
+                )
+              `,
+              backdropFilter: 'blur(8px)',
+              zIndex: 5,
+              pointerEvents: 'none',
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              paddingBottom: '15px',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '100%',
+                background: `
+                  repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.1) 2px,
+                    rgba(0, 0, 0, 0.1) 4px
+                  )
+                `,
+                zIndex: -1,
+              },
+            }}
+          ></Box>
+        )}
         {showCarousel ? (
           <Carousel
             autoPlay={false}

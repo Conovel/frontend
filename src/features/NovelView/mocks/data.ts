@@ -44,6 +44,8 @@ export const mockParentPanel: NovelProps[] = [
     sentenceUserCount: 0,
     sentenceHierarchyCount: 0,
     userId: 0,
+    sentenceUserId: 0,
+    sentenceUserName: 'ユーザー',
     userName: '',
     profileIconImage: '',
     evaluationGoodCount: 0,
@@ -80,6 +82,8 @@ export const mockMainPanel: Sentence[] = [
     sentenceHierarchyCount: 0,
     mainCopy: '',
     userId: 0,
+    sentenceUserId: 0,
+    sentenceUserName: 'ユーザー',
     userName: '',
     profileIconImage: '',
     evaluationGoodCount: 0,
@@ -113,6 +117,8 @@ export const mockChildrenPanel: Sentence[] = [
     sentenceHierarchyCount: 0,
     mainCopy: '',
     userId: 0,
+    sentenceUserId: 0,
+    sentenceUserName: 'ユーザー',
     userName: '',
     profileIconImage: '',
     evaluationGoodCount: 0,
@@ -147,6 +153,8 @@ export const mockNovelProps = {
   parent: mockParentPanel,
   main: mockMainPanel,
   userId: 0,
+  sentenceUserId: 0,
+  sentenceUserName: 'ユーザー',
   penName: '',
   profileIconImage: '',
   evaluationGoodCount: 0,
@@ -172,6 +180,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '金平',
     sentenceId: 1,
     userId: 123,
+    sentenceUserId: 123,
+    sentenceUserName: 'ユーザー',
     userName: '金平',
     textIndex: 0,
     profileIconImage: 'path/to/image.png',
@@ -201,6 +211,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '金平',
     sentenceId: 2,
     userId: 123,
+    sentenceUserId: 123,
+    sentenceUserName: 'ユーザー',
     userName: '金平',
     sentence:
       '主人の帰りが何よりも心待ちだったことを思い出す．今思えば，なんてちっぽけなことに心躍らせていたんだろう',
@@ -235,6 +247,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '桜子',
     sentenceId: 3,
     userId: 124,
+    sentenceUserId: 124,
+    sentenceUserName: 'ユーザー',
     userName: '桜子',
     profileIconImage: 'path/to/image2.png',
     evaluationGoodCount: 8,
@@ -266,6 +280,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '夜想',
     sentenceId: 4,
     userId: 125,
+    sentenceUserId: 125,
+    sentenceUserName: 'ユーザー',
     userName: '夜想',
     profileIconImage: 'path/to/image3.png',
     evaluationGoodCount: 14,
@@ -297,6 +313,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '響子',
     sentenceId: 5,
     userId: 126,
+    sentenceUserId: 126,
+    sentenceUserName: 'ユーザー',
     userName: '響子',
     profileIconImage: 'path/to/image4.png',
     evaluationGoodCount: 22,
@@ -328,6 +346,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '希望',
     sentenceId: 6,
     userId: 127,
+    sentenceUserId: 127,
+    sentenceUserName: 'ユーザー',
     userName: '希望',
     profileIconImage: 'path/to/image5.png',
     evaluationGoodCount: 18,
@@ -359,6 +379,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '迷い人',
     sentenceId: 7,
     userId: 128,
+    sentenceUserId: 128,
+    sentenceUserName: 'ユーザー',
     userName: '迷い人',
     profileIconImage: 'path/to/image6.png',
     evaluationGoodCount: 9,
@@ -390,6 +412,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '珈琲好き',
     sentenceId: 8,
     userId: 129,
+    sentenceUserId: 129,
+    sentenceUserName: 'ユーザー',
     userName: '珈琲好き',
     profileIconImage: 'path/to/image7.png',
     evaluationGoodCount: 11,
@@ -421,6 +445,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '真実',
     sentenceId: 9,
     userId: 130,
+    sentenceUserId: 130,
+    sentenceUserName: 'ユーザー',
     userName: '真実',
     profileIconImage: 'path/to/image8.png',
     evaluationGoodCount: 13,
@@ -452,6 +478,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '優光',
     sentenceId: 10,
     userId: 131,
+    sentenceUserId: 131,
+    sentenceUserName: 'ユーザー',
     userName: '優光',
     profileIconImage: 'path/to/image9.png',
     evaluationGoodCount: 16,
@@ -483,6 +511,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '暖かな言葉',
     sentenceId: 11,
     userId: 132,
+    sentenceUserId: 132,
+    sentenceUserName: 'ユーザー',
     userName: '暖かな言葉',
     profileIconImage: 'path/to/image10.png',
     evaluationGoodCount: 25,
@@ -514,6 +544,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '対話師',
     sentenceId: 12,
     userId: 133,
+    sentenceUserId: 133,
+    sentenceUserName: 'ユーザー',
     userName: '対話師',
     profileIconImage: 'path/to/image11.png',
     evaluationGoodCount: 19,
@@ -545,6 +577,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '現実主義者',
     sentenceId: 13,
     userId: 134,
+    sentenceUserId: 134,
+    sentenceUserName: 'ユーザー',
     userName: '現実主義者',
     profileIconImage: 'path/to/image12.png',
     evaluationGoodCount: 8,
@@ -576,6 +610,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '新しい始まり',
     sentenceId: 14,
     userId: 135,
+    sentenceUserId: 135,
+    sentenceUserName: 'ユーザー',
     userName: '新しい始まり',
     profileIconImage: 'path/to/image13.png',
     evaluationGoodCount: 21,
@@ -607,6 +643,8 @@ export const sentencesData: SentencesData = {
     authorUserName: '愛の物語',
     sentenceId: 15,
     userId: 136,
+    sentenceUserId: 136,
+    sentenceUserName: 'ユーザー',
     userName: '愛の物語',
     profileIconImage: 'path/to/image14.png',
     evaluationGoodCount: 31,
@@ -736,6 +774,30 @@ export const parallelSentences: ParallelSentences = {
   14: [15], // sentenceId=14から結末へ
 };
 
+// 現在のユーザー情報を取得する関数（モック）
+const getCurrentUserInfo = () => {
+  return {
+    userId: 999,
+    sentenceUserId: 999,
+    sentenceUserName: 'ユーザー', // 現在のユーザーID
+    userName: '現在のユーザー', // 現在のユーザーのペンネーム
+    profileIconImage: 'https://via.placeholder.com/40', // 現在のユーザーのアイコン
+  };
+};
+
+// ユーザーごとの評価状態を管理
+export const userEvaluations: { [key: string]: 'good' | 'stay' | null } = {};
+
+// 現在のユーザーIDを取得
+const getCurrentUserId = (): number => {
+  return getCurrentUserInfo().userId;
+};
+
+// ユーザーの評価キーを生成
+const getUserEvaluationKey = (userId: number, sentenceId: number): string => {
+  return `${userId}_${sentenceId}`;
+};
+
 // 新しい文章を投稿する関数
 export const addNewSentence = (
   sentenceText: string,
@@ -751,11 +813,17 @@ export const addNewSentence = (
   // 親センテンスの情報を取得
   const parentSentence = sentencesData[parentSentenceId];
 
+  // 現在のユーザー情報を取得
+  const currentUser = getCurrentUserInfo();
+
   // 新しいセンテンスオブジェクトを作成
   const newSentence: Sentence = {
-    ...parentSentence, // 親の情報を継承
+    ...parentSentence, // 基本的な情報を継承
     sentence: sentenceText,
     sentenceId: nextId,
+    userId: currentUser.userId,
+    userName: currentUser.userName,
+    profileIconImage: currentUser.profileIconImage,
     createdAt: now,
     updatedAt: now,
     evaluationGoodCount: 0,
@@ -811,6 +879,95 @@ export const getParallelSentences = (sentenceId: number): Sentence[] => {
   });
 };
 
+// センテンスの評価を更新する関数
+export const updateSentenceEvaluation = (
+  sentenceId: number,
+  evaluationType: 'good' | 'stay',
+  increment: boolean = true,
+): Sentence | null => {
+  const sentence = sentencesData[sentenceId];
+  if (!sentence) return null;
+
+  const currentUserId = getCurrentUserId();
+  const userKey = getUserEvaluationKey(currentUserId, sentenceId);
+  const currentUserEvaluation = userEvaluations[userKey] || null;
+
+  // 一人一評価制のチェック
+  if (increment) {
+    // 既に同じ評価をしている場合は何もしない
+    if (currentUserEvaluation === evaluationType) {
+      return sentence;
+    }
+
+    // 既に別の評価をしている場合は、その評価を減らす
+    if (currentUserEvaluation === 'good') {
+      sentence.evaluationGoodCount = Math.max(
+        0,
+        sentence.evaluationGoodCount - 1,
+      );
+    } else if (currentUserEvaluation === 'stay') {
+      sentence.evaluationStayCount = Math.max(
+        0,
+        sentence.evaluationStayCount - 1,
+      );
+    }
+
+    // 新しい評価を追加
+    if (evaluationType === 'good') {
+      sentence.evaluationGoodCount += 1;
+    } else {
+      sentence.evaluationStayCount += 1;
+    }
+
+    // ユーザーの評価状態を更新
+    userEvaluations[userKey] = evaluationType;
+  } else {
+    // 評価を取り消す場合
+    if (currentUserEvaluation === evaluationType) {
+      if (evaluationType === 'good') {
+        sentence.evaluationGoodCount = Math.max(
+          0,
+          sentence.evaluationGoodCount - 1,
+        );
+      } else {
+        sentence.evaluationStayCount = Math.max(
+          0,
+          sentence.evaluationStayCount - 1,
+        );
+      }
+      userEvaluations[userKey] = null;
+    }
+  }
+
+  // 更新日時を更新
+  sentence.updatedAt = new Date().toISOString();
+
+  return sentence;
+};
+
+// センテンスの評価状態を取得する関数
+export const getSentenceEvaluation = (sentenceId: number) => {
+  const sentence = sentencesData[sentenceId];
+  if (!sentence)
+    return {
+      goodCount: 0,
+      stayCount: 0,
+      isGoodEvaluated: false,
+      isStayEvaluated: false,
+    };
+
+  const currentUserId = getCurrentUserId();
+  const userKey = getUserEvaluationKey(currentUserId, sentenceId);
+  const currentUserEvaluation = userEvaluations[userKey] || null;
+
+  return {
+    goodCount: sentence.evaluationGoodCount,
+    stayCount: sentence.evaluationStayCount,
+    isGoodEvaluated: currentUserEvaluation === 'good',
+    isStayEvaluated: currentUserEvaluation === 'stay',
+  };
+};
+
 // 初期データの構築
 export const buildInitialData = (sentenceId: number) => {
   const relations = sentenceRelations[sentenceId];
@@ -850,6 +1007,8 @@ export const initialSampleSentence: Sentence = {
   titleId: 1,
   sentenceId: 1,
   sentence: 'これは取得したサンプル文です',
+  sentenceUserId: 1,
+  sentenceUserName: 'ユーザー1',
   profileIconImage: '/path/to/avatar.jpg',
   evaluationGoodCount: 10,
   evaluationStayCount: 2,
