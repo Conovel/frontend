@@ -9,6 +9,8 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
+      host: true, // 外部からのアクセスを許可
+      port: 3000,
       watch: {
         usePolling: mode === "development",
       },
