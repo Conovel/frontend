@@ -3,7 +3,7 @@ import { Box, Button } from '@mui/material';
 import ParentPanel from './ParentPanel';
 import MainPanel from './MainPanel';
 import ChildrenPanel from './ChildrenPanel';
-import { NovelProps, Sentence, CreateSentenceRequest } from '../../types/types';
+import { Sentence, NovelProps } from '../../types/types';
 import { EditPost } from '../EditPost';
 
 interface NovelViewPresentationProps {
@@ -46,7 +46,6 @@ interface NovelViewPresentationProps {
   isInParallelMode: boolean;
   canGoNext: boolean;
   canGoPrev: boolean;
-  titleId: string;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -55,27 +54,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   childrenPanel,
   startIndexParent,
   setStartIndexParent,
-  evaluationGoodCountParent,
-  setEvaluationGoodCountParent,
-  evaluationStayCountParent,
-  setEvaluationStayCountParent,
-  isGoodEvaluatedParent,
-  isStayEvaluatedParent,
   setStartIndexChildren,
-  evaluationGoodCountChildren,
-  setEvaluationGoodCountChildren,
-  commentCountChildren,
-  setCommentCountChildren,
-  evaluationStayCountChildren,
-  setEvaluationStayCountChildren,
-  isGoodEvaluatedChildren,
-  isStayEvaluatedChildren,
-  evaluationGoodCountMain,
-  setEvaluationGoodCountMain,
-  evaluationStayCountMain,
-  setEvaluationStayCountMain,
-  isGoodEvaluatedMain,
-  isStayEvaluatedMain,
   hasMainPanelEvaluation,
   textCount,
   onPost,
@@ -88,15 +67,12 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   isInParallelMode,
   canGoNext,
   canGoPrev,
-  titleId,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handlePost = async (sentenceRequest: CreateSentenceRequest) => {
-    if (sentenceRequest.text.trim()) {
-      await onPost(sentenceRequest.text);
-      setIsModalOpen(false);
-    }
+  const handlePostSuccess = async () => {
+    // 投稿成功後の処理（画面更新など）
+    await onPost(''); // 空文字列を渡して画面更新をトリガー
   };
 
   return (
@@ -130,7 +106,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           {parentPanel.slice(-1).map((novel, index) => {
             const novelWithRelations: NovelProps = {
               ...novel,
-              titleId: Number(novel.titleId) || novel.sentenceId,
+              titleId: novel.titleId || novel.sentenceId,
               children: childrenPanel,
               main: mainPanel,
               parent: [],
@@ -152,12 +128,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
                   setStartIndex={setStartIndexParent}
                   visibleTextCount={1}
                   textCount={textCount}
-                  evaluationGoodCount={evaluationGoodCountParent}
-                  setEvaluationGoodCount={setEvaluationGoodCountParent}
-                  evaluationStayCount={evaluationStayCountParent}
-                  setEvaluationStayCount={setEvaluationStayCountParent}
-                  isGoodEvaluated={isGoodEvaluatedParent}
-                  isStayEvaluated={isStayEvaluatedParent}
                   onClick={() => onParentClick(novel)}
                 />
               </Box>
@@ -184,12 +154,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           mainPanel={mainPanel}
           startIndex={0}
           visibleTextCount={1}
-          evaluationGoodCount={evaluationGoodCountMain}
-          setEvaluationGoodCount={setEvaluationGoodCountMain}
-          evaluationStayCount={evaluationStayCountMain}
-          setEvaluationStayCount={setEvaluationStayCountMain}
-          isGoodEvaluated={isGoodEvaluatedMain}
-          isStayEvaluated={isStayEvaluatedMain}
           onNavigate={hasParallels ? (onMainPanelNavigate as any) : undefined}
           hasParallels={hasParallels}
           onPrevParallel={onPrevParallel}
@@ -214,9 +178,10 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       <EditPost
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSubmit={handlePost}
+        onPostSuccess={handlePostSuccess}
         mainText={mainPanel[0]?.sentence || ''}
         sentenceId={mainPanel[0]?.sentenceId || 0}
+        parentUpdatedAt={mainPanel[0]?.updatedAt || ''}
       />
 
       {/* Children Panel */}
@@ -228,52 +193,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         mainPanel={mainPanel}
         setStartIndex={setStartIndexChildren}
         visibleTextCount={3}
-        evaluationGoodCount={evaluationGoodCountChildren}
-        setEvaluationGoodCount={setEvaluationGoodCountChildren}
-        commentCount={commentCountChildren}
-        setCommentCount={setCommentCountChildren}
-        evaluationStayCount={evaluationStayCountChildren}
-        setEvaluationStayCount={setEvaluationStayCountChildren}
-        isGoodEvaluated={isGoodEvaluatedChildren}
-        isStayEvaluated={isStayEvaluatedChildren}
         hasMainPanelEvaluation={hasMainPanelEvaluation}
-        novel={{
-          titleId: Number(titleId) || 1,
-          children: childrenPanel,
-          main: mainPanel,
-          parent: [],
-          chips: [],
-          tags: [],
-          title: '',
-          mainCopy: '',
-          overview: '',
-          popular: false,
-          newArrival: false,
-          authorUserName: '',
-          readerCount: 0,
-          avatar: {
-            src: '',
-            alt: '',
-            color: '',
-            text: '',
-          },
-          sentenceId: 0,
-          sentenceUserId: 0,
-          sentenceUserName: '',
-          sentenceUserCount: 0,
-          sentenceHierarchyCount: 0,
-          sentence: '',
-          textIndex: 0,
-          userId: 0,
-          userName: '',
-          profileIconImage: '',
-          evaluationGoodCount: 0,
-          evaluationStayCount: 0,
-          createdAt: '',
-          updatedAt: '',
-        }}
-        textIndex={0}
-        titleId={titleId || ''}
       />
     </Box>
   );

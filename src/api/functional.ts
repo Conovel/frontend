@@ -32,24 +32,34 @@ export const withAuth = async <T>(
     return await fn();
   } catch (error: any) {
     if (error?.response?.status !== 401) throw error;
-    if (getLoginStatus() !== 'idle') throw new Error('Refresh not Idle');
-    setLoginStatus('checking');
-    try {
-      const refreshRes = await refreshToken();
-      if (refreshRes?.status !== 200) throw new Error('Refresh failed');
-      setLoginStatus('idle');
-    } catch (refreshError) {
-      setLoginStatus('failure');
-      if (onRefreshFailure) await onRefreshFailure();
-      setLoginStatus('idle');
+
+    // リフレッシュ中の場合は待機
+    if (getLoginStatus() === 'checking') {
+      console.log('Auth refresh already in progress, waiting...');
       return null;
     }
+
+    setLoginStatus('checking');
     try {
-      const result = await fn();
-      return result;
+      console.log('Attempting to refresh token...');
+      const refreshRes = await refreshToken();
+      console.log('Token refresh response:', refreshRes);
+      setLoginStatus('idle');
+
+      // リフレッシュ成功後、元の関数を再実行
+      try {
+        return await fn();
+      } catch (retryError) {
+        console.error('Retry after refresh failed:', retryError);
+        setLoginStatus('failure');
+        if (onAuthFailure) await onAuthFailure();
+        setLoginStatus('idle');
+        return null;
+      }
     } catch (refreshError) {
+      console.error('Token refresh failed:', refreshError);
       setLoginStatus('failure');
-      if (onAuthFailure) await onAuthFailure();
+      if (onRefreshFailure) await onRefreshFailure();
       setLoginStatus('idle');
       return null;
     }

@@ -1,63 +1,89 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
-import { Sentence } from '../../types/types';
+import { EvaluationsApi, EvaluateSentence } from '../../api/api';
+import { axiosConfig } from '../../axiosConfig';
 
 interface NovelCardProps {
-  key: number;
-  index: number;
-  textIndex: number;
   sentence: string;
-  evaluationGoodCount?: number;
-  setEvaluationGoodCount?: React.Dispatch<React.SetStateAction<number>>;
-  commentCount?: number;
-  setCommentCount?: React.Dispatch<React.SetStateAction<number>>;
-  evaluationStayCount?: number;
-  setEvaluationStayCount?: React.Dispatch<React.SetStateAction<number>>;
-  isGoodEvaluated?: boolean;
-  isStayEvaluated?: boolean;
-  novel: Sentence;
-  onClick: (sentenceId: number | undefined) => void;
+  userName: string;
+  sentenceId: number;
+  evaluationGoodCount: number;
+  evaluationStayCount: number;
+  isGoodEvaluated: boolean;
+  isStayEvaluated: boolean;
+  onClick?: () => void;
   disabled?: boolean;
 }
 
 const NovelCard = ({
-  novel,
+  sentence,
+  userName,
+  sentenceId,
   onClick,
-  evaluationGoodCount: initialGoodCount,
-  setEvaluationGoodCount: setParentGoodCount,
-  evaluationStayCount: initialStayCount,
-  setEvaluationStayCount: setParentStayCount,
+  evaluationGoodCount,
+  evaluationStayCount,
   isGoodEvaluated,
   isStayEvaluated,
   disabled = false,
 }: NovelCardProps) => {
-  const [evaluationGoodCount, setEvaluationGoodCount] = useState(
-    initialGoodCount || 0,
-  );
-  const [evaluationStayCount, setEvaluationStayCount] = useState(
-    initialStayCount || 0,
-  );
+  const [localGoodCount, setLocalGoodCount] = useState(evaluationGoodCount);
+  const [localStayCount, setLocalStayCount] = useState(evaluationStayCount);
+  const [isEvaluating, setIsEvaluating] = useState(false);
 
-  useEffect(() => {
-    setEvaluationGoodCount(initialGoodCount || 0);
-    setEvaluationStayCount(initialStayCount || 0);
-  }, [initialGoodCount, initialStayCount]);
+  const evaluationsApi = new EvaluationsApi(axiosConfig);
+  const handleGoodCountClick = async (): Promise<void> => {
+    if (!disabled && !isEvaluating) {
+      setIsEvaluating(true);
+      try {
+        const evaluateSentence: EvaluateSentence = {
+          sentenceId: sentenceId,
+          evaluation: 'good',
+        };
 
-  const handleGoodCountClick = (): void => {
-    if (!disabled && setParentGoodCount) {
-      const newCount = evaluationGoodCount + 1;
-      setEvaluationGoodCount(newCount);
-      setParentGoodCount(newCount);
-      // ここにバックエンド処理を追加
+        const response =
+          await evaluationsApi.evaluateSentence(evaluateSentence);
+        if (response?.data) {
+          setLocalGoodCount(
+            response.data.evaluationGoodCount || localGoodCount + 1,
+          );
+        }
+      } catch (error) {
+        console.error('評価エラー:', error);
+        // エラー時はローカルでカウントアップ
+        setLocalGoodCount(localGoodCount + 1);
+      } finally {
+        setIsEvaluating(false);
+      }
     }
   };
 
-  const handleSetStayCount = (value: React.SetStateAction<number>): void => {
-    setEvaluationStayCount(value);
-    if (setParentStayCount) {
-      setParentStayCount(value);
+  const handleStayCountChange = async (
+    count: number | ((prevState: number) => number),
+  ): Promise<void> => {
+    const actualCount =
+      typeof count === 'function' ? count(localStayCount) : count;
+    if (!disabled && !isEvaluating) {
+      setIsEvaluating(true);
+      try {
+        const evaluateSentence: EvaluateSentence = {
+          sentenceId: sentenceId,
+          evaluation: 'stay',
+        };
+
+        const response =
+          await evaluationsApi.evaluateSentence(evaluateSentence);
+        if (response?.data) {
+          setLocalStayCount(response.data.evaluationStayCount || actualCount);
+        }
+      } catch (error) {
+        console.error('評価エラー:', error);
+        // エラー時はローカルでカウント更新
+        setLocalStayCount(actualCount);
+      } finally {
+        setIsEvaluating(false);
+      }
     }
   };
 
@@ -72,8 +98,8 @@ const NovelCard = ({
         cursor: disabled ? 'not-allowed' : 'pointer',
       }}
       onClick={() => {
-        if (!disabled) {
-          onClick(novel.sentenceId);
+        if (!disabled && onClick) {
+          onClick();
         }
       }}
     >
@@ -91,7 +117,9 @@ const NovelCard = ({
             height: '20vh',
           }}
         >
-          <Avatar sx={{ width: 24, height: 24, zIndex: 2 }}>C</Avatar>
+          <Avatar sx={{ width: 24, height: 24, zIndex: 2 }}>
+            {(userName || 'U').charAt(0)}
+          </Avatar>
           <Typography
             sx={{
               marginTop: '0.5vh',
@@ -99,7 +127,7 @@ const NovelCard = ({
               height: '8vh',
             }}
           >
-            {novel.sentence}
+            {sentence}
           </Typography>
         </Box>
       </Box>
@@ -114,16 +142,14 @@ const NovelCard = ({
         }}
       >
         <ThumbUpButton
-          evaluationGoodCount={evaluationGoodCount}
-          isEvaluated={isGoodEvaluated || false}
-          disabled={!setParentGoodCount}
+          evaluationGoodCount={localGoodCount}
+          isEvaluated={isGoodEvaluated}
           onClick={handleGoodCountClick}
         />
         <NextPlanButton
-          evaluationStayCount={evaluationStayCount}
-          setEvaluationStayCount={handleSetStayCount}
-          isEvaluated={isStayEvaluated || false}
-          disabled={!setParentStayCount}
+          evaluationStayCount={localStayCount}
+          setEvaluationStayCount={handleStayCountChange}
+          isEvaluated={isStayEvaluated}
         />
       </Box>
     </Box>

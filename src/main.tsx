@@ -5,13 +5,14 @@ import './index.css';
 import { BrowserRouter } from 'react-router';
 
 async function enableMocking() {
-  if (!import.meta.env.PROD) {
-    const { worker } = await import('../src/mock/browser');
-    worker.start();
-  }
+  // MSWを無効化して実際のAPIを使用
+  console.log('MSW: Disabled - using real API');
+  return Promise.resolve();
 }
 
 enableMocking().then(() => {
+  console.log('MSW: Mocking setup completed');
+
   createRoot(document.getElementById('root') as HTMLElement).render(
     <StrictMode>
       <BrowserRouter>

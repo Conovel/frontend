@@ -241,25 +241,37 @@ export const NovelViewContainer = () => {
   const handleMainPanelEvaluation = useCallback(
     async (type: 'good' | 'stay') => {
       const currentSentenceId = mainPanel[0]?.sentenceId;
-      if (!currentSentenceId) return;
+      if (!currentSentenceId) {
+        console.error('評価対象の文IDが取得できません');
+        return;
+      }
 
       try {
+        console.log(
+          `評価を送信します: sentenceId=${currentSentenceId}, evaluation=${type}`,
+        );
+
         // APIを使用して評価を送信
-        const response = await evaluationsApi.evaluateSentence({
-          sentenceId: currentSentenceId,
-          evaluation: type === 'good' ? 'good' : 'stay',
-        });
+        const response = await evaluationsApi.evaluateSentence(
+          {
+            sentenceId: currentSentenceId,
+            evaluation: type === 'good' ? 'good' : 'stay',
+          },
+          async () => {
+            // 認証失敗時の処理
+            console.error('評価の送信に失敗しました: 認証エラー');
+          },
+        );
 
         if (response && response.data) {
-          // 状態を更新
-          const evaluationData = response.data;
-          setEvaluationGoodCountMain(evaluationData.evaluationGoodCount || 0);
-          setEvaluationStayCountMain(evaluationData.evaluationStayCount || 0);
+          console.log('評価が正常に送信されました:', response.data);
 
-          // 評価済みフラグを設定
+          // 状態を更新（モックレスポンスの場合は現在の値をインクリメント）
           if (type === 'good') {
+            setEvaluationGoodCountMain((prev) => prev + 1);
             setIsGoodEvaluatedMain(true);
           } else {
+            setEvaluationStayCountMain((prev) => prev + 1);
             setIsStayEvaluatedMain(true);
           }
           setHasMainPanelEvaluation(true);
@@ -267,10 +279,20 @@ export const NovelViewContainer = () => {
           // MainPanelのSentenceデータを更新
           const updatedMainSentence = {
             ...mainPanel[0],
-            evaluationGoodCount: evaluationData.evaluationGoodCount || 0,
-            evaluationStayCount: evaluationData.evaluationStayCount || 0,
+            evaluationGoodCount:
+              type === 'good'
+                ? evaluationGoodCountMain + 1
+                : evaluationGoodCountMain,
+            evaluationStayCount:
+              type === 'stay'
+                ? evaluationStayCountMain + 1
+                : evaluationStayCountMain,
           };
           setMainPanel([updatedMainSentence]);
+
+          // 評価後にchildrenデータを取得
+          console.log('評価完了後、childrenデータを取得します');
+          await updateChildrenPanelForMain(currentSentenceId);
         }
       } catch (error) {
         console.error('Error evaluating sentence:', error);
@@ -293,6 +315,10 @@ export const NovelViewContainer = () => {
         }
 
         setMainPanel([updatedSentence]);
+
+        // 評価後にchildrenデータを取得（モックデータ）
+        console.log('評価完了後、childrenデータを取得します（モック）');
+        await updateChildrenPanelForMain(currentSentenceId);
       }
     },
     [mainPanel],
@@ -640,7 +666,6 @@ export const NovelViewContainer = () => {
       isInParallelMode={isInParallelMode}
       canGoNext={canGoNext}
       canGoPrev={canGoPrev}
-      titleId={titleId || '1'}
     />
   );
 };
