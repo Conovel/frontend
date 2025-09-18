@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import { EvaluationsApi, EvaluateSentence } from '../../api/api';
+import { axiosConfig } from '../../axiosConfig';
 
 interface NextPlanButtonProps {
   evaluationStayCount: number;
   setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
   isEvaluated: boolean;
   disabled?: boolean;
+  sentenceId: number;
 }
 
 const NextPlanButton: React.FC<NextPlanButtonProps> = ({
@@ -13,11 +16,36 @@ const NextPlanButton: React.FC<NextPlanButtonProps> = ({
   setEvaluationStayCount,
   isEvaluated,
   disabled = false,
+  sentenceId,
 }) => {
-  const handleClick = () => {
-    if (!disabled) {
-      setEvaluationStayCount(evaluationStayCount + 1);
-      // ここにバックエンド処理を追加
+  const [isEvaluating, setIsEvaluating] = useState(false);
+
+  const handleClick = async () => {
+    if (!disabled && !isEvaluating) {
+      setIsEvaluating(true);
+      try {
+        const evaluationsApi = new EvaluationsApi(axiosConfig);
+        const evaluateSentence: EvaluateSentence = {
+          sentenceId: sentenceId,
+          evaluation: 'stay',
+        };
+
+        const response =
+          await evaluationsApi.evaluateSentence(evaluateSentence);
+        if (response?.data) {
+          setEvaluationStayCount(
+            response.data.evaluationStayCount || evaluationStayCount + 1,
+          );
+        } else {
+          setEvaluationStayCount(evaluationStayCount + 1);
+        }
+      } catch (error) {
+        console.error('評価エラー:', error);
+        // エラー時はローカルでカウント更新
+        setEvaluationStayCount(evaluationStayCount + 1);
+      } finally {
+        setIsEvaluating(false);
+      }
     }
   };
 

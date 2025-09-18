@@ -2,7 +2,7 @@ import NovelViewPresentation from './NovelViewPresentation';
 import { useState, useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Sentence } from '../../types/types';
-import { SentencesApi, EvaluationsApi } from '../../api/api';
+import { SentencesApi } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
 import {
   mockContainerData,
@@ -10,12 +10,10 @@ import {
   INITIAL_SENTENCE_ID,
   addNewSentence,
   getParallelSentences as getMockParallelSentences,
-  updateSentenceEvaluation,
   getSentenceEvaluation,
 } from './mocks/data';
 
 const sentencesApi = new SentencesApi(axiosConfig);
-const evaluationsApi = new EvaluationsApi(axiosConfig);
 
 export const NovelViewContainer = () => {
   // URLパラメータを取得
@@ -31,34 +29,6 @@ export const NovelViewContainer = () => {
 
   const [startIndexParent, setStartIndexParent] = useState(0);
   const [startIndexChildren, setStartIndexChildren] = useState(0);
-
-  // ParentPanelの評価状態（Sentenceデータから取得）
-  const [evaluationGoodCountParent, setEvaluationGoodCountParent] =
-    useState<number>(0);
-  const [evaluationStayCountParent, setEvaluationStayCountParent] =
-    useState<number>(0);
-  const [isGoodEvaluatedParent, setIsGoodEvaluatedParent] = useState(false);
-  const [isStayEvaluatedParent, setIsStayEvaluatedParent] = useState(false);
-
-  const [evaluationGoodCountChildren, setEvaluationGoodCountChildren] =
-    useState<number>(0);
-  const [commentCountChildren, setCommentCountChildren] = useState<number>(0);
-  const [evaluationStayCountChildren, setEvaluationStayCountChildren] =
-    useState<number>(0);
-  // @ts-ignore
-  const [isGoodEvaluatedChildren, _setIsGoodEvaluatedChildren] =
-    useState(false);
-  // @ts-ignore
-  const [isStayEvaluatedChildren, _setIsStayEvaluatedChildren] =
-    useState(false);
-
-  // MainPanelに関する状態を定義
-  const [evaluationGoodCountMain, setEvaluationGoodCountMain] =
-    useState<number>(0);
-  const [evaluationStayCountMain, setEvaluationStayCountMain] =
-    useState<number>(0);
-  const [isGoodEvaluatedMain, setIsGoodEvaluatedMain] = useState(false);
-  const [isStayEvaluatedMain, setIsStayEvaluatedMain] = useState(false);
 
   // MainPanelの評価状態を追跡
   const [hasMainPanelEvaluation, setHasMainPanelEvaluation] = useState(false);
@@ -153,21 +123,7 @@ export const NovelViewContainer = () => {
             }
 
             // MainPanelの評価状態を設定
-            setEvaluationGoodCountMain(data.main.evaluationGoodCount || 0);
-            setEvaluationStayCountMain(data.main.evaluationStayCount || 0);
-            // TODO: ユーザーの評価状態を取得するAPIが必要
-            setIsGoodEvaluatedMain(false);
-            setIsStayEvaluatedMain(false);
             setHasMainPanelEvaluation(false);
-          }
-
-          // ParentPanelの評価状態を設定
-          if (data.parent) {
-            setEvaluationGoodCountParent(data.parent.evaluationGoodCount || 0);
-            setEvaluationStayCountParent(data.parent.evaluationStayCount || 0);
-            // TODO: ユーザーの評価状態を取得するAPIが必要
-            setIsGoodEvaluatedParent(false);
-            setIsStayEvaluatedParent(false);
           }
         } catch (error) {
           console.error('Error fetching sentence data:', error);
@@ -203,26 +159,11 @@ export const NovelViewContainer = () => {
                 setOriginalMainSentence(currentMainSentence);
               }
 
-              // ParentPanelの評価状態をSentenceデータから取得
-              if (newData.parent.length > 0) {
-                const parentEvaluation = getSentenceEvaluation(
-                  newData.parent[0].sentenceId,
-                );
-                setEvaluationGoodCountParent(parentEvaluation.goodCount);
-                setEvaluationStayCountParent(parentEvaluation.stayCount);
-                setIsGoodEvaluatedParent(parentEvaluation.isGoodEvaluated);
-                setIsStayEvaluatedParent(parentEvaluation.isStayEvaluated);
-              }
-
               // MainPanelの評価状態をSentenceデータから取得
               if (newData.main.length > 0) {
                 const mainEvaluation = getSentenceEvaluation(
                   newData.main[0].sentenceId,
                 );
-                setEvaluationGoodCountMain(mainEvaluation.goodCount);
-                setEvaluationStayCountMain(mainEvaluation.stayCount);
-                setIsGoodEvaluatedMain(mainEvaluation.isGoodEvaluated);
-                setIsStayEvaluatedMain(mainEvaluation.isStayEvaluated);
                 setHasMainPanelEvaluation(
                   mainEvaluation.isGoodEvaluated ||
                     mainEvaluation.isStayEvaluated,
@@ -236,93 +177,6 @@ export const NovelViewContainer = () => {
       fetchSentenceData();
     }
   }, [sentenceId, currentSentenceId]);
-
-  // MainPanelの評価状態を更新する関数
-  const handleMainPanelEvaluation = useCallback(
-    async (type: 'good' | 'stay') => {
-      const currentSentenceId = mainPanel[0]?.sentenceId;
-      if (!currentSentenceId) {
-        console.error('評価対象の文IDが取得できません');
-        return;
-      }
-
-      try {
-        console.log(
-          `評価を送信します: sentenceId=${currentSentenceId}, evaluation=${type}`,
-        );
-
-        // APIを使用して評価を送信
-        const response = await evaluationsApi.evaluateSentence(
-          {
-            sentenceId: currentSentenceId,
-            evaluation: type === 'good' ? 'good' : 'stay',
-          },
-          async () => {
-            // 認証失敗時の処理
-            console.error('評価の送信に失敗しました: 認証エラー');
-          },
-        );
-
-        if (response && response.data) {
-          console.log('評価が正常に送信されました:', response.data);
-
-          // 状態を更新（モックレスポンスの場合は現在の値をインクリメント）
-          if (type === 'good') {
-            setEvaluationGoodCountMain((prev) => prev + 1);
-            setIsGoodEvaluatedMain(true);
-          } else {
-            setEvaluationStayCountMain((prev) => prev + 1);
-            setIsStayEvaluatedMain(true);
-          }
-          setHasMainPanelEvaluation(true);
-
-          // MainPanelのSentenceデータを更新
-          const updatedMainSentence = {
-            ...mainPanel[0],
-            evaluationGoodCount:
-              type === 'good'
-                ? evaluationGoodCountMain + 1
-                : evaluationGoodCountMain,
-            evaluationStayCount:
-              type === 'stay'
-                ? evaluationStayCountMain + 1
-                : evaluationStayCountMain,
-          };
-          setMainPanel([updatedMainSentence]);
-
-          // 評価後にchildrenデータを取得
-          console.log('評価完了後、childrenデータを取得します');
-          await updateChildrenPanelForMain(currentSentenceId);
-        }
-      } catch (error) {
-        console.error('Error evaluating sentence:', error);
-        // エラー時はモックデータの処理にフォールバック
-        const updatedSentence = updateSentenceEvaluation(
-          currentSentenceId,
-          type,
-          true,
-        );
-        if (!updatedSentence) return;
-
-        const evaluation = getSentenceEvaluation(currentSentenceId);
-        setEvaluationGoodCountMain(evaluation.goodCount);
-        setEvaluationStayCountMain(evaluation.stayCount);
-        setIsGoodEvaluatedMain(evaluation.isGoodEvaluated);
-        setIsStayEvaluatedMain(evaluation.isStayEvaluated);
-
-        if (evaluation.isGoodEvaluated || evaluation.isStayEvaluated) {
-          setHasMainPanelEvaluation(true);
-        }
-
-        setMainPanel([updatedSentence]);
-
-        // 評価後にchildrenデータを取得（モックデータ）
-        console.log('評価完了後、childrenデータを取得します（モック）');
-        await updateChildrenPanelForMain(currentSentenceId);
-      }
-    },
-    [mainPanel],
-  );
 
   // 統合された投稿処理
   const handlePost = useCallback(
@@ -367,10 +221,6 @@ export const NovelViewContainer = () => {
             setMainPanel([createdSentence]);
 
             // 新しい投稿の評価状態を初期化
-            setEvaluationGoodCountMain(0);
-            setEvaluationStayCountMain(0);
-            setIsGoodEvaluatedMain(false);
-            setIsStayEvaluatedMain(false);
             setHasMainPanelEvaluation(false);
 
             // 新規投稿の場合、childrenPanelを空にする
@@ -408,10 +258,6 @@ export const NovelViewContainer = () => {
         setMainPanel([createdSentence]);
 
         const newEvaluation = getSentenceEvaluation(createdSentence.sentenceId);
-        setEvaluationGoodCountMain(newEvaluation.goodCount);
-        setEvaluationStayCountMain(newEvaluation.stayCount);
-        setIsGoodEvaluatedMain(newEvaluation.isGoodEvaluated);
-        setIsStayEvaluatedMain(newEvaluation.isStayEvaluated);
         setHasMainPanelEvaluation(
           newEvaluation.isGoodEvaluated || newEvaluation.isStayEvaluated,
         );
@@ -480,10 +326,6 @@ export const NovelViewContainer = () => {
       await updateChildrenPanelForMain(nextSentence.sentenceId);
 
       // 評価状態をリセット
-      setEvaluationGoodCountMain(nextSentence.evaluationGoodCount || 0);
-      setEvaluationStayCountMain(nextSentence.evaluationStayCount || 0);
-      setIsGoodEvaluatedMain(false);
-      setIsStayEvaluatedMain(false);
       setHasMainPanelEvaluation(false);
     } else if (parallelSentences.length > 0 && currentParallelIndex === -1) {
       // 初期状態から最初のパラレル投稿に遷移
@@ -495,10 +337,6 @@ export const NovelViewContainer = () => {
       await updateChildrenPanelForMain(firstSentence.sentenceId);
 
       // 評価状態をリセット
-      setEvaluationGoodCountMain(firstSentence.evaluationGoodCount || 0);
-      setEvaluationStayCountMain(firstSentence.evaluationStayCount || 0);
-      setIsGoodEvaluatedMain(false);
-      setIsStayEvaluatedMain(false);
       setHasMainPanelEvaluation(false);
     }
   }, [currentParallelIndex, parallelSentences, updateChildrenPanelForMain]);
@@ -521,14 +359,6 @@ export const NovelViewContainer = () => {
           await updateChildrenPanelForMain(originalMainSentence.sentenceId);
 
           // 評価状態をリセット
-          setEvaluationGoodCountMain(
-            originalMainSentence.evaluationGoodCount || 0,
-          );
-          setEvaluationStayCountMain(
-            originalMainSentence.evaluationStayCount || 0,
-          );
-          setIsGoodEvaluatedMain(false);
-          setIsStayEvaluatedMain(false);
           setHasMainPanelEvaluation(false);
         }
       } else {
@@ -544,10 +374,6 @@ export const NovelViewContainer = () => {
         await updateChildrenPanelForMain(prevSentence.sentenceId);
 
         // 評価状態をリセット
-        setEvaluationGoodCountMain(prevSentence.evaluationGoodCount || 0);
-        setEvaluationStayCountMain(prevSentence.evaluationStayCount || 0);
-        setIsGoodEvaluatedMain(false);
-        setIsStayEvaluatedMain(false);
         setHasMainPanelEvaluation(false);
       }
     }
@@ -571,10 +397,6 @@ export const NovelViewContainer = () => {
       await updateChildrenPanelForMain(originalMainSentence.sentenceId);
 
       // 評価状態をリセット
-      setEvaluationGoodCountMain(originalMainSentence.evaluationGoodCount || 0);
-      setEvaluationStayCountMain(originalMainSentence.evaluationStayCount || 0);
-      setIsGoodEvaluatedMain(false);
-      setIsStayEvaluatedMain(false);
       setHasMainPanelEvaluation(false);
     }
   }, [originalMainSentence, updateChildrenPanelForMain]);
@@ -632,28 +454,8 @@ export const NovelViewContainer = () => {
       childrenPanel={childrenPanel}
       startIndexParent={startIndexParent}
       setStartIndexParent={setStartIndexParent}
-      evaluationGoodCountParent={evaluationGoodCountParent}
-      setEvaluationGoodCountParent={setEvaluationGoodCountParent}
-      evaluationStayCountParent={evaluationStayCountParent}
-      setEvaluationStayCountParent={setEvaluationStayCountParent}
-      isGoodEvaluatedParent={isGoodEvaluatedParent}
-      isStayEvaluatedParent={isStayEvaluatedParent}
       startIndexChildren={startIndexChildren}
       setStartIndexChildren={setStartIndexChildren}
-      evaluationGoodCountChildren={evaluationGoodCountChildren}
-      setEvaluationGoodCountChildren={setEvaluationGoodCountChildren}
-      commentCountChildren={commentCountChildren}
-      setCommentCountChildren={setCommentCountChildren}
-      evaluationStayCountChildren={evaluationStayCountChildren}
-      setEvaluationStayCountChildren={setEvaluationStayCountChildren}
-      isGoodEvaluatedChildren={isGoodEvaluatedChildren}
-      isStayEvaluatedChildren={isStayEvaluatedChildren}
-      evaluationGoodCountMain={evaluationGoodCountMain}
-      setEvaluationGoodCountMain={() => handleMainPanelEvaluation('good')}
-      evaluationStayCountMain={evaluationStayCountMain}
-      setEvaluationStayCountMain={() => handleMainPanelEvaluation('stay')}
-      isGoodEvaluatedMain={isGoodEvaluatedMain}
-      isStayEvaluatedMain={isStayEvaluatedMain}
       hasMainPanelEvaluation={hasMainPanelEvaluation}
       textCount={15} // モックデータの総数
       onPost={handlePost}

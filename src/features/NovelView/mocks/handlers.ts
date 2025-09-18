@@ -3,7 +3,8 @@ import { PostSentence, EvaluateSentence } from '../../../api/api';
 import { Sentence } from '../../../types/types';
 import { initialSampleSentence } from './data';
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:3001';
+const apiBaseUrl =
+  import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:3001/v1';
 
 // サーバー側で一元管理する文データ
 let sentences: Sentence[] = [initialSampleSentence];
@@ -25,7 +26,7 @@ const mockUser = {
 
 export const novelViewHandlers = [
   // 文を投稿するハンドラー
-  http.post(`${apiBaseUrl}/v1/sentences`, async ({ request }) => {
+  http.post(`${apiBaseUrl}/sentences`, async ({ request }) => {
     const data = (await request.json()) as PostSentence;
     const newSentence: Sentence = {
       ...sentences[0],
@@ -39,7 +40,7 @@ export const novelViewHandlers = [
   }),
 
   // 文を取得するハンドラー（GET sentenceId指定）
-  http.get(`${apiBaseUrl}/v1/sentences/:sentenceId`, ({ params }) => {
+  http.get(`${apiBaseUrl}/sentences/:sentenceId`, ({ params }) => {
     const { sentenceId } = params;
     const found = sentences.find((s) => s.sentenceId === Number(sentenceId));
 
@@ -81,7 +82,7 @@ export const novelViewHandlers = [
   }),
 
   // 評価APIハンドラー
-  http.post(`${apiBaseUrl}/v1/evaluations`, async ({ request }) => {
+  http.post(`${apiBaseUrl}/evaluations`, async ({ request }) => {
     const data = (await request.json()) as EvaluateSentence;
     console.log('MSW: Handling POST /v1/evaluations', data);
 
@@ -102,13 +103,13 @@ export const novelViewHandlers = [
   }),
 
   // ユーザー情報取得APIハンドラー
-  http.get(`${apiBaseUrl}/v1/users/me`, () => {
+  http.get(`${apiBaseUrl}/users/me`, () => {
     console.log('MSW: Handling GET /v1/users/me');
     return HttpResponse.json(mockUser, { status: 200 });
   }),
 
   // 認証トークンリフレッシュAPIハンドラー
-  http.post(`${apiBaseUrl}/v1/auth/refresh`, () => {
+  http.post(`${apiBaseUrl}/auth/refresh`, () => {
     console.log('MSW: Handling POST /v1/auth/refresh');
     // モックのリフレッシュトークンレスポンス
     return HttpResponse.json(

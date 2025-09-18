@@ -59,34 +59,6 @@ const NovelCard = ({
     }
   };
 
-  const handleStayCountChange = async (
-    count: number | ((prevState: number) => number),
-  ): Promise<void> => {
-    const actualCount =
-      typeof count === 'function' ? count(localStayCount) : count;
-    if (!disabled && !isEvaluating) {
-      setIsEvaluating(true);
-      try {
-        const evaluateSentence: EvaluateSentence = {
-          sentenceId: sentenceId,
-          evaluation: 'stay',
-        };
-
-        const response =
-          await evaluationsApi.evaluateSentence(evaluateSentence);
-        if (response?.data) {
-          setLocalStayCount(response.data.evaluationStayCount || actualCount);
-        }
-      } catch (error) {
-        console.error('評価エラー:', error);
-        // エラー時はローカルでカウント更新
-        setLocalStayCount(actualCount);
-      } finally {
-        setIsEvaluating(false);
-      }
-    }
-  };
-
   return (
     <Box
       component='div'
@@ -148,8 +120,9 @@ const NovelCard = ({
         />
         <NextPlanButton
           evaluationStayCount={localStayCount}
-          setEvaluationStayCount={handleStayCountChange}
+          setEvaluationStayCount={setLocalStayCount}
           isEvaluated={isStayEvaluated}
+          sentenceId={sentenceId}
         />
       </Box>
     </Box>
