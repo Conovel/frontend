@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import { Button, Fade, TextField, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -26,29 +26,30 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
   const navigate = useNavigate();
   const [novel, setNovel] = useState<NovelDetail | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [hasError, setHasError] = useState(false);
 
-  const novelsApi = new NovelsApi(axiosConfig);
+  const novelsApi = useMemo(() => new NovelsApi(axiosConfig), []);
 
   useEffect(() => {
-    if (open && titleId) {
-      fetchNovelDetail();
+    if (!titleId) {
+      return;
     }
-  }, [open, titleId]);
+    const fetchNovelDetail = async () => {
+      setLoading(true);
+      setHasError(false);
+      try {
+        const response = await novelsApi.getNovelById(titleId);
+        setNovel(response.data);
+      } catch (error) {
+        console.error('Error fetching novel detail:', error);
+        setHasError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const fetchNovelDetail = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await novelsApi.getNovelById(titleId);
-      setNovel(response.data);
-    } catch (error) {
-      console.error('Error fetching novel detail:', error);
-      setError('小説の詳細情報の取得に失敗しました');
-    } finally {
-      setLoading(false);
-    }
-  };
+    fetchNovelDetail();
+  }, [titleId, novelsApi]);
 
   const handleReadMore = () => {
     navigate('/novelView'); // novelViewページに遷移
@@ -81,7 +82,7 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
     );
   }
 
-  if (error || !novel) {
+  if (hasError || !novel) {
     return (
       <Modal open={open} onClose={onClose}>
         <Fade in={open}>
@@ -99,7 +100,7 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
             }}
           >
             <Typography color='error' sx={{ mb: 2 }}>
-              {error || '小説の詳細情報が見つかりません'}
+              小説の詳細情報が見つかりません
             </Typography>
             <Button variant='outlined' onClick={onClose}>
               閉じる

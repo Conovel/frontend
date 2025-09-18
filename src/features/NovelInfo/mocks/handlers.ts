@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import { NovelDetail, ViewMeUser } from '../../../api/api';
+import { NovelDetail } from '../../../api/api';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -28,22 +28,6 @@ export const novelInfoHandlers = [
       evaluationGoodCount: 50 * Number(titleId),
     };
 
-    return HttpResponse.json(response);
-  }),
-
-  // ユーザー情報取得APIモック
-  http.get(`${apiBaseUrl}/users/me`, () => {
-    const response: ViewMeUser = {
-      userId: 1,
-      penName: 'テストユーザー',
-      nickName: 'テスト',
-      profileIconImage: '/path/to/avatar.jpg',
-      evaluationGoodCount: 10,
-      createdAt: '2024-01-01T00:00:00Z',
-      updatedAt: '2024-01-01T00:00:00Z',
-      birthYearAndMonth: '1990/01',
-      isAnonymous: false,
-    };
     return HttpResponse.json(response);
   }),
 ];
