@@ -103,11 +103,7 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick?: () => void }) => {
           </Box>
         </CardContent>
       </Card>
-      <NovelInfo
-        open={openModal}
-        onClose={handleCloseModal}
-        titleId={novel.titleId || 1}
-      />
+      <NovelInfo open={openModal} onClose={handleCloseModal} novel={novel} />
     </Box>
   );
 };
