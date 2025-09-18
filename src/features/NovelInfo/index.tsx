@@ -2,29 +2,125 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
-import { Button, Fade, TextField } from '@mui/material';
+import { Button, Fade, TextField, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import GroupsIcon from '@mui/icons-material/Groups';
-import { NovelProps } from '../../types/types';
+import { useEffect, useState } from 'react';
+import { NovelDetail, NovelsApi } from '../../api/api';
+import { axiosConfig } from '../../axiosConfig';
 
 interface NovelInfoProps {
   open: boolean;
   onClose: () => void;
-  novel: NovelProps;
+  titleId: number;
 }
 
 /**
  * 小説概要モーダル
  */
-export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
-  const navigate = useNavigate(); // historyを初期化
+export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
+  const navigate = useNavigate();
+  const [novel, setNovel] = useState<NovelDetail | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const novelsApi = new NovelsApi(axiosConfig);
+
+  // 小説詳細情報を取得
+  const fetchNovelDetail = async () => {
+    if (!titleId) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await novelsApi.getNovelById(titleId);
+      setNovel(response.data);
+    } catch (err) {
+      console.error('小説詳細情報の取得に失敗しました:', err);
+      setError('小説詳細情報の取得に失敗しました');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // モーダルが開かれた時に小説詳細情報を取得
+  useEffect(() => {
+    if (open && titleId) {
+      fetchNovelDetail();
+    }
+  }, [open, titleId]);
+
   const handleReadMore = () => {
     navigate('/novelView'); // novelViewページに遷移
   };
+
+  // ローディング表示
+  if (loading) {
+    return (
+      <Modal open={open} onClose={onClose}>
+        <Fade in={open}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '70%',
+              bgcolor: 'background.paper',
+              boxShadow: 24,
+              p: 4,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              minHeight: '200px',
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        </Fade>
+      </Modal>
+    );
+  }
+
+  // エラー表示
+  if (error) {
+    return (
+      <Modal open={open} onClose={onClose}>
+        <Fade in={open}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '70%',
+              bgcolor: 'background.paper',
+              boxShadow: 24,
+              p: 4,
+              textAlign: 'center',
+            }}
+          >
+            <Typography color='error' sx={{ mb: 2 }}>
+              {error}
+            </Typography>
+            <Button variant='outlined' onClick={onClose}>
+              閉じる
+            </Button>
+          </Box>
+        </Fade>
+      </Modal>
+    );
+  }
+
+  // 小説データがない場合
+  if (!novel) {
+    return null;
+  }
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -61,38 +157,37 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
                   height: 24,
                   backgroundColor: 'white',
                 }}
-                src={novel.avatar?.src || novel.profileIconImage}
+                src={novel.profileIconImage}
               >
-                {novel.avatar?.text ||
-                  (novel.sentenceUserName || novel.authorUserName || '').charAt(
-                    0,
-                  )}
+                {(novel.authorPenName || '').charAt(0)}
               </Avatar>
-              <Typography sx={{ ml: 1 }}>{novel.authorUserName}</Typography>
+              <Typography sx={{ ml: 1 }}>{novel.authorPenName}</Typography>
             </Box>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
-              {novel.chips?.map((chip, index) => (
-                <Box key={index}>{chip.label}</Box>
+              {novel.titleGenres?.map((genre, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    backgroundColor: '#f0f0f0',
+                    padding: '2px 8px',
+                    borderRadius: '12px',
+                    fontSize: '0.8rem',
+                  }}
+                >
+                  {genre}
+                </Box>
               ))}
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Box
-                sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
-                color='text.secondary'
-              >
-                {novel.tags?.map((tag, index) => (
-                  <Box key={index}>{tag.label}</Box>
-                ))}
-              </Box>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1 }}>
               <Typography sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
                 <VisibilityIcon />
-                {novel.readerCount}
+                {novel.viewCount}
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
                 <AccessTimeFilledIcon />
-                {novel.updatedAt}
+                {novel.updatedAt
+                  ? new Date(novel.updatedAt).toLocaleDateString('ja-JP')
+                  : '不明'}
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center' }}>
                 <EditNoteIcon />
@@ -106,7 +201,7 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center' }}>
                 <GroupsIcon />
-                {novel.sentenceUserCount}
+                {novel.readerCount}
               </Typography>
             </Box>
             <TextField
@@ -114,7 +209,7 @@ export const NovelInfo = ({ open, onClose, novel }: NovelInfoProps) => {
               multiline
               rows={4}
               variant='outlined'
-              value={novel.sentence || novel.mainCopy}
+              value={novel.overview || novel.mainCopy || ''}
               InputProps={{
                 readOnly: true,
               }}
