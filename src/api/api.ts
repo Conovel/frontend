@@ -753,7 +753,10 @@ export const AuthApiFp = function (configuration?: Configuration) {
     ): Promise<
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>
     > {
-      const localVarAxiosArgs = await localVarAxiosParamCreator.logOut(options);
+      const localVarAxiosArgs = await localVarAxiosParamCreator.logOut({
+        ...options,
+        withCredentials: true,
+      }); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['AuthApi.logOut']?.[localVarOperationServerIndex]
