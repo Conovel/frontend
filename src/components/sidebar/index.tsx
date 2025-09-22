@@ -17,7 +17,7 @@ import BalanceIcon from '@mui/icons-material/Balance';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import GoogleIcon from '@mui/icons-material/Google';
+import GoogleIcon from '../buttonicon/GoogleIcon';
 import Modal from '@mui/material/Modal';
 import DialogTitle from '@mui/material/DialogTitle';
 import LoginIcon from '@mui/icons-material/Login';
@@ -192,8 +192,8 @@ const ListComponent: React.FC<{
                       width: '100%',
                     }}
                   >
-                    <Box sx={{ fontSize: 20 }}>
-                      <GoogleIcon />
+                      <Box sx={{ fontSize: 20 }}>
+                      <GoogleIcon size={24} />
                     </Box>
                     <Typography
                       variant='caption'
@@ -236,7 +236,7 @@ const ListComponent: React.FC<{
           <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Button
               variant='contained'
-              startIcon={<GoogleIcon />}
+              startIcon={<GoogleIcon size={20} />}
               onClick={() => {
                 setIsLoggedIn(true);
                 handleCloseModal();

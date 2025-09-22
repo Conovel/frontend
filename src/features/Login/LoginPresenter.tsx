@@ -1,4 +1,5 @@
 import { Box, Typography, Container, Button, Divider } from '@mui/material';
+import GoogleSignInButton from '../../components/buttonicon/GoogleSignInButton';
 import { useAuth } from '../../providers/auth';
 import { Link } from 'react-router';
 
@@ -43,7 +44,7 @@ export const LoginPresenter = () => {
                 variant='outlined'
                 color='primary'
                 onClick={logout}
-                sx={{ width: '240px' }}
+                sx={{ borderColor: 'black', color: 'black', width: '240px' }}
               >
                 ログアウト
               </Button>
@@ -57,14 +58,7 @@ export const LoginPresenter = () => {
           ) : (
             <>
               <p>ログインまたは新規登録してください</p>
-              <Button
-                variant='outlined'
-                color='primary'
-                onClick={handleGoogleAuth}
-                sx={{ width: '240px' }}
-              >
-                Googleログイン
-              </Button>
+              <GoogleSignInButton onClick={handleGoogleAuth} className="" />
             </>
           )}
         </>
