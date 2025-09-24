@@ -1,7 +1,7 @@
 import { Box, Typography, Container, Button, Divider } from '@mui/material';
 import GoogleSignInButton from '../../components/buttonicon/GoogleSignInButton';
 import { useAuth } from '../../providers/auth';
-import { Link } from 'react-router';
+import { Link as RouterLink } from 'react-router';
 
 export const LoginPresenter = () => {
   const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
@@ -16,7 +16,8 @@ export const LoginPresenter = () => {
     <Container maxWidth='sm'>
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 4,
+          marginBottom: 4,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -33,27 +34,31 @@ export const LoginPresenter = () => {
               <img
                 src={currentUser.profileIconImage}
                 alt='プロフィールアイコン'
-                style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                style={{ width: '90px', height: '90px', borderRadius: '50%' }}
               />
               <p>
-                ようこそ、{currentUser.penName}さん！
+                {currentUser.penName} さん
                 <br />
                 （ユーザーID：{currentUser.userId}）
               </p>
               <Button
-                variant='outlined'
-                color='primary'
                 onClick={logout}
-                sx={{ borderColor: 'black', color: 'black', width: '240px' }}
+                variant='outlined'
+                sx={{ borderColor: 'black', color: 'black', padding: '4px 16px' }}
               >
                 ログアウト
               </Button>
 
               <Divider sx={{ width: '100%', my: 2 }}>または</Divider>
 
-              <Link to='/account' className='btn btn-accent gap-2 w-full'>
+              <Button
+                component={RouterLink}
+                variant='outlined'
+                to='/account'
+                sx={{ borderColor: 'black', color: 'black', padding: '4px 16px' }}
+              >
                 マイページへ
-              </Link>
+              </Button>
             </>
           ) : (
             <>
