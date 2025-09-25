@@ -13,7 +13,14 @@ import { NovelProps } from '../../types/types';
 const NovelCard = ({ novel }: { novel: NovelProps; onClick?: () => void }) => {
   const [openModal, setOpenModal] = React.useState(false);
 
-  const handleOpenModal = () => setOpenModal(true);
+  const hasTitleId = typeof novel.titleId === 'number';
+
+  const handleOpenModal = () => {
+    if (!hasTitleId) {
+      return;
+    }
+    setOpenModal(true);
+  };
   const handleCloseModal = () => setOpenModal(false);
 
   return (
@@ -103,7 +110,13 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick?: () => void }) => {
           </Box>
         </CardContent>
       </Card>
-      <NovelInfo open={openModal} onClose={handleCloseModal} novel={novel} />
+      {hasTitleId && (
+        <NovelInfo
+          open={openModal}
+          onClose={handleCloseModal}
+          titleId={novel.titleId || 0}
+        />
+      )}
     </Box>
   );
 };
