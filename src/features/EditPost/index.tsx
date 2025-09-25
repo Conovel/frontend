@@ -71,7 +71,7 @@ export const EditPost: React.FC<EditPostProps> = ({
       };
 
       const response = await sentencesApi.postSentence(postSentence);
-      
+
       // APIレスポンスの検証
       if (response && response.status >= 200 && response.status < 300) {
         // 成功時の処理

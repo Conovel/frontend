@@ -157,7 +157,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
           .map((panel) => {
             // ユーザーの評価状態を取得
             const evaluation = getSentenceEvaluation(panel.sentenceId);
-            
+
             return (
               <NovelCard
                 key={panel.sentenceId}

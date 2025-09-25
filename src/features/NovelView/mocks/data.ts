@@ -168,7 +168,9 @@ export const mockNovelProps = {
 // The initial sentence ID is set to 5 by default, as it represents the center of a more complex structure in the mock data.
 // You can override this value by setting the environment variable INITIAL_SENTENCE_ID.
 export const INITIAL_SENTENCE_ID =
-  typeof process !== 'undefined' && process.env && process.env.INITIAL_SENTENCE_ID
+  typeof process !== 'undefined' &&
+  process.env &&
+  process.env.INITIAL_SENTENCE_ID
     ? Number(process.env.INITIAL_SENTENCE_ID)
     : 5;
 

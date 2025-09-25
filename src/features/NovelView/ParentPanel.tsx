@@ -21,7 +21,7 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
 }) => {
   // ユーザーの評価状態を取得
   const evaluation = getSentenceEvaluation(parentPanel.sentenceId);
-  
+
   return (
     <Box
       sx={{
