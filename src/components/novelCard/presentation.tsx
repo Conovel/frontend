@@ -114,7 +114,7 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick?: () => void }) => {
         <NovelInfo
           open={openModal}
           onClose={handleCloseModal}
-          titleId={novel.titleId!}
+          titleId={novel.titleId || 0}
         />
       )}
     </Box>
