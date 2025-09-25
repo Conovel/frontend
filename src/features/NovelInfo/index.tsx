@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import { Button, Fade, TextField, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -28,8 +28,6 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
   const [loading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  const novelsApi = useMemo(() => new NovelsApi(axiosConfig), []);
-
   useEffect(() => {
     if (!titleId) {
       return;
@@ -38,6 +36,7 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
       setLoading(true);
       setHasError(false);
       try {
+        const novelsApi = new NovelsApi(axiosConfig);
         const response = await novelsApi.getNovelById(titleId);
         setNovel(response.data);
       } catch (error) {
@@ -49,7 +48,7 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
     };
 
     fetchNovelDetail();
-  }, [titleId, novelsApi]);
+  }, [titleId]);
 
   const handleReadMore = () => {
     navigate('/novelView'); // novelViewページに遷移
