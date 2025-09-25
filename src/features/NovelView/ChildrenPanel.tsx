@@ -4,18 +4,8 @@ import { Box, Snackbar, Alert } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
-import {
-  Sentence,
-  NovelProps,
-  CreateSentenceRequest,
-  PostSentence,
-} from '../../types/types';
+import { Sentence } from '../../types/types';
 import { EditPost } from '../EditPost';
-import { SentencesApi } from '../../api/api';
-import { axiosConfig } from '../../axiosConfig';
-
-const sentencesApi = new SentencesApi(axiosConfig);
-import { useNavigate } from 'react-router';
 
 const carouselNavButtonStyle = {
   backgroundColor: '#BDBDBD',
@@ -59,43 +49,17 @@ interface ChildrenPanelProps {
   mainPanel: Sentence[];
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
-  evaluationGoodCount: number;
-  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
-  commentCount: number;
-  setCommentCount: React.Dispatch<React.SetStateAction<number>>;
-  evaluationStayCount: number;
-  setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
-  isGoodEvaluated: boolean;
-  isStayEvaluated: boolean;
   hasMainPanelEvaluation: boolean;
-  novel: NovelProps;
-  textIndex: number;
-  titleId: string;
 }
 
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   childrenPanel,
-  setChildrenPanel,
   mainPanel,
-  setStartIndex,
-  visibleTextCount,
-  evaluationGoodCount,
-  setEvaluationGoodCount,
-  commentCount,
-  setCommentCount,
-  evaluationStayCount,
-  setEvaluationStayCount,
-  isGoodEvaluated,
-  isStayEvaluated,
   hasMainPanelEvaluation,
-  novel,
-  textIndex,
-  titleId,
 }) => {
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
-  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -129,26 +93,15 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       return;
     }
 
-    const clickedSentence = childrenPanel.find(
-      (sentence: Sentence) => sentence.sentenceId === sentenceId,
-    );
-    if (clickedSentence) {
-      const defaultTitleId = '1';
-      const targetTitleId = titleId || defaultTitleId;
-      navigate(`/novelView/${targetTitleId}/${clickedSentence.sentenceId}`);
-    } else {
-      console.error(
-        `Sentence with ID ${sentenceId} not found in childrenPanel`,
-      );
-      setError(`投稿ID ${sentenceId} が見つかりませんでした`);
-    }
+    // 親コンポーネントでナビゲーション処理を行う
+    console.log('Navigate to sentence:', sentenceId);
   };
 
   const handleCloseError = () => {
     setError(null);
   };
 
-  const renderNovelCard = (panel: Sentence, index: number) => {
+  const renderNovelCard = (panel: Sentence) => {
     const isExpanded = expandedCards.has(panel.sentenceId);
     const previewText =
       panel.sentence.length > 50
@@ -161,116 +114,27 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       }
     };
 
-    const handleEvaluationClick = (sentenceId: number) => {
-      // 評価が行われている場合のみ展開する
-      if (hasMainPanelEvaluation) {
-        setExpandedCards((prev) => {
-          const newSet = new Set(prev);
-          newSet.add(sentenceId);
-          return newSet;
-        });
-      }
-    };
-
     return (
       <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
         <NovelCard
-          novel={{
-            ...panel,
-            sentence: isExpanded ? panel.sentence : previewText,
-          }}
-          onClick={handleCardClick}
-          key={index}
-          index={index}
-          textIndex={textIndex}
-          evaluationGoodCount={evaluationGoodCount}
-          setEvaluationGoodCount={(value) => {
-            setEvaluationGoodCount(value);
-            handleEvaluationClick(panel.sentenceId);
-          }}
-          commentCount={commentCount}
-          setCommentCount={setCommentCount}
-          evaluationStayCount={evaluationStayCount}
-          setEvaluationStayCount={(value) => {
-            setEvaluationStayCount(value);
-            handleEvaluationClick(panel.sentenceId);
-          }}
-          isGoodEvaluated={isGoodEvaluated}
-          isStayEvaluated={isStayEvaluated}
-          sentence={panel.sentence}
+          sentence={isExpanded ? panel.sentence : previewText}
+          userName={panel.userName || panel.sentenceUserName || ''}
+          sentenceId={panel.sentenceId}
+          onClick={() => handleCardClick(panel.sentenceId)}
+          evaluationGoodCount={panel.evaluationGoodCount || 0}
+          evaluationStayCount={panel.evaluationStayCount || 0}
+          isGoodEvaluated={false} // TODO: ユーザーの評価状態を取得
+          isStayEvaluated={false} // TODO: ユーザーの評価状態を取得
           disabled={!hasMainPanelEvaluation}
         />
       </Box>
     );
   };
 
-  const handleSubmitPost = async (sentenceRequest: CreateSentenceRequest) => {
-    try {
-      // 親投稿のIDと更新日時を取得
-      const parentId = mainPanel[mainPanel.length - 1]?.sentenceId || 0;
-      const parentUpdatedAt =
-        mainPanel[mainPanel.length - 1]?.updatedAt || new Date().toISOString();
-
-      // APIに送信するためのPostSentenceオブジェクトを作成
-      const postSentence: PostSentence = {
-        parentSentenceId: parentId,
-        parentUpdatedAt: parentUpdatedAt,
-        sentence: sentenceRequest.text,
-      };
-
-      // OpenAPIが生成したAPIクライアントを使用して新しい文章を投稿
-      const response = await sentencesApi.postSentence(postSentence as any);
-
-      if (!response || response.status !== 201 || !response.data?.main) {
-        // 認証のためにresponseのチェックを追加
-        throw new Error('Failed to create sentence');
-      }
-
-      // Convert API response Sentence to application Sentence type
-      const apiSentence = response.data.main;
-      const newSentence: Sentence = {
-        title: '',
-        mainCopy: '',
-        overview: '',
-        popular: false,
-        newArrival: false,
-        authorUserName: '',
-        chips: [],
-        tags: [],
-        readerCount: 0,
-        avatar: {
-          src: '',
-          alt: '',
-          color: '',
-          text: '',
-        },
-        sentenceId: apiSentence.sentenceId || 0,
-        sentenceUserId: apiSentence.sentenceUserId || 0,
-        sentenceUserName: apiSentence.sentencePenName || '',
-        titleId: novel.titleId,
-        sentenceUserCount: 0,
-        sentenceHierarchyCount: 0,
-        sentence: apiSentence.sentence || '',
-        textIndex: 0,
-        userId: 0,
-        userName: '',
-        profileIconImage: '',
-        evaluationGoodCount: 0,
-        evaluationStayCount: 0,
-        createdAt: apiSentence.createdAt || '',
-        updatedAt: apiSentence.updatedAt || '',
-      };
-
-      // childrenPanelを更新
-      setChildrenPanel((prev: Sentence[]) => [...prev, newSentence]);
-      const newIndex = Math.max(0, childrenPanel.length + 1 - visibleTextCount);
-      setStartIndex(newIndex);
-
-      console.log('投稿されたテキスト:', newSentence.sentence);
-    } catch (error) {
-      console.error('Error creating sentence:', error);
-      // エラーハンドリングを追加することをお勧めします
-    }
+  const handlePostSuccess = async () => {
+    // 投稿成功後の処理（画面更新など）
+    // 必要に応じてchildrenPanelを再取得する処理を追加
+    setIsEditPostOpen(false);
   };
 
   // カルーセルを表示する条件を追加
@@ -393,9 +257,10 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       <EditPost
         open={isEditPostOpen}
         onClose={() => setIsEditPostOpen(false)}
-        onSubmit={handleSubmitPost}
+        onPostSuccess={handlePostSuccess}
         mainText={mainPanel[mainPanel.length - 1]?.sentence || ''}
         sentenceId={mainPanel[mainPanel.length - 1]?.sentenceId || 0}
+        parentUpdatedAt={mainPanel[mainPanel.length - 1]?.updatedAt || ''}
       />
 
       <Snackbar
