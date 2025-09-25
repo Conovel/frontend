@@ -5,24 +5,144 @@ import {
 } from './AccountSettingsPresenter';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AccountSettingFormSchema } from './AccountSettings.schema';
-import { Box, Paper } from '@mui/material';
+import { Box, Paper, Alert, Snackbar } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { UsersApi, UpdateUser, ViewMeUser } from '../../api/api';
+import { Configuration } from '../../api/configuration';
 
 export const AccountSettings: React.FC = () => {
+  const [accountInfo, setAccountInfo] = useState<AccountInfo | null>(null);
+  const [isEdit, setIsEdit] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const methods = useForm({
-    mode: 'onBlur', // TODO：アカウント情報の更新処理次第
+    mode: 'onBlur',
     resolver: zodResolver(AccountSettingFormSchema),
   });
 
-  // TODO：モックのアカウント情報
-  const accountInfo: AccountInfo = {
-    userId: 0,
-    penName: '花子花花花花花花花花花花花花花花花花花花花花花花花花花花３２文字',
-    nickName: 'HANAAAAAAAAAAAAAAAAAAAAAAAAA32文字',
-    profileIconImage: '',
-    evaluationGoodCount: 100,
-    birthYearAndMonth: new Date('1998/02'),
-    isAnonymous: false,
+  // API設定
+  const configuration = new Configuration({
+    basePath: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080',
+  });
+  const usersApi = new UsersApi(configuration);
+
+  // ユーザー情報を取得
+  const fetchUserInfo = async () => {
+    try {
+      setIsLoading(true);
+      const response = await usersApi.getUserByMe();
+      if (!response || !response.data) {
+        throw new Error('ユーザー情報の取得に失敗しました');
+      }
+      const userData: ViewMeUser = response.data;
+
+      const accountData: AccountInfo = {
+        userId: userData.userId || 0,
+        penName: userData.penName || '',
+        nickName: userData.nickName || '',
+        profileIconImage: userData.profileIconImage || '',
+        evaluationGoodCount: userData.evaluationGoodCount || 0,
+        birthYearAndMonth: userData.birthYearAndMonth
+          ? new Date(userData.birthYearAndMonth + '/01')
+          : new Date(),
+        isAnonymous: userData.isAnonymous || false,
+      };
+
+      setAccountInfo(accountData);
+
+      // フォームに初期値を設定
+      methods.reset({
+        penName: accountData.penName,
+        nickName: accountData.nickName,
+        birthYearAndMonth: accountData.birthYearAndMonth,
+        isAnonymous: accountData.isAnonymous,
+        profileIconImage: accountData.profileIconImage,
+      });
+    } catch (error) {
+      console.error('ユーザー情報の取得に失敗しました:', error);
+      setErrorMessage('ユーザー情報の取得に失敗しました');
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  // コンポーネントマウント時にユーザー情報を取得
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
+
+  // アカウント情報更新処理
+  const handleUpdateAccountInfo = async () => {
+    try {
+      // フォームのバリデーションを実行
+      const isValid = await methods.trigger();
+      if (!isValid) {
+        return;
+      }
+
+      setIsLoading(true);
+      const formData = methods.getValues();
+
+      const updateData: UpdateUser = {
+        penName: formData.penName,
+        nickName: formData.nickName,
+        isAnonymous: formData.isAnonymous,
+        profileIconImage: formData.profileIconImage,
+        birthYm: formData.birthYearAndMonth.toISOString().slice(0, 7), // YYYY-MM形式
+        agreedTermsVersion: 1, // 仮の値
+      };
+
+      await usersApi.updateUserByMe(updateData);
+
+      setSuccessMessage('アカウント情報が正常に更新されました');
+      setIsEdit(false);
+
+      // 更新された情報を再取得
+      await fetchUserInfo();
+    } catch (error) {
+      console.error('アカウント情報の更新に失敗しました:', error);
+      setErrorMessage('アカウント情報の更新に失敗しました');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 編集モード切り替え
+  const handleChangeEditMode = () => {
+    setIsEdit(!isEdit);
+    if (!isEdit) {
+      // 編集モードに入る時は現在の値をフォームに設定
+      if (accountInfo) {
+        methods.reset({
+          penName: accountInfo.penName,
+          nickName: accountInfo.nickName,
+          birthYearAndMonth: accountInfo.birthYearAndMonth,
+          isAnonymous: accountInfo.isAnonymous,
+          profileIconImage: accountInfo.profileIconImage,
+        });
+      }
+    }
+  };
+
+  // 成功メッセージを閉じる
+  const handleCloseSuccessMessage = () => {
+    setSuccessMessage(null);
+  };
+
+  // エラーメッセージを閉じる
+  const handleCloseErrorMessage = () => {
+    setErrorMessage(null);
+  };
+
+  if (isLoading && !accountInfo) {
+    return <div>読み込み中...</div>;
+  }
+
+  if (!accountInfo) {
+    return <div>ユーザー情報を取得できませんでした</div>;
+  }
 
   return (
     <Box
@@ -45,13 +165,9 @@ export const AccountSettings: React.FC = () => {
         <FormProvider {...methods}>
           <AccountSettingsPresenter
             accountInfo={accountInfo}
-            isEdit={false}
-            onChangeEditMode={() => {
-              // TODO:あとで実装
-            }}
-            onClickUpdateAccountInfo={() => {
-              // TODO：あとで実装
-            }}
+            isEdit={isEdit}
+            onChangeEditMode={handleChangeEditMode}
+            onClickUpdateAccountInfo={handleUpdateAccountInfo}
             onClickGoToMyPostedNovels={() => {
               // TODO：あとで実装
             }}
@@ -68,6 +184,30 @@ export const AccountSettings: React.FC = () => {
           />
         </FormProvider>
       </Paper>
+
+      {/* 成功メッセージ */}
+      <Snackbar
+        open={!!successMessage}
+        autoHideDuration={6000}
+        onClose={handleCloseSuccessMessage}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSuccessMessage} severity='success'>
+          {successMessage}
+        </Alert>
+      </Snackbar>
+
+      {/* エラーメッセージ */}
+      <Snackbar
+        open={!!errorMessage}
+        autoHideDuration={6000}
+        onClose={handleCloseErrorMessage}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseErrorMessage} severity='error'>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

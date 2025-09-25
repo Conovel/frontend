@@ -22,6 +22,7 @@ import {
   DialogContentText,
   DialogActions,
 } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 
 export interface AccountInfo {
   userId: number;
@@ -37,7 +38,7 @@ interface AccountSettingsPresenterProps {
   accountInfo: AccountInfo;
   isEdit: boolean;
   onChangeEditMode: () => void;
-  onClickUpdateAccountInfo: (input: AccountSettingFormType) => void;
+  onClickUpdateAccountInfo: () => void;
   onClickGoToMyPostedNovels: () => void;
   onClickGoToMyReadingNovels: () => void;
   isOpenDeleteAccountModal: boolean;
@@ -86,8 +87,17 @@ const AnonymousSwitch = styled(Switch)(({ theme }) => ({
 
 export const AccountSettingsPresenter = ({
   accountInfo,
+  isEdit,
+  onChangeEditMode,
   onClickUpdateAccountInfo,
 }: AccountSettingsPresenterProps) => {
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useFormContext<AccountSettingFormType>();
+
   const [isOpenDeleteAccountModal, setIsOpenDeleteAccountModal] =
     useState(false); // モーダルの状態を管理
 
@@ -95,44 +105,28 @@ export const AccountSettingsPresenter = ({
     setIsOpenDeleteAccountModal(!isOpenDeleteAccountModal); // モーダルの開閉を切り替える
   };
 
-  const [isEditingPenName, setIsEditingPenName] = useState(false);
-  const [isEditingNickName, setIsEditingNickName] = useState(false);
-  const [penName, setPenName] = useState(accountInfo.penName);
-  const [nickName, setNickName] = useState(accountInfo.nickName);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [profileIconImage, setProfileIconImage] = useState(
-    accountInfo.profileIconImage,
-  );
 
-  const handlePenNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPenName(event.target.value);
-  };
-
-  const handleNickNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNickName(event.target.value);
-  };
-
-  const handleSave = () => {
-    onClickUpdateAccountInfo({
-      ...accountInfo,
-      penName,
-      nickName,
-      profileIconImage,
-    });
-    setIsEditingPenName(false);
-    setIsEditingNickName(false);
-  };
+  // フォームの値を監視
+  const penName = watch('penName');
+  const nickName = watch('nickName');
+  const profileIconImage = watch('profileIconImage');
+  const isAnonymous = watch('isAnonymous');
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target?.result) {
-          setProfileIconImage(e.target.result as string);
+          setValue('profileIconImage', e.target.result as string);
         }
       };
       reader.readAsDataURL(event.target.files[0]);
     }
+  };
+
+  const handleSave = () => {
+    onClickUpdateAccountInfo();
   };
 
   return (
@@ -149,7 +143,7 @@ export const AccountSettingsPresenter = ({
           <Box sx={{ margin: '0 auto' }}>
             <Box sx={{ position: 'relative' }}>
               <Avatar
-                src={profileIconImage}
+                src={profileIconImage || accountInfo.profileIconImage}
                 sx={{ bgcolor: 'magenta', width: 56, height: 56 }}
               >
                 HN
@@ -237,12 +231,17 @@ export const AccountSettingsPresenter = ({
             />
 
             <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
-              {isEditingPenName ? (
-                <TextField
-                  value={penName}
-                  onChange={handlePenNameChange}
-                  onBlur={handleSave}
-                />
+              {isEdit ? (
+                <Box
+                  sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}
+                >
+                  <TextField
+                    {...register('penName')}
+                    error={!!errors.penName}
+                    helperText={errors.penName?.message}
+                    size='small'
+                  />
+                </Box>
               ) : (
                 <Typography sx={{ wordBreak: 'break-word' }}>
                   {penName}
@@ -250,9 +249,9 @@ export const AccountSettingsPresenter = ({
               )}
               <IconButton
                 sx={{ padding: 0, width: 'fit-content' }}
-                onClick={() => setIsEditingPenName(!isEditingPenName)}
+                onClick={isEdit ? handleSave : onChangeEditMode}
               >
-                {isEditingPenName ? (
+                {isEdit ? (
                   <CheckIcon sx={{ color: 'black' }} />
                 ) : (
                   <EditIcon sx={{ color: 'black' }} />
@@ -276,12 +275,17 @@ export const AccountSettingsPresenter = ({
             />
 
             <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
-              {isEditingNickName ? (
-                <TextField
-                  value={nickName}
-                  onChange={handleNickNameChange}
-                  onBlur={handleSave}
-                />
+              {isEdit ? (
+                <Box
+                  sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}
+                >
+                  <TextField
+                    {...register('nickName')}
+                    error={!!errors.nickName}
+                    helperText={errors.nickName?.message}
+                    size='small'
+                  />
+                </Box>
               ) : (
                 <Typography sx={{ wordBreak: 'break-word' }}>
                   {nickName}
@@ -289,9 +293,9 @@ export const AccountSettingsPresenter = ({
               )}
               <IconButton
                 sx={{ padding: 0, width: 'fit-content' }}
-                onClick={() => setIsEditingNickName(!isEditingNickName)}
+                onClick={isEdit ? handleSave : onChangeEditMode}
               >
-                {isEditingNickName ? (
+                {isEdit ? (
                   <CheckIcon sx={{ color: 'black' }} />
                 ) : (
                   <EditIcon sx={{ color: 'black' }} />
@@ -329,7 +333,10 @@ export const AccountSettingsPresenter = ({
               hasTooltip
               tooltipText='匿名設定をONにすると投稿は匿名で表示されます'
             />
-            <AnonymousSwitch defaultChecked={accountInfo.isAnonymous} />
+            <AnonymousSwitch
+              {...register('isAnonymous')}
+              checked={isAnonymous}
+            />
           </Box>
 
           <Box

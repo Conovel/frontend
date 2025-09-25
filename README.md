@@ -36,6 +36,17 @@ $ npm install
 
 - packege-lock.jsonと/node_modulesが生成される
 
+### 環境変数の設定
+
+アカウント設定機能を使用する場合は、以下の環境変数を設定してください：
+
+```sh
+# .envファイルを作成
+$ echo "REACT_APP_API_BASE_URL=http://localhost:8080" > .env
+```
+
+- `REACT_APP_API_BASE_URL`: APIサーバーのベースURL（デフォルト: http://localhost:8080）
+
 ### ローカルサーバー起動
 
 ```sh
