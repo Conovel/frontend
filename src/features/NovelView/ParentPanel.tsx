@@ -9,12 +9,6 @@ interface ParentPanelProps {
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
   textCount: number;
-  evaluationGoodCount: number;
-  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
-  evaluationStayCount: number;
-  setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
-  isGoodEvaluated: boolean;
-  isStayEvaluated: boolean;
   onClick: () => void;
 }
 
@@ -22,12 +16,6 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
   parentPanel,
   startIndex,
   textCount,
-  evaluationGoodCount,
-  setEvaluationGoodCount,
-  evaluationStayCount,
-  setEvaluationStayCount,
-  isGoodEvaluated,
-  isStayEvaluated,
   onClick,
 }) => {
   return (
@@ -49,17 +37,14 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
       {startIndex < textCount ? (
         <NovelCard
           key={startIndex}
-          index={0}
-          textIndex={startIndex}
           sentence={parentPanel.sentence}
-          novel={parentPanel}
+          userName={parentPanel.userName || parentPanel.sentenceUserName || ''}
+          sentenceId={parentPanel.sentenceId}
           onClick={onClick}
-          evaluationGoodCount={evaluationGoodCount}
-          setEvaluationGoodCount={setEvaluationGoodCount}
-          evaluationStayCount={evaluationStayCount}
-          setEvaluationStayCount={setEvaluationStayCount}
-          isGoodEvaluated={isGoodEvaluated}
-          isStayEvaluated={isStayEvaluated}
+          evaluationGoodCount={parentPanel.evaluationGoodCount || 0}
+          evaluationStayCount={parentPanel.evaluationStayCount || 0}
+          isGoodEvaluated={false} // TODO: ユーザーの評価状態を取得
+          isStayEvaluated={false} // TODO: ユーザーの評価状態を取得
         />
       ) : null}
     </Box>

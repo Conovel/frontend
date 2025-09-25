@@ -1,21 +1,14 @@
 import React, { useState } from 'react';
-import { Avatar, Box, IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import ThumbUpButton from '../../components/buttonicon/ThumbsUpButton';
-import NextPlanButton from '../../components/buttonicon/NextPlanButton';
+import NovelCard from '../../components/novelCard/NovelCard';
 import { Sentence, NavigationDirection } from '../../types/types';
 
 interface MainPanelProps {
   mainPanel: Sentence[];
   startIndex: number;
   visibleTextCount: number;
-  evaluationGoodCount: number;
-  setEvaluationGoodCount: React.Dispatch<React.SetStateAction<number>>;
-  evaluationStayCount: number;
-  setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
-  isGoodEvaluated: boolean;
-  isStayEvaluated: boolean;
   onNavigate?: (direction: NavigationDirection) => void;
   hasParallels?: boolean;
   onPrevParallel?: () => void;
@@ -30,12 +23,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
   mainPanel,
   startIndex,
   visibleTextCount,
-  evaluationGoodCount,
-  setEvaluationGoodCount,
-  evaluationStayCount,
-  setEvaluationStayCount,
-  isGoodEvaluated,
-  isStayEvaluated,
   onNavigate,
   hasParallels,
   onPrevParallel,
@@ -61,12 +48,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
         setLocalStartIndex(Math.max(0, localStartIndex - visibleTextCount));
       }
     }
-  };
-
-  const handleGoodCountClick = () => {
-    const newCount = evaluationGoodCount + 1;
-    setEvaluationGoodCount(newCount);
-    // ここにバックエンド処理を追加
   };
 
   const currentStartIndex = onNavigate ? startIndex : localStartIndex;
@@ -173,107 +154,17 @@ const MainPanel: React.FC<MainPanelProps> = ({
         {mainPanel
           .slice(currentStartIndex, currentStartIndex + visibleTextCount)
           .map((panel) => (
-            <Box
+            <NovelCard
               key={panel.sentenceId}
-              sx={{
-                backgroundColor: '#fff',
-                position: 'relative',
-                textAlign: 'left',
-                border: '1px solid #000',
-                borderRadius: '10px',
-                height: {
-                  xs: '30vh', // スマホ
-                  sm: '32vh', // タブレット
-                  md: '35vh', // デスクトップ
-                },
-                width: '100%',
-                alignItems: 'center',
-                zIndex: 2,
-                overflowY: 'auto',
-                mb: 2,
-              }}
-            >
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  margin: '2vh 2vh',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar
-                    sx={{
-                      fontSize: {
-                        xs: '1rem', // スマホ
-                        sm: '1.1rem', // タブレット
-                        md: '1.2rem', // デスクトップ
-                      },
-                      width: {
-                        xs: 28, // スマホ
-                        sm: 30, // タブレット
-                        md: 32, // デスクトップ
-                      },
-                      height: {
-                        xs: 28, // スマホ
-                        sm: 30, // タブレット
-                        md: 32, // デスクトップ
-                      },
-                    }}
-                  >
-                    {(panel.userName || panel.sentenceUserName || '').charAt(0)}
-                  </Avatar>
-                  <Box
-                    sx={{
-                      marginLeft: '1vh',
-                      fontSize: {
-                        xs: '1rem', // スマホ
-                        sm: '1.1rem', // タブレット
-                        md: '1.2rem', // デスクトップ
-                      },
-                    }}
-                  >
-                    {panel.userName}
-                  </Box>
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  margin: '1vh 1vh',
-                  fontSize: {
-                    xs: '1.2rem', // スマホ
-                    sm: '1.4rem', // タブレット
-                    md: '1.6rem', // デスクトップ
-                  },
-                }}
-              >
-                {panel.sentence}
-              </Box>
-            </Box>
+              sentence={panel.sentence}
+              userName={panel.userName || panel.sentenceUserName || ''}
+              sentenceId={panel.sentenceId}
+              evaluationGoodCount={panel.evaluationGoodCount || 0}
+              evaluationStayCount={panel.evaluationStayCount || 0}
+              isGoodEvaluated={false} // TODO: ユーザーの評価状態を取得
+              isStayEvaluated={false} // TODO: ユーザーの評価状態を取得
+            />
           ))}
-      </Box>
-
-      {/* ボタン群 - メインパネルの枠外右下に固定表示 */}
-      <Box
-        sx={{
-          display: 'flex',
-          position: 'absolute',
-          bottom: '-20px',
-          right: '20px',
-          zIndex: 10,
-          gap: 1,
-        }}
-      >
-        <ThumbUpButton
-          evaluationGoodCount={evaluationGoodCount}
-          isEvaluated={isGoodEvaluated}
-          onClick={handleGoodCountClick}
-        />
-        <NextPlanButton
-          evaluationStayCount={evaluationStayCount}
-          setEvaluationStayCount={setEvaluationStayCount}
-          isEvaluated={isStayEvaluated}
-        />
       </Box>
 
       {/* 右ナビゲーションボタン - 常に表示 */}

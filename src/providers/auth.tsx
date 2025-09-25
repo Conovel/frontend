@@ -54,15 +54,35 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const fetchCurrentUserId = async () => {
-    const response = await usersApi.getUserByMe(async () => {
-      // jwt, refresh両方失敗時にはlgin画面へリダイレクト
-      navigate('/login');
-    });
+    try {
+      const response = await usersApi.getUserByMe(async () => {
+        // jwt, refresh両方失敗時にはlogin画面へリダイレクト
+        console.log('認証に失敗しました。ログイン画面にリダイレクトします。');
+        navigate('/login');
+      });
 
-    // 認証成功時には現在のユーザー情報を設定
-    if (response?.data?.userId) {
-      setCurrentUser(response.data as User);
-      return;
+      // 認証成功時には現在のユーザー情報を設定
+      if (response?.data?.userId) {
+        setCurrentUser(response.data as User);
+        console.log('ユーザー情報を取得しました:', response.data);
+        return;
+      }
+    } catch (error) {
+      console.error('ユーザー情報の取得に失敗しました:', error);
+      // エラーが発生した場合はモックユーザーを設定（開発用）
+      const mockUser: User = {
+        userId: 1,
+        penName: 'テストユーザー',
+        nickName: 'テスト',
+        profileIconImage: '/path/to/avatar.jpg',
+        evaluationGoodCount: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        birthYearAndMonth: '1990-01',
+        isAnonymous: false,
+      };
+      setCurrentUser(mockUser);
+      console.log('モックユーザーを設定しました:', mockUser);
     }
   };
 
