@@ -1,7 +1,5 @@
 interface TagProps {
-  label: string;
+    label: string;
 }
-export declare const Tags: ({
-  label,
-}: TagProps) => import('react/jsx-runtime').JSX.Element;
+export declare const Tags: ({ label }: TagProps) => import("react/jsx-runtime").JSX.Element;
 export {};

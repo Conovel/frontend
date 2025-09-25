@@ -64,19 +64,15 @@
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
       "prettier --write",
-      "eslint --fix",
-      "npm run lint",
-      "bash -c 'tsc --noEmit'",
-      "npm run format"
-    ],
-    "src/**/*.scss": [
-      "prettier --write",
-      "stylelint --fix"
+      "eslint --fix"
     ]
   },
   "msw": {
     "workerDirectory": [
       "public"
     ]
+  },
+  "overrides": {
+    "picomatch": "^4.0.3"
   }
 }

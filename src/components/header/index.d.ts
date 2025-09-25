@@ -1,2 +1,2 @@
-declare function HeaderBar(): import('react/jsx-runtime').JSX.Element;
+declare function HeaderBar(): import("react/jsx-runtime").JSX.Element;
 export default HeaderBar;

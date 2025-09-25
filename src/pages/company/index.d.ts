@@ -1,1 +1,1 @@
-export declare const CompanyPage: () => import('react/jsx-runtime').JSX.Element;
+export declare const CompanyPage: () => import("react/jsx-runtime").JSX.Element;

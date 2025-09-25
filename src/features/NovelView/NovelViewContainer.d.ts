@@ -1,1 +1,1 @@
-export declare const NovelViewContainer: () => import('react/jsx-runtime').JSX.Element;
+export declare const NovelViewContainer: () => import("react/jsx-runtime").JSX.Element;

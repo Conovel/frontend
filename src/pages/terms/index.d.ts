@@ -1,1 +1,1 @@
-export declare const TermsPage: () => import('react/jsx-runtime').JSX.Element;
+export declare const TermsPage: () => import("react/jsx-runtime").JSX.Element;
