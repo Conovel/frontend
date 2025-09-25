@@ -455,6 +455,7 @@ export const NovelViewContainer = () => {
       setStartIndexChildren={setStartIndexChildren}
       hasMainPanelEvaluation={hasMainPanelEvaluationRef.current}
       textCount={15} // モックデータの総数
+      titleId={titleId}
       onPost={handlePost}
       onNextParallel={handleNextParallel}
       onPrevParallel={handlePrevParallel}

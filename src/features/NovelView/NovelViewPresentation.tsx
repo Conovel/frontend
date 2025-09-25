@@ -16,6 +16,7 @@ interface NovelViewPresentationProps {
   setStartIndexChildren: React.Dispatch<React.SetStateAction<number>>;
   hasMainPanelEvaluation: boolean;
   textCount: number;
+  titleId: string;
   onPost: (newSentence: string) => Promise<void>;
   onNextParallel: () => void;
   onPrevParallel: () => void;
@@ -37,6 +38,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setStartIndexChildren,
   hasMainPanelEvaluation,
   textCount,
+  titleId,
   onPost,
   onNextParallel,
   onPrevParallel,
@@ -86,7 +88,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           {parentPanel.slice(-1).map((novel, index) => {
             const novelWithRelations: NovelProps = {
               ...novel,
-              titleId: novel.titleId || novel.sentenceId,
+              titleId: parseInt(titleId, 10),
               children: childrenPanel,
               main: mainPanel,
               parent: [],
