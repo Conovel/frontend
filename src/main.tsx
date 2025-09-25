@@ -5,8 +5,12 @@ import './index.css';
 import { BrowserRouter } from 'react-router';
 
 async function enableMocking() {
-  // MSWを無効化して実際のAPIを使用
-  console.log('MSW: Disabled - using real API');
+  if (!import.meta.env.PROD) {
+    const { worker } = await import('../src/mock/browser');
+    worker.start();
+  }
+  // MSWを有効化してモックデータを使用
+  console.log('MSW: Enabled - using mock data');
   return Promise.resolve();
 }
 

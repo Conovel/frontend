@@ -6,6 +6,8 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
 import { Sentence } from '../../types/types';
 import { EditPost } from '../EditPost';
+import { getSentenceEvaluation } from './mocks/data';
+import MosaicOverlay from '../../components/mosaicOverlay';
 
 const carouselNavButtonStyle = {
   backgroundColor: '#BDBDBD',
@@ -108,6 +110,9 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         ? panel.sentence.substring(0, 50) + '...'
         : panel.sentence;
 
+    // ユーザーの評価状態を取得
+    const evaluation = getSentenceEvaluation(panel.sentenceId);
+
     const handleCardClick = (sentenceId: number | undefined) => {
       if (sentenceId) {
         handleClick(sentenceId);
@@ -123,8 +128,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
           onClick={() => handleCardClick(panel.sentenceId)}
           evaluationGoodCount={panel.evaluationGoodCount || 0}
           evaluationStayCount={panel.evaluationStayCount || 0}
-          isGoodEvaluated={false} // TODO: ユーザーの評価状態を取得
-          isStayEvaluated={false} // TODO: ユーザーの評価状態を取得
+          isGoodEvaluated={evaluation.isGoodEvaluated}
+          isStayEvaluated={evaluation.isStayEvaluated}
           disabled={!hasMainPanelEvaluation}
         />
       </Box>
@@ -145,53 +150,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     <Box sx={mainBoxStyle}>
       <Box sx={innerBoxStyle}>
         {/* 評価が行われていない場合のモザイクオーバーレイ */}
-        {!hasMainPanelEvaluation && (
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '50%',
-              background: `
-                linear-gradient(
-                  to bottom,
-                  transparent 0%,
-                  rgba(255, 255, 255, 0.3) 10%,
-                  rgba(255, 255, 255, 0.6) 30%,
-                  rgba(255, 255, 255, 0.9) 50%,
-                  rgba(255, 255, 255, 1) 70%,
-                  rgba(255, 255, 255, 1) 100%
-                )
-              `,
-              backdropFilter: 'blur(8px)',
-              zIndex: 5,
-              pointerEvents: 'none',
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'center',
-              paddingBottom: '15px',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: '100%',
-                background: `
-                  repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(0, 0, 0, 0.1) 2px,
-                    rgba(0, 0, 0, 0.1) 4px
-                  )
-                `,
-                zIndex: -1,
-              },
-            }}
-          ></Box>
-        )}
+        <MosaicOverlay isVisible={!hasMainPanelEvaluation} />
         {showCarousel ? (
           <Carousel
             autoPlay={false}

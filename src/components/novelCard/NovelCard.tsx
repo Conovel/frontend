@@ -34,17 +34,24 @@ const NovelCard = ({
 
   const busyRef = useRef(false); // 再入防止
   const abortRef = useRef<AbortController | null>(null);
+  const requestIdRef = useRef<number>(0); // リクエストIDで最新のリクエストのみ処理
 
   const evaluationsApi = new EvaluationsApi(axiosConfig);
   const handleGoodCountClick = async (): Promise<void> => {
     if (busyRef.current || disabled) return; // 連打無視
+    
+    // アトミックな操作でbusyフラグを設定
+    if (busyRef.current) return; // 二重チェック
     busyRef.current = true;
     setIsEvaluating(true);
 
-    // 既存リクエストがあれば中断（任意）
+    // 既存リクエストがあれば中断
     abortRef.current?.abort();
     const ac = new AbortController();
     abortRef.current = ac;
+    
+    // リクエストIDをインクリメント（最新のリクエストのみ処理）
+    const currentRequestId = ++requestIdRef.current;
 
     try {
       const evaluateSentence: EvaluateSentence = {
@@ -53,22 +60,30 @@ const NovelCard = ({
       };
 
       const response = await evaluationsApi.evaluateSentence(evaluateSentence);
-      if (response?.data) {
-        setLocalGoodCount(
-          response.data.evaluationGoodCount || localGoodCount + 1,
-        );
-      } else {
-        setLocalGoodCount(localGoodCount + 1);
+      
+      // 最新のリクエストかどうかをチェック
+      if (currentRequestId === requestIdRef.current) {
+        if (response?.data) {
+          setLocalGoodCount(
+            response.data.evaluationGoodCount || localGoodCount + 1,
+          );
+        } else {
+          setLocalGoodCount(localGoodCount + 1);
+        }
       }
     } catch (error) {
-      if ((error as any).name !== 'AbortError') {
+      // 最新のリクエストかつAbortErrorでない場合のみエラー処理
+      if (currentRequestId === requestIdRef.current && (error as any).name !== 'AbortError') {
         console.error('評価エラー:', error);
         // エラー時はローカルでカウントアップ
         setLocalGoodCount(localGoodCount + 1);
       }
     } finally {
-      setIsEvaluating(false);
-      busyRef.current = false;
+      // 最新のリクエストの場合のみ状態をリセット
+      if (currentRequestId === requestIdRef.current) {
+        setIsEvaluating(false);
+        busyRef.current = false;
+      }
     }
   };
 

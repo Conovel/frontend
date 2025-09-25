@@ -4,6 +4,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
 import { Sentence, NavigationDirection } from '../../types/types';
+import { getSentenceEvaluation } from './mocks/data';
 
 interface MainPanelProps {
   mainPanel: Sentence[];
@@ -153,18 +154,23 @@ const MainPanel: React.FC<MainPanelProps> = ({
       >
         {mainPanel
           .slice(currentStartIndex, currentStartIndex + visibleTextCount)
-          .map((panel) => (
-            <NovelCard
-              key={panel.sentenceId}
-              sentence={panel.sentence}
-              userName={panel.userName || panel.sentenceUserName || ''}
-              sentenceId={panel.sentenceId}
-              evaluationGoodCount={panel.evaluationGoodCount || 0}
-              evaluationStayCount={panel.evaluationStayCount || 0}
-              isGoodEvaluated={false} // TODO: ユーザーの評価状態を取得
-              isStayEvaluated={false} // TODO: ユーザーの評価状態を取得
-            />
-          ))}
+          .map((panel) => {
+            // ユーザーの評価状態を取得
+            const evaluation = getSentenceEvaluation(panel.sentenceId);
+            
+            return (
+              <NovelCard
+                key={panel.sentenceId}
+                sentence={panel.sentence}
+                userName={panel.userName || panel.sentenceUserName || ''}
+                sentenceId={panel.sentenceId}
+                evaluationGoodCount={panel.evaluationGoodCount || 0}
+                evaluationStayCount={panel.evaluationStayCount || 0}
+                isGoodEvaluated={evaluation.isGoodEvaluated}
+                isStayEvaluated={evaluation.isStayEvaluated}
+              />
+            );
+          })}
       </Box>
 
       {/* 右ナビゲーションボタン - 常に表示 */}

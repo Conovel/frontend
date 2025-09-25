@@ -70,13 +70,18 @@ export const EditPost: React.FC<EditPostProps> = ({
         parentUpdatedAt: parentUpdatedAt,
       };
 
-      await sentencesApi.postSentence(postSentence);
-
-      // 成功時の処理
-      setShowSuccessMessage(true);
-      reset(); // フォームをリセット
-      onPostSuccess(); // 親コンポーネントに成功を通知
-      onClose(); // モーダルを閉じる
+      const response = await sentencesApi.postSentence(postSentence);
+      
+      // APIレスポンスの検証
+      if (response && response.status >= 200 && response.status < 300) {
+        // 成功時の処理
+        setShowSuccessMessage(true);
+        reset(); // フォームをリセット
+        onPostSuccess(); // 親コンポーネントに成功を通知
+        onClose(); // モーダルを閉じる
+      } else {
+        throw new Error('APIレスポンスが成功ステータスではありません');
+      }
     } catch (error) {
       console.error('投稿エラー:', error);
       setErrorMessage('投稿に失敗しました。もう一度お試しください。');

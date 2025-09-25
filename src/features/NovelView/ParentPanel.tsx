@@ -2,6 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 import NovelCard from '../../components/novelCard/NovelCard';
 import { NovelProps } from '../../types/types';
+import { getSentenceEvaluation } from './mocks/data';
 
 interface ParentPanelProps {
   parentPanel: NovelProps;
@@ -18,6 +19,9 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
   textCount,
   onClick,
 }) => {
+  // ユーザーの評価状態を取得
+  const evaluation = getSentenceEvaluation(parentPanel.sentenceId);
+  
   return (
     <Box
       sx={{
@@ -43,8 +47,8 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
           onClick={onClick}
           evaluationGoodCount={parentPanel.evaluationGoodCount || 0}
           evaluationStayCount={parentPanel.evaluationStayCount || 0}
-          isGoodEvaluated={false} // TODO: ユーザーの評価状態を取得
-          isStayEvaluated={false} // TODO: ユーザーの評価状態を取得
+          isGoodEvaluated={evaluation.isGoodEvaluated}
+          isStayEvaluated={evaluation.isStayEvaluated}
         />
       ) : null}
     </Box>

@@ -56,7 +56,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const fetchCurrentUserId = async () => {
     try {
       const response = await usersApi.getUserByMe(async () => {
-        // jwt, refresh両方失敗時にはlogin画面へリダイレクト
+        // jwt, refresh両方失敗時にはログイン画面へリダイレクト
         console.log('認証に失敗しました。ログイン画面にリダイレクトします。');
         navigate('/login');
       });

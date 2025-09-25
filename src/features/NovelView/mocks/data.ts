@@ -165,7 +165,12 @@ export const mockNovelProps = {
 };
 
 // 初期読み込み用のセンテンスID設定
-export const INITIAL_SENTENCE_ID = 5; // より複雑な構造の中心となるセンテンス
+// The initial sentence ID is set to 5 by default, as it represents the center of a more complex structure in the mock data.
+// You can override this value by setting the environment variable INITIAL_SENTENCE_ID.
+export const INITIAL_SENTENCE_ID =
+  typeof process !== 'undefined' && process.env && process.env.INITIAL_SENTENCE_ID
+    ? Number(process.env.INITIAL_SENTENCE_ID)
+    : 5;
 
 // センテンスの一意のIDを持つデータ
 export const sentencesData: SentencesData = {
