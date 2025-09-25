@@ -57,7 +57,7 @@ export const LoginPresenter = () => {
                 to='/account'
                 sx={{ borderColor: 'black', color: 'black', padding: '4px 16px' }}
               >
-                マイページへ
+                アカウント情報へ
               </Button>
             </>
           ) : (
