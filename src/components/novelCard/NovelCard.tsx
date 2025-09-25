@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
@@ -32,30 +32,43 @@ const NovelCard = ({
   const [localStayCount, setLocalStayCount] = useState(evaluationStayCount);
   const [isEvaluating, setIsEvaluating] = useState(false);
 
+  const busyRef = useRef(false); // 再入防止
+  const abortRef = useRef<AbortController | null>(null);
+
   const evaluationsApi = new EvaluationsApi(axiosConfig);
   const handleGoodCountClick = async (): Promise<void> => {
-    if (!disabled && !isEvaluating) {
-      setIsEvaluating(true);
-      try {
-        const evaluateSentence: EvaluateSentence = {
-          sentenceId: sentenceId,
-          evaluation: 'good',
-        };
+    if (busyRef.current || disabled) return; // 連打無視
+    busyRef.current = true;
+    setIsEvaluating(true);
 
-        const response =
-          await evaluationsApi.evaluateSentence(evaluateSentence);
-        if (response?.data) {
-          setLocalGoodCount(
-            response.data.evaluationGoodCount || localGoodCount + 1,
-          );
-        }
-      } catch (error) {
+    // 既存リクエストがあれば中断（任意）
+    abortRef.current?.abort();
+    const ac = new AbortController();
+    abortRef.current = ac;
+
+    try {
+      const evaluateSentence: EvaluateSentence = {
+        sentenceId: sentenceId,
+        evaluation: 'good',
+      };
+
+      const response = await evaluationsApi.evaluateSentence(evaluateSentence);
+      if (response?.data) {
+        setLocalGoodCount(
+          response.data.evaluationGoodCount || localGoodCount + 1,
+        );
+      } else {
+        setLocalGoodCount(localGoodCount + 1);
+      }
+    } catch (error) {
+      if ((error as any).name !== 'AbortError') {
         console.error('評価エラー:', error);
         // エラー時はローカルでカウントアップ
         setLocalGoodCount(localGoodCount + 1);
-      } finally {
-        setIsEvaluating(false);
       }
+    } finally {
+      setIsEvaluating(false);
+      busyRef.current = false;
     }
   };
 
@@ -117,12 +130,14 @@ const NovelCard = ({
           evaluationGoodCount={localGoodCount}
           isEvaluated={isGoodEvaluated}
           onClick={handleGoodCountClick}
+          disabled={disabled || isEvaluating}
         />
         <NextPlanButton
           evaluationStayCount={localStayCount}
           setEvaluationStayCount={setLocalStayCount}
           isEvaluated={isStayEvaluated}
           sentenceId={sentenceId}
+          disabled={disabled || isEvaluating}
         />
       </Box>
     </Box>

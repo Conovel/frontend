@@ -16,7 +16,7 @@ const ThumbUpButton: React.FC<ThumbUpButtonProps> = ({
 }) => {
   return (
     <div
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
       style={{
         display: 'flex',
         alignItems: 'center',

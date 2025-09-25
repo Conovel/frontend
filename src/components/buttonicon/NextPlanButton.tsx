@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { EvaluationsApi, EvaluateSentence } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
@@ -18,34 +18,41 @@ const NextPlanButton: React.FC<NextPlanButtonProps> = ({
   disabled = false,
   sentenceId,
 }) => {
-  const [isEvaluating, setIsEvaluating] = useState(false);
+  const busyRef = useRef(false); // 再入防止
+  const abortRef = useRef<AbortController | null>(null);
 
   const handleClick = async () => {
-    if (!disabled && !isEvaluating) {
-      setIsEvaluating(true);
-      try {
-        const evaluationsApi = new EvaluationsApi(axiosConfig);
-        const evaluateSentence: EvaluateSentence = {
-          sentenceId: sentenceId,
-          evaluation: 'stay',
-        };
+    if (busyRef.current || disabled) return; // 連打無視
+    busyRef.current = true;
 
-        const response =
-          await evaluationsApi.evaluateSentence(evaluateSentence);
-        if (response?.data) {
-          setEvaluationStayCount(
-            response.data.evaluationStayCount || evaluationStayCount + 1,
-          );
-        } else {
-          setEvaluationStayCount(evaluationStayCount + 1);
-        }
-      } catch (error) {
+    // 既存リクエストがあれば中断（任意）
+    abortRef.current?.abort();
+    const ac = new AbortController();
+    abortRef.current = ac;
+
+    try {
+      const evaluationsApi = new EvaluationsApi(axiosConfig);
+      const evaluateSentence: EvaluateSentence = {
+        sentenceId: sentenceId,
+        evaluation: 'stay',
+      };
+
+      const response = await evaluationsApi.evaluateSentence(evaluateSentence);
+      if (response?.data) {
+        setEvaluationStayCount(
+          response.data.evaluationStayCount || evaluationStayCount + 1,
+        );
+      } else {
+        setEvaluationStayCount(evaluationStayCount + 1);
+      }
+    } catch (error) {
+      if ((error as any).name !== 'AbortError') {
         console.error('評価エラー:', error);
         // エラー時はローカルでカウント更新
         setEvaluationStayCount(evaluationStayCount + 1);
-      } finally {
-        setIsEvaluating(false);
       }
+    } finally {
+      busyRef.current = false;
     }
   };
 
