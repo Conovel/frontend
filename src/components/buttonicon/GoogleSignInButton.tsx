@@ -32,7 +32,6 @@ export default function GoogleSignInButton({
           <GoogleIcon size={20} />
         </div>
         {!iconOnly && <span className="gsi-material-button-contents">{children}</span>}
-        <span style={{ display: 'none' }}>{String(children)}</span>
       </div>
     </button>
   );
