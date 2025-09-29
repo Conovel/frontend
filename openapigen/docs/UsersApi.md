@@ -226,7 +226,7 @@ No authorization required
 
 # **updateUserByMe**
 
-> User updateUserByMe(updateUser)
+> ViewMeUser updateUserByMe(updateUser)
 
 ### Example
 
@@ -249,7 +249,7 @@ const { status, data } = await apiInstance.updateUserByMe(updateUser);
 
 ### Return type
 
-**User**
+**ViewMeUser**
 
 ### Authorization
 

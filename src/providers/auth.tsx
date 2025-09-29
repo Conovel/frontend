@@ -13,8 +13,9 @@ export interface User {
   evaluationGoodCount: number;
   createdAt: string;
   updatedAt: string;
-  birthYearAndMonth: string;
+  birthYm: string;
   isAnonymous: boolean;
+  agreedTermsVersion: number;
 }
 
 export interface AuthContextType {
