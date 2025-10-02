@@ -22,7 +22,7 @@ export default function ToastSnackbar({
   const hideDurationTime = 5000
   const verticalPosition = 'bottom' // 'top' | 'bottom'
   const horizontalPosition = 'center' // 'left' | 'center' | 'right'
-  const ssnackberSx = {
+  const snackberSx = {
     mb: 12,
     zIndex: 3000, // MUIのデフォルトは1400
   } 
@@ -80,8 +80,8 @@ export default function ToastSnackbar({
         horizontal: horizontalPosition,
       }}
       sx={{
-        mb: ssnackberSx.mb,
-        zIndex: ssnackberSx.zIndex,
+        mb: snackberSx.mb,
+        zIndex: snackberSx.zIndex,
       }}
     >
       <Alert
