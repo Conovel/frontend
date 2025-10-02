@@ -18,6 +18,7 @@ interface NovelViewPresentationProps {
   textCount: number;
   titleId: string;
   onPost: (newSentence: string) => Promise<void>;
+  onRefresh: () => void;
   onNextParallel: () => void;
   onPrevParallel: () => void;
   hasParallels: boolean;
@@ -39,7 +40,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   hasMainPanelEvaluation,
   textCount,
   titleId,
-  onPost,
+  onRefresh,
   onNextParallel,
   onPrevParallel,
   hasParallels,
@@ -52,9 +53,9 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handlePostSuccess = async () => {
+  const handlePostSuccess = () => {
     // 投稿成功後の処理（画面更新など）
-    await onPost(''); // 空文字列を渡して画面更新をトリガー
+    onRefresh(); // 画面更新をトリガー
   };
 
   return (
