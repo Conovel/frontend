@@ -84,14 +84,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
       {/* 左ナビゲーションボタン - 常に表示 */}
       <IconButton
         onClick={() => {
-          console.log(
-            'Left button clicked, hasParallels:',
-            hasParallels,
-            'isInParallelMode:',
-            isInParallelMode,
-            'canGoPrev:',
-            canGoPrev,
-          );
           if (hasParallels && onPrevParallel) {
             onPrevParallel();
           } else if (isInParallelMode && onBackToOriginal) {
@@ -157,7 +149,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
           .map((panel) => {
             // ユーザーの評価状態を取得
             const evaluation = getSentenceEvaluation(panel.sentenceId);
-            
+
             return (
               <NovelCard
                 key={panel.sentenceId}
