@@ -599,13 +599,19 @@ export interface ViewMeUser {
    * @type {string}
    * @memberof ViewMeUser
    */
-  birthYearAndMonth?: string;
+  birthYm?: string;
   /**
    * 匿名設定
    * @type {boolean}
    * @memberof ViewMeUser
    */
   isAnonymous?: boolean;
+  /**
+   * 同意した利用規約のバージョン
+   * @type {number}
+   * @memberof ViewMeUser
+   */
+  agreedTermsVersion?: number;
 }
 /**
  *
@@ -1952,7 +1958,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
       updateUser: UpdateUser,
       options?: RawAxiosRequestConfig,
     ): Promise<
-      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ViewMeUser>
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.updateUserByMe(
         updateUser,
@@ -2060,7 +2066,7 @@ export const UsersApiFactory = function (
     updateUserByMe(
       updateUser: UpdateUser,
       options?: RawAxiosRequestConfig,
-    ): AxiosPromise<User> {
+    ): AxiosPromise<ViewMeUser> {
       return localVarFp
         .updateUserByMe(updateUser, options)
         .then((request) => request(axios, basePath));
