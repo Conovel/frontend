@@ -21,11 +21,11 @@ export const AccountSettings: React.FC = () => {
     penName: '',
     nickName: '',
     profileIconImage: '',
- 　 evaluationGoodCount: 100,
+    evaluationGoodCount: 100,
     birthYm: new Date('1998/02'),
     isAnonymous: false,
     agreedTermsVersion: 1,
-  };
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   const usersApi = new UsersApi(axiosConfig);
@@ -47,10 +47,11 @@ export const AccountSettings: React.FC = () => {
           nickName: userData.nickName || '',
           profileIconImage: userData.profileIconImage || '',
           evaluationGoodCount: userData.evaluationGoodCount || 0,
-          birthYearAndMonth: userData.birthYearAndMonth
-            ? new Date(userData.birthYearAndMonth + '/01')
+          birthYm: userData.birthYm
+            ? new Date(userData.birthYm + '/01')
             : new Date(),
           isAnonymous: userData.isAnonymous || false,
+          agreedTermsVersion: 1,
         };
 
         setAccountInfo(convertedAccountInfo);
@@ -60,7 +61,7 @@ export const AccountSettings: React.FC = () => {
           penName: convertedAccountInfo.penName,
           nickName: convertedAccountInfo.nickName,
           profileIconImage: convertedAccountInfo.profileIconImage,
-          birthYearAndMonth: convertedAccountInfo.birthYearAndMonth,
+          birthYm: convertedAccountInfo.birthYm,
           isAnonymous: convertedAccountInfo.isAnonymous,
         });
       } catch (error) {

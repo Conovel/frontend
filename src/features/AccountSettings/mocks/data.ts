@@ -9,7 +9,7 @@ export const mockUserData: ViewMeUser = {
   evaluationGoodCount: 100,
   createdAt: '2024-01-01T00:00:00Z',
   updatedAt: '2024-01-01T00:00:00Z',
-  birthYearAndMonth: '1998/02',
+  birthYm: '1998/02',
   isAnonymous: false,
 };
 
@@ -22,6 +22,6 @@ export const fallbackUserData: ViewMeUser = {
   evaluationGoodCount: 0,
   createdAt: '2024-01-01T00:00:00Z',
   updatedAt: '2024-01-01T00:00:00Z',
-  birthYearAndMonth: '1990/01',
+  birthYm: '1990/01',
   isAnonymous: false,
 };
