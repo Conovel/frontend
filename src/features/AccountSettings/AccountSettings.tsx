@@ -21,10 +21,11 @@ export const AccountSettings: React.FC = () => {
     penName: '',
     nickName: '',
     profileIconImage: '',
-    evaluationGoodCount: 0,
-    birthYearAndMonth: new Date(),
+ 　 evaluationGoodCount: 100,
+    birthYm: new Date('1998/02'),
     isAnonymous: false,
-  });
+    agreedTermsVersion: 1,
+  };
   const [isLoading, setIsLoading] = useState(true);
 
   const usersApi = new UsersApi(axiosConfig);
