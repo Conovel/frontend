@@ -1,14 +1,13 @@
 import NovelViewPresentation from './NovelViewPresentation';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { Sentence } from '../../types/types';
+import { SentenceWithUI } from '../../types/types';
 import { SentencesApi } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
 import {
   mockContainerData,
   buildInitialData,
   INITIAL_SENTENCE_ID,
-  addNewSentence,
   getParallelSentences as getMockParallelSentences,
   getSentenceEvaluation,
 } from './mocks/data';
@@ -31,7 +30,7 @@ export const NovelViewContainer = () => {
   const [startIndexChildren, setStartIndexChildren] = useState(0);
 
   // MainPanelの評価状態を追跡
-  const hasMainPanelEvaluationRef = useRef(false);
+  const [hasMainPanelEvaluation, setHasMainPanelEvaluation] = useState(false);
 
   // データの状態管理
   const [mainPanel, setMainPanel] = useState(mockContainerData.main);
@@ -47,9 +46,11 @@ export const NovelViewContainer = () => {
 
   // パラレル投稿管理用の状態
   const currentParallelIndexRef = useRef(0);
-  const [parallelSentences, setParallelSentences] = useState<Sentence[]>([]);
+  const [parallelSentences, setParallelSentences] = useState<SentenceWithUI[]>(
+    [],
+  );
   const [originalMainSentence, setOriginalMainSentence] =
-    useState<Sentence | null>(null);
+    useState<SentenceWithUI | null>(null);
 
   // URLが変更されたときにデータを更新
   useEffect(() => {
@@ -69,16 +70,15 @@ export const NovelViewContainer = () => {
           }
           const data = response.data;
 
-          // API レスポンスを内部のSentence型に変換
-          const convertToSentence = (apiSentence: any): Sentence => ({
+          // API レスポンスを内部のSentenceWithUI型に変換
+          const convertToSentence = (apiSentence: any): SentenceWithUI => ({
             sentenceId: apiSentence.sentenceId,
             sentence: apiSentence.sentence,
             sentenceUserId: apiSentence.sentenceUserId,
-            sentenceUserName:
-              apiSentence.sentencePenName || apiSentence.sentenceUserName || '',
-            profileIconImage: apiSentence.profileIconImage || '',
-            evaluationGoodCount: apiSentence.evaluationGoodCount || 0,
-            evaluationStayCount: apiSentence.evaluationStayCount || 0,
+            sentencePenName: apiSentence.sentencePenName,
+            profileIconImage: apiSentence.profileIconImage,
+            evaluationGoodCount: apiSentence.evaluationGoodCount,
+            evaluationStayCount: apiSentence.evaluationStayCount,
             createdAt: apiSentence.createdAt,
             updatedAt: apiSentence.updatedAt,
           });
@@ -112,7 +112,7 @@ export const NovelViewContainer = () => {
             if (data.parallels) {
               const parallels = data.parallels.map(convertToSentence);
               const currentIndex = parallels.findIndex(
-                (p: Sentence) => p.sentenceId === targetId,
+                (p: SentenceWithUI) => p.sentenceId === targetId,
               );
 
               if (currentIndex >= 0) {
@@ -123,7 +123,7 @@ export const NovelViewContainer = () => {
             }
 
             // MainPanelの評価状態を設定
-            hasMainPanelEvaluationRef.current = false;
+            setHasMainPanelEvaluation(false);
           }
         } catch (error) {
           console.error('Error fetching sentence data:', error);
@@ -138,7 +138,7 @@ export const NovelViewContainer = () => {
             const currentMainSentence = newData.main[0];
             if (currentMainSentence) {
               const parallels = getMockParallelSentences(
-                currentMainSentence.sentenceId,
+                currentMainSentence.sentenceId || 0,
               );
               setParallelSentences(parallels);
 
@@ -162,11 +162,12 @@ export const NovelViewContainer = () => {
               // MainPanelの評価状態をSentenceデータから取得
               if (newData.main.length > 0) {
                 const mainEvaluation = getSentenceEvaluation(
-                  newData.main[0].sentenceId,
+                  newData.main[0].sentenceId || 0,
                 );
-                hasMainPanelEvaluationRef.current =
+                setHasMainPanelEvaluation(
                   mainEvaluation.isGoodEvaluated ||
-                  mainEvaluation.isStayEvaluated;
+                    mainEvaluation.isStayEvaluated,
+                );
               }
             }
           }
@@ -193,12 +194,11 @@ export const NovelViewContainer = () => {
         const data = response.data;
 
         // API レスポンスを内部のSentence型に変換
-        const convertToSentence = (apiSentence: any): Sentence => ({
+        const convertToSentence = (apiSentence: any): SentenceWithUI => ({
           sentenceId: apiSentence.sentenceId,
           sentence: apiSentence.sentence,
           sentenceUserId: apiSentence.sentenceUserId,
-          sentenceUserName:
-            apiSentence.sentencePenName || apiSentence.sentenceUserName || '',
+          sentencePenName: apiSentence.sentencePenName,
           profileIconImage: apiSentence.profileIconImage || '',
           evaluationGoodCount: apiSentence.evaluationGoodCount || 0,
           evaluationStayCount: apiSentence.evaluationStayCount || 0,
@@ -235,7 +235,7 @@ export const NovelViewContainer = () => {
           if (data.parallels) {
             const parallels = data.parallels.map(convertToSentence);
             const currentIndex = parallels.findIndex(
-              (p: Sentence) => p.sentenceId === targetId,
+              (p: SentenceWithUI) => p.sentenceId === targetId,
             );
 
             if (currentIndex >= 0) {
@@ -246,7 +246,7 @@ export const NovelViewContainer = () => {
           }
 
           // MainPanelの評価状態を設定
-          hasMainPanelEvaluationRef.current = false;
+          setHasMainPanelEvaluation(false);
         }
       } catch (error) {
         console.error('Error refreshing sentence data:', error);
@@ -261,7 +261,7 @@ export const NovelViewContainer = () => {
           const currentMainSentence = newData.main[0];
           if (currentMainSentence) {
             const parallels = getMockParallelSentences(
-              currentMainSentence.sentenceId,
+              currentMainSentence.sentenceId || 0,
             );
             setParallelSentences(parallels);
 
@@ -285,11 +285,12 @@ export const NovelViewContainer = () => {
             // MainPanelの評価状態をSentenceデータから取得
             if (newData.main.length > 0) {
               const mainEvaluation = getSentenceEvaluation(
-                newData.main[0].sentenceId,
+                newData.main[0].sentenceId || 0,
               );
-              hasMainPanelEvaluationRef.current =
+              setHasMainPanelEvaluation(
                 mainEvaluation.isGoodEvaluated ||
-                mainEvaluation.isStayEvaluated;
+                  mainEvaluation.isStayEvaluated,
+              );
             }
           }
         }
@@ -299,112 +300,30 @@ export const NovelViewContainer = () => {
     fetchSentenceData();
   }, []);
 
-  // 統合された投稿処理
-  const handlePost = useCallback(
-    async (newSentence: string) => {
-      try {
-        // 現在のmainPanelのIDを親IDとして取得
-        const currentMainId = mainPanel[0].sentenceId;
-        const currentMainUpdatedAt = mainPanel[0].updatedAt;
+  // 画面更新処理（投稿成功後のリフレッシュ用）
+  const handlePost = useCallback(async () => {
+    // 画面更新をトリガー
+    console.log('画面更新を実行します');
+    // データの再取得処理を実行
+    await handleRefresh();
+  }, [handleRefresh]);
 
-        // APIを使用して新しい投稿を作成
-        const response = await sentencesApi.postSentence({
-          parentSentenceId: currentMainId,
-          parentUpdatedAt: currentMainUpdatedAt,
-          sentence: newSentence,
-        });
-
-        if (response && response.data) {
-          const data = response.data;
-
-          // APIレスポンスを内部のSentence型に変換
-          const convertToSentence = (apiSentence: any): Sentence => ({
-            sentenceId: apiSentence.sentenceId,
-            sentence: apiSentence.sentence,
-            sentenceUserId: apiSentence.sentenceUserId,
-            sentenceUserName:
-              apiSentence.sentencePenName || apiSentence.sentenceUserName || '',
-            profileIconImage: apiSentence.profileIconImage || '',
-            evaluationGoodCount: apiSentence.evaluationGoodCount || 0,
-            evaluationStayCount: apiSentence.evaluationStayCount || 0,
-            createdAt: apiSentence.createdAt,
-            updatedAt: apiSentence.updatedAt,
-          });
-
-          // 新しい投稿をmainPanelに設定
-          if (data.main) {
-            const createdSentence = convertToSentence(data.main);
-
-            // 現在のmainPanelの内容をparentPanelに移動
-            setParentPanel(mainPanel);
-
-            // 新しい投稿をmainPanelに設定
-            setMainPanel([createdSentence]);
-
-            // 新しい投稿の評価状態を初期化
-            hasMainPanelEvaluationRef.current = false;
-
-            // 新規投稿の場合、childrenPanelを空にする
-            setChildrenPanel([]);
-
-            // パラレル投稿情報もリセット
-            setParallelSentences([]);
-            currentParallelIndexRef.current = 0;
-
-            // URLを新しい投稿のIDに更新
-            navigate(
-              `/novelView/${titleId || '1'}/${createdSentence.sentenceId}`,
-              {
-                replace: false,
-              },
-            );
-          }
-        }
-      } catch (error: any) {
-        // 409 Conflictの場合は親投稿が編集された
-        if (error.response?.status === 409) {
-          console.error('親投稿が編集されたため、投稿を保留しました');
-          // TODO: ユーザーに通知する処理を追加
-        } else {
-          console.error('投稿に失敗しました:', error);
-        }
-
-        // エラー時はモックデータの処理にフォールバック
-        const { newSentence: createdSentence } = addNewSentence(
-          newSentence,
-          mainPanel[0].sentenceId,
-        );
-
-        setParentPanel(mainPanel);
-        setMainPanel([createdSentence]);
-
-        const newEvaluation = getSentenceEvaluation(createdSentence.sentenceId);
-        hasMainPanelEvaluationRef.current =
-          newEvaluation.isGoodEvaluated || newEvaluation.isStayEvaluated;
-
-        setChildrenPanel([]);
-        setParallelSentences([]);
-        currentParallelIndexRef.current = 0;
-
-        navigate(`/novelView/${titleId || '1'}/${createdSentence.sentenceId}`, {
-          replace: false,
-        });
-      }
-    },
-    [mainPanel, navigate, titleId],
-  );
+  // 評価成功時の処理
+  const handleEvaluationSuccess = useCallback(() => {
+    console.log('評価が成功しました。ChildrenPanelのhiddenを解除します。');
+    setHasMainPanelEvaluation(true);
+  }, []);
 
   // 新しいmainパネルのchildrenデータを取得する共通関数
   const updateChildrenPanelForMain = useCallback(async (sentenceId: number) => {
     try {
       const response = await sentencesApi.getSentenceById(sentenceId);
       if (response && response.data && response.data.children) {
-        const convertToSentence = (apiSentence: any): Sentence => ({
+        const convertToSentence = (apiSentence: any): SentenceWithUI => ({
           sentenceId: apiSentence.sentenceId,
           sentence: apiSentence.sentence,
           sentenceUserId: apiSentence.sentenceUserId,
-          sentenceUserName:
-            apiSentence.sentencePenName || apiSentence.sentenceUserName || '',
+          sentencePenName: apiSentence.sentencePenName,
           profileIconImage: apiSentence.profileIconImage || '',
           evaluationGoodCount: apiSentence.evaluationGoodCount || 0,
           evaluationStayCount: apiSentence.evaluationStayCount || 0,
@@ -443,10 +362,10 @@ export const NovelViewContainer = () => {
       setMainPanel([nextSentence]);
 
       // 新しいmainパネルのchildrenデータを取得
-      await updateChildrenPanelForMain(nextSentence.sentenceId);
+      await updateChildrenPanelForMain(nextSentence.sentenceId || 0);
 
       // 評価状態をリセット
-      hasMainPanelEvaluationRef.current = false;
+      setHasMainPanelEvaluation(false);
     } else if (
       parallelSentences.length > 0 &&
       currentParallelIndexRef.current === -1
@@ -457,10 +376,10 @@ export const NovelViewContainer = () => {
       setMainPanel([firstSentence]);
 
       // 新しいmainパネルのchildrenデータを取得
-      await updateChildrenPanelForMain(firstSentence.sentenceId);
+      await updateChildrenPanelForMain(firstSentence.sentenceId || 0);
 
       // 評価状態をリセット
-      hasMainPanelEvaluationRef.current = false;
+      setHasMainPanelEvaluation(false);
     }
   }, [parallelSentences, updateChildrenPanelForMain]);
 
@@ -479,10 +398,12 @@ export const NovelViewContainer = () => {
           currentParallelIndexRef.current = -1;
 
           // 元のmainパネルのchildrenデータを取得
-          await updateChildrenPanelForMain(originalMainSentence.sentenceId);
+          await updateChildrenPanelForMain(
+            originalMainSentence.sentenceId || 0,
+          );
 
           // 評価状態をリセット
-          hasMainPanelEvaluationRef.current = false;
+          setHasMainPanelEvaluation(false);
         }
       } else {
         // それ以外の場合は前のパラレル投稿に移動
@@ -494,10 +415,10 @@ export const NovelViewContainer = () => {
         setMainPanel([prevSentence]);
 
         // 新しいmainパネルのchildrenデータを取得
-        await updateChildrenPanelForMain(prevSentence.sentenceId);
+        await updateChildrenPanelForMain(prevSentence.sentenceId || 0);
 
         // 評価状態をリセット
-        hasMainPanelEvaluationRef.current = false;
+        setHasMainPanelEvaluation(false);
       }
     }
   }, [parallelSentences, originalMainSentence, updateChildrenPanelForMain]);
@@ -512,10 +433,10 @@ export const NovelViewContainer = () => {
       currentParallelIndexRef.current = -1;
 
       // 元のmainパネルのchildrenデータを取得
-      await updateChildrenPanelForMain(originalMainSentence.sentenceId);
+      await updateChildrenPanelForMain(originalMainSentence.sentenceId || 0);
 
       // 評価状態をリセット
-      hasMainPanelEvaluationRef.current = false;
+      setHasMainPanelEvaluation(false);
     }
   }, [originalMainSentence, updateChildrenPanelForMain]);
 
@@ -575,13 +496,12 @@ export const NovelViewContainer = () => {
       setStartIndexParent={setStartIndexParent}
       startIndexChildren={startIndexChildren}
       setStartIndexChildren={setStartIndexChildren}
-      hasMainPanelEvaluation={hasMainPanelEvaluationRef.current}
+      hasMainPanelEvaluation={hasMainPanelEvaluation}
       textCount={
         mockContainerData.main.length +
         mockContainerData.parent.length +
         mockContainerData.children.length
       } // モックデータの総数
-      titleId={titleId}
       onPost={handlePost}
       onRefresh={handleRefresh}
       onNextParallel={handleNextParallel}
@@ -593,6 +513,7 @@ export const NovelViewContainer = () => {
       isInParallelMode={isInParallelMode}
       canGoNext={canGoNext}
       canGoPrev={canGoPrev}
+      onEvaluationSuccess={handleEvaluationSuccess}
     />
   );
 };

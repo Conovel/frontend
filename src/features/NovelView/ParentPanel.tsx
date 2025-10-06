@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import NovelCard from '../../components/novelCard/NovelCard';
-import { NovelProps } from '../../types/types';
+import { SentenceWithUI } from '../../types/types';
 import { getSentenceEvaluation } from './mocks/data';
 
 interface ParentPanelProps {
-  parentPanel: NovelProps;
+  parentPanel: SentenceWithUI;
   startIndex: number;
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
@@ -20,8 +20,8 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
   onClick,
 }) => {
   // ユーザーの評価状態を取得
-  const evaluation = getSentenceEvaluation(parentPanel.sentenceId);
-  
+  const evaluation = getSentenceEvaluation(parentPanel.sentenceId || 0);
+
   return (
     <Box
       sx={{
@@ -41,9 +41,9 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
       {startIndex < textCount ? (
         <NovelCard
           key={startIndex}
-          sentence={parentPanel.sentence}
-          userName={parentPanel.userName || parentPanel.sentenceUserName || ''}
-          sentenceId={parentPanel.sentenceId}
+          sentence={parentPanel.sentence || ''}
+          userName={parentPanel.userName || parentPanel.sentencePenName || ''}
+          sentenceId={parentPanel.sentenceId || 0}
           onClick={onClick}
           evaluationGoodCount={parentPanel.evaluationGoodCount || 0}
           evaluationStayCount={parentPanel.evaluationStayCount || 0}

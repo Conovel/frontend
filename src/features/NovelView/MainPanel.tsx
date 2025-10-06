@@ -3,11 +3,11 @@ import { Box, IconButton } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
-import { Sentence, NavigationDirection } from '../../types/types';
+import { SentenceWithUI, NavigationDirection } from '../../types/types';
 import { getSentenceEvaluation } from './mocks/data';
 
 interface MainPanelProps {
-  mainPanel: Sentence[];
+  mainPanel: SentenceWithUI[];
   startIndex: number;
   visibleTextCount: number;
   onNavigate?: (direction: NavigationDirection) => void;
@@ -18,6 +18,7 @@ interface MainPanelProps {
   isInParallelMode?: boolean;
   canGoNext?: boolean;
   canGoPrev?: boolean;
+  onEvaluationSuccess?: () => void;
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
@@ -32,6 +33,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
   isInParallelMode = false,
   canGoNext = false,
   canGoPrev = false,
+  onEvaluationSuccess,
 }) => {
   const [localStartIndex, setLocalStartIndex] = useState(startIndex);
 
@@ -148,18 +150,19 @@ const MainPanel: React.FC<MainPanelProps> = ({
           .slice(currentStartIndex, currentStartIndex + visibleTextCount)
           .map((panel) => {
             // ユーザーの評価状態を取得
-            const evaluation = getSentenceEvaluation(panel.sentenceId);
+            const evaluation = getSentenceEvaluation(panel.sentenceId || 0);
 
             return (
               <NovelCard
                 key={panel.sentenceId}
-                sentence={panel.sentence}
-                userName={panel.userName || panel.sentenceUserName || ''}
-                sentenceId={panel.sentenceId}
+                sentence={panel.sentence || ''}
+                userName={panel.userName || panel.sentencePenName || ''}
+                sentenceId={panel.sentenceId || 0}
                 evaluationGoodCount={panel.evaluationGoodCount || 0}
                 evaluationStayCount={panel.evaluationStayCount || 0}
                 isGoodEvaluated={evaluation.isGoodEvaluated}
                 isStayEvaluated={evaluation.isStayEvaluated}
+                onEvaluationSuccess={onEvaluationSuccess}
               />
             );
           })}

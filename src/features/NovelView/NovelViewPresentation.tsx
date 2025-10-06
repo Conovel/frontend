@@ -3,31 +3,31 @@ import { Box, Button } from '@mui/material';
 import ParentPanel from './ParentPanel';
 import MainPanel from './MainPanel';
 import ChildrenPanel from './ChildrenPanel';
-import { Sentence, NovelProps } from '../../types/types';
+import { SentenceWithUI, NovelViewData } from '../../types/types';
 import { EditPost } from '../EditPost';
 
 interface NovelViewPresentationProps {
-  mainPanel: Sentence[];
-  parentPanel: Sentence[];
-  childrenPanel: Sentence[];
+  mainPanel: SentenceWithUI[];
+  parentPanel: SentenceWithUI[];
+  childrenPanel: SentenceWithUI[];
   startIndexParent: number;
   setStartIndexParent: React.Dispatch<React.SetStateAction<number>>;
   startIndexChildren: number;
   setStartIndexChildren: React.Dispatch<React.SetStateAction<number>>;
   hasMainPanelEvaluation: boolean;
   textCount: number;
-  titleId: string;
   onPost: (newSentence: string) => Promise<void>;
   onRefresh: () => void;
   onNextParallel: () => void;
   onPrevParallel: () => void;
   hasParallels: boolean;
-  onParentClick: (clickedSentence: any) => void;
+  onParentClick: (clickedSentence: SentenceWithUI) => void;
   onMainPanelNavigate: (direction: 'prev' | 'next') => void;
   onBackToOriginal: () => void;
   isInParallelMode: boolean;
   canGoNext: boolean;
   canGoPrev: boolean;
+  onEvaluationSuccess: () => void;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -39,7 +39,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setStartIndexChildren,
   hasMainPanelEvaluation,
   textCount,
-  titleId,
   onRefresh,
   onNextParallel,
   onPrevParallel,
@@ -50,6 +49,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   isInParallelMode,
   canGoNext,
   canGoPrev,
+  onEvaluationSuccess,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -87,9 +87,8 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       {parentPanel.length > 0 && (
         <Box sx={{ mb: 4, width: '100%', maxWidth: '600px' }}>
           {parentPanel.slice(-1).map((novel, index) => {
-            const novelWithRelations: NovelProps = {
+            const novelWithRelations: NovelViewData = {
               ...novel,
-              titleId: parseInt(titleId, 10),
               children: childrenPanel,
               main: mainPanel,
               parent: [],
@@ -145,6 +144,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           isInParallelMode={isInParallelMode}
           canGoNext={canGoNext}
           canGoPrev={canGoPrev}
+          onEvaluationSuccess={onEvaluationSuccess}
         />
       </Box>
 

@@ -15,6 +15,7 @@ interface NovelCardProps {
   isStayEvaluated: boolean;
   onClick?: () => void;
   disabled?: boolean;
+  onEvaluationSuccess?: () => void;
 }
 
 const NovelCard = ({
@@ -27,6 +28,7 @@ const NovelCard = ({
   isGoodEvaluated,
   isStayEvaluated,
   disabled = false,
+  onEvaluationSuccess,
 }: NovelCardProps) => {
   const [localGoodCount, setLocalGoodCount] = useState(evaluationGoodCount);
   const [localStayCount, setLocalStayCount] = useState(evaluationStayCount);
@@ -39,7 +41,7 @@ const NovelCard = ({
   const evaluationsApi = new EvaluationsApi(axiosConfig);
   const handleGoodCountClick = async (): Promise<void> => {
     if (busyRef.current || disabled) return; // 連打無視
-    
+
     // アトミックな操作でbusyフラグを設定
     if (busyRef.current) return; // 二重チェック
     busyRef.current = true;
@@ -49,7 +51,7 @@ const NovelCard = ({
     abortRef.current?.abort();
     const ac = new AbortController();
     abortRef.current = ac;
-    
+
     // リクエストIDをインクリメント（最新のリクエストのみ処理）
     const currentRequestId = ++requestIdRef.current;
 
@@ -60,7 +62,7 @@ const NovelCard = ({
       };
 
       const response = await evaluationsApi.evaluateSentence(evaluateSentence);
-      
+
       // 最新のリクエストかどうかをチェック
       if (currentRequestId === requestIdRef.current) {
         if (response?.data) {
@@ -70,10 +72,17 @@ const NovelCard = ({
         } else {
           setLocalGoodCount(localGoodCount + 1);
         }
+        // 評価成功時に親コンポーネントに通知
+        if (onEvaluationSuccess) {
+          onEvaluationSuccess();
+        }
       }
     } catch (error) {
       // 最新のリクエストかつAbortErrorでない場合のみエラー処理
-      if (currentRequestId === requestIdRef.current && (error as any).name !== 'AbortError') {
+      if (
+        currentRequestId === requestIdRef.current &&
+        (error as any).name !== 'AbortError'
+      ) {
         console.error('評価エラー:', error);
         // エラー時はローカルでカウントアップ
         setLocalGoodCount(localGoodCount + 1);
@@ -153,6 +162,7 @@ const NovelCard = ({
           isEvaluated={isStayEvaluated}
           sentenceId={sentenceId}
           disabled={disabled || isEvaluating}
+          onEvaluationSuccess={onEvaluationSuccess}
         />
       </Box>
     </Box>

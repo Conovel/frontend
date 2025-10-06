@@ -4,7 +4,7 @@ import { Box, Snackbar, Alert } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
-import { Sentence } from '../../types/types';
+import { SentenceWithUI } from '../../types/types';
 import { EditPost } from '../EditPost';
 import { getSentenceEvaluation } from './mocks/data';
 import MosaicOverlay from '../../components/mosaicOverlay';
@@ -46,9 +46,9 @@ const novelCardBoxStyle = {
 };
 
 interface ChildrenPanelProps {
-  childrenPanel: Sentence[];
-  setChildrenPanel: React.Dispatch<React.SetStateAction<Sentence[]>>;
-  mainPanel: Sentence[];
+  childrenPanel: SentenceWithUI[];
+  setChildrenPanel: React.Dispatch<React.SetStateAction<SentenceWithUI[]>>;
+  mainPanel: SentenceWithUI[];
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
   hasMainPanelEvaluation: boolean;
@@ -72,7 +72,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   useEffect(() => {
     if (hasMainPanelEvaluation) {
       // 評価が行われた場合はすべてのカードを展開
-      const allCardIds = childrenPanel.map((panel) => panel.sentenceId);
+      const allCardIds = childrenPanel.map((panel) => panel.sentenceId || 0);
       setExpandedCards(new Set(allCardIds));
     } else {
       // 評価が行われていない場合はすべてのカードを折りたたみ
@@ -103,15 +103,15 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     setError(null);
   };
 
-  const renderNovelCard = (panel: Sentence) => {
-    const isExpanded = expandedCards.has(panel.sentenceId);
+  const renderNovelCard = (panel: SentenceWithUI) => {
+    const isExpanded = expandedCards.has(panel.sentenceId || 0);
     const previewText =
-      panel.sentence.length > 50
-        ? panel.sentence.substring(0, 50) + '...'
-        : panel.sentence;
+      (panel.sentence || '').length > 50
+        ? (panel.sentence || '').substring(0, 50) + '...'
+        : panel.sentence || '';
 
     // ユーザーの評価状態を取得
-    const evaluation = getSentenceEvaluation(panel.sentenceId);
+    const evaluation = getSentenceEvaluation(panel.sentenceId || 0);
 
     const handleCardClick = (sentenceId: number | undefined) => {
       if (sentenceId) {
@@ -122,9 +122,9 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     return (
       <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
         <NovelCard
-          sentence={isExpanded ? panel.sentence : previewText}
-          userName={panel.userName || panel.sentenceUserName || ''}
-          sentenceId={panel.sentenceId}
+          sentence={isExpanded ? panel.sentence || '' : previewText}
+          userName={panel.userName || panel.sentencePenName || ''}
+          sentenceId={panel.sentenceId || 0}
           onClick={() => handleCardClick(panel.sentenceId)}
           evaluationGoodCount={panel.evaluationGoodCount || 0}
           evaluationStayCount={panel.evaluationStayCount || 0}

@@ -9,6 +9,7 @@ interface NextPlanButtonProps {
   isEvaluated: boolean;
   disabled?: boolean;
   sentenceId: number;
+  onEvaluationSuccess?: () => void;
 }
 
 const NextPlanButton: React.FC<NextPlanButtonProps> = ({
@@ -17,6 +18,7 @@ const NextPlanButton: React.FC<NextPlanButtonProps> = ({
   isEvaluated,
   disabled = false,
   sentenceId,
+  onEvaluationSuccess,
 }) => {
   const busyRef = useRef(false); // 再入防止
   const abortRef = useRef<AbortController | null>(null);
@@ -44,6 +46,11 @@ const NextPlanButton: React.FC<NextPlanButtonProps> = ({
         );
       } else {
         setEvaluationStayCount(evaluationStayCount + 1);
+      }
+
+      // 評価成功時に親コンポーネントに通知
+      if (onEvaluationSuccess) {
+        onEvaluationSuccess();
       }
     } catch (error) {
       if ((error as any).name !== 'AbortError') {

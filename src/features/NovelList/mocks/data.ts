@@ -1,42 +1,14 @@
-import { NovelProps, NovelListItem } from '../../../types/types';
+import { NovelListItem } from '../../../api/api';
 
-export const novels: NovelProps[] = [
+export const novels: NovelListItem[] = [
   {
     titleId: 1,
-    mainCopy: '目を覚ますとエンジニアに転生していた',
-    overview:
-      '雪山で目を覚ますとエンジニアに転生していた.雪山ながら密林からガジェットを取り寄せて悠々生活・快適ライフを送っている',
     title:
       '山暮らし聖女の異世界スローライフ～聖女召喚された私，偽物だとして雪山に廃棄されるも，目が覚めるとエンジニアに転生していたことにより本当の「聖女」になる～',
-    popular: true,
-    newArrival: true,
-    avatar: {
-      src: '/static/images/avatar/1.jpg',
-      alt: 'Remy Sharp',
-      color: 'magenta',
-      text: 'RS',
-    },
-    authorUserName: 'Remy Sharp',
-    chips: [{ label: '人気' }, { label: '新着' }],
-    tags: [{ label: 'ラブストーリー' }, { label: 'ファンタジー' }],
-    readerCount: 100,
+    authorPenName: 'Remy Sharp',
     updatedAt: '2024/08/20',
-    sentenceUserCount: 150,
-    sentenceHierarchyCount: 1000,
     createdAt: new Date().toISOString(),
-    sentenceId: 1,
-    sentence: '',
-    sentenceUserId: 1,
-    sentenceUserName: 'Remy Sharp',
-    userId: 1,
-    userName: 'Remy Sharp',
     profileIconImage: '/static/images/avatar/1.jpg',
-    evaluationGoodCount: 0,
-    evaluationStayCount: 0,
-    textIndex: 0,
-    children: [],
-    main: [],
-    parent: [],
   },
 ];
 
@@ -47,7 +19,7 @@ export const mockNovelListData: NovelListItem[] = [
     title: 'サンプル小説1',
     famousSentenceText: 'これはサンプル小説1の名言です。',
     authorUserId: 1,
-    authorUserName: '作者1',
+    authorPenName: '作者1',
     profileIconImage: '/path/to/avatar1.jpg',
     titleGenres: ['ファンタジー', '冒険'],
     isNew: true,
@@ -62,7 +34,7 @@ export const mockNovelListData: NovelListItem[] = [
     title: 'サンプル小説2',
     famousSentenceText: 'これはサンプル小説2の名言です。',
     authorUserId: 2,
-    authorUserName: '作者2',
+    authorPenName: '作者2',
     profileIconImage: '/path/to/avatar2.jpg',
     titleGenres: ['SF', 'アクション'],
     isNew: true,
@@ -81,7 +53,7 @@ export const fallbackNovelListData: NovelListItem[] = [
     title: 'サンプル小説1',
     famousSentenceText: 'これはサンプル小説1の名言です。',
     authorUserId: 1,
-    authorUserName: '作者1',
+    authorPenName: '作者1',
     profileIconImage: '/path/to/avatar1.jpg',
     titleGenres: ['ファンタジー', '冒険'],
     isNew: true,
@@ -96,7 +68,7 @@ export const fallbackNovelListData: NovelListItem[] = [
     title: 'サンプル小説2',
     famousSentenceText: 'これはサンプル小説2の名言です。',
     authorUserId: 2,
-    authorUserName: '作者2',
+    authorPenName: '作者2',
     profileIconImage: '/path/to/avatar2.jpg',
     titleGenres: ['SF', 'アクション'],
     isNew: true,

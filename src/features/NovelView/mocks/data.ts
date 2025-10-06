@@ -1,4 +1,4 @@
-import { Sentence, NovelProps } from '../../../types/types';
+import { Sentence } from '../../../api/api';
 
 // センテンスの関係性の型定義
 interface SentenceRelation {
@@ -11,33 +11,17 @@ interface SentenceRelations {
   [key: number]: SentenceRelation;
 }
 
-// センテンスデータの型定義
-interface SentencesData {
-  [key: number]: Sentence;
-}
+// センテンスデータの型定義（anyを使用してモックデータの柔軟性を確保）
 
 // パラレル投稿管理用の型定義
 interface ParallelSentences {
   [sentenceId: number]: number[]; // 各sentenceIdに対するパラレル投稿のIDリスト
 }
 
-export const mockParentPanel: NovelProps[] = [
+export const mockParentPanel: any[] = [
   {
-    titleId: 1,
-    title: '',
     sentence: '',
-    textIndex: 0,
-    mainCopy: '',
-    overview: '',
-    popular: false,
-    newArrival: false,
-    avatar: {
-      src: '',
-      alt: '',
-      color: '',
-      text: '',
-    },
-    authorUserName: '',
+    authorPenName: '',
     chips: [],
     tags: [],
     readerCount: 0,
@@ -59,28 +43,15 @@ export const mockParentPanel: NovelProps[] = [
   },
 ];
 
-export const mockMainPanel: Sentence[] = [
+export const mockMainPanel: any[] = [
   {
-    titleId: 1,
-    title: '',
     sentence: '',
-    textIndex: 0,
-    overview: '',
-    popular: false,
-    newArrival: false,
-    avatar: {
-      src: '',
-      alt: '',
-      color: '',
-      text: '',
-    },
-    authorUserName: '',
+    authorPenName: '',
     chips: [],
     tags: [],
     readerCount: 0,
     sentenceUserCount: 0,
     sentenceHierarchyCount: 0,
-    mainCopy: '',
     userId: 0,
     sentenceUserId: 0,
     sentenceUserName: 'ユーザー',
@@ -94,28 +65,15 @@ export const mockMainPanel: Sentence[] = [
   },
 ];
 
-export const mockChildrenPanel: Sentence[] = [
+export const mockChildrenPanel: any[] = [
   {
-    titleId: 1,
-    title: '',
     sentence: '',
-    textIndex: 0,
-    overview: '',
-    popular: false,
-    newArrival: false,
-    avatar: {
-      src: '',
-      alt: '',
-      color: '',
-      text: '',
-    },
-    authorUserName: '',
+    authorPenName: '',
     chips: [],
     tags: [],
     readerCount: 0,
     sentenceUserCount: 0,
     sentenceHierarchyCount: 0,
-    mainCopy: '',
     userId: 0,
     sentenceUserId: 0,
     sentenceUserName: 'ユーザー',
@@ -130,11 +88,7 @@ export const mockChildrenPanel: Sentence[] = [
 ];
 
 export const mockNovelProps = {
-  titleId: 1,
-  mainCopy: '',
-  overview: '',
-  title: '',
-  authorUserName: '',
+  authorPenName: '',
   chips: [],
   avatar: {
     src: '',
@@ -142,8 +96,6 @@ export const mockNovelProps = {
     color: '',
     text: '',
   },
-  popular: false,
-  newArrival: false,
   readerCount: 0,
   sentenceUserCount: 0,
   sentenceHierarchyCount: 0,
@@ -168,27 +120,23 @@ export const mockNovelProps = {
 // The initial sentence ID is set to 5 by default, as it represents the center of a more complex structure in the mock data.
 // You can override this value by setting the environment variable INITIAL_SENTENCE_ID.
 export const INITIAL_SENTENCE_ID =
-  typeof process !== 'undefined' && process.env && process.env.INITIAL_SENTENCE_ID
+  typeof process !== 'undefined' &&
+  process.env &&
+  process.env.INITIAL_SENTENCE_ID
     ? Number(process.env.INITIAL_SENTENCE_ID)
     : 5;
 
 // センテンスの一意のIDを持つデータ
-export const sentencesData: SentencesData = {
+export const sentencesData: any = {
   1: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence: 'ああ，あの若いころ気づいていれば',
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: true,
     newArrival: false,
-    authorUserName: '金平',
+    authorPenName: '金平',
     sentenceId: 1,
     userId: 123,
     sentenceUserId: 123,
     sentenceUserName: 'ユーザー',
     userName: '金平',
-    textIndex: 0,
     profileIconImage: 'path/to/image.png',
     evaluationGoodCount: 15,
     evaluationStayCount: 3,
@@ -207,13 +155,7 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 8,
   },
   2: {
-    titleId: 1,
-    title: '記憶の欠片',
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: false,
-    newArrival: false,
-    authorUserName: '金平',
+    authorPenName: '金平',
     sentenceId: 2,
     userId: 123,
     sentenceUserId: 123,
@@ -235,21 +177,13 @@ export const sentencesData: SentencesData = {
       color: '#FF6B6B',
       text: 'K',
     },
-    textIndex: 0,
     sentenceUserCount: 32,
     sentenceHierarchyCount: 6,
   },
   3: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       'それでも、あの頃の私は、それだけで十分だった。玄関の鍵の音、靴を脱ぐ気配、そして「ただいま」という声。それを聞くたびに、胸の奥がじんわりとあたたかくなった。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: false,
-    newArrival: false,
-    authorUserName: '桜子',
+    authorPenName: '桜子',
     sentenceId: 3,
     userId: 124,
     sentenceUserId: 124,
@@ -273,16 +207,9 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 4,
   },
   4: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       'しかし時は過ぎ、その小さな幸せも色褪せていく。毎日の繰り返しの中で、私たちはいつしか互いを当たり前のものとして扱うようになった。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: false,
-    newArrival: false,
-    authorUserName: '夜想',
+    authorPenName: '夜想',
     sentenceId: 4,
     userId: 125,
     sentenceUserId: 125,
@@ -306,16 +233,10 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 5,
   },
   5: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       '気がつけば、私たちの間に静寂が流れるようになっていた。言葉を交わすことも減り、同じ空間にいても、まるで別々の世界に住んでいるかのようだった。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: true,
     newArrival: false,
-    authorUserName: '響子',
+    authorPenName: '響子',
     sentenceId: 5,
     userId: 126,
     sentenceUserId: 126,
@@ -339,16 +260,9 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 12,
   },
   6: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       'ある朝、私は決心した。このままではいけない。何かを変えなければ、この関係は終わってしまう。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: false,
-    newArrival: false,
-    authorUserName: '希望',
+    authorPenName: '希望',
     sentenceId: 6,
     userId: 127,
     sentenceUserId: 127,
@@ -372,16 +286,9 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 7,
   },
   7: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       'でも、何をすればいいのかわからなかった。どんな言葉をかければ、あの頃の温もりを取り戻せるのだろう。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: false,
-    newArrival: false,
-    authorUserName: '迷い人',
+    authorPenName: '迷い人',
     sentenceId: 7,
     userId: 128,
     sentenceUserId: 128,
@@ -405,16 +312,10 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 3,
   },
   8: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       '私は思い切って、彼の好きだったコーヒーを淹れることにした。かつて毎朝していたように、丁寧に、愛情を込めて。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: false,
     newArrival: true,
-    authorUserName: '珈琲好き',
+    authorPenName: '珈琲好き',
     sentenceId: 8,
     userId: 129,
     sentenceUserId: 129,
@@ -438,16 +339,9 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 4,
   },
   9: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       'あるいは、素直に謝ってみるのはどうだろう。「最近、私たち、すれ違っているね」と。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: false,
-    newArrival: false,
-    authorUserName: '真実',
+    authorPenName: '真実',
     sentenceId: 9,
     userId: 130,
     sentenceUserId: 130,
@@ -471,16 +365,9 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 6,
   },
   10: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       'コーヒーの香りが部屋に広がった時、彼が振り返った。その目に、久しぶりに見る優しい光が宿っていた。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: false,
-    newArrival: false,
-    authorUserName: '優光',
+    authorPenName: '優光',
     sentenceId: 10,
     userId: 131,
     sentenceUserId: 131,
@@ -504,16 +391,10 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 8,
   },
   11: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       '「ありがとう」と彼が言った。たった一言だったけれど、その声には昔の温もりが戻っていた。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: true,
     newArrival: false,
-    authorUserName: '暖かな言葉',
+    authorPenName: '暖かな言葉',
     sentenceId: 11,
     userId: 132,
     sentenceUserId: 132,
@@ -537,16 +418,9 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 9,
   },
   12: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       '私たちは静かに座り、久しぶりに本当の会話を始めた。お互いの心の奥にあった思いを、少しずつ言葉にしていった。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: false,
-    newArrival: false,
-    authorUserName: '対話師',
+    authorPenName: '対話師',
     sentenceId: 12,
     userId: 133,
     sentenceUserId: 133,
@@ -570,16 +444,9 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 10,
   },
   13: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       'しかし、全てが元通りになるわけではないことも、私たちは理解していた。傷ついた時間は消せない。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: false,
-    newArrival: false,
-    authorUserName: '現実主義者',
+    authorPenName: '現実主義者',
     sentenceId: 13,
     userId: 134,
     sentenceUserId: 134,
@@ -603,16 +470,10 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 5,
   },
   14: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       'それでも、新しい始まりは可能だった。過去の上に、新しい関係を築いていくことができるのだ。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: false,
     newArrival: true,
-    authorUserName: '新しい始まり',
+    authorPenName: '新しい始まり',
     sentenceId: 14,
     userId: 135,
     sentenceUserId: 135,
@@ -636,16 +497,10 @@ export const sentencesData: SentencesData = {
     sentenceHierarchyCount: 8,
   },
   15: {
-    titleId: 1,
-    title: '記憶の欠片',
     sentence:
       '今、私たちは手を取り合って、新しい物語を紡いでいる。あの頃とは違う、でも確かな愛情とともに。',
-    textIndex: 0,
-    mainCopy: 'ノスタルジックな回想録',
-    overview: '人生の振り返りと後悔の物語',
-    popular: true,
     newArrival: false,
-    authorUserName: '愛の物語',
+    authorPenName: '愛の物語',
     sentenceId: 15,
     userId: 136,
     sentenceUserId: 136,
@@ -826,8 +681,7 @@ export const addNewSentence = (
     ...parentSentence, // 基本的な情報を継承
     sentence: sentenceText,
     sentenceId: nextId,
-    userId: currentUser.userId,
-    userName: currentUser.userName,
+    sentencePenName: currentUser.userName,
     profileIconImage: currentUser.profileIconImage,
     createdAt: now,
     updatedAt: now,
@@ -878,8 +732,8 @@ export const getParallelSentences = (sentenceId: number): Sentence[] => {
 
   // パラレル投稿の順序を保持し、存在しないIDを除外
   return parallelSentencesList.sort((a, b) => {
-    const aIndex = parallelIds.indexOf(a.sentenceId);
-    const bIndex = parallelIds.indexOf(b.sentenceId);
+    const aIndex = parallelIds.indexOf(a.sentenceId || 0);
+    const bIndex = parallelIds.indexOf(b.sentenceId || 0);
     return aIndex - bIndex;
   });
 };
@@ -908,20 +762,20 @@ export const updateSentenceEvaluation = (
     if (currentUserEvaluation === 'good') {
       sentence.evaluationGoodCount = Math.max(
         0,
-        sentence.evaluationGoodCount - 1,
+        (sentence.evaluationGoodCount || 0) - 1,
       );
     } else if (currentUserEvaluation === 'stay') {
       sentence.evaluationStayCount = Math.max(
         0,
-        sentence.evaluationStayCount - 1,
+        (sentence.evaluationStayCount || 0) - 1,
       );
     }
 
     // 新しい評価を追加
     if (evaluationType === 'good') {
-      sentence.evaluationGoodCount += 1;
+      sentence.evaluationGoodCount = (sentence.evaluationGoodCount || 0) + 1;
     } else {
-      sentence.evaluationStayCount += 1;
+      sentence.evaluationStayCount = (sentence.evaluationStayCount || 0) + 1;
     }
 
     // ユーザーの評価状態を更新
@@ -932,12 +786,12 @@ export const updateSentenceEvaluation = (
       if (evaluationType === 'good') {
         sentence.evaluationGoodCount = Math.max(
           0,
-          sentence.evaluationGoodCount - 1,
+          (sentence.evaluationGoodCount || 0) - 1,
         );
       } else {
         sentence.evaluationStayCount = Math.max(
           0,
-          sentence.evaluationStayCount - 1,
+          (sentence.evaluationStayCount || 0) - 1,
         );
       }
       userEvaluations[userKey] = null;
@@ -1008,23 +862,17 @@ export const mockContainerData = buildInitialData(INITIAL_SENTENCE_ID) || {
 };
 
 // 初期サンプル文データ
-export const initialSampleSentence: Sentence = {
-  titleId: 1,
+export const initialSampleSentence: any = {
   sentenceId: 1,
   sentence: 'これは取得したサンプル文です',
   sentenceUserId: 1,
-  sentenceUserName: 'ユーザー1',
+  sentencePenName: 'ユーザー1',
   profileIconImage: '/path/to/avatar.jpg',
   evaluationGoodCount: 10,
   evaluationStayCount: 2,
   createdAt: '2024-06-01T00:00:00Z',
   updatedAt: '2024-06-01T00:00:00Z',
-  title: '',
-  mainCopy: '',
-  overview: '',
-  popular: false,
-  newArrival: false,
-  authorUserName: '',
+  authorPenName: '',
   chips: [],
   tags: [],
   readerCount: 0,

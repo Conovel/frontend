@@ -8,9 +8,14 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { NovelInfo } from '../../features/NovelInfo';
-import { NovelProps } from '../../types/types';
+import { NovelListItemWithUI } from '../../types/types';
 
-const NovelCard = ({ novel }: { novel: NovelProps; onClick?: () => void }) => {
+const NovelCard = ({
+  novel,
+}: {
+  novel: NovelListItemWithUI;
+  onClick?: () => void;
+}) => {
   const [openModal, setOpenModal] = React.useState(false);
 
   const hasTitleId = typeof novel.titleId === 'number';
@@ -45,7 +50,7 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick?: () => void }) => {
               textOverflow: 'ellipsis',
             }}
           >
-            {novel.sentence || novel.mainCopy}
+            {novel.famousSentenceText || novel.mainCopy}
           </Typography>
           <Typography
             variant='h5'
@@ -80,8 +85,7 @@ const NovelCard = ({ novel }: { novel: NovelProps; onClick?: () => void }) => {
                 }}
                 src={novel.avatar?.src || novel.profileIconImage}
               >
-                {novel.avatar?.text ||
-                  (novel.sentenceUserName || novel.userName || '').charAt(0)}
+                {novel.avatar?.text || (novel.authorPenName || '').charAt(0)}
               </Avatar>
             </Box>
             <Box

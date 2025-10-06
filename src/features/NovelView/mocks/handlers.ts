@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { PostSentence, EvaluateSentence } from '../../../api/api';
-import { Sentence } from '../../../types/types';
+import { Sentence } from '../../../api/api';
 import { initialSampleSentence } from './data';
 
 const apiBaseUrl =
@@ -50,7 +50,7 @@ export const novelViewHandlers = [
         ...found,
         children: [
           {
-            sentenceId: found.sentenceId + 100,
+            sentenceId: (found.sentenceId || 0) + 100,
             sentence:
               'これは子投稿のサンプルテキストです。評価後に表示されます。',
             sentenceUserId: 2,
@@ -62,7 +62,7 @@ export const novelViewHandlers = [
             updatedAt: new Date().toISOString(),
           },
           {
-            sentenceId: found.sentenceId + 101,
+            sentenceId: (found.sentenceId || 0) + 101,
             sentence: 'もう一つの子投稿です。複数の続きを読むことができます。',
             sentenceUserId: 3,
             sentencePenName: '別のユーザー',
