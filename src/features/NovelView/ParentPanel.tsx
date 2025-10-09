@@ -2,7 +2,6 @@ import React from 'react';
 import { Box } from '@mui/material';
 import NovelCard from '../../components/novelCard/NovelCard';
 import { SentenceWithUI } from '../../types/types';
-import { getSentenceEvaluation } from './mocks/data';
 
 interface ParentPanelProps {
   parentPanel: SentenceWithUI;
@@ -11,6 +10,12 @@ interface ParentPanelProps {
   visibleTextCount: number;
   textCount: number;
   onClick: () => void;
+  getSentenceEvaluation: (sentenceId: number) => Promise<{
+    goodCount: number;
+    stayCount: number;
+    isGoodEvaluated: boolean;
+    isStayEvaluated: boolean;
+  }>;
 }
 
 const ParentPanel: React.FC<ParentPanelProps> = ({
@@ -18,9 +23,29 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
   startIndex,
   textCount,
   onClick,
+  getSentenceEvaluation,
 }) => {
-  // ユーザーの評価状態を取得
-  const evaluation = getSentenceEvaluation(parentPanel.sentenceId || 0);
+  // ユーザーの評価状態を取得（非同期）
+  const [evaluation, setEvaluation] = React.useState({
+    goodCount: 0,
+    stayCount: 0,
+    isGoodEvaluated: false,
+    isStayEvaluated: false,
+  });
+
+  React.useEffect(() => {
+    const fetchEvaluation = async () => {
+      try {
+        const evalData = await getSentenceEvaluation(
+          parentPanel.sentenceId || 0,
+        );
+        setEvaluation(evalData);
+      } catch (error) {
+        console.error('Error fetching evaluation:', error);
+      }
+    };
+    fetchEvaluation();
+  }, [parentPanel.sentenceId, getSentenceEvaluation]);
 
   return (
     <Box

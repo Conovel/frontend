@@ -6,8 +6,57 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
 import { SentenceWithUI } from '../../types/types';
 import { EditPost } from '../EditPost';
-import { getSentenceEvaluation } from './mocks/data';
 import MosaicOverlay from '../../components/mosaicOverlay';
+
+// Async component to handle evaluation loading for children
+const AsyncChildrenNovelCard: React.FC<{
+  panel: SentenceWithUI;
+  getSentenceEvaluation: (sentenceId: number) => Promise<{
+    goodCount: number;
+    stayCount: number;
+    isGoodEvaluated: boolean;
+    isStayEvaluated: boolean;
+  }>;
+  onCardClick: (sentenceId: number | undefined) => void;
+  isExpanded: boolean;
+}> = ({ panel, getSentenceEvaluation, onCardClick, isExpanded }) => {
+  const [evaluation, setEvaluation] = useState({
+    goodCount: 0,
+    stayCount: 0,
+    isGoodEvaluated: false,
+    isStayEvaluated: false,
+  });
+
+  useEffect(() => {
+    const fetchEvaluation = async () => {
+      try {
+        const evalData = await getSentenceEvaluation(panel.sentenceId || 0);
+        setEvaluation(evalData);
+      } catch (error) {
+        console.error('Error fetching evaluation:', error);
+      }
+    };
+    fetchEvaluation();
+  }, [panel.sentenceId, getSentenceEvaluation]);
+
+  const truncatedSentence =
+    (panel.sentence || '').length > 50
+      ? (panel.sentence || '').substring(0, 50) + '...'
+      : panel.sentence || '';
+
+  return (
+    <NovelCard
+      sentence={isExpanded ? panel.sentence || '' : truncatedSentence}
+      userName={panel.userName || panel.sentencePenName || ''}
+      sentenceId={panel.sentenceId || 0}
+      evaluationGoodCount={panel.evaluationGoodCount || 0}
+      evaluationStayCount={panel.evaluationStayCount || 0}
+      isGoodEvaluated={evaluation.isGoodEvaluated}
+      isStayEvaluated={evaluation.isStayEvaluated}
+      onClick={() => onCardClick(panel.sentenceId)}
+    />
+  );
+};
 
 const carouselNavButtonStyle = {
   backgroundColor: '#BDBDBD',
@@ -52,12 +101,19 @@ interface ChildrenPanelProps {
   setStartIndex: React.Dispatch<React.SetStateAction<number>>;
   visibleTextCount: number;
   hasMainPanelEvaluation: boolean;
+  getSentenceEvaluation: (sentenceId: number) => Promise<{
+    goodCount: number;
+    stayCount: number;
+    isGoodEvaluated: boolean;
+    isStayEvaluated: boolean;
+  }>;
 }
 
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   childrenPanel,
   mainPanel,
   hasMainPanelEvaluation,
+  getSentenceEvaluation,
 }) => {
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -105,13 +161,6 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
 
   const renderNovelCard = (panel: SentenceWithUI) => {
     const isExpanded = expandedCards.has(panel.sentenceId || 0);
-    const previewText =
-      (panel.sentence || '').length > 50
-        ? (panel.sentence || '').substring(0, 50) + '...'
-        : panel.sentence || '';
-
-    // ユーザーの評価状態を取得
-    const evaluation = getSentenceEvaluation(panel.sentenceId || 0);
 
     const handleCardClick = (sentenceId: number | undefined) => {
       if (sentenceId) {
@@ -121,16 +170,11 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
 
     return (
       <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
-        <NovelCard
-          sentence={isExpanded ? panel.sentence || '' : previewText}
-          userName={panel.userName || panel.sentencePenName || ''}
-          sentenceId={panel.sentenceId || 0}
-          onClick={() => handleCardClick(panel.sentenceId)}
-          evaluationGoodCount={panel.evaluationGoodCount || 0}
-          evaluationStayCount={panel.evaluationStayCount || 0}
-          isGoodEvaluated={evaluation.isGoodEvaluated}
-          isStayEvaluated={evaluation.isStayEvaluated}
-          disabled={!hasMainPanelEvaluation}
+        <AsyncChildrenNovelCard
+          panel={panel}
+          getSentenceEvaluation={getSentenceEvaluation}
+          onCardClick={handleCardClick}
+          isExpanded={isExpanded}
         />
       </Box>
     );

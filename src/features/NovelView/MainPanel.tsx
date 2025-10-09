@@ -1,10 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, IconButton } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import NovelCard from '../../components/novelCard/NovelCard';
 import { SentenceWithUI, NavigationDirection } from '../../types/types';
-import { getSentenceEvaluation } from './mocks/data';
+
+// Async component to handle evaluation loading
+const AsyncNovelCard: React.FC<{
+  panel: SentenceWithUI;
+  getSentenceEvaluation: (sentenceId: number) => Promise<{
+    goodCount: number;
+    stayCount: number;
+    isGoodEvaluated: boolean;
+    isStayEvaluated: boolean;
+  }>;
+  onEvaluationSuccess?: () => void;
+}> = ({ panel, getSentenceEvaluation, onEvaluationSuccess }) => {
+  const [evaluation, setEvaluation] = useState({
+    goodCount: 0,
+    stayCount: 0,
+    isGoodEvaluated: false,
+    isStayEvaluated: false,
+  });
+
+  useEffect(() => {
+    const fetchEvaluation = async () => {
+      try {
+        const evalData = await getSentenceEvaluation(panel.sentenceId || 0);
+        setEvaluation(evalData);
+      } catch (error) {
+        console.error('Error fetching evaluation:', error);
+      }
+    };
+    fetchEvaluation();
+  }, [panel.sentenceId, getSentenceEvaluation]);
+
+  return (
+    <NovelCard
+      sentence={panel.sentence || ''}
+      userName={panel.userName || panel.sentencePenName || ''}
+      sentenceId={panel.sentenceId || 0}
+      evaluationGoodCount={panel.evaluationGoodCount || 0}
+      evaluationStayCount={panel.evaluationStayCount || 0}
+      isGoodEvaluated={evaluation.isGoodEvaluated}
+      isStayEvaluated={evaluation.isStayEvaluated}
+      onEvaluationSuccess={onEvaluationSuccess}
+    />
+  );
+};
 
 interface MainPanelProps {
   mainPanel: SentenceWithUI[];
@@ -19,6 +62,12 @@ interface MainPanelProps {
   canGoNext?: boolean;
   canGoPrev?: boolean;
   onEvaluationSuccess?: () => void;
+  getSentenceEvaluation: (sentenceId: number) => Promise<{
+    goodCount: number;
+    stayCount: number;
+    isGoodEvaluated: boolean;
+    isStayEvaluated: boolean;
+  }>;
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
@@ -34,6 +83,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
   canGoNext = false,
   canGoPrev = false,
   onEvaluationSuccess,
+  getSentenceEvaluation,
 }) => {
   const [localStartIndex, setLocalStartIndex] = useState(startIndex);
 
@@ -149,19 +199,11 @@ const MainPanel: React.FC<MainPanelProps> = ({
         {mainPanel
           .slice(currentStartIndex, currentStartIndex + visibleTextCount)
           .map((panel) => {
-            // ユーザーの評価状態を取得
-            const evaluation = getSentenceEvaluation(panel.sentenceId || 0);
-
             return (
-              <NovelCard
+              <AsyncNovelCard
                 key={panel.sentenceId}
-                sentence={panel.sentence || ''}
-                userName={panel.userName || panel.sentencePenName || ''}
-                sentenceId={panel.sentenceId || 0}
-                evaluationGoodCount={panel.evaluationGoodCount || 0}
-                evaluationStayCount={panel.evaluationStayCount || 0}
-                isGoodEvaluated={evaluation.isGoodEvaluated}
-                isStayEvaluated={evaluation.isStayEvaluated}
+                panel={panel}
+                getSentenceEvaluation={getSentenceEvaluation}
                 onEvaluationSuccess={onEvaluationSuccess}
               />
             );

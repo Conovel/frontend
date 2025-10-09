@@ -16,7 +16,6 @@ interface NovelViewPresentationProps {
   setStartIndexChildren: React.Dispatch<React.SetStateAction<number>>;
   hasMainPanelEvaluation: boolean;
   textCount: number;
-  onPost: (newSentence: string) => Promise<void>;
   onRefresh: () => void;
   onNextParallel: () => void;
   onPrevParallel: () => void;
@@ -28,6 +27,12 @@ interface NovelViewPresentationProps {
   canGoNext: boolean;
   canGoPrev: boolean;
   onEvaluationSuccess: () => void;
+  getSentenceEvaluation: (sentenceId: number) => Promise<{
+    goodCount: number;
+    stayCount: number;
+    isGoodEvaluated: boolean;
+    isStayEvaluated: boolean;
+  }>;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -50,6 +55,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   canGoNext,
   canGoPrev,
   onEvaluationSuccess,
+  getSentenceEvaluation,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -111,6 +117,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
                   visibleTextCount={1}
                   textCount={textCount}
                   onClick={() => onParentClick(novel)}
+                  getSentenceEvaluation={getSentenceEvaluation}
                 />
               </Box>
             );
@@ -145,6 +152,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           canGoNext={canGoNext}
           canGoPrev={canGoPrev}
           onEvaluationSuccess={onEvaluationSuccess}
+          getSentenceEvaluation={getSentenceEvaluation}
         />
       </Box>
 
@@ -177,6 +185,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         setStartIndex={setStartIndexChildren}
         visibleTextCount={3}
         hasMainPanelEvaluation={hasMainPanelEvaluation}
+        getSentenceEvaluation={getSentenceEvaluation}
       />
     </Box>
   );
