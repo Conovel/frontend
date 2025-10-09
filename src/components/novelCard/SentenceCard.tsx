@@ -1,46 +1,64 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
 import { EvaluationsApi, EvaluateSentence } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
+import { SentenceWithUI } from '../../types/types';
 
-interface NovelCardProps {
-  sentence: string;
-  userName: string;
-  sentenceId: number;
-  evaluationGoodCount: number;
-  evaluationStayCount: number;
-  isGoodEvaluated: boolean;
-  isStayEvaluated: boolean;
+interface SentenceCardProps {
+  sentence: SentenceWithUI;
+  canEvaluate?: boolean;
   onClick?: () => void;
-  disabled?: boolean;
   onEvaluationSuccess?: () => void;
+  getSentenceEvaluation?: (sentenceId: number) => Promise<{
+    goodCount: number;
+    stayCount: number;
+    isGoodEvaluated: boolean;
+    isStayEvaluated: boolean;
+  }>;
 }
 
-const NovelCard = ({
+const SentenceCard = ({
   sentence,
-  userName,
-  sentenceId,
+  canEvaluate = true,
   onClick,
-  evaluationGoodCount,
-  evaluationStayCount,
-  isGoodEvaluated,
-  isStayEvaluated,
-  disabled = false,
   onEvaluationSuccess,
-}: NovelCardProps) => {
-  const [localGoodCount, setLocalGoodCount] = useState(evaluationGoodCount);
-  const [localStayCount, setLocalStayCount] = useState(evaluationStayCount);
+  getSentenceEvaluation,
+}: SentenceCardProps) => {
+  const [localGoodCount, setLocalGoodCount] = useState(
+    sentence.evaluationGoodCount || 0,
+  );
+  const [localStayCount, setLocalStayCount] = useState(
+    sentence.evaluationStayCount || 0,
+  );
+  const [isGoodEvaluated, setIsGoodEvaluated] = useState(false);
+  const [isStayEvaluated, setIsStayEvaluated] = useState(false);
   const [isEvaluating, setIsEvaluating] = useState(false);
 
   const busyRef = useRef(false); // 再入防止
   const abortRef = useRef<AbortController | null>(null);
   const requestIdRef = useRef<number>(0); // リクエストIDで最新のリクエストのみ処理
 
+  // 評価状態を取得
+  useEffect(() => {
+    const fetchEvaluation = async () => {
+      if (!getSentenceEvaluation || !sentence.sentenceId) return;
+
+      try {
+        const evalData = await getSentenceEvaluation(sentence.sentenceId);
+        setIsGoodEvaluated(evalData.isGoodEvaluated);
+        setIsStayEvaluated(evalData.isStayEvaluated);
+      } catch (error) {
+        console.error('Error fetching evaluation:', error);
+      }
+    };
+    fetchEvaluation();
+  }, [sentence.sentenceId, getSentenceEvaluation]);
+
   const evaluationsApi = new EvaluationsApi(axiosConfig);
   const handleGoodCountClick = async (): Promise<void> => {
-    if (busyRef.current || disabled) return; // 連打無視
+    if (busyRef.current || !canEvaluate) return; // 連打無視
 
     // アトミックな操作でbusyフラグを設定
     if (busyRef.current) return; // 二重チェック
@@ -57,7 +75,7 @@ const NovelCard = ({
 
     try {
       const evaluateSentence: EvaluateSentence = {
-        sentenceId: sentenceId,
+        sentenceId: sentence.sentenceId || 0,
         evaluation: 'good',
       };
 
@@ -103,11 +121,11 @@ const NovelCard = ({
         fontSize: '0.8rem',
         position: 'relative',
         backgroundColor: '#fff',
-        opacity: disabled ? 0.6 : 1,
-        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: !canEvaluate ? 0.6 : 1,
+        cursor: !canEvaluate ? 'not-allowed' : 'pointer',
       }}
       onClick={() => {
-        if (!disabled && onClick) {
+        if (canEvaluate && onClick) {
           onClick();
         }
       }}
@@ -127,7 +145,7 @@ const NovelCard = ({
           }}
         >
           <Avatar sx={{ width: 24, height: 24, zIndex: 2 }}>
-            {(userName || 'U').charAt(0)}
+            {(sentence.userName || sentence.sentencePenName || 'U').charAt(0)}
           </Avatar>
           <Typography
             sx={{
@@ -136,7 +154,7 @@ const NovelCard = ({
               height: '8vh',
             }}
           >
-            {sentence}
+            {sentence.sentence || ''}
           </Typography>
         </Box>
       </Box>
@@ -154,14 +172,14 @@ const NovelCard = ({
           evaluationGoodCount={localGoodCount}
           isEvaluated={isGoodEvaluated}
           onClick={handleGoodCountClick}
-          disabled={disabled || isEvaluating}
+          disabled={!canEvaluate || isEvaluating}
         />
         <NextPlanButton
           evaluationStayCount={localStayCount}
           setEvaluationStayCount={setLocalStayCount}
           isEvaluated={isStayEvaluated}
-          sentenceId={sentenceId}
-          disabled={disabled || isEvaluating}
+          sentenceId={sentence.sentenceId || 0}
+          disabled={!canEvaluate || isEvaluating}
           onEvaluationSuccess={onEvaluationSuccess}
         />
       </Box>
@@ -169,4 +187,4 @@ const NovelCard = ({
   );
 };
 
-export default NovelCard;
+export default SentenceCard;

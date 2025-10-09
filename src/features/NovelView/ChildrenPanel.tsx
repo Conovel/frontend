@@ -3,60 +3,10 @@ import Carousel from 'react-material-ui-carousel';
 import { Box, Snackbar, Alert } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import NovelCard from '../../components/novelCard/NovelCard';
+import SentenceCard from '../../components/novelCard/SentenceCard';
 import { SentenceWithUI } from '../../types/types';
 import { EditPost } from '../EditPost';
 import MosaicOverlay from '../../components/mosaicOverlay';
-
-// Async component to handle evaluation loading for children
-const AsyncChildrenNovelCard: React.FC<{
-  panel: SentenceWithUI;
-  getSentenceEvaluation: (sentenceId: number) => Promise<{
-    goodCount: number;
-    stayCount: number;
-    isGoodEvaluated: boolean;
-    isStayEvaluated: boolean;
-  }>;
-  onCardClick: (sentenceId: number | undefined) => void;
-  isExpanded: boolean;
-}> = ({ panel, getSentenceEvaluation, onCardClick, isExpanded }) => {
-  const [evaluation, setEvaluation] = useState({
-    goodCount: 0,
-    stayCount: 0,
-    isGoodEvaluated: false,
-    isStayEvaluated: false,
-  });
-
-  useEffect(() => {
-    const fetchEvaluation = async () => {
-      try {
-        const evalData = await getSentenceEvaluation(panel.sentenceId || 0);
-        setEvaluation(evalData);
-      } catch (error) {
-        console.error('Error fetching evaluation:', error);
-      }
-    };
-    fetchEvaluation();
-  }, [panel.sentenceId, getSentenceEvaluation]);
-
-  const truncatedSentence =
-    (panel.sentence || '').length > 50
-      ? (panel.sentence || '').substring(0, 50) + '...'
-      : panel.sentence || '';
-
-  return (
-    <NovelCard
-      sentence={isExpanded ? panel.sentence || '' : truncatedSentence}
-      userName={panel.userName || panel.sentencePenName || ''}
-      sentenceId={panel.sentenceId || 0}
-      evaluationGoodCount={panel.evaluationGoodCount || 0}
-      evaluationStayCount={panel.evaluationStayCount || 0}
-      isGoodEvaluated={evaluation.isGoodEvaluated}
-      isStayEvaluated={evaluation.isStayEvaluated}
-      onClick={() => onCardClick(panel.sentenceId)}
-    />
-  );
-};
 
 const carouselNavButtonStyle = {
   backgroundColor: '#BDBDBD',
@@ -162,19 +112,29 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   const renderNovelCard = (panel: SentenceWithUI) => {
     const isExpanded = expandedCards.has(panel.sentenceId || 0);
 
-    const handleCardClick = (sentenceId: number | undefined) => {
-      if (sentenceId) {
-        handleClick(sentenceId);
+    const handleCardClick = () => {
+      if (panel.sentenceId) {
+        handleClick(panel.sentenceId);
       }
     };
 
+    // Create a modified sentence object with truncated text if not expanded
+    const displaySentence = isExpanded
+      ? panel
+      : {
+          ...panel,
+          sentence:
+            (panel.sentence || '').length > 50
+              ? (panel.sentence || '').substring(0, 50) + '...'
+              : panel.sentence || '',
+        };
+
     return (
       <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
-        <AsyncChildrenNovelCard
-          panel={panel}
+        <SentenceCard
+          sentence={displaySentence}
           getSentenceEvaluation={getSentenceEvaluation}
-          onCardClick={handleCardClick}
-          isExpanded={isExpanded}
+          onClick={handleCardClick}
         />
       </Box>
     );

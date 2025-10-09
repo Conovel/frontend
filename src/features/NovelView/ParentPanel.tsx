@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import NovelCard from '../../components/novelCard/NovelCard';
+import SentenceCard from '../../components/novelCard/SentenceCard';
 import { SentenceWithUI } from '../../types/types';
 
 interface ParentPanelProps {
@@ -25,28 +25,6 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
   onClick,
   getSentenceEvaluation,
 }) => {
-  // ユーザーの評価状態を取得（非同期）
-  const [evaluation, setEvaluation] = React.useState({
-    goodCount: 0,
-    stayCount: 0,
-    isGoodEvaluated: false,
-    isStayEvaluated: false,
-  });
-
-  React.useEffect(() => {
-    const fetchEvaluation = async () => {
-      try {
-        const evalData = await getSentenceEvaluation(
-          parentPanel.sentenceId || 0,
-        );
-        setEvaluation(evalData);
-      } catch (error) {
-        console.error('Error fetching evaluation:', error);
-      }
-    };
-    fetchEvaluation();
-  }, [parentPanel.sentenceId, getSentenceEvaluation]);
-
   return (
     <Box
       sx={{
@@ -64,16 +42,11 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
       }}
     >
       {startIndex < textCount ? (
-        <NovelCard
+        <SentenceCard
           key={startIndex}
-          sentence={parentPanel.sentence || ''}
-          userName={parentPanel.userName || parentPanel.sentencePenName || ''}
-          sentenceId={parentPanel.sentenceId || 0}
+          sentence={parentPanel}
           onClick={onClick}
-          evaluationGoodCount={parentPanel.evaluationGoodCount || 0}
-          evaluationStayCount={parentPanel.evaluationStayCount || 0}
-          isGoodEvaluated={evaluation.isGoodEvaluated}
-          isStayEvaluated={evaluation.isStayEvaluated}
+          getSentenceEvaluation={getSentenceEvaluation}
         />
       ) : null}
     </Box>

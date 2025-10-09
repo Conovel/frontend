@@ -1,53 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import NovelCard from '../../components/novelCard/NovelCard';
+import SentenceCard from '../../components/novelCard/SentenceCard';
 import { SentenceWithUI, NavigationDirection } from '../../types/types';
-
-// Async component to handle evaluation loading
-const AsyncNovelCard: React.FC<{
-  panel: SentenceWithUI;
-  getSentenceEvaluation: (sentenceId: number) => Promise<{
-    goodCount: number;
-    stayCount: number;
-    isGoodEvaluated: boolean;
-    isStayEvaluated: boolean;
-  }>;
-  onEvaluationSuccess?: () => void;
-}> = ({ panel, getSentenceEvaluation, onEvaluationSuccess }) => {
-  const [evaluation, setEvaluation] = useState({
-    goodCount: 0,
-    stayCount: 0,
-    isGoodEvaluated: false,
-    isStayEvaluated: false,
-  });
-
-  useEffect(() => {
-    const fetchEvaluation = async () => {
-      try {
-        const evalData = await getSentenceEvaluation(panel.sentenceId || 0);
-        setEvaluation(evalData);
-      } catch (error) {
-        console.error('Error fetching evaluation:', error);
-      }
-    };
-    fetchEvaluation();
-  }, [panel.sentenceId, getSentenceEvaluation]);
-
-  return (
-    <NovelCard
-      sentence={panel.sentence || ''}
-      userName={panel.userName || panel.sentencePenName || ''}
-      sentenceId={panel.sentenceId || 0}
-      evaluationGoodCount={panel.evaluationGoodCount || 0}
-      evaluationStayCount={panel.evaluationStayCount || 0}
-      isGoodEvaluated={evaluation.isGoodEvaluated}
-      isStayEvaluated={evaluation.isStayEvaluated}
-      onEvaluationSuccess={onEvaluationSuccess}
-    />
-  );
-};
 
 interface MainPanelProps {
   mainPanel: SentenceWithUI[];
@@ -200,9 +156,9 @@ const MainPanel: React.FC<MainPanelProps> = ({
           .slice(currentStartIndex, currentStartIndex + visibleTextCount)
           .map((panel) => {
             return (
-              <AsyncNovelCard
+              <SentenceCard
                 key={panel.sentenceId}
-                panel={panel}
+                sentence={panel}
                 getSentenceEvaluation={getSentenceEvaluation}
                 onEvaluationSuccess={onEvaluationSuccess}
               />
