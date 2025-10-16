@@ -5,6 +5,7 @@ import ChildrenPanel from './ChildrenPanel';
 import MainPanel from './MainPanel';
 import { mockContainerData } from './mocks/data';
 import { Sentence } from '../../api/api';
+import { OGP } from '../../components/ogp';
 
 interface NovelViewPresentationProps {
   mainPanel: Sentence[];
@@ -69,82 +70,99 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   const childrenTextCount = 10;
   const visibleTextCount = 3;
 
+  // OGP用のデータを準備
+  const mainSentence = mockContainerData.main[0];
+  const novelTitle = `${mainSentence?.sentencePenName || ''}の投稿`;
+  const sentencePreview = mainSentence?.sentence
+    ? mainSentence.sentence.substring(0, 100) +
+      (mainSentence.sentence.length > 100 ? '...' : '')
+    : '';
+  const ogpDescription = sentencePreview || 'Conovelで小説を読む';
+
   return (
-    <Container sx={{ position: 'relative', alignItems: 'center' }}>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '10vh',
-          bottom: '5vh',
-          left: '50%',
-          width: '2px',
-          backgroundColor: '#000',
-          zIndex: 1,
-        }}
-      ></Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '20px',
-        }}
-      >
-        {mockContainerData.parent.map((NovelProps, index) => (
-          <ParentPanel
-            key={index}
-            parentPanel={NovelProps}
-            startIndex={start_index_parent}
-            setStartIndex={setStart_index_parent}
-            visibleTextCount={visibleTextCount}
-            textCount={parentTextCount}
-            evaluation_good_count={evaluation_good_count_parent}
-            setEvaluation_good_count={setEvaluation_good_count_parent}
-            comment_count={comment_count_parent}
-            setComment_count={setComment_count_parent}
-            evaluation_stay_count={evaluation_stay_count_parent}
-            setEvaluation_stay_count={setEvaluation_stay_count_parent}
-          />
-        ))}
-        <MainPanel
-          mainPanel={mockContainerData.main[0]}
-          evaluation_good_count={evaluation_good_count_main}
-          setEvaluation_good_count={setEvaluation_good_count_main}
-          comment_count={comment_count_main}
-          setComment_count={setComment_count_main}
-          evaluation_stay_count={evaluation_stay_count_main}
-          setEvaluation_stay_count={setEvaluation_stay_count_main}
-        />
-        <ChildrenPanel
-          mainPanel={[]}
-          childrenPanel={[]}
-          setChildrenPanel={() => {}}
-          setMainPanel={() => {}}
-          novel={{
-            updatedAt: new Date().toISOString(),
-            sentence: '',
-            sentenceId: 0,
-            sentenceUserId: 0,
-            sentencePenName: '',
-            profileIconImage: '',
-            evaluationGoodCount: 0,
-            evaluationStayCount: 0,
-            createdAt: new Date().toISOString(),
+    <>
+      <OGP
+        title={novelTitle}
+        description={ogpDescription}
+        url={`/novelView`}
+        type='article'
+      />
+      <Container sx={{ position: 'relative', alignItems: 'center' }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '10vh',
+            bottom: '5vh',
+            left: '50%',
+            width: '2px',
+            backgroundColor: '#000',
+            zIndex: 1,
           }}
-          onClick={() => {}}
-          textIndex={0}
-          startIndex={start_index_children}
-          setStartIndex={setStart_index_children}
-          visibleTextCount={visibleTextCount}
-          textCount={childrenTextCount}
-          evaluation_good_count={evaluation_good_count_children}
-          setEvaluation_good_count={setEvaluation_good_count_children}
-          comment_count={comment_count_children}
-          setComment_count={setComment_count_children}
-          evaluation_stay_count={evaluation_stay_count_children}
-          setEvaluation_stay_count={setEvaluation_stay_count_children}
-        />
-      </Box>
-    </Container>
+        ></Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '20px',
+          }}
+        >
+          {mockContainerData.parent.map((NovelProps, index) => (
+            <ParentPanel
+              key={index}
+              parentPanel={NovelProps}
+              startIndex={start_index_parent}
+              setStartIndex={setStart_index_parent}
+              visibleTextCount={visibleTextCount}
+              textCount={parentTextCount}
+              evaluation_good_count={evaluation_good_count_parent}
+              setEvaluation_good_count={setEvaluation_good_count_parent}
+              comment_count={comment_count_parent}
+              setComment_count={setComment_count_parent}
+              evaluation_stay_count={evaluation_stay_count_parent}
+              setEvaluation_stay_count={setEvaluation_stay_count_parent}
+            />
+          ))}
+          <MainPanel
+            mainPanel={mockContainerData.main[0]}
+            evaluation_good_count={evaluation_good_count_main}
+            setEvaluation_good_count={setEvaluation_good_count_main}
+            comment_count={comment_count_main}
+            setComment_count={setComment_count_main}
+            evaluation_stay_count={evaluation_stay_count_main}
+            setEvaluation_stay_count={setEvaluation_stay_count_main}
+          />
+          <ChildrenPanel
+            mainPanel={[]}
+            childrenPanel={[]}
+            setChildrenPanel={() => {}}
+            setMainPanel={() => {}}
+            novel={{
+              updatedAt: new Date().toISOString(),
+              sentence: '',
+              sentenceId: 0,
+              sentenceUserId: 0,
+              sentencePenName: '',
+              profileIconImage: '',
+              evaluationGoodCount: 0,
+              evaluationStayCount: 0,
+              createdAt: new Date().toISOString(),
+            }}
+            onClick={() => {}}
+            textIndex={0}
+            startIndex={start_index_children}
+            setStartIndex={setStart_index_children}
+            visibleTextCount={visibleTextCount}
+            textCount={childrenTextCount}
+            evaluation_good_count={evaluation_good_count_children}
+            setEvaluation_good_count={setEvaluation_good_count_children}
+            comment_count={comment_count_children}
+            setComment_count={setComment_count_children}
+            evaluation_stay_count={evaluation_stay_count_children}
+            setEvaluation_stay_count={setEvaluation_stay_count_children}
+          />
+        </Box>
+      </Container>
+    </>
   );
 };
