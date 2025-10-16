@@ -2,8 +2,8 @@ import { Box, Typography, Container, Button, Divider } from '@mui/material';
 import GoogleSignInButton from '../../components/buttonicon/GoogleSignInButton';
 import { useAuth } from '../../providers/auth';
 import { Link as RouterLink } from 'react-router';
-import React from 'react'
-import ToastSnackbar from '../../components/toastSnackbar'
+import React from 'react';
+import ToastSnackbar from '../../components/toastSnackbar';
 
 export const LoginPresenter = () => {
   const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
@@ -46,7 +46,11 @@ export const LoginPresenter = () => {
               <Button
                 onClick={logout}
                 variant='outlined'
-                sx={{ borderColor: 'black', color: 'black', padding: '4px 16px' }}
+                sx={{
+                  borderColor: 'black',
+                  color: 'black',
+                  padding: '4px 16px',
+                }}
               >
                 ログアウト
               </Button>
@@ -57,7 +61,11 @@ export const LoginPresenter = () => {
                 component={RouterLink}
                 variant='outlined'
                 to='/account'
-                sx={{ borderColor: 'black', color: 'black', padding: '4px 16px' }}
+                sx={{
+                  borderColor: 'black',
+                  color: 'black',
+                  padding: '4px 16px',
+                }}
               >
                 アカウント情報へ
               </Button>
@@ -65,7 +73,7 @@ export const LoginPresenter = () => {
           ) : (
             <>
               <p>ログインまたは新規登録してください</p>
-              <GoogleSignInButton onClick={handleGoogleAuth} className="" />
+              <GoogleSignInButton onClick={handleGoogleAuth} className='' />
             </>
           )}
           <ToastSnackbar />
