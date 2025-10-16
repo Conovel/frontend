@@ -8,17 +8,37 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { NovelInfo } from '../../features/NovelInfo';
-import { NovelListItemWithUI } from '../../types/types';
+import type { NovelListItem } from '../../api/api';
 
 const NovelCard = ({
   novel,
 }: {
-  novel: NovelListItemWithUI;
+  novel: NovelListItem;
   onClick?: () => void;
 }) => {
   const [openModal, setOpenModal] = React.useState(false);
 
   const hasTitleId = typeof novel.titleId === 'number';
+
+  const displaySentence = novel.famousSentenceText || '';
+  const genres = novel.titleGenres || [];
+  const avatarText = (novel.authorPenName || '').charAt(0);
+  const readerCount = novel.viewCount ?? 0;
+  const updatedAt = novel.updatedAt || novel.createdAt || '';
+  const evaluationCount = novel.evaluationGoodCount ?? 0;
+
+  const formattedDate = React.useMemo(() => {
+    if (!updatedAt) {
+      return '';
+    }
+
+    const date = new Date(updatedAt);
+    if (Number.isNaN(date.getTime())) {
+      return updatedAt;
+    }
+
+    return date.toLocaleDateString();
+  }, [updatedAt]);
 
   const handleOpenModal = () => {
     if (!hasTitleId) {
@@ -50,7 +70,7 @@ const NovelCard = ({
               textOverflow: 'ellipsis',
             }}
           >
-            {novel.famousSentenceText || novel.mainCopy}
+            {displaySentence}
           </Typography>
           <Typography
             variant='h5'
@@ -66,50 +86,55 @@ const NovelCard = ({
           >
             {novel.title}
           </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
-            {novel.chips?.map((chip, index) => (
-              <Box key={index}>{chip.label}</Box>
-            ))}
-          </Box>
+          {genres.length > 0 && (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
+              {genres.map((genre, index) => (
+                <Box key={`${genre}-${index}`}>{genre}</Box>
+              ))}
+            </Box>
+          )}
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Box
               sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
               color='text.secondary'
             >
               <Avatar
-                alt={novel.avatar?.alt || ''}
+                alt={novel.authorPenName || ''}
                 sx={{
                   width: 24,
                   height: 24,
-                  backgroundColor: novel.avatar?.color || 'white',
+                  backgroundColor: 'white',
                 }}
-                src={novel.avatar?.src || novel.profileIconImage}
+                src={novel.profileIconImage}
               >
-                {novel.avatar?.text || (novel.authorPenName || '').charAt(0)}
+                {avatarText}
               </Avatar>
             </Box>
-            <Box
-              sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}
-              color='text.secondary'
-            >
-              {novel.tags?.map((tag, index) => (
-                <Box key={index}>{tag.label}</Box>
-              ))}
-            </Box>
+            {novel.isNew || novel.isFamous ? (
+              <Box
+                sx={{ display: 'flex', alignItems: 'center', mb: 1.5, gap: 1 }}
+                color='text.secondary'
+              >
+                {novel.isNew && <Box>NEW</Box>}
+                {novel.isFamous && <Box>POPULAR</Box>}
+              </Box>
+            ) : (
+              <Box sx={{ mb: 1.5 }} />
+            )}
           </Box>
 
           <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1.5 }}>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <VisibilityIcon />
-              {novel.readerCount}
+              {readerCount}
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <AccessTimeFilledIcon />
-              {novel.updatedAt}
+              {formattedDate}
             </Typography>
             <Typography sx={{ display: 'flex', alignItems: 'center' }}>
               <EditNoteIcon />
-              {novel.sentenceUserCount}
+              {evaluationCount}
             </Typography>
           </Box>
         </CardContent>

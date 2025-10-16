@@ -12,7 +12,7 @@ export type {
 } from '../api/api';
 
 // Import types for use in interfaces
-import type { Sentence, NovelListItem } from '../api/api';
+import type { Sentence } from '../api/api';
 
 // UI-specific types
 export interface Avatar {
@@ -42,20 +42,6 @@ export interface NovelViewData extends SentenceWithUI {
   children: SentenceWithUI[];
   parent: SentenceWithUI[];
   main: SentenceWithUI[];
-}
-
-// Novel list item type (for novel list display, no relationships needed)
-export interface NovelListItemWithUI extends NovelListItem {
-  // UI-specific additional fields for novel list
-  avatar?: Avatar;
-  chips?: Chip[];
-  tags?: Chip[];
-  readerCount?: number;
-  sentenceUserCount?: number;
-  sentenceHierarchyCount?: number;
-  mainCopy?: string;
-  popular?: boolean;
-  newArrival?: boolean;
 }
 
 // API request types (re-exported from API)

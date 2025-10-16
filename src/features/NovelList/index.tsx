@@ -1,8 +1,8 @@
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
 import { NovelsApi } from '../../api/api';
+import type { NovelListItem } from '../../api/api';
 import NovelCardContainer from '../../components/novelCard/container';
-import { NovelListItemWithUI } from '../../types/types';
 import { convertNovelListResponse } from './convert';
 import { axiosConfig } from '../../axiosConfig';
 import { fallbackNovelListData } from './mocks/data';
@@ -10,9 +10,7 @@ import { fallbackNovelListData } from './mocks/data';
 const novelsApi = new NovelsApi(axiosConfig);
 
 const NovelList = () => {
-  const [responseNovels, setResponseNovels] = useState<NovelListItemWithUI[]>(
-    [],
-  );
+  const [responseNovels, setResponseNovels] = useState<NovelListItem[]>([]);
 
   useEffect(() => {
     const fetchNovels = async () => {
@@ -20,8 +18,9 @@ const NovelList = () => {
         console.log('Fetching novels...');
         const response = await novelsApi.getNovels();
 
-        const convertedResponse: NovelListItemWithUI[] =
-          convertNovelListResponse(response.data);
+        const convertedResponse: NovelListItem[] = convertNovelListResponse(
+          response.data,
+        );
         console.log('Converted novels:', convertedResponse);
         setResponseNovels(convertedResponse);
       } catch (error) {
