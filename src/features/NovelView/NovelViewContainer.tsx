@@ -441,7 +441,6 @@ export const NovelViewContainer = () => {
       setStartIndexChildren={setStartIndexChildren}
       hasMainPanelEvaluation={hasMainPanelEvaluation}
       textCount={mainPanel.length + parentPanel.length + childrenPanel.length} // 実際のデータの総数
-      onRefresh={handleRefresh}
       onNextParallel={handleNextParallel}
       onPrevParallel={handlePrevParallel}
       hasParallels={hasParallels}
@@ -452,6 +451,7 @@ export const NovelViewContainer = () => {
       canGoNext={canGoNext}
       canGoPrev={canGoPrev}
       onEvaluationSuccess={handleEvaluationSuccess}
+      onPostSuccess={handleRefresh}
       getSentenceEvaluation={getSentenceEvaluation}
     />
   );

@@ -3,10 +3,15 @@ import { Box, IconButton } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import SentenceCard from '../../components/novelCard/SentenceCard';
-import { SentenceWithUI, NavigationDirection } from '../../types/types';
+import type { Sentence } from '../../api/api';
+import { NavigationDirection } from '../../types/types';
+
+type SentenceWithOptionalUserName = Sentence & {
+  userName?: string;
+};
 
 interface MainPanelProps {
-  mainPanel: SentenceWithUI[];
+  mainPanel: SentenceWithOptionalUserName[];
   startIndex: number;
   visibleTextCount: number;
   onNavigate?: (direction: NavigationDirection) => void;
@@ -64,18 +69,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
   const showNextButton = hasParallels
     ? true
     : currentStartIndex + visibleTextCount < mainPanel.length;
-
-  // デバッグ用のログ出力
-  console.log('MainPanel Debug:', {
-    hasParallels,
-    showPrevButton,
-    showNextButton,
-    canGoPrev,
-    canGoNext,
-    mainPanelLength: mainPanel.length,
-    currentStartIndex,
-    visibleTextCount,
-  });
 
   return (
     <Box
@@ -169,14 +162,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
       {/* 右ナビゲーションボタン - 常に表示 */}
       <IconButton
         onClick={() => {
-          console.log(
-            'Right button clicked, hasParallels:',
-            hasParallels,
-            'isInParallelMode:',
-            isInParallelMode,
-            'canGoNext:',
-            canGoNext,
-          );
           if (hasParallels && onNextParallel) {
             onNextParallel();
           } else if (isInParallelMode && onBackToOriginal) {

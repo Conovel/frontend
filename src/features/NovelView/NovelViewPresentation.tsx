@@ -16,7 +16,6 @@ interface NovelViewPresentationProps {
   setStartIndexChildren: React.Dispatch<React.SetStateAction<number>>;
   hasMainPanelEvaluation: boolean;
   textCount: number;
-  onRefresh: () => void;
   onNextParallel: () => void;
   onPrevParallel: () => void;
   hasParallels: boolean;
@@ -27,6 +26,7 @@ interface NovelViewPresentationProps {
   canGoNext: boolean;
   canGoPrev: boolean;
   onEvaluationSuccess: () => void;
+  onPostSuccess: () => void;
   getSentenceEvaluation: (sentenceId: number) => Promise<{
     goodCount: number;
     stayCount: number;
@@ -44,7 +44,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   setStartIndexChildren,
   hasMainPanelEvaluation,
   textCount,
-  onRefresh,
   onNextParallel,
   onPrevParallel,
   hasParallels,
@@ -55,14 +54,10 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   canGoNext,
   canGoPrev,
   onEvaluationSuccess,
+  onPostSuccess,
   getSentenceEvaluation,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handlePostSuccess = () => {
-    // 投稿成功後の処理（画面更新など）
-    onRefresh(); // 画面更新をトリガー
-  };
 
   return (
     <Box
@@ -169,7 +164,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       <EditPost
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onPostSuccess={handlePostSuccess}
+        onPostSuccess={onPostSuccess}
         mainText={mainPanel[0]?.sentence || ''}
         sentenceId={mainPanel[0]?.sentenceId || 0}
         parentUpdatedAt={mainPanel[0]?.updatedAt || ''}
