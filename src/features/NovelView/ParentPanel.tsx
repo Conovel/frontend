@@ -1,13 +1,11 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import SentenceCard from '../../components/novelCard/SentenceCard';
-import { SentenceWithUI } from '../../types/types';
+import type { Sentence } from '../../api/api';
 
 interface ParentPanelProps {
-  parentPanel: SentenceWithUI;
+  parentPanel: Sentence;
   startIndex: number;
-  setStartIndex: React.Dispatch<React.SetStateAction<number>>;
-  visibleTextCount: number;
   textCount: number;
   onClick: () => void;
   getSentenceEvaluation: (sentenceId: number) => Promise<{

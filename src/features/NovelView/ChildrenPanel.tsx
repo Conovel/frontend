@@ -4,9 +4,9 @@ import { Box, Snackbar, Alert } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import SentenceCard from '../../components/novelCard/SentenceCard';
-import { SentenceWithUI } from '../../types/types';
+import type { Sentence } from '../../api/api';
 import { EditPost } from '../EditPost';
-import MosaicOverlay from '../../components/mosaicOverlay';
+import MosaicOverlay from '../../components/mosaicOverlay/MosaicOverlay';
 
 const carouselNavButtonStyle = {
   backgroundColor: '#BDBDBD',
@@ -45,11 +45,8 @@ const novelCardBoxStyle = {
 };
 
 interface ChildrenPanelProps {
-  childrenPanel: SentenceWithUI[];
-  setChildrenPanel: React.Dispatch<React.SetStateAction<SentenceWithUI[]>>;
-  mainPanel: SentenceWithUI[];
-  setStartIndex: React.Dispatch<React.SetStateAction<number>>;
-  visibleTextCount: number;
+  childrenPanel: Sentence[];
+  mainPanel: Sentence[];
   hasMainPanelEvaluation: boolean;
   getSentenceEvaluation: (sentenceId: number) => Promise<{
     goodCount: number;
@@ -92,40 +89,37 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     }
   };
 
-  const handleClick = (sentenceId: number) => {
-    // MainPanelで評価が行われていない場合はエラーメッセージを表示
+  const ensureEvaluated = () => {
     if (!hasMainPanelEvaluation) {
       setError(
         'メインパネルで評価を行ってから、続きの投稿をクリックしてください',
       );
-      return;
+      return false;
     }
-
-    // 親コンポーネントでナビゲーション処理を行う
-    console.log('Navigate to sentence:', sentenceId);
+    return true;
   };
 
   const handleCloseError = () => {
     setError(null);
   };
 
-  const renderNovelCard = (panel: SentenceWithUI) => {
+  const renderNovelCard = (panel: Sentence) => {
     const isExpanded = expandedCards.has(panel.sentenceId || 0);
 
     const handleCardClick = () => {
-      if (panel.sentenceId) {
-        handleClick(panel.sentenceId);
+      if (!ensureEvaluated()) {
+        return;
       }
     };
 
-    // Create a modified sentence object with truncated text if not expanded
+    // Create a modified sentence object with shortened text if not expanded
     const displaySentence = isExpanded
       ? panel
       : {
           ...panel,
           sentence:
             (panel.sentence || '').length > 50
-              ? (panel.sentence || '').substring(0, 50) + '...'
+              ? `${(panel.sentence || '').substring(0, 50)}...`
               : panel.sentence || '',
         };
 
@@ -141,8 +135,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   };
 
   const handlePostSuccess = async () => {
-    // 投稿成功後の処理（画面更新など）
-    // 必要に応じてchildrenPanelを再取得する処理を追加
+    // 投稿成功後にモーダルを閉じる
     setIsEditPostOpen(false);
   };
 

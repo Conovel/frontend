@@ -3,23 +3,20 @@ import { Box, Button } from '@mui/material';
 import ParentPanel from './ParentPanel';
 import MainPanel from './MainPanel';
 import ChildrenPanel from './ChildrenPanel';
-import { SentenceWithUI, NovelViewData } from '../../types/types';
+import type { Sentence } from '../../api/api';
 import { EditPost } from '../EditPost';
 
 interface NovelViewPresentationProps {
-  mainPanel: SentenceWithUI[];
-  parentPanel: SentenceWithUI[];
-  childrenPanel: SentenceWithUI[];
+  mainPanel: Sentence[];
+  parentPanel: Sentence[];
+  childrenPanel: Sentence[];
   startIndexParent: number;
-  setStartIndexParent: React.Dispatch<React.SetStateAction<number>>;
-  startIndexChildren: number;
-  setStartIndexChildren: React.Dispatch<React.SetStateAction<number>>;
   hasMainPanelEvaluation: boolean;
   textCount: number;
   onNextParallel: () => void;
   onPrevParallel: () => void;
   hasParallels: boolean;
-  onParentClick: (clickedSentence: SentenceWithUI) => void;
+  onParentClick: (clickedSentence: Sentence) => void;
   onMainPanelNavigate: (direction: 'prev' | 'next') => void;
   onBackToOriginal: () => void;
   isInParallelMode: boolean;
@@ -40,8 +37,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   parentPanel,
   childrenPanel,
   startIndexParent,
-  setStartIndexParent,
-  setStartIndexChildren,
   hasMainPanelEvaluation,
   textCount,
   onNextParallel,
@@ -88,28 +83,11 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       {parentPanel.length > 0 && (
         <Box sx={{ mb: 4, width: '100%', maxWidth: '600px' }}>
           {parentPanel.slice(-1).map((novel, index) => {
-            const novelWithRelations: NovelViewData = {
-              ...novel,
-              children: childrenPanel,
-              main: mainPanel,
-              parent: [],
-              chips:
-                novel.chips?.map((chip) => ({
-                  label: chip.label || '',
-                })) || [],
-              tags:
-                novel.tags?.map((tag) => ({
-                  label: tag.label || '',
-                })) || [],
-            };
-
             return (
               <Box key={index} sx={{ mb: 2 }}>
                 <ParentPanel
-                  parentPanel={novelWithRelations}
+                  parentPanel={novel}
                   startIndex={startIndexParent}
-                  setStartIndex={setStartIndexParent}
-                  visibleTextCount={1}
                   textCount={textCount}
                   onClick={() => onParentClick(novel)}
                   getSentenceEvaluation={getSentenceEvaluation}
@@ -175,10 +153,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
 
       <ChildrenPanel
         childrenPanel={childrenPanel}
-        setChildrenPanel={() => {}}
         mainPanel={mainPanel}
-        setStartIndex={setStartIndexChildren}
-        visibleTextCount={3}
         hasMainPanelEvaluation={hasMainPanelEvaluation}
         getSentenceEvaluation={getSentenceEvaluation}
       />
