@@ -4,10 +4,14 @@ import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
 import { EvaluationsApi, EvaluateSentence } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
-import { SentenceWithUI } from '../../types/types';
+import { Sentence } from '../../types/types';
+
+interface SentenceWithOptionalUserName extends Sentence {
+  userName?: string;
+}
 
 interface SentenceCardProps {
-  sentence: SentenceWithUI;
+  sentence: SentenceWithOptionalUserName;
   canEvaluate?: boolean;
   onClick?: () => void;
   onEvaluationSuccess?: () => void;
