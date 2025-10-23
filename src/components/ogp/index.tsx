@@ -13,7 +13,8 @@ export const OGP = ({
   title,
   description,
   url = '/',
-  image = '/og-conovel-logo.webp',
+  // OGP画像をconovel_square_logo.webpに変更
+  image = '/conovel_square_logo.webp',
   imageAlt = 'Conovelのロゴ',
   type = 'website',
 }: OGPProps) => {
@@ -34,6 +35,7 @@ export const OGP = ({
       <meta property='og:locale' content='ja_JP' />
       <meta property='og:image' content={image} />
       <meta property='og:image:alt' content={imageAlt} />
+      {/* OGP画像タイプをwebpに統一（conovel_square_logo.webp対応） */}
       <meta property='og:image:type' content='image/webp' />
 
       {/* Twitter */}
