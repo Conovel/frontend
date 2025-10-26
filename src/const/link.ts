@@ -7,7 +7,7 @@ export const LINK = {
   company: '/Company', // 運営会社
   terms: '/Terms', // ポリシー
   list: '/List', // 一覧
-  contact: 'https://forms.gle/ARNQGNrWEtjarkD86' // お問合せ
+  contact: 'https://forms.gle/ARNQGNrWEtjarkD86', // お問合せ
 };
 
 export const FOOTER_LINKS = [
