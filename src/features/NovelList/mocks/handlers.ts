@@ -1,12 +1,18 @@
 import { http, HttpResponse } from 'msw';
-import { PostSentence, Sentence, EvaluateSentence } from '../../../api/api';
+import {
+  PostSentence,
+  Sentence,
+  EvaluateSentence,
+  ViewMeUser,
+} from '../../../api/api';
 import { mockNovelListData } from './data';
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+const apiBaseUrl =
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/v1';
 console.log('MSW API Base URL:', apiBaseUrl);
 
 // モックユーザー情報
-const mockUser = {
+const mockUser: ViewMeUser = {
   userId: 1,
   penName: 'テストユーザー',
   nickName: 'テスト',
@@ -14,24 +20,25 @@ const mockUser = {
   evaluationGoodCount: 0,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
-  birthYearAndMonth: '1990-01',
+  birthYm: '1990/01',
   isAnonymous: false,
+  agreedTermsVersion: 1,
 };
 
 export const novelListHandlers = [
   // 小説一覧を取得するハンドラー
-  http.get(`${apiBaseUrl}/v1/novels`, () => {
+  http.get(`${apiBaseUrl}/novels`, () => {
     console.log('MSW: Handling GET /v1/novels request');
     return HttpResponse.json(mockNovelListData);
   }),
 
   // ルートパスのハンドラー
-  http.get(`${apiBaseUrl}/v1`, () => {
+  http.get(apiBaseUrl, () => {
     return new HttpResponse(null, { status: 200 });
   }),
 
   // 投稿を作成するハンドラー
-  http.post(`${apiBaseUrl}/v1/sentences`, async ({ request }) => {
+  http.post(`${apiBaseUrl}/sentences`, async ({ request }) => {
     const postData = (await request.json()) as PostSentence;
 
     // 投稿データのバリデーション
@@ -66,7 +73,7 @@ export const novelListHandlers = [
   }),
 
   // 評価APIハンドラー
-  http.post(`${apiBaseUrl}/v1/evaluations`, async ({ request }) => {
+  http.post(`${apiBaseUrl}/evaluations`, async ({ request }) => {
     const data = (await request.json()) as EvaluateSentence;
     console.log('MSW: Handling POST /v1/evaluations', data);
 
@@ -87,22 +94,15 @@ export const novelListHandlers = [
   }),
 
   // ユーザー情報取得APIハンドラー
-  http.get(`${apiBaseUrl}/v1/users/me`, () => {
+  http.get(`${apiBaseUrl}/users/me`, () => {
     console.log('MSW: Handling GET /v1/users/me');
     return HttpResponse.json(mockUser, { status: 200 });
   }),
 
   // 認証トークンリフレッシュAPIハンドラー
-  http.post(`${apiBaseUrl}/v1/auth/refresh`, () => {
+  http.post(`${apiBaseUrl}/auth/refresh`, () => {
     console.log('MSW: Handling POST /v1/auth/refresh');
-    // モックのリフレッシュトークンレスポンス
-    return HttpResponse.json(
-      {
-        accessToken: 'mock-access-token',
-        refreshToken: 'mock-refresh-token',
-        expiresIn: 3600,
-      },
-      { status: 200 },
-    );
+    // OpenAPI (conovel-openapi.yml) 定義では 200 かつボディなし
+    return new HttpResponse(null, { status: 200 });
   }),
 ];

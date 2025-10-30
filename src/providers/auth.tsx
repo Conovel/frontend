@@ -83,7 +83,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           evaluationGoodCount: 0,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          birthYm: '1990-01',
+          birthYm: '1990/01',
           isAnonymous: false,
           agreedTermsVersion: 1,
         };

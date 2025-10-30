@@ -1,6 +1,10 @@
 import { http, HttpResponse } from 'msw';
-import { PostSentence, EvaluateSentence } from '../../../api/api';
-import { Sentence } from '../../../api/api';
+import {
+  PostSentence,
+  EvaluateSentence,
+  Sentence,
+  ViewMeUser,
+} from '../../../api/api';
 import { initialSampleSentence } from './data';
 
 const apiBaseUrl =
@@ -12,7 +16,7 @@ let sentences: Sentence[] = [initialSampleSentence];
 let nextSentenceId = 2;
 
 // モックユーザー情報
-const mockUser = {
+const mockUser: ViewMeUser = {
   userId: 1,
   penName: 'テストユーザー',
   nickName: 'テスト',
@@ -20,8 +24,9 @@ const mockUser = {
   evaluationGoodCount: 0,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
-  birthYearAndMonth: '1990-01',
+  birthYm: '1990/01',
   isAnonymous: false,
+  agreedTermsVersion: 1,
 };
 
 export const novelViewHandlers = [
@@ -111,14 +116,7 @@ export const novelViewHandlers = [
   // 認証トークンリフレッシュAPIハンドラー
   http.post(`${apiBaseUrl}/auth/refresh`, () => {
     console.log('MSW: Handling POST /v1/auth/refresh');
-    // モックのリフレッシュトークンレスポンス
-    return HttpResponse.json(
-      {
-        accessToken: 'mock-access-token',
-        refreshToken: 'mock-refresh-token',
-        expiresIn: 3600,
-      },
-      { status: 200 },
-    );
+    // OpenAPI (conovel-openapi.yml) の仕様に合わせて空レスポンスを返す
+    return new HttpResponse(null, { status: 200 });
   }),
 ];
