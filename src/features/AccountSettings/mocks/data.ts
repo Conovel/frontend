@@ -25,3 +25,10 @@ export const fallbackUserData: ViewMeUser = {
   birthYm: '1990/01',
   isAnonymous: false,
 };
+
+export const mockUsersMeError = {
+  error: {
+    code: 404,
+    message: 'User not found',
+  },
+};
