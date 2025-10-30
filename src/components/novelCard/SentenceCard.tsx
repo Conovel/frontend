@@ -67,6 +67,12 @@ const SentenceCard = ({
   const handleGoodCountClick = async (): Promise<void> => {
     if (busyRef.current || !canEvaluate) return; // 連打無視
 
+    const sentenceId = sentence.sentenceId;
+    if (!sentenceId) {
+      console.warn('sentenceが評価できません: sentenceIdがありません');
+      return;
+    }
+
     // アトミックな操作でbusyフラグを設定
     if (busyRef.current) return; // 二重チェック
     busyRef.current = true;
@@ -82,7 +88,7 @@ const SentenceCard = ({
 
     try {
       const evaluateSentence: EvaluateSentence = {
-        sentenceId: sentence.sentenceId || 0,
+        sentenceId,
         evaluation: 'good',
       };
 
@@ -97,7 +103,7 @@ const SentenceCard = ({
             onEvaluationSuccess();
           }
         } else {
-          console.warn('evaluationGoodCount is missing in response data');
+          console.warn('評価エラー: evaluationGoodCount is not a number');
         }
       }
     } catch (error) {
