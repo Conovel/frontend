@@ -64,14 +64,14 @@ export const EditPost: React.FC<EditPostProps> = ({
     setErrorMessage(null);
 
     try {
-      const postSentence: PostSentence = {
+      const postSentenceParam: PostSentence = {
         sentence: data.text,
         parentSentenceId: sentenceId,
         parentUpdatedAt: parentUpdatedAt,
       };
 
-      const response = await sentencesApi.postSentence(postSentence);
-      
+      const response = await sentencesApi.postSentence(postSentenceParam);
+
       // APIレスポンスの検証
       if (response && response.status >= 200 && response.status < 300) {
         // 成功時の処理
