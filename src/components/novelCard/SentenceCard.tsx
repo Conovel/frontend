@@ -90,16 +90,14 @@ const SentenceCard = ({
 
       // 最新のリクエストかどうかをチェック
       if (currentRequestId === requestIdRef.current) {
-        if (response?.data) {
-          setLocalGoodCount(
-            response.data.evaluationGoodCount || localGoodCount + 1,
-          );
+        const serverGoodCount = response?.data?.evaluationGoodCount;
+        if (typeof serverGoodCount === 'number') {
+          setLocalGoodCount(serverGoodCount);
+          if (onEvaluationSuccess) {
+            onEvaluationSuccess();
+          }
         } else {
-          setLocalGoodCount(localGoodCount + 1);
-        }
-        // 評価成功時に親コンポーネントに通知
-        if (onEvaluationSuccess) {
-          onEvaluationSuccess();
+          console.warn('evaluationGoodCount is missing in response data');
         }
       }
     } catch (error) {
@@ -109,8 +107,6 @@ const SentenceCard = ({
         (error as any).name !== 'AbortError'
       ) {
         console.error('評価エラー:', error);
-        // エラー時はローカルでカウントアップ
-        setLocalGoodCount(localGoodCount + 1);
       }
     } finally {
       // 最新のリクエストの場合のみ状態をリセット
