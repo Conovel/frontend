@@ -59,14 +59,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await usersApi.getUserByMe(async () => {
         // jwt, refresh両方失敗時にはログイン画面へリダイレクト
-        console.log('認証に失敗しました。ログイン画面にリダイレクトします。');
         navigate('/login');
       });
 
       // 認証成功時には現在のユーザー情報を設定
       if (response?.data?.userId) {
         setCurrentUser(response.data as User);
-        console.log('ユーザー情報を取得しました:', response.data);
         return;
       }
     } catch (error) {
@@ -88,7 +86,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           agreedTermsVersion: 1,
         };
         setCurrentUser(mockUser);
-        console.log('モックユーザーを設定しました:', mockUser);
       }
     }
   };

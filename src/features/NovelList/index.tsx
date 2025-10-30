@@ -15,13 +15,11 @@ const NovelList = () => {
   useEffect(() => {
     const fetchNovels = async () => {
       try {
-        console.log('Fetching novels...');
         const response = await novelsApi.getNovels();
 
         const convertedResponse: NovelListItem[] = convertNovelListResponse(
           response.data,
         );
-        console.log('Converted novels:', convertedResponse);
         setResponseNovels(convertedResponse);
       } catch (error) {
         console.error('Error fetching novels:', error);

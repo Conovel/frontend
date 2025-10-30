@@ -3,7 +3,6 @@ import { mockUserData, mockUsersMeError } from './data';
 
 const apiBaseUrl =
   import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/v1';
-console.log('MSW API Base URL:', apiBaseUrl);
 
 export const accountSettingsHandlers = [
   // 正常系

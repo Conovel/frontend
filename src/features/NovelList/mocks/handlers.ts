@@ -9,7 +9,6 @@ import { mockNovelListData } from './data';
 
 const apiBaseUrl =
   import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/v1';
-console.log('MSW API Base URL:', apiBaseUrl);
 
 // モックユーザー情報
 const mockUser: ViewMeUser = {
@@ -27,10 +26,7 @@ const mockUser: ViewMeUser = {
 
 export const novelListHandlers = [
   // 小説一覧を取得するハンドラー
-  http.get(`${apiBaseUrl}/novels`, () => {
-    console.log('MSW: Handling GET /v1/novels request');
-    return HttpResponse.json(mockNovelListData);
-  }),
+  http.get(`${apiBaseUrl}/novels`, () => HttpResponse.json(mockNovelListData)),
 
   // ルートパスのハンドラー
   http.get(apiBaseUrl, () => {
@@ -75,7 +71,6 @@ export const novelListHandlers = [
   // 評価APIハンドラー
   http.post(`${apiBaseUrl}/evaluations`, async ({ request }) => {
     const data = (await request.json()) as EvaluateSentence;
-    console.log('MSW: Handling POST /v1/evaluations', data);
 
     // 評価を処理（実際の実装ではデータベースに保存）
     const mockEvaluation = {
@@ -87,21 +82,16 @@ export const novelListHandlers = [
       updatedAt: new Date().toISOString(),
     };
 
-    // 評価後にchildrenデータを取得できるようにする
-    console.log('評価が完了しました。childrenデータが利用可能になりました。');
-
     return HttpResponse.json(mockEvaluation, { status: 201 });
   }),
 
   // ユーザー情報取得APIハンドラー
   http.get(`${apiBaseUrl}/users/me`, () => {
-    console.log('MSW: Handling GET /v1/users/me');
     return HttpResponse.json(mockUser, { status: 200 });
   }),
 
   // 認証トークンリフレッシュAPIハンドラー
   http.post(`${apiBaseUrl}/auth/refresh`, () => {
-    console.log('MSW: Handling POST /v1/auth/refresh');
     // OpenAPI (conovel-openapi.yml) 定義では 200 かつボディなし
     return new HttpResponse(null, { status: 200 });
   }),

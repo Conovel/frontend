@@ -841,12 +841,6 @@ export const buildInitialData = (sentenceId: number) => {
   // 子パネルには子センテンスを表示
   const children = relations.children.map((id: number) => sentencesData[id]);
 
-  console.log('Building data for sentence ID:', sentenceId, {
-    main: main.map((m) => m.sentenceId),
-    parent: parent.map((p) => p.sentenceId),
-    children: children.map((c) => c.sentenceId),
-  });
-
   return {
     main,
     parent,

@@ -79,7 +79,6 @@ export const novelViewHandlers = [
           },
         ],
       };
-      console.log('MSW: Returning sentence with children data:', response);
       return HttpResponse.json(response);
     }
 
@@ -89,7 +88,6 @@ export const novelViewHandlers = [
   // 評価APIハンドラー
   http.post(`${apiBaseUrl}/evaluations`, async ({ request }) => {
     const data = (await request.json()) as EvaluateSentence;
-    console.log('MSW: Handling POST /v1/evaluations', data);
 
     // 評価を処理（実際の実装ではデータベースに保存）
     const mockEvaluation = {
@@ -102,20 +100,17 @@ export const novelViewHandlers = [
     };
 
     // 評価後にchildrenデータを取得できるようにする
-    console.log('評価が完了しました。childrenデータが利用可能になりました。');
 
     return HttpResponse.json(mockEvaluation, { status: 201 });
   }),
 
   // ユーザー情報取得APIハンドラー
   http.get(`${apiBaseUrl}/users/me`, () => {
-    console.log('MSW: Handling GET /v1/users/me');
     return HttpResponse.json(mockUser, { status: 200 });
   }),
 
   // 認証トークンリフレッシュAPIハンドラー
   http.post(`${apiBaseUrl}/auth/refresh`, () => {
-    console.log('MSW: Handling POST /v1/auth/refresh');
     // OpenAPI (conovel-openapi.yml) の仕様に合わせて空レスポンスを返す
     return new HttpResponse(null, { status: 200 });
   }),
