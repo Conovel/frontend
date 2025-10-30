@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import type { AxiosError } from 'axios';
 
-import { UsersApi, AuthApi } from '../api/api';
+import { UsersApi, AuthApi, type ErrorResponse } from '../api/api';
 import { axiosConfig } from '../axiosConfig';
 import { useNavigate } from 'react-router';
 
@@ -69,22 +70,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return;
       }
     } catch (error) {
-      console.error('ユーザー情報の取得に失敗しました:', error);
-      // エラーが発生した場合はモックユーザーを設定（開発用）
-      const mockUser: User = {
-        userId: 1,
-        penName: 'テストユーザー',
-        nickName: 'テスト',
-        profileIconImage: '/path/to/avatar.jpg',
-        evaluationGoodCount: 0,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        birthYm: '1990-01',
-        isAnonymous: false,
-        agreedTermsVersion: 1,
-      };
-      setCurrentUser(mockUser);
-      console.log('モックユーザーを設定しました:', mockUser);
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const apiError = axiosError.response?.data?.error;
+      console.error('ユーザー情報の取得に失敗しました:', apiError ?? error);
+
+      if (import.meta.env.DEV) {
+        const mockUser: User = {
+          userId: 1,
+          penName: 'テストユーザー',
+          nickName: 'テスト',
+          profileIconImage: '/path/to/avatar.jpg',
+          evaluationGoodCount: 0,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          birthYm: '1990-01',
+          isAnonymous: false,
+          agreedTermsVersion: 1,
+        };
+        setCurrentUser(mockUser);
+        console.log('モックユーザーを設定しました:', mockUser);
+      }
     }
   };
 
