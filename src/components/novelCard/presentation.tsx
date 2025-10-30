@@ -22,7 +22,8 @@ const NovelCard = ({
 
   const displaySentence = novel.famousSentenceText || '';
   const genres = novel.titleGenres || [];
-  const avatarText = (novel.authorPenName || '').charAt(0);
+  const avatarText = (novel.authorPenName || '').trim().charAt(0) || 'U';
+  const avatarSrc = novel.profileIconImage || undefined;
   const readerCount = novel.viewCount ?? 0;
   const updatedAt = novel.updatedAt || novel.createdAt || '';
   const evaluationCount = novel.evaluationGoodCount ?? 0;
@@ -105,7 +106,7 @@ const NovelCard = ({
                   height: 24,
                   backgroundColor: 'white',
                 }}
-                src={novel.profileIconImage}
+                src={avatarSrc}
               >
                 {avatarText}
               </Avatar>

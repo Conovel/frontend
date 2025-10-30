@@ -39,6 +39,9 @@ const SentenceCard = ({
   const [isGoodEvaluated, setIsGoodEvaluated] = useState(false);
   const [isStayEvaluated, setIsStayEvaluated] = useState(false);
   const [isEvaluating, setIsEvaluating] = useState(false);
+  const displayName = sentence.userName || sentence.sentencePenName || '';
+  const avatarText = displayName.trim().charAt(0) || 'U';
+  const avatarSrc = sentence.profileIconImage || undefined;
 
   const busyRef = useRef(false); // 再入防止
   const abortRef = useRef<AbortController | null>(null);
@@ -148,8 +151,12 @@ const SentenceCard = ({
             height: '20vh',
           }}
         >
-          <Avatar sx={{ width: 24, height: 24, zIndex: 2 }}>
-            {(sentence.userName || sentence.sentencePenName || 'U').charAt(0)}
+          <Avatar
+            sx={{ width: 24, height: 24, zIndex: 2 }}
+            src={avatarSrc}
+            alt={displayName || 'User avatar'}
+          >
+            {avatarText}
           </Avatar>
           <Typography
             sx={{
