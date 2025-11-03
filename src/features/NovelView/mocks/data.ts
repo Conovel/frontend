@@ -855,8 +855,8 @@ export const mockContainerData = buildInitialData(INITIAL_SENTENCE_ID) || {
   children: [],
 };
 
-// 初期サンプル文データ
-export const initialSampleSentence: any = {
+// 初期サンプル文データ（OpenAPI仕様に準拠）
+export const initialSampleSentence: Sentence = {
   sentenceId: 1,
   sentence: 'これは取得したサンプル文です',
   sentenceUserId: 1,
@@ -866,14 +866,4 @@ export const initialSampleSentence: any = {
   evaluationStayCount: 2,
   createdAt: '2024-06-01T00:00:00Z',
   updatedAt: '2024-06-01T00:00:00Z',
-  authorPenName: '',
-  chips: [],
-  tags: [],
-  readerCount: 0,
-  avatar: { src: '', alt: '', color: '', text: '' },
-  sentenceUserCount: 0,
-  sentenceHierarchyCount: 0,
-  textIndex: 0,
-  userId: 0,
-  userName: '',
 };
