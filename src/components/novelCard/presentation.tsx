@@ -18,7 +18,7 @@ const NovelCard = ({
 }) => {
   const [openModal, setOpenModal] = React.useState(false);
 
-  const hasTitleId = typeof novel.titleId === 'number';
+  const hasTitleId = novel.titleId != null;
 
   const displaySentence = novel.famousSentenceText || '';
   const genres = novel.titleGenres || [];
