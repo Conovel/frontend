@@ -17,8 +17,7 @@ import BalanceIcon from '@mui/icons-material/Balance';
 import { Typography } from '@mui/material';
 import GoogleIcon from '../buttonicon/GoogleIcon';
 
-const getMenuItems = (
-) => [
+const getMenuItems = () => [
   { name: 'ホーム', icon: <HomeIcon />, link: '/' },
   { name: 'アカウント', icon: <PersonIcon />, link: '/account' },
   { name: '運営会社', icon: <BusinessIcon />, link: '/company' },

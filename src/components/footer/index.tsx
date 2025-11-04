@@ -20,7 +20,8 @@ export const Footer = () => {
         bottom: 0,
         zIndex: 2000,
         boxShadow: '0 -2px 8px rgba(0,0,0,0.15)',
-      }}>
+      }}
+    >
       {/** 広告エリア */}
       {/** // TODO:Adsense未設定なので、仮実装 */}
       <Box
@@ -44,17 +45,20 @@ export const Footer = () => {
           justifyContent: 'center',
           gap: '8px',
           fontSize: '0.5rem',
-        }}>
+        }}
+      >
         {FOOTER_LINKS.map((link, idx) => (
           <React.Fragment key={link.label + idx}>
             <Link
               to={link.to}
               style={{ color: '#FFFFFF', textDecoration: 'none' }}
-              {...(link.targetBlank ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              {...(link.targetBlank
+                ? { target: '_blank', rel: 'noopener noreferrer' }
+                : {})}
             >
               {link.label}
             </Link>
-            {idx < FOOTER_LINKS.length - 1 && <Box key={"sep-" + idx}>/</Box>}
+            {idx < FOOTER_LINKS.length - 1 && <Box key={'sep-' + idx}>/</Box>}
           </React.Fragment>
         ))}
       </Box>
