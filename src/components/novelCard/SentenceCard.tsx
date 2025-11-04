@@ -40,7 +40,7 @@ const SentenceCard = ({
   const [isEvaluating, setIsEvaluating] = useState(false);
   const displayName = sentence.userName || sentence.sentencePenName || '';
   const avatarText = displayName.trim().charAt(0) || 'U';
-  const avatarSrc = sentence.profileIconImage || undefined;
+  const avatarSrc = sentence.profileIconImage?.trim() || undefined;
 
   const busyRef = useRef(false); // 再入防止
   const abortRef = useRef<AbortController | null>(null);
