@@ -1,6 +1,7 @@
+import React from 'react';
 import Box from '@mui/material/Box';
 import { Link } from 'react-router';
-import { LINK } from '../../const/link';
+import { FOOTER_LINKS } from '../../const/link';
 
 export const Footer = () => {
   return (
@@ -46,24 +47,20 @@ export const Footer = () => {
           fontSize: '0.5rem',
         }}
       >
-        <Link
-          to={LINK.terms}
-          style={{ color: '#FFFFFF', textDecoration: 'none' }}
-        >
-          利用規約
-        </Link>
-        <Box>/</Box>
-        {/** // TODO:仮のリンク */}
-        <Link to={'/'} style={{ color: '#FFFFFF', textDecoration: 'none' }}>
-          お問合せ
-        </Link>
-        <Box>/</Box>
-        <Link
-          to={LINK.company}
-          style={{ color: '#FFFFFF', textDecoration: 'none' }}
-        >
-          運営会社
-        </Link>
+        {FOOTER_LINKS.map((link, idx) => (
+          <React.Fragment key={link.label + idx}>
+            <Link
+              to={link.to}
+              style={{ color: '#FFFFFF', textDecoration: 'none' }}
+              {...(link.targetBlank
+                ? { target: '_blank', rel: 'noopener noreferrer' }
+                : {})}
+            >
+              {link.label}
+            </Link>
+            {idx < FOOTER_LINKS.length - 1 && <Box key={'sep-' + idx}>/</Box>}
+          </React.Fragment>
+        ))}
       </Box>
 
       {/** コピーライト */}
