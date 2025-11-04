@@ -1396,6 +1396,7 @@ export const SentencesApiAxiosParamCreator = function (
         localVarRequestOptions,
         configuration,
       );
+
       return {
         url: toPathString(localVarUrlObj),
         options: localVarRequestOptions,
