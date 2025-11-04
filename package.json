@@ -64,7 +64,14 @@
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
       "prettier --write",
-      "eslint --fix"
+      "eslint --fix",
+      "npm run lint",
+      "bash -c 'tsc --noEmit'",
+      "npm run format"
+    ],
+    "src/**/*.scss": [
+      "prettier --write",
+      "stylelint --fix"
     ]
   },
   "msw": {
