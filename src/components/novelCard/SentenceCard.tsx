@@ -2,9 +2,8 @@ import { useRef, useState, useEffect } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 import ThumbUpButton from '../buttonicon/ThumbsUpButton';
 import NextPlanButton from '../buttonicon/NextPlanButton';
-import { EvaluationsApi, EvaluateSentence } from '../../api/api';
+import { EvaluationsApi, EvaluateSentence, Sentence } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
-import { Sentence } from '../../types/types';
 
 interface SentenceWithOptionalUserName extends Sentence {
   userName?: string;

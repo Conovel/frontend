@@ -11,9 +11,9 @@ const apiBaseUrl =
   import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:3001/v1';
 
 // サーバー側で一元管理する文データ
-let sentences: Sentence[] = [initialSampleSentence];
+let sentences: Sentence[] = [{ ...initialSampleSentence }];
 
-let nextSentenceId = 2;
+let nextSentenceId = (initialSampleSentence.sentenceId ?? 0) + 1;
 
 // モックユーザー情報
 const mockUser: ViewMeUser = {
@@ -34,9 +34,13 @@ export const novelViewHandlers = [
   http.post(`${apiBaseUrl}/sentences`, async ({ request }) => {
     const data = (await request.json()) as PostSentence;
     const newSentence: Sentence = {
-      ...sentences[0],
       sentenceId: nextSentenceId++,
       sentence: data.sentence || '',
+      sentenceUserId: mockUser.userId ?? 0,
+      sentencePenName: mockUser.penName || '',
+      profileIconImage: mockUser.profileIconImage || '',
+      evaluationGoodCount: 0,
+      evaluationStayCount: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
