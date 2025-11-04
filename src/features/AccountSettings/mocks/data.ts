@@ -13,19 +13,6 @@ export const mockUserData: ViewMeUser = {
   isAnonymous: false,
 };
 
-// エラー時のフォールバックデータ
-export const fallbackUserData: ViewMeUser = {
-  userId: 1,
-  penName: 'デフォルトユーザー',
-  nickName: 'DefaultUser',
-  profileIconImage: '',
-  evaluationGoodCount: 0,
-  createdAt: '2024-01-01T00:00:00Z',
-  updatedAt: '2024-01-01T00:00:00Z',
-  birthYm: '1990/01',
-  isAnonymous: false,
-};
-
 export const mockUsersMeError = {
   error: {
     code: 404,
