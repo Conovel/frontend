@@ -21,17 +21,19 @@ export default function GoogleSignInButton({
   // https://developers.google.com/identity/branding-guidelines?hl=ja
   return (
     <button
-      type="button"
+      type='button'
       className={`gsi-material-button ${iconOnly ? 'icon-only' : 'full'} ${className}`}
       onClick={onClick}
       aria-label={ariaLabel}
     >
-      <div className="gsi-material-button-state" />
-      <div className="gsi-material-button-content-wrapper">
-        <div className="gsi-material-button-icon">
+      <div className='gsi-material-button-state' />
+      <div className='gsi-material-button-content-wrapper'>
+        <div className='gsi-material-button-icon'>
           <GoogleIcon size={20} />
         </div>
-        {!iconOnly && <span className="gsi-material-button-contents">{children}</span>}
+        {!iconOnly && (
+          <span className='gsi-material-button-contents'>{children}</span>
+        )}
       </div>
     </button>
   );
