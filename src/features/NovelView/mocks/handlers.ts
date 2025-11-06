@@ -7,8 +7,7 @@ import {
 } from '../../../api/api';
 import { initialSampleSentence } from './data';
 
-const apiBaseUrl =
-  import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:3001/v1';
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 // サーバー側で一元管理する文データ
 let sentences: Sentence[] = [{ ...initialSampleSentence }];

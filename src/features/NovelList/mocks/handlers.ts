@@ -7,8 +7,7 @@ import {
 } from '../../../api/api';
 import { mockNovelListData } from './data';
 
-const apiBaseUrl =
-  import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/v1';
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 // モックユーザー情報
 const mockUser: ViewMeUser = {
