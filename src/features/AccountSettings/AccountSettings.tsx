@@ -22,7 +22,7 @@ export const AccountSettings: React.FC = () => {
     nickName: '',
     profileIconImage: '',
     evaluationGoodCount: 100,
-    birthYm: new Date('1998/02'),
+    birthYm: new Date('1900/01'),
     isAnonymous: false,
     agreedTermsVersion: 1,
   });
