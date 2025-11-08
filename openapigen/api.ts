@@ -251,6 +251,12 @@ export interface NovelDetail {
    * @memberof NovelDetail
    */
   overview?: string;
+  /**
+   * 小説の最初の投稿のid
+   * @type {number}
+   * @memberof NovelDetail
+   */
+  firstSentenceId?: number;
 }
 /**
  *

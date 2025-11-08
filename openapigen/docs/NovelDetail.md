@@ -22,6 +22,7 @@
 | **sentenceHierarchyCount** | **number**              | 小説に投稿された投稿の階層数                                 | [optional] [default to undefined] |
 | **readerCount**            | **number**              | 小説を読んだユーザーの数                                     | [optional] [default to undefined] |
 | **overview**               | **string**              | 小説のあらすじ                                               | [optional] [default to undefined] |
+| **firstSentenceId**        | **number**              | 小説の最初の投稿のid                                         | [optional] [default to undefined] |
 
 ## Example
 
@@ -47,6 +48,7 @@ const instance: NovelDetail = {
   sentenceHierarchyCount,
   readerCount,
   overview,
+  firstSentenceId,
 };
 ```
 
