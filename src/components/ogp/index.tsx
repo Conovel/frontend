@@ -1,4 +1,6 @@
 import { Helmet } from 'react-helmet-async';
+import rectangleLogo from '../../assets/conovel_rectangle.png';
+import squareLogo from '../../assets/conovel_square_logo.webp';
 
 export interface OGPProps {
   title: string;
@@ -6,6 +8,8 @@ export interface OGPProps {
   url?: string;
   image?: string;
   imageAlt?: string;
+  smallImage?: string;
+  smallImageAlt?: string;
   type?: 'website' | 'article';
 }
 
@@ -13,13 +17,28 @@ export const OGP = ({
   title,
   description,
   url = '/',
-  // OGP画像をconovel_square_logo.webpに変更
-  image = '/conovel_square_logo.webp',
+  image = rectangleLogo,
   imageAlt = 'Conovelのロゴ',
+  smallImage,
+  smallImageAlt,
   type = 'website',
 }: OGPProps) => {
   const siteName = 'Conovel';
   const fullTitle = title === siteName ? title : `${title} | ${siteName}`;
+  const previewImage =
+    smallImage ?? (image === rectangleLogo ? squareLogo : image);
+  const previewImageAlt = smallImageAlt ?? imageAlt;
+
+  const resolveMimeType = (src: string) => {
+    const lower = src.split('?').shift()?.toLowerCase() ?? '';
+    if (lower.endsWith('.png')) return 'image/png';
+    if (lower.endsWith('.webp')) return 'image/webp';
+    if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return 'image/jpeg';
+    return undefined;
+  };
+
+  const ogImageType = resolveMimeType(image);
+  const previewImageType = resolveMimeType(previewImage);
 
   return (
     <Helmet>
@@ -33,18 +52,40 @@ export const OGP = ({
       <meta property='og:description' content={description} />
       <meta property='og:url' content={url} />
       <meta property='og:locale' content='ja_JP' />
-      <meta property='og:image' content={image} />
-      <meta property='og:image:alt' content={imageAlt} />
-      {/* OGP画像タイプをwebpに統一（conovel_square_logo.webp対応） */}
-      <meta property='og:image:type' content='image/webp' />
+      <meta property='og:image' content={image} key='og-image-large' />
+      {ogImageType && (
+        <meta
+          property='og:image:type'
+          content={ogImageType}
+          key='og-image-type-large'
+        />
+      )}
+      <meta
+        property='og:image:alt'
+        content={imageAlt}
+        key='og-image-alt-large'
+      />
+      <meta property='og:image' content={previewImage} key='og-image-small' />
+      {previewImageType && (
+        <meta
+          property='og:image:type'
+          content={previewImageType}
+          key='og-image-type-small'
+        />
+      )}
+      <meta
+        property='og:image:alt'
+        content={previewImageAlt}
+        key='og-image-alt-small'
+      />
 
       {/* Twitter */}
       <meta name='twitter:card' content='summary_large_image' />
       <meta name='twitter:title' content={fullTitle} />
       <meta name='twitter:description' content={description} />
       <meta name='twitter:url' content={url} />
-      <meta name='twitter:image' content={image} />
-      <meta name='twitter:image:alt' content={imageAlt} />
+      <meta name='twitter:image' content={previewImage} />
+      <meta name='twitter:image:alt' content={previewImageAlt} />
     </Helmet>
   );
 };
