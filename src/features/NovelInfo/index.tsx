@@ -51,7 +51,16 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
   }, [titleId]);
 
   const handleReadMore = () => {
-    navigate('/novelView'); // novelViewページに遷移
+    if (
+      !novel ||
+      novel.titleId == null ||
+      novel.firstSentenceId == null
+    ) {
+      console.error('小説情報が正しく取得できていません');
+      setHasError(true);
+      return;
+    }
+    navigate('/novelView/' + novel.titleId + '/' + novel.firstSentenceId);
   };
 
   if (loading) {
