@@ -47,19 +47,23 @@ const SentenceCard = ({
   const requestIdRef = useRef<number>(0); // リクエストIDで最新のリクエストのみ処理
 
   // 評価状態を取得
+  // TODO：評価状態を取得はフロントではなくバック側で行う必要がありそう
+  // ここでsentensecApiを何度も叩いている（main、親、兄弟、子すべて）
+  // レスポンスに評価状態も含まれていないため無意味な通信になっている
   useEffect(() => {
-    const fetchEvaluation = async () => {
-      if (!getSentenceEvaluation || !sentence.sentenceId) return;
 
-      try {
-        const evalData = await getSentenceEvaluation(sentence.sentenceId);
-        setIsGoodEvaluated(evalData.isGoodEvaluated);
-        setIsStayEvaluated(evalData.isStayEvaluated);
-      } catch (error) {
-        console.error('Error fetching evaluation:', error);
-      }
-    };
-    fetchEvaluation();
+    // const fetchEvaluation = async () => {
+    //   if (!getSentenceEvaluation || !sentence.sentenceId) return;
+
+    //   try {
+    //     const evalData = await getSentenceEvaluation(sentence.sentenceId);
+    //     setIsGoodEvaluated(evalData.isGoodEvaluated);
+    //     setIsStayEvaluated(evalData.isStayEvaluated);
+    //   } catch (error) {
+    //     console.error('Error fetching evaluation:', error);
+    //   }
+    // };
+    // fetchEvaluation();
   }, [sentence.sentenceId, getSentenceEvaluation]);
 
   const evaluationsApi = new EvaluationsApi(axiosConfig);

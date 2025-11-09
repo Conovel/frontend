@@ -73,15 +73,7 @@ export const mockNovelProps = {
   main: mockMainPanel,
 };
 
-// 初期読み込み用のセンテンスID設定
-// The initial sentence ID is set to 5 by default, as it represents the center of a more complex structure in the mock data.
-// You can override this value by setting the environment variable INITIAL_SENTENCE_ID.
-export const INITIAL_SENTENCE_ID =
-  typeof process !== 'undefined' &&
-  process.env &&
-  process.env.INITIAL_SENTENCE_ID
-    ? Number(process.env.INITIAL_SENTENCE_ID)
-    : 5;
+
 
 // センテンスの一意のIDを持つデータ
 
@@ -586,7 +578,8 @@ export const buildInitialData = (sentenceId: number) => {
 };
 
 // モックデータの更新
-export const mockContainerData = buildInitialData(INITIAL_SENTENCE_ID) || {
+// sentenceIdを引数で受け取る関数に変更
+export const getMockContainerData = (sentenceId: number) => buildInitialData(sentenceId) || {
   main: [],
   parent: [],
   children: [],
@@ -604,43 +597,44 @@ const emptySentence: Sentence = {
   updatedAt: '1970-01-01T00:00:00Z',
 };
 
-// 初期サンプル文データ（OpenAPI仕様に準拠）
-// OpenAPI仕様のSentence型に完全に準拠していることを保証
-export const initialSampleSentence: Sentence = {
-  sentenceId:
-    sentencesData[INITIAL_SENTENCE_ID]?.sentenceId ??
-    sentencesData[1]?.sentenceId ??
-    emptySentence.sentenceId,
-  sentence:
-    sentencesData[INITIAL_SENTENCE_ID]?.sentence ??
-    sentencesData[1]?.sentence ??
-    emptySentence.sentence,
-  sentenceUserId:
-    sentencesData[INITIAL_SENTENCE_ID]?.sentenceUserId ??
-    sentencesData[1]?.sentenceUserId ??
-    emptySentence.sentenceUserId,
-  sentencePenName:
-    sentencesData[INITIAL_SENTENCE_ID]?.sentencePenName ??
-    sentencesData[1]?.sentencePenName ??
-    emptySentence.sentencePenName,
-  profileIconImage:
-    sentencesData[INITIAL_SENTENCE_ID]?.profileIconImage ??
-    sentencesData[1]?.profileIconImage ??
-    emptySentence.profileIconImage,
-  evaluationGoodCount:
-    sentencesData[INITIAL_SENTENCE_ID]?.evaluationGoodCount ??
-    sentencesData[1]?.evaluationGoodCount ??
-    emptySentence.evaluationGoodCount,
-  evaluationStayCount:
-    sentencesData[INITIAL_SENTENCE_ID]?.evaluationStayCount ??
-    sentencesData[1]?.evaluationStayCount ??
-    emptySentence.evaluationStayCount,
-  createdAt:
-    sentencesData[INITIAL_SENTENCE_ID]?.createdAt ??
-    sentencesData[1]?.createdAt ??
-    emptySentence.createdAt,
-  updatedAt:
-    sentencesData[INITIAL_SENTENCE_ID]?.updatedAt ??
-    sentencesData[1]?.updatedAt ??
-    emptySentence.updatedAt,
+// sentenceIdを引数で受け取る関数に変更
+export const getInitialSampleSentence = (sentenceId: number): Sentence => {
+  return {
+    sentenceId:
+      sentencesData[sentenceId]?.sentenceId ??
+      sentencesData[1]?.sentenceId ??
+      emptySentence.sentenceId,
+    sentence:
+      sentencesData[sentenceId]?.sentence ??
+      sentencesData[1]?.sentence ??
+      emptySentence.sentence,
+    sentenceUserId:
+      sentencesData[sentenceId]?.sentenceUserId ??
+      sentencesData[1]?.sentenceUserId ??
+      emptySentence.sentenceUserId,
+    sentencePenName:
+      sentencesData[sentenceId]?.sentencePenName ??
+      sentencesData[1]?.sentencePenName ??
+      emptySentence.sentencePenName,
+    profileIconImage:
+      sentencesData[sentenceId]?.profileIconImage ??
+      sentencesData[1]?.profileIconImage ??
+      emptySentence.profileIconImage,
+    evaluationGoodCount:
+      sentencesData[sentenceId]?.evaluationGoodCount ??
+      sentencesData[1]?.evaluationGoodCount ??
+      emptySentence.evaluationGoodCount,
+    evaluationStayCount:
+      sentencesData[sentenceId]?.evaluationStayCount ??
+      sentencesData[1]?.evaluationStayCount ??
+      emptySentence.evaluationStayCount,
+    createdAt:
+      sentencesData[sentenceId]?.createdAt ??
+      sentencesData[1]?.createdAt ??
+      emptySentence.createdAt,
+    updatedAt:
+      sentencesData[sentenceId]?.updatedAt ??
+      sentencesData[1]?.updatedAt ??
+      emptySentence.updatedAt,
+  };
 };
