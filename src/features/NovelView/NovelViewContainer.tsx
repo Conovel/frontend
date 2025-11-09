@@ -7,20 +7,31 @@ import { axiosConfig } from '../../axiosConfig';
 
 const sentencesApi = new SentencesApi(axiosConfig);
 
-// 初期読み込み用のセンテンスID設定
-const INITIAL_SENTENCE_ID = 5;
-
 export const NovelViewContainer = () => {
   // URLパラメータを取得
-  const { titleId: urlTitleId, sentenceId: urlSentenceId } = useParams<{
-    titleId: string;
-    sentenceId: string;
+  const { titleId, sentenceId } = useParams<{
+    titleId: string | undefined;
+    sentenceId: string | undefined;
   }>();
   const navigate = useNavigate();
 
-  // デフォルト値を設定
-  const titleId = urlTitleId || '1';
-  const sentenceId = urlSentenceId || INITIAL_SENTENCE_ID.toString();
+  // titleId, sentenceIdが未定義または数字でない場合はエラー
+  if (titleId === undefined || sentenceId === undefined) {
+    console.error('Error: URLパラメータが不足しています（titleId, sentenceId）');
+    return (
+      <div>
+        エラー: URLパラメータが不足しています（titleId, sentenceId）
+      </div>
+    );
+  }
+  if (!/^\d+$/.test(titleId) || !/^\d+$/.test(sentenceId)) {
+    console.error('Error: URLパラメータが不正です（titleId, sentenceId は数字である必要があります）');
+    return (
+      <div>
+        エラー: URLパラメータが不正です（titleId, sentenceId は数字である必要があります）
+      </div>
+    );
+  }
 
   // MainPanelの評価状態を追跡
   const [hasMainPanelEvaluation, setHasMainPanelEvaluation] = useState(false);
@@ -31,9 +42,7 @@ export const NovelViewContainer = () => {
   const [childrenPanel, setChildrenPanel] = useState<Sentence[]>([]);
 
   // 現在のsentenceIdと関連するパラレル投稿の管理
-  const currentSentenceIdRef = useRef<number>(
-    sentenceId ? parseInt(sentenceId, 10) : INITIAL_SENTENCE_ID,
-  );
+  const currentSentenceIdRef = useRef<number>(parseInt(sentenceId!, 10));
 
   // パラレル投稿管理用の状態
   const currentParallelIndexRef = useRef(0);
@@ -41,92 +50,87 @@ export const NovelViewContainer = () => {
   const [originalMainSentence, setOriginalMainSentence] =
     useState<Sentence | null>(null);
 
-  // URLが変更されたときにデータを更新
+  // URLが変更されたときにデータを更新（初回も必ず実行）
   useEffect(() => {
-    const targetId = sentenceId
-      ? parseInt(sentenceId, 10)
-      : INITIAL_SENTENCE_ID;
-    if (targetId !== currentSentenceIdRef.current) {
-      currentSentenceIdRef.current = targetId;
+    const targetId = parseInt(sentenceId!, 10);
 
-      // APIから投稿データを取得
-      const fetchSentenceData = async () => {
-        try {
-          const response = await sentencesApi.getSentenceById(targetId);
-          if (!response || !response.data) {
-            throw new Error('No data received from API');
-          }
-          const data = response.data;
+    // APIから投稿データを取得
+    const fetchSentenceData = async () => {
+      try {
+        const response = await sentencesApi.getSentenceById(targetId);
+        if (!response || !response.data) {
+          throw new Error('No data received from API');
+        }
+        const data = response.data;
 
-          // API レスポンスを内部のSentence型に変換
-          const convertToSentence = (apiSentence: any): Sentence => ({
-            sentenceId: apiSentence.sentenceId,
-            sentence: apiSentence.sentence,
-            sentenceUserId: apiSentence.sentenceUserId,
-            sentencePenName: apiSentence.sentencePenName,
-            profileIconImage: apiSentence.profileIconImage,
-            evaluationGoodCount: apiSentence.evaluationGoodCount,
-            evaluationStayCount: apiSentence.evaluationStayCount,
-            createdAt: apiSentence.createdAt,
-            updatedAt: apiSentence.updatedAt,
-          });
+        // API レスポンスを内部のSentence型に変換
+        const convertToSentence = (apiSentence: any): Sentence => ({
+          sentenceId: apiSentence.sentenceId,
+          sentence: apiSentence.sentence,
+          sentenceUserId: apiSentence.sentenceUserId,
+          sentencePenName: apiSentence.sentencePenName,
+          profileIconImage: apiSentence.profileIconImage,
+          evaluationGoodCount: apiSentence.evaluationGoodCount,
+          evaluationStayCount: apiSentence.evaluationStayCount,
+          createdAt: apiSentence.createdAt,
+          updatedAt: apiSentence.updatedAt,
+        });
 
-          // メイン、親、パラレル、子の投稿を設定
-          if (data.main) {
-            setMainPanel([convertToSentence(data.main)]);
-          }
-          if (data.parent) {
-            setParentPanel([convertToSentence(data.parent)]);
-          } else {
-            setParentPanel([]);
-          }
-          if (data.parallels && data.parallels.length > 0) {
-            setParallelSentences(data.parallels.map(convertToSentence));
-          } else {
-            setParallelSentences([]);
-          }
-          if (data.children && data.children.length > 0) {
-            setChildrenPanel(data.children.map(convertToSentence));
-          } else {
-            setChildrenPanel([]);
-          }
-
-          // パラレル投稿の初期設定
-          if (data.main) {
-            const currentMainSentence = convertToSentence(data.main);
-            setOriginalMainSentence(currentMainSentence);
-
-            // 現在のsentenceがパラレル投稿の中にある場合、そのインデックスを設定
-            if (data.parallels) {
-              const parallels = data.parallels.map(convertToSentence);
-              const currentIndex = parallels.findIndex(
-                (p: Sentence) => p.sentenceId === targetId,
-              );
-
-              if (currentIndex >= 0) {
-                currentParallelIndexRef.current = currentIndex;
-              } else {
-                currentParallelIndexRef.current = -1;
-              }
-            }
-
-            // MainPanelの評価状態を設定
-            setHasMainPanelEvaluation(false);
-          }
-        } catch (error) {
-          console.error('Error fetching sentence data:', error);
-          // エラー時は空のデータを設定
-          setMainPanel([]);
+        // メイン、親、パラレル、子の投稿を設定
+        if (data.main) {
+          setMainPanel([convertToSentence(data.main)]);
+        }
+        if (data.parent) {
+          setParentPanel([convertToSentence(data.parent)]);
+        } else {
           setParentPanel([]);
-          setChildrenPanel([]);
+        }
+        if (data.parallels && data.parallels.length > 0) {
+          setParallelSentences(data.parallels.map(convertToSentence));
+        } else {
           setParallelSentences([]);
-          setOriginalMainSentence(null);
+        }
+        if (data.children && data.children.length > 0) {
+          setChildrenPanel(data.children.map(convertToSentence));
+        } else {
+          setChildrenPanel([]);
+        }
+
+        // パラレル投稿の初期設定
+        if (data.main) {
+          const currentMainSentence = convertToSentence(data.main);
+          setOriginalMainSentence(currentMainSentence);
+
+          // 現在のsentenceがパラレル投稿の中にある場合、そのインデックスを設定
+          if (data.parallels) {
+            const parallels = data.parallels.map(convertToSentence);
+            const currentIndex = parallels.findIndex(
+              (p: Sentence) => p.sentenceId === targetId,
+            );
+
+            if (currentIndex >= 0) {
+              currentParallelIndexRef.current = currentIndex;
+            } else {
+              currentParallelIndexRef.current = -1;
+            }
+          }
+
+          // MainPanelの評価状態を設定
           setHasMainPanelEvaluation(false);
         }
-      };
+      } catch (error) {
+        console.error('Error fetching sentence data:', error);
+        // エラー時は空のデータを設定
+        setMainPanel([]);
+        setParentPanel([]);
+        setChildrenPanel([]);
+        setParallelSentences([]);
+        setOriginalMainSentence(null);
+        setHasMainPanelEvaluation(false);
+      }
+    };
 
-      fetchSentenceData();
-    }
+    fetchSentenceData();
   }, [sentenceId]);
 
   // 画面更新用の関数
@@ -367,7 +371,17 @@ export const NovelViewContainer = () => {
   const handleParentClick = useCallback(
     (clickedSentence: any) => {
       // ParentPanelの投稿をクリックしたときは、その投稿をmainに移動
-      navigate(`/novelView/${titleId || '1'}/${clickedSentence.sentenceId}`);
+      if (!titleId) {
+        console.error('Error: titleIdがありません');
+        setMainPanel([]);
+        setParentPanel([]);
+        setChildrenPanel([]);
+        setParallelSentences([]);
+        setOriginalMainSentence(null);
+        setHasMainPanelEvaluation(false);
+        return;
+      }
+      navigate(`/novelView/${titleId}/${clickedSentence.sentenceId}`);
     },
     [navigate, titleId],
   );
