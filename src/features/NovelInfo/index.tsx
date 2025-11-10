@@ -51,11 +51,7 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
   }, [titleId]);
 
   const handleReadMore = () => {
-    if (
-      !novel ||
-      novel.titleId == null ||
-      novel.firstSentenceId == null
-    ) {
+    if (!novel || novel.titleId == null || novel.firstSentenceId == null) {
       console.error('小説情報が正しく取得できていません');
       setHasError(true);
       return;

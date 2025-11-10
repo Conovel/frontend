@@ -51,10 +51,8 @@ const SentenceCard = ({
   // ここでsentensecApiを何度も叩いている（main、親、兄弟、子すべて）
   // レスポンスに評価状態も含まれていないため無意味な通信になっている
   useEffect(() => {
-
     // const fetchEvaluation = async () => {
     //   if (!getSentenceEvaluation || !sentence.sentenceId) return;
-
     //   try {
     //     const evalData = await getSentenceEvaluation(sentence.sentenceId);
     //     setIsGoodEvaluated(evalData.isGoodEvaluated);

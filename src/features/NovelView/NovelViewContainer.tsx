@@ -17,18 +17,21 @@ export const NovelViewContainer = () => {
 
   // titleId, sentenceIdが未定義または数字でない場合はエラー
   if (titleId === undefined || sentenceId === undefined) {
-    console.error('Error: URLパラメータが不足しています（titleId, sentenceId）');
+    console.error(
+      'Error: URLパラメータが不足しています（titleId, sentenceId）',
+    );
     return (
-      <div>
-        エラー: URLパラメータが不足しています（titleId, sentenceId）
-      </div>
+      <div>エラー: URLパラメータが不足しています（titleId, sentenceId）</div>
     );
   }
   if (!/^\d+$/.test(titleId) || !/^\d+$/.test(sentenceId)) {
-    console.error('Error: URLパラメータが不正です（titleId, sentenceId は数字である必要があります）');
+    console.error(
+      'Error: URLパラメータが不正です（titleId, sentenceId は数字である必要があります）',
+    );
     return (
       <div>
-        エラー: URLパラメータが不正です（titleId, sentenceId は数字である必要があります）
+        エラー: URLパラメータが不正です（titleId, sentenceId
+        は数字である必要があります）
       </div>
     );
   }
@@ -72,6 +75,7 @@ export const NovelViewContainer = () => {
           profileIconImage: apiSentence.profileIconImage,
           evaluationGoodCount: apiSentence.evaluationGoodCount,
           evaluationStayCount: apiSentence.evaluationStayCount,
+          userEvaluation: apiSentence.userEvaluation,
           createdAt: apiSentence.createdAt,
           updatedAt: apiSentence.updatedAt,
         });
@@ -156,6 +160,7 @@ export const NovelViewContainer = () => {
           profileIconImage: apiSentence.profileIconImage || '',
           evaluationGoodCount: apiSentence.evaluationGoodCount || 0,
           evaluationStayCount: apiSentence.evaluationStayCount || 0,
+          userEvaluation: apiSentence.userEvaluation || null,
           createdAt: apiSentence.createdAt,
           updatedAt: apiSentence.updatedAt,
         });
@@ -267,6 +272,7 @@ export const NovelViewContainer = () => {
           profileIconImage: apiSentence.profileIconImage || '',
           evaluationGoodCount: apiSentence.evaluationGoodCount || 0,
           evaluationStayCount: apiSentence.evaluationStayCount || 0,
+          userEvaluation: apiSentence.userEvaluation || null,
           createdAt: apiSentence.createdAt,
           updatedAt: apiSentence.updatedAt,
         });

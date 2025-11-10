@@ -25,6 +25,7 @@ export const mockParentPanel: Sentence[] = [
     profileIconImage: '',
     evaluationGoodCount: 0,
     evaluationStayCount: 0,
+    userEvaluation: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -39,6 +40,7 @@ export const mockMainPanel: Sentence[] = [
     profileIconImage: '',
     evaluationGoodCount: 0,
     evaluationStayCount: 0,
+    userEvaluation: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -53,6 +55,7 @@ export const mockChildrenPanel: Sentence[] = [
     profileIconImage: '',
     evaluationGoodCount: 0,
     evaluationStayCount: 0,
+    userEvaluation: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -66,14 +69,13 @@ export const mockNovelProps = {
   profileIconImage: '',
   evaluationGoodCount: 0,
   evaluationStayCount: 0,
+  userEvaluation: null,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
   children: mockChildrenPanel,
   parent: mockParentPanel,
   main: mockMainPanel,
 };
-
-
 
 // センテンスの一意のIDを持つデータ
 
@@ -86,6 +88,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image.png',
     evaluationGoodCount: 15,
     evaluationStayCount: 3,
+    userEvaluation: null,
     createdAt: '2024-01-01T00:00:00Z',
     updatedAt: '2024-01-01T00:00:00Z',
   },
@@ -98,6 +101,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image.png',
     evaluationGoodCount: 12,
     evaluationStayCount: 2,
+    userEvaluation: null,
     createdAt: '2024-01-02T00:00:00Z',
     updatedAt: '2024-01-02T00:00:00Z',
   },
@@ -110,6 +114,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image2.png',
     evaluationGoodCount: 8,
     evaluationStayCount: 1,
+    userEvaluation: null,
     createdAt: '2024-01-03T00:00:00Z',
     updatedAt: '2024-01-03T00:00:00Z',
   },
@@ -122,6 +127,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image3.png',
     evaluationGoodCount: 14,
     evaluationStayCount: 4,
+    userEvaluation: null,
     createdAt: '2024-01-04T00:00:00Z',
     updatedAt: '2024-01-04T00:00:00Z',
   },
@@ -134,6 +140,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image4.png',
     evaluationGoodCount: 22,
     evaluationStayCount: 6,
+    userEvaluation: null,
     createdAt: '2024-01-05T00:00:00Z',
     updatedAt: '2024-01-05T00:00:00Z',
   },
@@ -146,6 +153,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image5.png',
     evaluationGoodCount: 18,
     evaluationStayCount: 5,
+    userEvaluation: null,
     createdAt: '2024-01-06T00:00:00Z',
     updatedAt: '2024-01-06T00:00:00Z',
   },
@@ -158,6 +166,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image6.png',
     evaluationGoodCount: 9,
     evaluationStayCount: 2,
+    userEvaluation: null,
     createdAt: '2024-01-07T00:00:00Z',
     updatedAt: '2024-01-07T00:00:00Z',
   },
@@ -170,6 +179,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image7.png',
     evaluationGoodCount: 11,
     evaluationStayCount: 1,
+    userEvaluation: null,
     createdAt: '2024-01-08T00:00:00Z',
     updatedAt: '2024-01-08T00:00:00Z',
   },
@@ -182,6 +192,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image8.png',
     evaluationGoodCount: 13,
     evaluationStayCount: 5,
+    userEvaluation: null,
     createdAt: '2024-01-09T00:00:00Z',
     updatedAt: '2024-01-09T00:00:00Z',
   },
@@ -194,6 +205,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image9.png',
     evaluationGoodCount: 16,
     evaluationStayCount: 2,
+    userEvaluation: null,
     createdAt: '2024-01-10T00:00:00Z',
     updatedAt: '2024-01-10T00:00:00Z',
   },
@@ -206,6 +218,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image10.png',
     evaluationGoodCount: 25,
     evaluationStayCount: 4,
+    userEvaluation: null,
     createdAt: '2024-01-11T00:00:00Z',
     updatedAt: '2024-01-11T00:00:00Z',
   },
@@ -218,6 +231,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image11.png',
     evaluationGoodCount: 19,
     evaluationStayCount: 7,
+    userEvaluation: null,
     createdAt: '2024-01-12T00:00:00Z',
     updatedAt: '2024-01-12T00:00:00Z',
   },
@@ -230,6 +244,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image12.png',
     evaluationGoodCount: 8,
     evaluationStayCount: 9,
+    userEvaluation: null,
     createdAt: '2024-01-13T00:00:00Z',
     updatedAt: '2024-01-13T00:00:00Z',
   },
@@ -242,6 +257,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image13.png',
     evaluationGoodCount: 21,
     evaluationStayCount: 3,
+    userEvaluation: null,
     createdAt: '2024-01-14T00:00:00Z',
     updatedAt: '2024-01-14T00:00:00Z',
   },
@@ -254,6 +270,7 @@ export const sentencesData: Record<number, Sentence> = {
     profileIconImage: 'path/to/image14.png',
     evaluationGoodCount: 31,
     evaluationStayCount: 2,
+    userEvaluation: null,
     createdAt: '2024-01-15T00:00:00Z',
     updatedAt: '2024-01-15T00:00:00Z',
   },
@@ -579,11 +596,12 @@ export const buildInitialData = (sentenceId: number) => {
 
 // モックデータの更新
 // sentenceIdを引数で受け取る関数に変更
-export const getMockContainerData = (sentenceId: number) => buildInitialData(sentenceId) || {
-  main: [],
-  parent: [],
-  children: [],
-};
+export const getMockContainerData = (sentenceId: number) =>
+  buildInitialData(sentenceId) || {
+    main: [],
+    parent: [],
+    children: [],
+  };
 
 const emptySentence: Sentence = {
   sentenceId: 0,
@@ -593,6 +611,7 @@ const emptySentence: Sentence = {
   profileIconImage: '',
   evaluationGoodCount: 0,
   evaluationStayCount: 0,
+  userEvaluation: null,
   createdAt: '1970-01-01T00:00:00Z',
   updatedAt: '1970-01-01T00:00:00Z',
 };

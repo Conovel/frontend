@@ -5,7 +5,11 @@ import {
   Sentence,
   ViewMeUser,
 } from '../../../api/api';
-import { sentencesData, getMockContainerData, getParallelSentences } from './data';
+import {
+  sentencesData,
+  getMockContainerData,
+  getParallelSentences,
+} from './data';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 

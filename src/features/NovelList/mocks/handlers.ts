@@ -60,6 +60,7 @@ export const novelListHandlers = [
       profileIconImage: '/path/to/avatar.jpg',
       evaluationGoodCount: 0,
       evaluationStayCount: 0,
+      userEvaluation: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
