@@ -424,6 +424,12 @@ export interface Sentence {
    */
   evaluationStayCount?: number;
   /**
+   * 投稿に対するログインユーザーの評価状態
+   * @type {string}
+   * @memberof Sentence
+   */
+  userEvaluation?: SentenceUserEvaluationEnum | null;
+  /**
    * 投稿日時
    * @type {string}
    * @memberof Sentence
@@ -436,6 +442,16 @@ export interface Sentence {
    */
   updatedAt?: string;
 }
+
+export const SentenceUserEvaluationEnum = {
+  Good: "good",
+  Bad: "bad",
+  Stay: "stay",
+} as const;
+
+export type SentenceUserEvaluationEnum =
+  (typeof SentenceUserEvaluationEnum)[keyof typeof SentenceUserEvaluationEnum];
+
 /**
  *
  * @export
