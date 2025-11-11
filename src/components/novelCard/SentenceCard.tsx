@@ -115,6 +115,53 @@ const SentenceCard = ({
     }
   };
 
+  // Stay評価ボタンのクリック処理
+  const handleStayCountClick = async (): Promise<void> => {
+    if (busyRef.current || !canEvaluate) return;
+    const sentenceId = sentence.sentenceId;
+    if (!sentenceId) {
+      console.warn('sentenceが評価できません: sentenceIdがありません');
+      return;
+    }
+    if (busyRef.current) return;
+    busyRef.current = true;
+    setIsEvaluating(true);
+    abortRef.current?.abort();
+    const ac = new AbortController();
+    abortRef.current = ac;
+    const currentRequestId = ++requestIdRef.current;
+    try {
+      const evaluateSentence: EvaluateSentence = {
+        sentenceId,
+        evaluation: 'stay',
+      };
+      const response = await evaluationsApi.evaluateSentence(evaluateSentence);
+      if (currentRequestId === requestIdRef.current) {
+        const serverStayCount = response?.data?.evaluationStayCount;
+        if (typeof serverStayCount === 'number') {
+          setLocalStayCount(serverStayCount);
+          if (onEvaluationSuccess) {
+            onEvaluationSuccess();
+          }
+        } else {
+          console.warn('評価エラー: evaluationStayCount is not a number');
+        }
+      }
+    } catch (error) {
+      if (
+        currentRequestId === requestIdRef.current &&
+        (error as any).name !== 'AbortError'
+      ) {
+        console.error('評価エラー:', error);
+      }
+    } finally {
+      if (currentRequestId === requestIdRef.current) {
+        setIsEvaluating(false);
+        busyRef.current = false;
+      }
+    }
+  };
+
   return (
     <Box
       component='div'
@@ -183,13 +230,11 @@ const SentenceCard = ({
         />
         <StayButton
           evaluationStayCount={localStayCount}
-          setEvaluationStayCount={setLocalStayCount}
           isEvaluated={isStayEvaluated}
-          sentenceId={sentence.sentenceId || 0}
           disabled={!canEvaluate || isEvaluating}
-          onEvaluationSuccess={onEvaluationSuccess}
           isStayEvaluated={isStayEvaluated}
           setIsStayEvaluated={setIsStayEvaluated}
+          onClick={handleStayCountClick}
         />
       </Box>
     </Box>

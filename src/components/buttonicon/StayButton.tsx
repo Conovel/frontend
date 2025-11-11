@@ -1,75 +1,26 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
-import { EvaluationsApi, EvaluateSentence } from '../../api/api';
-import { axiosConfig } from '../../axiosConfig';
-
 interface StayButtonProps {
   evaluationStayCount: number;
-  setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
   isEvaluated: boolean;
   disabled?: boolean;
-  sentenceId: number;
-  onEvaluationSuccess?: () => void;
   isStayEvaluated: boolean;
   setIsStayEvaluated: React.Dispatch<React.SetStateAction<boolean>>;
+  onClick?: () => void;
 }
 
 const StayButton: React.FC<StayButtonProps> = ({
   evaluationStayCount,
-  setEvaluationStayCount,
   isEvaluated,
   disabled = false,
-  sentenceId,
-  onEvaluationSuccess,
   isStayEvaluated,
   setIsStayEvaluated,
+  onClick,
 }) => {
-  const busyRef = useRef(false); // 再入防止
-  const abortRef = useRef<AbortController | null>(null);
-
-  const handleClick = async () => {
-    if (busyRef.current || disabled) return; // 連打無視
-    busyRef.current = true;
-
-    // 既存リクエストがあれば中断（任意）
-    abortRef.current?.abort();
-    const ac = new AbortController();
-    abortRef.current = ac;
-
-    try {
-      const evaluationsApi = new EvaluationsApi(axiosConfig);
-      const evaluateSentence: EvaluateSentence = {
-        sentenceId: sentenceId,
-        evaluation: 'stay',
-      };
-
-      const response = await evaluationsApi.evaluateSentence(evaluateSentence);
-      if (response?.data) {
-        setEvaluationStayCount(
-          response.data.evaluationStayCount || evaluationStayCount + 1,
-        );
-      } else {
-        setEvaluationStayCount(evaluationStayCount + 1);
-      }
-
-      // 評価成功時に親コンポーネントに通知
-      if (onEvaluationSuccess) {
-        onEvaluationSuccess();
-      }
-    } catch (error) {
-      if ((error as any).name !== 'AbortError') {
-        console.error('評価エラー:', error);
-        // エラー時はローカルでカウント更新
-        setEvaluationStayCount(evaluationStayCount + 1);
-      }
-    } finally {
-      busyRef.current = false;
-    }
-  };
 
   return (
     <div
-      onClick={handleClick}
+      onClick={onClick}
       style={{
         display: 'flex',
         alignItems: 'center',
