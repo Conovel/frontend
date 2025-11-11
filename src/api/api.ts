@@ -583,9 +583,9 @@ export interface ViewEvaluation {
 }
 
 export const ViewEvaluationUserEvaluationEnum = {
-  Good: "good",
-  Bad: "bad",
-  Stay: "stay",
+  Good: 'good',
+  Bad: 'bad',
+  Stay: 'stay',
 } as const;
 
 export type ViewEvaluationUserEvaluationEnum =

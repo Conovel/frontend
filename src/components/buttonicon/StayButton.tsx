@@ -3,22 +3,26 @@ import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDiss
 import { EvaluationsApi, EvaluateSentence } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
 
-interface NextPlanButtonProps {
+interface StayButtonProps {
   evaluationStayCount: number;
   setEvaluationStayCount: React.Dispatch<React.SetStateAction<number>>;
   isEvaluated: boolean;
   disabled?: boolean;
   sentenceId: number;
   onEvaluationSuccess?: () => void;
+  isStayEvaluated: boolean;
+  setIsStayEvaluated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const NextPlanButton: React.FC<NextPlanButtonProps> = ({
+const StayButton: React.FC<StayButtonProps> = ({
   evaluationStayCount,
   setEvaluationStayCount,
   isEvaluated,
   disabled = false,
   sentenceId,
   onEvaluationSuccess,
+  isStayEvaluated,
+  setIsStayEvaluated,
 }) => {
   const busyRef = useRef(false); // 再入防止
   const abortRef = useRef<AbortController | null>(null);
@@ -82,4 +86,4 @@ const NextPlanButton: React.FC<NextPlanButtonProps> = ({
   );
 };
 
-export default NextPlanButton;
+export default StayButton;

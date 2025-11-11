@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
-import ThumbUpButton from '../buttonicon/ThumbsUpButton';
-import NextPlanButton from '../buttonicon/NextPlanButton';
+import GoodButton from '../buttonicon/GoodButton';
+import StayButton from '../buttonicon/StayButton';
 import { EvaluationsApi, EvaluateSentence, Sentence } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
 
@@ -173,19 +173,23 @@ const SentenceCard = ({
           backgroundColor: 'transparent',
         }}
       >
-        <ThumbUpButton
+        <GoodButton
           evaluationGoodCount={localGoodCount}
           isEvaluated={isGoodEvaluated}
           onClick={handleGoodCountClick}
           disabled={!canEvaluate || isEvaluating}
+          isGoodEvaluated={isGoodEvaluated}
+          setIsGoodEvaluated={setIsGoodEvaluated}
         />
-        <NextPlanButton
+        <StayButton
           evaluationStayCount={localStayCount}
           setEvaluationStayCount={setLocalStayCount}
           isEvaluated={isStayEvaluated}
           sentenceId={sentence.sentenceId || 0}
           disabled={!canEvaluate || isEvaluating}
           onEvaluationSuccess={onEvaluationSuccess}
+          isStayEvaluated={isStayEvaluated}
+          setIsStayEvaluated={setIsStayEvaluated}
         />
       </Box>
     </Box>
