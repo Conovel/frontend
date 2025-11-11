@@ -567,7 +567,23 @@ export interface ViewEvaluation {
    * @memberof ViewEvaluation
    */
   evaluationStayCount?: number;
+  /**
+   * 投稿に対するログインユーザーの評価状態
+   * @type {string}
+   * @memberof ViewEvaluation
+   */
+  userEvaluation?: ViewEvaluationUserEvaluationEnum | null;
 }
+
+export const ViewEvaluationUserEvaluationEnum = {
+  Good: "good",
+  Bad: "bad",
+  Stay: "stay",
+} as const;
+
+export type ViewEvaluationUserEvaluationEnum =
+  (typeof ViewEvaluationUserEvaluationEnum)[keyof typeof ViewEvaluationUserEvaluationEnum];
+
 /**
  *
  * @export

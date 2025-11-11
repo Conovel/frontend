@@ -444,9 +444,9 @@ export interface Sentence {
 }
 
 export const SentenceUserEvaluationEnum = {
-  Good: "good",
-  Bad: "bad",
-  Stay: "stay",
+  Good: 'good',
+  Bad: 'bad',
+  Stay: 'stay',
 } as const;
 
 export type SentenceUserEvaluationEnum =
@@ -574,7 +574,23 @@ export interface ViewEvaluation {
    * @memberof ViewEvaluation
    */
   evaluationStayCount?: number;
+  /**
+   * 投稿に対するログインユーザーの評価状態
+   * @type {string}
+   * @memberof ViewEvaluation
+   */
+  userEvaluation?: ViewEvaluationUserEvaluationEnum | null;
 }
+
+export const ViewEvaluationUserEvaluationEnum = {
+  Good: "good",
+  Bad: "bad",
+  Stay: "stay",
+} as const;
+
+export type ViewEvaluationUserEvaluationEnum =
+  (typeof ViewEvaluationUserEvaluationEnum)[keyof typeof ViewEvaluationUserEvaluationEnum];
+
 /**
  *
  * @export
