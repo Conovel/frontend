@@ -58,7 +58,9 @@ const SentenceCard = ({
   const evaluationsApi = new EvaluationsApi(axiosConfig);
 
   // Good/Stay評価ボタンのクリック処理
-  const handleEvaluationClick = async (evaluationType: 'good' | 'stay'): Promise<void> => {
+  const handleEvaluationClick = async (
+    evaluationType: 'good' | 'stay',
+  ): Promise<void> => {
     if (busyRef.current || !canEvaluate) return;
     const sentenceId = sentence.sentenceId;
     if (!sentenceId) {
@@ -79,9 +81,12 @@ const SentenceCard = ({
       };
       const response = await evaluationsApi.evaluateSentence(evaluateSentence);
       if (currentRequestId === requestIdRef.current) {
-        const { evaluationGoodCount, evaluationStayCount, userEvaluation } = response?.data || {};
-        if (typeof evaluationGoodCount === 'number') setLocalGoodCount(evaluationGoodCount);
-        if (typeof evaluationStayCount === 'number') setLocalStayCount(evaluationStayCount);
+        const { evaluationGoodCount, evaluationStayCount, userEvaluation } =
+          response?.data || {};
+        if (typeof evaluationGoodCount === 'number')
+          setLocalGoodCount(evaluationGoodCount);
+        if (typeof evaluationStayCount === 'number')
+          setLocalStayCount(evaluationStayCount);
         setIsGoodEvaluated(userEvaluation === 'good');
         setIsStayEvaluated(userEvaluation === 'stay');
         if (onEvaluationSuccess) onEvaluationSuccess();

@@ -13,7 +13,6 @@ const StayButton: React.FC<StayButtonProps> = ({
   disabled = false,
   onClick,
 }) => {
-
   return (
     <div
       onClick={onClick}
