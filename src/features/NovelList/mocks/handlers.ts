@@ -74,12 +74,10 @@ export const novelListHandlers = [
 
     // 評価を処理（実際の実装ではデータベースに保存）
     const mockEvaluation = {
-      evaluationId: Math.floor(Math.random() * 10000) + 1000,
       sentenceId: data.sentenceId,
-      evaluation: data.evaluation,
-      userId: mockUser.userId,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      evaluationGoodCount: data.evaluation === 'good' ? 1 : 0,
+      evaluationStayCount: data.evaluation === 'stay' ? 1 : 0,
+      userEvaluation: data.evaluation,
     };
 
     return HttpResponse.json(mockEvaluation, { status: 201 });

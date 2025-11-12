@@ -6,11 +6,11 @@ import { BrowserRouter } from 'react-router';
 
 async function enableMocking() {
   // ここをコメントアウトするとMSWが無効になる
-  // if (!import.meta.env.PROD) {
-  //   const { worker } = await import('../src/mock/browser');
-  //   worker.start();
-  // }
-  // return Promise.resolve();
+  if (!import.meta.env.PROD) {
+    const { worker } = await import('../src/mock/browser');
+    worker.start();
+  }
+  return Promise.resolve();
 }
 
 enableMocking().then(() => {
