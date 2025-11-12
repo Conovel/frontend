@@ -56,67 +56,9 @@ const SentenceCard = ({
   }, [sentence.sentenceId, getSentenceEvaluation]);
 
   const evaluationsApi = new EvaluationsApi(axiosConfig);
-  const handleGoodCountClick = async (): Promise<void> => {
-    if (busyRef.current || !canEvaluate) return; // 連打無視
 
-    const sentenceId = sentence.sentenceId;
-    if (!sentenceId) {
-      console.warn('sentenceが評価できません: sentenceIdがありません');
-      return;
-    }
-
-    // アトミックな操作でbusyフラグを設定
-    if (busyRef.current) return; // 二重チェック
-    busyRef.current = true;
-    setIsEvaluating(true);
-
-    // 既存リクエストがあれば中断
-    abortRef.current?.abort();
-    const ac = new AbortController();
-    abortRef.current = ac;
-
-    // リクエストIDをインクリメント（最新のリクエストのみ処理）
-    const currentRequestId = ++requestIdRef.current;
-
-    try {
-      const evaluateSentence: EvaluateSentence = {
-        sentenceId,
-        evaluation: 'good',
-      };
-
-      const response = await evaluationsApi.evaluateSentence(evaluateSentence);
-
-      // 最新のリクエストかどうかをチェック
-      if (currentRequestId === requestIdRef.current) {
-        const serverGoodCount = response?.data?.evaluationGoodCount;
-        if (typeof serverGoodCount === 'number') {
-          setLocalGoodCount(serverGoodCount);
-          if (onEvaluationSuccess) {
-            onEvaluationSuccess();
-          }
-        } else {
-          console.warn('評価エラー: evaluationGoodCount is not a number');
-        }
-      }
-    } catch (error) {
-      // 最新のリクエストかつAbortErrorでない場合のみエラー処理
-      if (
-        currentRequestId === requestIdRef.current &&
-        (error as any).name !== 'AbortError'
-      ) {
-        console.error('評価エラー:', error);
-      }
-    } finally {
-      // 最新のリクエストの場合のみ状態をリセット
-      if (currentRequestId === requestIdRef.current) {
-        setIsEvaluating(false);
-        busyRef.current = false;
-      }
-    }
-  };
-
-  // Stay評価ボタンのクリック処理
-  const handleStayCountClick = async (): Promise<void> => {
+  // Good/Stay評価ボタンのクリック処理
+  const handleEvaluationClick = async (evaluationType: 'good' | 'stay'): Promise<void> => {
     if (busyRef.current || !canEvaluate) return;
     const sentenceId = sentence.sentenceId;
     if (!sentenceId) {
@@ -133,19 +75,16 @@ const SentenceCard = ({
     try {
       const evaluateSentence: EvaluateSentence = {
         sentenceId,
-        evaluation: 'stay',
+        evaluation: evaluationType,
       };
       const response = await evaluationsApi.evaluateSentence(evaluateSentence);
       if (currentRequestId === requestIdRef.current) {
-        const serverStayCount = response?.data?.evaluationStayCount;
-        if (typeof serverStayCount === 'number') {
-          setLocalStayCount(serverStayCount);
-          if (onEvaluationSuccess) {
-            onEvaluationSuccess();
-          }
-        } else {
-          console.warn('評価エラー: evaluationStayCount is not a number');
-        }
+        const { evaluationGoodCount, evaluationStayCount, userEvaluation } = response?.data || {};
+        if (typeof evaluationGoodCount === 'number') setLocalGoodCount(evaluationGoodCount);
+        if (typeof evaluationStayCount === 'number') setLocalStayCount(evaluationStayCount);
+        setIsGoodEvaluated(userEvaluation === 'good');
+        setIsStayEvaluated(userEvaluation === 'stay');
+        if (onEvaluationSuccess) onEvaluationSuccess();
       }
     } catch (error) {
       if (
@@ -223,18 +162,14 @@ const SentenceCard = ({
         <GoodButton
           evaluationGoodCount={localGoodCount}
           isEvaluated={isGoodEvaluated}
-          onClick={handleGoodCountClick}
+          onClick={() => handleEvaluationClick('good')}
           disabled={!canEvaluate || isEvaluating}
-          isGoodEvaluated={isGoodEvaluated}
-          setIsGoodEvaluated={setIsGoodEvaluated}
         />
         <StayButton
           evaluationStayCount={localStayCount}
           isEvaluated={isStayEvaluated}
           disabled={!canEvaluate || isEvaluating}
-          isStayEvaluated={isStayEvaluated}
-          setIsStayEvaluated={setIsStayEvaluated}
-          onClick={handleStayCountClick}
+          onClick={() => handleEvaluationClick('stay')}
         />
       </Box>
     </Box>

@@ -5,8 +5,6 @@ interface GoodButtonProps {
   evaluationGoodCount: number;
   isEvaluated: boolean;
   disabled?: boolean;
-  isGoodEvaluated: boolean;
-  setIsGoodEvaluated: React.Dispatch<React.SetStateAction<boolean>>;
   onClick: () => void;
 }
 
@@ -14,8 +12,6 @@ const GoodButton: React.FC<GoodButtonProps> = ({
   evaluationGoodCount,
   isEvaluated,
   disabled = false,
-  isGoodEvaluated,
-  setIsGoodEvaluated,
   onClick,
 }) => {
   return (

@@ -4,8 +4,6 @@ interface StayButtonProps {
   evaluationStayCount: number;
   isEvaluated: boolean;
   disabled?: boolean;
-  isStayEvaluated: boolean;
-  setIsStayEvaluated: React.Dispatch<React.SetStateAction<boolean>>;
   onClick?: () => void;
 }
 
@@ -13,8 +11,6 @@ const StayButton: React.FC<StayButtonProps> = ({
   evaluationStayCount,
   isEvaluated,
   disabled = false,
-  isStayEvaluated,
-  setIsStayEvaluated,
   onClick,
 }) => {
 
