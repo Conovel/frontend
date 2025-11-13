@@ -163,6 +163,10 @@ const SentenceCard = ({
           marginTop: '0.1vh',
           backgroundColor: 'transparent',
         }}
+        onClick={(e) => {
+          // 評価ボタンのクリックイベントが親に伝播しないようにする
+          e.stopPropagation();
+        }}
       >
         <GoodButton
           evaluationGoodCount={localGoodCount}

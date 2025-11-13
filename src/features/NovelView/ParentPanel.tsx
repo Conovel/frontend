@@ -19,34 +19,29 @@ interface ParentPanelProps {
 const ParentPanel: React.FC<ParentPanelProps> = ({
   parentPanel,
   startIndex,
-  textCount,
   onClick,
   getSentenceEvaluation,
 }) => {
   return (
     <Box
       sx={{
-        backgroundColor: '#fff',
+        backgroundColor: 'transparent',
         margin: '2vh auto',
         height: '23vh',
         width: '70vw',
         alignItems: 'center',
         zIndex: 2,
-        borderRadius: '10px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
       }}
     >
-      {startIndex < textCount ? (
-        <SentenceCard
-          key={startIndex}
-          sentence={parentPanel}
-          onClick={onClick}
-          getSentenceEvaluation={getSentenceEvaluation}
-        />
-      ) : null}
+      <SentenceCard
+        key={startIndex}
+        sentence={parentPanel}
+        onClick={onClick}
+        getSentenceEvaluation={getSentenceEvaluation}
+      />
     </Box>
   );
 };

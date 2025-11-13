@@ -54,6 +54,7 @@ interface ChildrenPanelProps {
     isGoodEvaluated: boolean;
     isStayEvaluated: boolean;
   }>;
+  onChildrenClick: (clickedSentence: Sentence) => void;
 }
 
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
@@ -61,6 +62,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   mainPanel,
   hasMainPanelEvaluation,
   getSentenceEvaluation,
+  onChildrenClick,
 }) => {
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -110,6 +112,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       if (!ensureEvaluated()) {
         return;
       }
+      // 評価が完了している場合、クリックされたsentenceをmainに移動
+      onChildrenClick(panel);
     };
 
     // Create a modified sentence object with shortened text if not expanded
@@ -127,6 +131,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
         <SentenceCard
           sentence={displaySentence}
+          canEvaluate={hasMainPanelEvaluation}
           getSentenceEvaluation={getSentenceEvaluation}
           onClick={handleCardClick}
         />

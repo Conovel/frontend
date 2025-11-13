@@ -79,9 +79,11 @@ export const NovelViewContainer = () => {
       if (data.main) setMainPanel([convertToSentence(data.main)]);
       if (data.parent) setParentPanel([convertToSentence(data.parent)]);
       else setParentPanel([]);
-      if (data.parallels && data.parallels.length > 0) setParallelSentences(data.parallels.map(convertToSentence));
+      if (data.parallels && data.parallels.length > 0)
+        setParallelSentences(data.parallels.map(convertToSentence));
       else setParallelSentences([]);
-      if (data.children && data.children.length > 0) setChildrenPanel(data.children.map(convertToSentence));
+      if (data.children && data.children.length > 0)
+        setChildrenPanel(data.children.map(convertToSentence));
       else setChildrenPanel([]);
 
       if (data.main) {
@@ -89,8 +91,11 @@ export const NovelViewContainer = () => {
         setOriginalMainSentence(currentMainSentence);
         if (data.parallels) {
           const parallels = data.parallels.map(convertToSentence);
-          const currentIndex = parallels.findIndex((p: Sentence) => p.sentenceId === targetId);
-          currentParallelIndexRef.current = currentIndex >= 0 ? currentIndex : -1;
+          const currentIndex = parallels.findIndex(
+            (p: Sentence) => p.sentenceId === targetId,
+          );
+          currentParallelIndexRef.current =
+            currentIndex >= 0 ? currentIndex : -1;
         }
         setHasMainPanelEvaluation(false);
       }
@@ -286,6 +291,25 @@ export const NovelViewContainer = () => {
     [navigate, titleId],
   );
 
+  // ChildrenPanelがクリックされたときのハンドラー
+  const handleChildrenClick = useCallback(
+    (clickedSentence: any) => {
+      // ChildrenPanelの投稿をクリックしたときは、その投稿をmainに移動
+      if (!titleId) {
+        console.error('Error: titleIdがありません');
+        setMainPanel([]);
+        setParentPanel([]);
+        setChildrenPanel([]);
+        setParallelSentences([]);
+        setOriginalMainSentence(null);
+        setHasMainPanelEvaluation(false);
+        return;
+      }
+      navigate(`/novelView/${titleId}/${clickedSentence.sentenceId}`);
+    },
+    [navigate, titleId],
+  );
+
   // MainPanelのナビゲーション処理（コンテンツ内での移動）
   const handleMainPanelNavigate = useCallback((_direction: 'prev' | 'next') => {
     // MainPanel内でのナビゲーションは現在のsentenceの前後の関連投稿を表示
@@ -320,6 +344,7 @@ export const NovelViewContainer = () => {
       onPrevParallel={handlePrevParallel}
       hasParallels={hasParallels}
       onParentClick={handleParentClick}
+      onChildrenClick={handleChildrenClick}
       onMainPanelNavigate={handleMainPanelNavigate}
       onBackToOriginal={handleBackToOriginal}
       isInParallelMode={isInParallelMode}
