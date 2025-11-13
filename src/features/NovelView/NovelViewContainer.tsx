@@ -53,173 +53,67 @@ export const NovelViewContainer = () => {
   const [originalMainSentence, setOriginalMainSentence] =
     useState<Sentence | null>(null);
 
+  // Sentence型への変換
+  const convertToSentence = (apiSentence: any): Sentence => ({
+    sentenceId: apiSentence.sentenceId,
+    sentence: apiSentence.sentence,
+    sentenceUserId: apiSentence.sentenceUserId,
+    sentencePenName: apiSentence.sentencePenName,
+    profileIconImage: apiSentence.profileIconImage || '',
+    evaluationGoodCount: apiSentence.evaluationGoodCount || 0,
+    evaluationStayCount: apiSentence.evaluationStayCount || 0,
+    userEvaluation: apiSentence.userEvaluation || null,
+    createdAt: apiSentence.createdAt,
+    updatedAt: apiSentence.updatedAt,
+  });
+
+  // 投稿データ取得処理
+  const fetchSentenceData = async (targetId: number) => {
+    try {
+      const response = await sentencesApi.getSentenceById(targetId);
+      if (!response || !response.data) {
+        throw new Error('No data received from API');
+      }
+      const data = response.data;
+
+      if (data.main) setMainPanel([convertToSentence(data.main)]);
+      if (data.parent) setParentPanel([convertToSentence(data.parent)]);
+      else setParentPanel([]);
+      if (data.parallels && data.parallels.length > 0) setParallelSentences(data.parallels.map(convertToSentence));
+      else setParallelSentences([]);
+      if (data.children && data.children.length > 0) setChildrenPanel(data.children.map(convertToSentence));
+      else setChildrenPanel([]);
+
+      if (data.main) {
+        const currentMainSentence = convertToSentence(data.main);
+        setOriginalMainSentence(currentMainSentence);
+        if (data.parallels) {
+          const parallels = data.parallels.map(convertToSentence);
+          const currentIndex = parallels.findIndex((p: Sentence) => p.sentenceId === targetId);
+          currentParallelIndexRef.current = currentIndex >= 0 ? currentIndex : -1;
+        }
+        setHasMainPanelEvaluation(false);
+      }
+    } catch (error) {
+      console.error('Error fetching sentence data:', error);
+      setMainPanel([]);
+      setParentPanel([]);
+      setChildrenPanel([]);
+      setParallelSentences([]);
+      setOriginalMainSentence(null);
+      setHasMainPanelEvaluation(false);
+    }
+  };
+
   // URLが変更されたときにデータを更新（初回も必ず実行）
   useEffect(() => {
     const targetId = parseInt(sentenceId!, 10);
-
-    // APIから投稿データを取得
-    const fetchSentenceData = async () => {
-      try {
-        const response = await sentencesApi.getSentenceById(targetId);
-        if (!response || !response.data) {
-          throw new Error('No data received from API');
-        }
-        const data = response.data;
-
-        // API レスポンスを内部のSentence型に変換
-        const convertToSentence = (apiSentence: any): Sentence => ({
-          sentenceId: apiSentence.sentenceId,
-          sentence: apiSentence.sentence,
-          sentenceUserId: apiSentence.sentenceUserId,
-          sentencePenName: apiSentence.sentencePenName,
-          profileIconImage: apiSentence.profileIconImage,
-          evaluationGoodCount: apiSentence.evaluationGoodCount,
-          evaluationStayCount: apiSentence.evaluationStayCount,
-          userEvaluation: apiSentence.userEvaluation,
-          createdAt: apiSentence.createdAt,
-          updatedAt: apiSentence.updatedAt,
-        });
-
-        // メイン、親、パラレル、子の投稿を設定
-        if (data.main) {
-          setMainPanel([convertToSentence(data.main)]);
-        }
-        if (data.parent) {
-          setParentPanel([convertToSentence(data.parent)]);
-        } else {
-          setParentPanel([]);
-        }
-        if (data.parallels && data.parallels.length > 0) {
-          setParallelSentences(data.parallels.map(convertToSentence));
-        } else {
-          setParallelSentences([]);
-        }
-        if (data.children && data.children.length > 0) {
-          setChildrenPanel(data.children.map(convertToSentence));
-        } else {
-          setChildrenPanel([]);
-        }
-
-        // パラレル投稿の初期設定
-        if (data.main) {
-          const currentMainSentence = convertToSentence(data.main);
-          setOriginalMainSentence(currentMainSentence);
-
-          // 現在のsentenceがパラレル投稿の中にある場合、そのインデックスを設定
-          if (data.parallels) {
-            const parallels = data.parallels.map(convertToSentence);
-            const currentIndex = parallels.findIndex(
-              (p: Sentence) => p.sentenceId === targetId,
-            );
-
-            if (currentIndex >= 0) {
-              currentParallelIndexRef.current = currentIndex;
-            } else {
-              currentParallelIndexRef.current = -1;
-            }
-          }
-
-          // MainPanelの評価状態を設定
-          setHasMainPanelEvaluation(false);
-        }
-      } catch (error) {
-        console.error('Error fetching sentence data:', error);
-        // エラー時は空のデータを設定
-        setMainPanel([]);
-        setParentPanel([]);
-        setChildrenPanel([]);
-        setParallelSentences([]);
-        setOriginalMainSentence(null);
-        setHasMainPanelEvaluation(false);
-      }
-    };
-
-    fetchSentenceData();
+    fetchSentenceData(targetId);
   }, [sentenceId]);
 
   // 画面更新用の関数
   const handleRefresh = useCallback(() => {
-    // 現在のデータを再取得する処理
-    const targetId = currentSentenceIdRef.current;
-
-    // データの再取得処理（既存のfetchSentenceDataのロジックを再利用）
-    const fetchSentenceData = async () => {
-      try {
-        const response = await sentencesApi.getSentenceById(targetId);
-        if (!response || !response.data) {
-          throw new Error('No data received from API');
-        }
-        const data = response.data;
-
-        // API レスポンスを内部のSentence型に変換
-        const convertToSentence = (apiSentence: any): Sentence => ({
-          sentenceId: apiSentence.sentenceId,
-          sentence: apiSentence.sentence,
-          sentenceUserId: apiSentence.sentenceUserId,
-          sentencePenName: apiSentence.sentencePenName,
-          profileIconImage: apiSentence.profileIconImage || '',
-          evaluationGoodCount: apiSentence.evaluationGoodCount || 0,
-          evaluationStayCount: apiSentence.evaluationStayCount || 0,
-          userEvaluation: apiSentence.userEvaluation || null,
-          createdAt: apiSentence.createdAt,
-          updatedAt: apiSentence.updatedAt,
-        });
-
-        // メイン、親、パラレル、子の投稿を設定
-        if (data.main) {
-          setMainPanel([convertToSentence(data.main)]);
-        }
-        if (data.parent) {
-          setParentPanel([convertToSentence(data.parent)]);
-        } else {
-          setParentPanel([]);
-        }
-        if (data.parallels && data.parallels.length > 0) {
-          setParallelSentences(data.parallels.map(convertToSentence));
-        } else {
-          setParallelSentences([]);
-        }
-        if (data.children && data.children.length > 0) {
-          setChildrenPanel(data.children.map(convertToSentence));
-        } else {
-          setChildrenPanel([]);
-        }
-
-        // パラレル投稿の初期設定
-        if (data.main) {
-          const currentMainSentence = convertToSentence(data.main);
-          setOriginalMainSentence(currentMainSentence);
-
-          // 現在のsentenceがパラレル投稿の中にある場合、そのインデックスを設定
-          if (data.parallels) {
-            const parallels = data.parallels.map(convertToSentence);
-            const currentIndex = parallels.findIndex(
-              (p: Sentence) => p.sentenceId === targetId,
-            );
-
-            if (currentIndex >= 0) {
-              currentParallelIndexRef.current = currentIndex;
-            } else {
-              currentParallelIndexRef.current = -1;
-            }
-          }
-
-          // MainPanelの評価状態を設定
-          setHasMainPanelEvaluation(false);
-        }
-      } catch (error) {
-        console.error('Error refreshing sentence data:', error);
-        // エラー時は空のデータを設定
-        setMainPanel([]);
-        setParentPanel([]);
-        setChildrenPanel([]);
-        setParallelSentences([]);
-        setOriginalMainSentence(null);
-        setHasMainPanelEvaluation(false);
-      }
-    };
-
-    fetchSentenceData();
+    fetchSentenceData(currentSentenceIdRef.current);
   }, []);
 
   // 評価成功時の処理
