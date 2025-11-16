@@ -30,7 +30,7 @@ interface NovelViewPresentationProps {
     isGoodEvaluated: boolean;
     isStayEvaluated: boolean;
   }>;
-  titleId?: string;
+  onChildrenClick: (clickedSentence: Sentence) => void;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -52,7 +52,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   onEvaluationSuccess,
   onPostSuccess,
   getSentenceEvaluation,
-  titleId,
+  onChildrenClick,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -158,7 +158,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         mainPanel={mainPanel}
         hasMainPanelEvaluation={hasMainPanelEvaluation}
         getSentenceEvaluation={getSentenceEvaluation}
-        titleId={titleId}
+        onChildrenClick={onChildrenClick}
       />
     </Box>
   );

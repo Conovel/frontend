@@ -5,7 +5,6 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import SentenceCard from '../../components/novelCard/SentenceCard';
 import type { Sentence } from '../../api/api';
-import { Link as RouterLink } from 'react-router';
 import { EditPost } from '../EditPost';
 import MosaicOverlay from '../../components/mosaicOverlay/MosaicOverlay';
 
@@ -55,7 +54,7 @@ interface ChildrenPanelProps {
     isGoodEvaluated: boolean;
     isStayEvaluated: boolean;
   }>;
-  titleId?: string;
+  onChildrenClick: (clickedSentence: Sentence) => void;
 }
 
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
@@ -63,7 +62,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   mainPanel,
   hasMainPanelEvaluation,
   getSentenceEvaluation,
-  titleId,
+  onChildrenClick,
 }) => {
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -109,16 +108,11 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   const renderNovelCard = (panel: Sentence) => {
     const isExpanded = expandedCards.has(panel.sentenceId || 0);
 
-    const handleCardClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const handleCardClick = () => {
       if (!ensureEvaluated()) {
-        event.preventDefault();
         return;
       }
-      if (!titleId || !panel.sentenceId) {
-        event.preventDefault();
-        console.error('titleId or sentenceId is missing for navigation');
-        return;
-      }
+      onChildrenClick(panel);
     };
 
     // Create a modified sentence object with shortened text if not expanded
@@ -135,14 +129,8 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     return (
       <Box
         key={panel.sentenceId}
-        component={RouterLink}
-        to={
-          titleId && panel.sentenceId
-            ? `/novelView/${titleId}/${panel.sentenceId}`
-            : '#'
-        }
+        sx={novelCardBoxStyle}
         onClick={handleCardClick}
-        sx={{ ...novelCardBoxStyle, textDecoration: 'none' }}
       >
         <SentenceCard
           sentence={displaySentence}

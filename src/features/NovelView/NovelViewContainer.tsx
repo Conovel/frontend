@@ -366,6 +366,23 @@ export const NovelViewContainer = () => {
     [navigate, titleId],
   );
   // MainPanelのナビゲーション処理（コンテンツ内での移動）
+  const handleChildrenClick = useCallback(
+    (clickedSentence: any) => {
+      if (!titleId) {
+        console.error('Error: titleIdがありません');
+        setMainPanel([]);
+        setParentPanel([]);
+        setChildrenPanel([]);
+        setParallelSentences([]);
+        setOriginalMainSentence(null);
+        setHasMainPanelEvaluation(false);
+        return;
+      }
+      navigate(`/novelView/${titleId}/${clickedSentence.sentenceId}`);
+    },
+    [navigate, titleId],
+  );
+
   const handleMainPanelNavigate = useCallback((_direction: 'prev' | 'next') => {
     // MainPanel内でのナビゲーションは現在のsentenceの前後の関連投稿を表示
     // 実装は今後の拡張として残す
@@ -407,7 +424,7 @@ export const NovelViewContainer = () => {
       onEvaluationSuccess={handleEvaluationSuccess}
       onPostSuccess={handleRefresh}
       getSentenceEvaluation={getSentenceEvaluation}
-      titleId={titleId}
+      onChildrenClick={handleChildrenClick}
     />
   );
 };
