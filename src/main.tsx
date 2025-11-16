@@ -4,14 +4,11 @@ import App from './App';
 import './index.css';
 import { BrowserRouter } from 'react-router';
 
-async function enableMocking() {
-  // ここをコメントアウトするとMSWが無効になる
-  if (!import.meta.env.PROD) {
-    const { worker } = await import('../src/mock/browser');
-    worker.start();
-  }
-  return Promise.resolve();
-}
+const enableMocking = async () => {
+  if (import.meta.env.PROD) return;
+  const { worker } = await import('../src/mock/browser');
+  await worker.start();
+};
 
 enableMocking().then(() => {
   createRoot(document.getElementById('root') as HTMLElement).render(
