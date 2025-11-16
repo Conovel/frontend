@@ -76,13 +76,24 @@ export const NovelViewContainer = () => {
       }
       const data = response.data;
 
-      if (data.main) setMainPanel([convertToSentence(data.main)]);
-      if (data.parent) setParentPanel([convertToSentence(data.parent)]);
-      else setParentPanel([]);
-      if (data.parallels && data.parallels.length > 0) setParallelSentences(data.parallels.map(convertToSentence));
-      else setParallelSentences([]);
-      if (data.children && data.children.length > 0) setChildrenPanel(data.children.map(convertToSentence));
-      else setChildrenPanel([]);
+      if (data.main) {
+        setMainPanel([convertToSentence(data.main)]);
+      }
+      if (data.parent) {
+        setParentPanel([convertToSentence(data.parent)]);
+      } else {
+        setParentPanel([]);
+      }
+      if (data.parallels && data.parallels.length > 0) {
+        setParallelSentences(data.parallels.map(convertToSentence));
+      } else {
+        setParallelSentences([]);
+      }
+      if (data.children && data.children.length > 0) {
+        setChildrenPanel(data.children.map(convertToSentence));
+      } else {
+        setChildrenPanel([]);
+      }
 
       if (data.main) {
         const currentMainSentence = convertToSentence(data.main);
