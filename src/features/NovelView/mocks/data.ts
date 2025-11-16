@@ -476,12 +476,27 @@ export const getParallelSentences = (sentenceId: number): Sentence[] => {
     .map((id) => sentencesData[id])
     .filter(Boolean);
 
+  const enrichSentenceWithEvaluation = (sentence: Sentence): Sentence => {
+    const currentUserId = getCurrentUserId();
+    const userKey = getUserEvaluationKey(
+      currentUserId,
+      sentence.sentenceId || 0,
+    );
+    const userEvaluation = userEvaluations[userKey] || null;
+    return {
+      ...sentence,
+      userEvaluation: userEvaluation as 'good' | 'stay' | 'bad' | null,
+    };
+  };
+
   // パラレル投稿の順序を保持し、存在しないIDを除外
-  return parallelSentencesList.sort((a, b) => {
-    const aIndex = parallelIds.indexOf(a.sentenceId || 0);
-    const bIndex = parallelIds.indexOf(b.sentenceId || 0);
-    return aIndex - bIndex;
-  });
+  return parallelSentencesList
+    .map(enrichSentenceWithEvaluation)
+    .sort((a, b) => {
+      const aIndex = parallelIds.indexOf(a.sentenceId || 0);
+      const bIndex = parallelIds.indexOf(b.sentenceId || 0);
+      return aIndex - bIndex;
+    });
 };
 
 // センテンスの評価を更新する関数
@@ -578,14 +593,34 @@ export const buildInitialData = (sentenceId: number) => {
   const relations = sentenceRelations[sentenceId];
   if (!relations) return null;
 
+  const enrichSentenceWithEvaluation = (sentence: Sentence): Sentence => {
+    const currentUserId = getCurrentUserId();
+    const userKey = getUserEvaluationKey(
+      currentUserId,
+      sentence.sentenceId || 0,
+    );
+    const userEvaluation = userEvaluations[userKey] || null;
+    return {
+      ...sentence,
+      userEvaluation: userEvaluation as 'good' | 'stay' | 'bad' | null,
+    };
+  };
+
   // メインパネルには現在のセンテンスを表示
-  const main = [sentencesData[sentenceId]];
+  const mainSentence = sentencesData[sentenceId];
+  const main = mainSentence ? [enrichSentenceWithEvaluation(mainSentence)] : [];
 
   // 親パネルには親センテンスを表示
-  const parent = relations.parent.map((id: number) => sentencesData[id]);
+  const parent = relations.parent
+    .map((id: number) => sentencesData[id])
+    .filter((sentence): sentence is Sentence => sentence !== undefined)
+    .map(enrichSentenceWithEvaluation);
 
   // 子パネルには子センテンスを表示
-  const children = relations.children.map((id: number) => sentencesData[id]);
+  const children = relations.children
+    .map((id: number) => sentencesData[id])
+    .filter((sentence): sentence is Sentence => sentence !== undefined)
+    .map(enrichSentenceWithEvaluation);
 
   return {
     main,
