@@ -48,11 +48,8 @@ const SentenceCard = ({
 
   // 評価状態を取得
   useEffect(() => {
-    if (sentence.userEvaluation) {
-      setIsGoodEvaluated(sentence.userEvaluation === 'good');
-      setIsStayEvaluated(sentence.userEvaluation === 'stay');
-      return;
-    }
+    setIsGoodEvaluated(sentence.userEvaluation === 'good');
+    setIsStayEvaluated(sentence.userEvaluation === 'stay');
   }, [sentence.sentenceId, getSentenceEvaluation]);
 
   const evaluationsApi = new EvaluationsApi(axiosConfig);
