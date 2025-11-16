@@ -5,6 +5,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import SentenceCard from '../../components/novelCard/SentenceCard';
 import type { Sentence } from '../../api/api';
+import { Link as RouterLink } from 'react-router';
 import { EditPost } from '../EditPost';
 import MosaicOverlay from '../../components/mosaicOverlay/MosaicOverlay';
 
@@ -54,7 +55,7 @@ interface ChildrenPanelProps {
     isGoodEvaluated: boolean;
     isStayEvaluated: boolean;
   }>;
-  onChildrenClick: (clickedSentence: Sentence) => void;
+  titleId?: string;
 }
 
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
@@ -62,7 +63,7 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   mainPanel,
   hasMainPanelEvaluation,
   getSentenceEvaluation,
-  onChildrenClick,
+  titleId,
 }) => {
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -108,12 +109,16 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   const renderNovelCard = (panel: Sentence) => {
     const isExpanded = expandedCards.has(panel.sentenceId || 0);
 
-    const handleCardClick = () => {
+    const handleCardClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
       if (!ensureEvaluated()) {
+        event.preventDefault();
         return;
       }
-      // 評価済みの場合のみ、クリックされた投稿をメインパネルとして表示する
-      onChildrenClick(panel);
+      if (!titleId || !panel.sentenceId) {
+        event.preventDefault();
+        console.error('titleId or sentenceId is missing for navigation');
+        return;
+      }
     };
 
     // Create a modified sentence object with shortened text if not expanded
@@ -128,12 +133,21 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         };
 
     return (
-      <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
+      <Box
+        key={panel.sentenceId}
+        component={RouterLink}
+        to={
+          titleId && panel.sentenceId
+            ? `/novelView/${titleId}/${panel.sentenceId}`
+            : '#'
+        }
+        onClick={handleCardClick}
+        sx={{ ...novelCardBoxStyle, textDecoration: 'none' }}
+      >
         <SentenceCard
           sentence={displaySentence}
           canEvaluate={hasMainPanelEvaluation}
           getSentenceEvaluation={getSentenceEvaluation}
-          onClick={handleCardClick}
         />
       </Box>
     );

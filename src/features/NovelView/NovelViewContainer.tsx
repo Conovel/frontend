@@ -198,6 +198,7 @@ export const NovelViewContainer = () => {
   const handleEvaluationSuccess = useCallback(() => {
     const currentMainSentenceId = mainPanel[0]?.sentenceId;
     markSentenceAsEvaluated(currentMainSentenceId);
+    setHasMainPanelEvaluation(true);
     if (currentMainSentenceId) {
       fetchSentenceData(currentMainSentenceId);
     }
@@ -364,23 +365,6 @@ export const NovelViewContainer = () => {
     },
     [navigate, titleId],
   );
-  const handleChildrenClick = useCallback(
-    (clickedSentence: any) => {
-      if (!titleId) {
-        console.error('Error: titleIdがありません');
-        setMainPanel([]);
-        setParentPanel([]);
-        setChildrenPanel([]);
-        setParallelSentences([]);
-        setOriginalMainSentence(null);
-        setHasMainPanelEvaluation(false);
-        return;
-      }
-      navigate(`/novelView/${titleId}/${clickedSentence.sentenceId}`);
-    },
-    [navigate, titleId],
-  );
-
   // MainPanelのナビゲーション処理（コンテンツ内での移動）
   const handleMainPanelNavigate = useCallback((_direction: 'prev' | 'next') => {
     // MainPanel内でのナビゲーションは現在のsentenceの前後の関連投稿を表示
@@ -415,7 +399,6 @@ export const NovelViewContainer = () => {
       onPrevParallel={handlePrevParallel}
       hasParallels={hasParallels}
       onParentClick={handleParentClick}
-      onChildrenClick={handleChildrenClick}
       onMainPanelNavigate={handleMainPanelNavigate}
       onBackToOriginal={handleBackToOriginal}
       isInParallelMode={isInParallelMode}
@@ -424,6 +407,7 @@ export const NovelViewContainer = () => {
       onEvaluationSuccess={handleEvaluationSuccess}
       onPostSuccess={handleRefresh}
       getSentenceEvaluation={getSentenceEvaluation}
+      titleId={titleId}
     />
   );
 };

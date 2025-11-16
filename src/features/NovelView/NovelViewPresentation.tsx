@@ -17,7 +17,6 @@ interface NovelViewPresentationProps {
   onPrevParallel: () => void;
   hasParallels: boolean;
   onParentClick: (clickedSentence: Sentence) => void;
-  onChildrenClick: (clickedSentence: Sentence) => void;
   onMainPanelNavigate: (direction: 'prev' | 'next') => void;
   onBackToOriginal: () => void;
   isInParallelMode: boolean;
@@ -31,6 +30,7 @@ interface NovelViewPresentationProps {
     isGoodEvaluated: boolean;
     isStayEvaluated: boolean;
   }>;
+  titleId?: string;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -44,7 +44,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   onPrevParallel,
   hasParallels,
   onParentClick,
-  onChildrenClick,
   onMainPanelNavigate,
   onBackToOriginal,
   isInParallelMode,
@@ -53,6 +52,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   onEvaluationSuccess,
   onPostSuccess,
   getSentenceEvaluation,
+  titleId,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -158,7 +158,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         mainPanel={mainPanel}
         hasMainPanelEvaluation={hasMainPanelEvaluation}
         getSentenceEvaluation={getSentenceEvaluation}
-        onChildrenClick={onChildrenClick}
+        titleId={titleId}
       />
     </Box>
   );
