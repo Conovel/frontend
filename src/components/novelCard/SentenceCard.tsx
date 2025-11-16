@@ -48,8 +48,11 @@ const SentenceCard = ({
 
   // 評価状態を取得
   useEffect(() => {
-    setIsGoodEvaluated(sentence.userEvaluation === 'good');
-    setIsStayEvaluated(sentence.userEvaluation === 'stay');
+    if (sentence.userEvaluation) {
+      setIsGoodEvaluated(sentence.userEvaluation === 'good');
+      setIsStayEvaluated(sentence.userEvaluation === 'stay');
+      return;
+    }
   }, [sentence.sentenceId, getSentenceEvaluation]);
 
   const evaluationsApi = new EvaluationsApi(axiosConfig);
@@ -78,14 +81,15 @@ const SentenceCard = ({
       };
       const response = await evaluationsApi.evaluateSentence(evaluateSentence);
       if (currentRequestId === requestIdRef.current) {
-        const { evaluationGoodCount, evaluationStayCount, userEvaluation } =
+        const { evaluationGoodCount, evaluationStayCount } =
           response?.data || {};
         if (typeof evaluationGoodCount === 'number')
           setLocalGoodCount(evaluationGoodCount);
         if (typeof evaluationStayCount === 'number')
           setLocalStayCount(evaluationStayCount);
-        setIsGoodEvaluated(userEvaluation === 'good');
-        setIsStayEvaluated(userEvaluation === 'stay');
+        // レスポンスにはuserEvaluationが含まれないため、送信した評価タイプで状態を更新
+        setIsGoodEvaluated(evaluationType === 'good');
+        setIsStayEvaluated(evaluationType === 'stay');
         if (onEvaluationSuccess) onEvaluationSuccess();
       }
     } catch (error) {
@@ -159,6 +163,10 @@ const SentenceCard = ({
           justifyContent: 'flex-start',
           marginTop: '0.1vh',
           backgroundColor: 'transparent',
+        }}
+        onClick={(e) => {
+          // 評価ボタンのクリックイベントが親に伝播しないようにする
+          e.stopPropagation();
         }}
       >
         <GoodButton
