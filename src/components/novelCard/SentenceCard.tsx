@@ -118,7 +118,7 @@ const SentenceCard = ({
         cursor: !canEvaluate ? 'not-allowed' : 'pointer',
       }}
       onClick={() => {
-        if (canEvaluate && onClick) {
+        if (onClick) {
           onClick();
         }
       }}
