@@ -17,6 +17,7 @@ interface NovelViewPresentationProps {
   onPrevParallel: () => void;
   hasParallels: boolean;
   onParentClick: (clickedSentence: Sentence) => void;
+  onChildrenClick: (clickedSentence: Sentence) => void;
   onMainPanelNavigate: (direction: 'prev' | 'next') => void;
   onBackToOriginal: () => void;
   isInParallelMode: boolean;
@@ -43,6 +44,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   onPrevParallel,
   hasParallels,
   onParentClick,
+  onChildrenClick,
   onMainPanelNavigate,
   onBackToOriginal,
   isInParallelMode,
@@ -156,6 +158,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         mainPanel={mainPanel}
         hasMainPanelEvaluation={hasMainPanelEvaluation}
         getSentenceEvaluation={getSentenceEvaluation}
+        onChildrenClick={onChildrenClick}
       />
     </Box>
   );
