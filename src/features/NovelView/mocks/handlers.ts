@@ -9,6 +9,7 @@ import {
   sentencesData,
   getMockContainerData,
   getParallelSentences,
+  updateSentenceEvaluation,
 } from './data';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -84,19 +85,28 @@ export const novelViewHandlers = [
   http.post(`${apiBaseUrl}/evaluations`, async ({ request }) => {
     const data = (await request.json()) as EvaluateSentence;
 
-    // 評価を処理（実際の実装ではデータベースに保存）
-    const mockEvaluation = {
-      evaluationId: Math.floor(Math.random() * 10000) + 1000,
-      sentenceId: data.sentenceId,
-      evaluation: data.evaluation,
-      userId: mockUser.userId,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+    // 評価を処理（センテンスデータの評価カウントを更新）
+    const updatedSentence = updateSentenceEvaluation(
+      data.sentenceId,
+      data.evaluation as 'good' | 'stay',
+      true,
+    );
+
+    if (!updatedSentence) {
+      return HttpResponse.json(
+        { error: { code: 422, message: '指定された投稿が存在しません。' } },
+        { status: 422 },
+      );
+    }
+
+    // API仕様に合わせたレスポンス形式
+    const response = {
+      sentenceId: updatedSentence.sentenceId,
+      evaluationGoodCount: updatedSentence.evaluationGoodCount || 0,
+      evaluationStayCount: updatedSentence.evaluationStayCount || 0,
     };
 
-    // 評価後にchildrenデータを取得できるようにする
-
-    return HttpResponse.json(mockEvaluation, { status: 201 });
+    return HttpResponse.json(response, { status: 201 });
   }),
 
   // ユーザー情報取得APIハンドラー

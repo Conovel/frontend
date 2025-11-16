@@ -39,6 +39,9 @@ export const NovelViewContainer = () => {
   // MainPanelの評価状態を追跡
   const [hasMainPanelEvaluation, setHasMainPanelEvaluation] = useState(false);
 
+  // 評価済みのセンテンスIDを追跡するSet
+  const evaluatedSentenceIdsRef = useRef<Set<number>>(new Set());
+
   // データの状態管理
   const [mainPanel, setMainPanel] = useState<Sentence[]>([]);
   const [parentPanel, setParentPanel] = useState<Sentence[]>([]);
@@ -97,7 +100,39 @@ export const NovelViewContainer = () => {
           currentParallelIndexRef.current =
             currentIndex >= 0 ? currentIndex : -1;
         }
-        setHasMainPanelEvaluation(false);
+
+        // 評価済みのセンテンスIDを記録（APIから取得したuserEvaluationを確認）
+        if (data.main.userEvaluation && data.main.sentenceId) {
+          evaluatedSentenceIdsRef.current.add(data.main.sentenceId);
+        }
+        if (data.parent?.userEvaluation && data.parent.sentenceId) {
+          evaluatedSentenceIdsRef.current.add(data.parent.sentenceId);
+        }
+        if (data.parallels) {
+          data.parallels.forEach((p: any) => {
+            if (p.userEvaluation && p.sentenceId) {
+              evaluatedSentenceIdsRef.current.add(p.sentenceId);
+            }
+          });
+        }
+        if (data.children) {
+          data.children.forEach((c: any) => {
+            if (c.userEvaluation && c.sentenceId) {
+              evaluatedSentenceIdsRef.current.add(c.sentenceId);
+            }
+          });
+        }
+
+        // 現在のMainPanelのセンテンスIDが評価済みかどうかを確認
+        const currentMainSentenceId = currentMainSentence.sentenceId;
+        if (
+          currentMainSentenceId &&
+          evaluatedSentenceIdsRef.current.has(currentMainSentenceId)
+        ) {
+          setHasMainPanelEvaluation(true);
+        } else {
+          setHasMainPanelEvaluation(false);
+        }
       }
     } catch (error) {
       console.error('Error fetching sentence data:', error);
@@ -123,8 +158,13 @@ export const NovelViewContainer = () => {
 
   // 評価成功時の処理
   const handleEvaluationSuccess = useCallback(() => {
+    // 現在のMainPanelのセンテンスIDを評価済みとして記録
+    const currentMainSentenceId = mainPanel[0]?.sentenceId;
+    if (currentMainSentenceId) {
+      evaluatedSentenceIdsRef.current.add(currentMainSentenceId);
+    }
     setHasMainPanelEvaluation(true);
-  }, []);
+  }, [mainPanel]);
 
   // センテンスの評価状態を取得する関数
   const getSentenceEvaluation = useCallback(async (sentenceId: number) => {
@@ -202,8 +242,16 @@ export const NovelViewContainer = () => {
       // 新しいmainパネルのchildrenデータを取得
       await updateChildrenPanelForMain(nextSentence.sentenceId || 0);
 
-      // 評価状態をリセット
-      setHasMainPanelEvaluation(false);
+      // 現在のMainPanelのセンテンスIDが評価済みかどうかを確認
+      const currentMainSentenceId = nextSentence.sentenceId;
+      if (
+        currentMainSentenceId &&
+        evaluatedSentenceIdsRef.current.has(currentMainSentenceId)
+      ) {
+        setHasMainPanelEvaluation(true);
+      } else {
+        setHasMainPanelEvaluation(false);
+      }
     } else if (
       parallelSentences.length > 0 &&
       currentParallelIndexRef.current === -1
@@ -216,8 +264,16 @@ export const NovelViewContainer = () => {
       // 新しいmainパネルのchildrenデータを取得
       await updateChildrenPanelForMain(firstSentence.sentenceId || 0);
 
-      // 評価状態をリセット
-      setHasMainPanelEvaluation(false);
+      // 現在のMainPanelのセンテンスIDが評価済みかどうかを確認
+      const currentMainSentenceId = firstSentence.sentenceId;
+      if (
+        currentMainSentenceId &&
+        evaluatedSentenceIdsRef.current.has(currentMainSentenceId)
+      ) {
+        setHasMainPanelEvaluation(true);
+      } else {
+        setHasMainPanelEvaluation(false);
+      }
     }
   }, [parallelSentences, updateChildrenPanelForMain]);
 
@@ -234,8 +290,16 @@ export const NovelViewContainer = () => {
             originalMainSentence.sentenceId || 0,
           );
 
-          // 評価状態をリセット
-          setHasMainPanelEvaluation(false);
+          // 現在のMainPanelのセンテンスIDが評価済みかどうかを確認
+          const currentMainSentenceId = originalMainSentence.sentenceId;
+          if (
+            currentMainSentenceId &&
+            evaluatedSentenceIdsRef.current.has(currentMainSentenceId)
+          ) {
+            setHasMainPanelEvaluation(true);
+          } else {
+            setHasMainPanelEvaluation(false);
+          }
         }
       } else {
         // それ以外の場合は前のパラレル投稿に移動
@@ -249,8 +313,16 @@ export const NovelViewContainer = () => {
         // 新しいmainパネルのchildrenデータを取得
         await updateChildrenPanelForMain(prevSentence.sentenceId || 0);
 
-        // 評価状態をリセット
-        setHasMainPanelEvaluation(false);
+        // 現在のMainPanelのセンテンスIDが評価済みかどうかを確認
+        const currentMainSentenceId = prevSentence.sentenceId;
+        if (
+          currentMainSentenceId &&
+          evaluatedSentenceIdsRef.current.has(currentMainSentenceId)
+        ) {
+          setHasMainPanelEvaluation(true);
+        } else {
+          setHasMainPanelEvaluation(false);
+        }
       }
     }
   }, [parallelSentences, originalMainSentence, updateChildrenPanelForMain]);
@@ -267,8 +339,16 @@ export const NovelViewContainer = () => {
       // 元のmainパネルのchildrenデータを取得
       await updateChildrenPanelForMain(originalMainSentence.sentenceId || 0);
 
-      // 評価状態をリセット
-      setHasMainPanelEvaluation(false);
+      // 現在のMainPanelのセンテンスIDが評価済みかどうかを確認
+      const currentMainSentenceId = originalMainSentence.sentenceId;
+      if (
+        currentMainSentenceId &&
+        evaluatedSentenceIdsRef.current.has(currentMainSentenceId)
+      ) {
+        setHasMainPanelEvaluation(true);
+      } else {
+        setHasMainPanelEvaluation(false);
+      }
     }
   }, [originalMainSentence, updateChildrenPanelForMain]);
 

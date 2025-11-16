@@ -81,14 +81,15 @@ const SentenceCard = ({
       };
       const response = await evaluationsApi.evaluateSentence(evaluateSentence);
       if (currentRequestId === requestIdRef.current) {
-        const { evaluationGoodCount, evaluationStayCount, userEvaluation } =
+        const { evaluationGoodCount, evaluationStayCount } =
           response?.data || {};
         if (typeof evaluationGoodCount === 'number')
           setLocalGoodCount(evaluationGoodCount);
         if (typeof evaluationStayCount === 'number')
           setLocalStayCount(evaluationStayCount);
-        setIsGoodEvaluated(userEvaluation === 'good');
-        setIsStayEvaluated(userEvaluation === 'stay');
+        // 評価タイプに基づいて状態を更新（APIレスポンスにuserEvaluationが含まれていないため）
+        setIsGoodEvaluated(evaluationType === 'good');
+        setIsStayEvaluated(evaluationType === 'stay');
         if (onEvaluationSuccess) onEvaluationSuccess();
       }
     } catch (error) {
