@@ -2,11 +2,12 @@
 
 ## Properties
 
-| Name                    | Type       | Description        | Notes                             |
-| ----------------------- | ---------- | ------------------ | --------------------------------- |
-| **sentenceId**          | **number** | 評価対象の投稿のID | [optional] [default to undefined] |
-| **evaluationGoodCount** | **number** | Good評価の数       | [optional] [default to undefined] |
-| **evaluationStayCount** | **number** | Stay評価の数       | [optional] [default to undefined] |
+| Name                    | Type       | Description                            | Notes                             |
+| ----------------------- | ---------- | -------------------------------------- | --------------------------------- |
+| **sentenceId**          | **number** | 評価対象の投稿のID                     | [optional] [default to undefined] |
+| **evaluationGoodCount** | **number** | Good評価の数                           | [optional] [default to undefined] |
+| **evaluationStayCount** | **number** | Stay評価の数                           | [optional] [default to undefined] |
+| **userEvaluation**      | **string** | 投稿に対するログインユーザーの評価状態 | [optional] [default to undefined] |
 
 ## Example
 
@@ -17,6 +18,7 @@ const instance: ViewEvaluation = {
   sentenceId,
   evaluationGoodCount,
   evaluationStayCount,
+  userEvaluation,
 };
 ```
 

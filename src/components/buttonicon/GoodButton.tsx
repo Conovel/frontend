@@ -1,14 +1,14 @@
 import React from 'react';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 
-interface ThumbUpButtonProps {
+interface GoodButtonProps {
   evaluationGoodCount: number;
   isEvaluated: boolean;
   disabled?: boolean;
   onClick: () => void;
 }
 
-const ThumbUpButton: React.FC<ThumbUpButtonProps> = ({
+const GoodButton: React.FC<GoodButtonProps> = ({
   evaluationGoodCount,
   isEvaluated,
   disabled = false,
@@ -31,4 +31,4 @@ const ThumbUpButton: React.FC<ThumbUpButtonProps> = ({
   );
 };
 
-export default ThumbUpButton;
+export default GoodButton;

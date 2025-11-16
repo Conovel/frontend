@@ -26,6 +26,7 @@ export const novelInfoHandlers = [
       createdAt: '2024-01-01T00:00:00Z',
       authorUserId: Number(titleId),
       evaluationGoodCount: 50 * Number(titleId),
+      firstSentenceId: 1,
     };
 
     return HttpResponse.json(response);

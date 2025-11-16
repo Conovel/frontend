@@ -11,6 +11,7 @@
 | **profileIconImage**    | **string** | 投稿ユーザーアイコン画像のurl                                | [optional] [default to undefined] |
 | **evaluationGoodCount** | **number** | 投稿に対するGood評価の数                                     | [optional] [default to undefined] |
 | **evaluationStayCount** | **number** | 投稿に対するStay評価の数                                     | [optional] [default to undefined] |
+| **userEvaluation**      | **string** | 投稿に対するログインユーザーの評価状態                       | [optional] [default to undefined] |
 | **createdAt**           | **string** | 投稿日時                                                     | [optional] [default to undefined] |
 | **updatedAt**           | **string** | 修正日時                                                     | [optional] [default to undefined] |
 
@@ -27,6 +28,7 @@ const instance: Sentence = {
   profileIconImage,
   evaluationGoodCount,
   evaluationStayCount,
+  userEvaluation,
   createdAt,
   updatedAt,
 };

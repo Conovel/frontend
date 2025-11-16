@@ -257,6 +257,12 @@ export interface NovelDetail {
    * @type {string}
    * @memberof NovelDetail
    */
+  /**
+   * 小説の最初の投稿のid
+   * @type {number}
+   * @memberof NovelDetail
+   */
+  firstSentenceId?: number;
   overview?: string;
 }
 /**
@@ -418,6 +424,12 @@ export interface Sentence {
    */
   evaluationStayCount?: number;
   /**
+   * 投稿に対するログインユーザーの評価状態
+   * @type {string}
+   * @memberof Sentence
+   */
+  userEvaluation?: SentenceUserEvaluationEnum | null;
+  /**
    * 投稿日時
    * @type {string}
    * @memberof Sentence
@@ -430,6 +442,16 @@ export interface Sentence {
    */
   updatedAt?: string;
 }
+
+export const SentenceUserEvaluationEnum = {
+  Good: 'good',
+  Bad: 'bad',
+  Stay: 'stay',
+} as const;
+
+export type SentenceUserEvaluationEnum =
+  (typeof SentenceUserEvaluationEnum)[keyof typeof SentenceUserEvaluationEnum];
+
 /**
  *
  * @export
@@ -552,7 +574,23 @@ export interface ViewEvaluation {
    * @memberof ViewEvaluation
    */
   evaluationStayCount?: number;
+  /**
+   * 投稿に対するログインユーザーの評価状態
+   * @type {string}
+   * @memberof ViewEvaluation
+   */
+  userEvaluation?: ViewEvaluationUserEvaluationEnum | null;
 }
+
+export const ViewEvaluationUserEvaluationEnum = {
+  Good: 'good',
+  Bad: 'bad',
+  Stay: 'stay',
+} as const;
+
+export type ViewEvaluationUserEvaluationEnum =
+  (typeof ViewEvaluationUserEvaluationEnum)[keyof typeof ViewEvaluationUserEvaluationEnum];
+
 /**
  *
  * @export

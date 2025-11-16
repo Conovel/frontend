@@ -5,14 +5,19 @@ import {
   Sentence,
   ViewMeUser,
 } from '../../../api/api';
-import { initialSampleSentence } from './data';
+import {
+  sentencesData,
+  getMockContainerData,
+  getParallelSentences,
+} from './data';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 // サーバー側で一元管理する文データ
-let sentences: Sentence[] = [{ ...initialSampleSentence }];
+// 初期値は持たず、外部から得るsentenceIdでのみデータを返す
+let sentences: Sentence[] = [];
 
-let nextSentenceId = (initialSampleSentence.sentenceId ?? 0) + 1;
+let nextSentenceId = Math.max(...Object.keys(sentencesData).map(Number)) + 1;
 
 // モックユーザー情報
 const mockUser: ViewMeUser = {
@@ -50,42 +55,29 @@ export const novelViewHandlers = [
   // 文を取得するハンドラー（GET sentenceId指定）
   http.get(`${apiBaseUrl}/sentences/:sentenceId`, ({ params }) => {
     const { sentenceId } = params;
-    const found = sentences.find((s) => s.sentenceId === Number(sentenceId));
-
-    if (found) {
-      // childrenデータを追加（モックデータ）
-      const response = {
-        ...found,
-        children: [
-          {
-            sentenceId: (found.sentenceId || 0) + 100,
-            sentence:
-              'これは子投稿のサンプルテキストです。評価後に表示されます。',
-            sentenceUserId: 2,
-            sentencePenName: '子投稿ユーザー',
-            profileIconImage: '/path/to/child-avatar.jpg',
-            evaluationGoodCount: 3,
-            evaluationStayCount: 1,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          },
-          {
-            sentenceId: (found.sentenceId || 0) + 101,
-            sentence: 'もう一つの子投稿です。複数の続きを読むことができます。',
-            sentenceUserId: 3,
-            sentencePenName: '別のユーザー',
-            profileIconImage: '/path/to/another-avatar.jpg',
-            evaluationGoodCount: 5,
-            evaluationStayCount: 2,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          },
-        ],
-      };
-      return HttpResponse.json(response);
+    if (!sentenceId) {
+      return new HttpResponse('sentenceId is required', { status: 400 });
     }
-
-    return HttpResponse.json(sentences[0]);
+    const id = Number(sentenceId);
+    if (isNaN(id)) {
+      return new HttpResponse('sentenceId must be a number', { status: 400 });
+    }
+    // main, parent, children, parallelsを取得（mainがなければ404）
+    const container = getMockContainerData(id);
+    if (!container.main || !container.main[0]) {
+      return new HttpResponse('Not found', { status: 404 });
+    }
+    const main = container.main[0];
+    const parent = container.parent[0] || null;
+    const children = container.children || [];
+    const parallels = getParallelSentences(id) || [];
+    const response = {
+      main,
+      parent,
+      children,
+      parallels,
+    };
+    return HttpResponse.json(response);
   }),
 
   // 評価APIハンドラー
