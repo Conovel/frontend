@@ -127,15 +127,12 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
         };
 
     return (
-      <Box
-        key={panel.sentenceId}
-        sx={novelCardBoxStyle}
-        onClick={handleCardClick}
-      >
+      <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
         <SentenceCard
           sentence={displaySentence}
           canEvaluate={hasMainPanelEvaluation}
           getSentenceEvaluation={getSentenceEvaluation}
+          onClick={handleCardClick}
         />
       </Box>
     );

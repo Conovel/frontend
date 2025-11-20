@@ -36,6 +36,7 @@ coverage/
 
 # AI assistant settings
 .claude/
+.serena/
 
 # Editor generated files
 .vscode/settings.json

@@ -6,8 +6,8 @@ import { BrowserRouter } from 'react-router';
 
 const enableMocking = async () => {
   if (import.meta.env.PROD) return;
-  const { worker } = await import('../src/mock/browser');
-  await worker.start();
+  // const { worker } = await import('../src/mock/browser');
+  // await worker.start();
 };
 
 enableMocking().then(() => {
