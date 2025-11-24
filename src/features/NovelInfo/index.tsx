@@ -50,12 +50,22 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
     fetchNovelDetail();
   }, [titleId]);
 
+  const isReadMoreDisabled =
+    loading || hasError || !novel?.titleId || !novel?.firstSentenceId;
+
   const handleReadMore = () => {
-    if (!novel || novel.titleId == null || novel.firstSentenceId == null) {
-      console.error('小説情報が正しく取得できていません');
+    if (isReadMoreDisabled || !novel) {
+      console.error('小説情報が正しく取得できていません', {
+        titleId: novel?.titleId,
+        firstSentenceId: novel?.firstSentenceId,
+        loading,
+        hasError,
+      });
       setHasError(true);
       return;
     }
+    // モーダルを閉じてから遷移することでフォーカス警告を避ける
+    onClose();
     navigate('/novelView/' + novel.titleId + '/' + novel.firstSentenceId);
   };
 
@@ -219,6 +229,7 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
                     color: 'black',
                   },
                 }}
+                disabled={isReadMoreDisabled}
                 onClick={handleReadMore}
               >
                 本文へ

@@ -205,10 +205,18 @@ export const NovelViewContainer = () => {
   }, [fetchSentenceData, mainPanel, markSentenceAsEvaluated]);
 
   useEffect(() => {
-    const currentMainSentenceId = mainPanel[0]?.sentenceId;
+    const currentMainSentence = mainPanel[0];
+    if (!currentMainSentence) {
+      setHasMainPanelEvaluation(false);
+      return;
+    }
+    if (currentMainSentence.userEvaluation) {
+      setHasMainPanelEvaluation(true);
+      return;
+    }
     if (
-      currentMainSentenceId &&
-      evaluatedSentenceIdsRef.current.has(currentMainSentenceId)
+      currentMainSentence.sentenceId &&
+      evaluatedSentenceIdsRef.current.has(currentMainSentence.sentenceId)
     ) {
       setHasMainPanelEvaluation(true);
     } else {
@@ -378,7 +386,20 @@ export const NovelViewContainer = () => {
         setHasMainPanelEvaluation(false);
         return;
       }
+      if (clickedSentence?.sentenceId) {
+        // 即座にメインエリアへ反映してからルーティング
+        currentSentenceIdRef.current = clickedSentence.sentenceId;
+        currentParallelIndexRef.current = -1;
+        setMainPanel([clickedSentence]);
+        setHasMainPanelEvaluation(
+          Boolean(clickedSentence.userEvaluation) ||
+            evaluatedSentenceIdsRef.current.has(clickedSentence.sentenceId),
+        );
+      }
       navigate(`/novelView/${titleId}/${clickedSentence.sentenceId}`);
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     },
     [navigate, titleId],
   );

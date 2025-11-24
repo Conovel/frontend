@@ -30,6 +30,9 @@ dist-ssr
 *.d.ts
 *.tsbuildinfo
 
+# MSW generated files
+public/mockServiceWorker.js
+
 # Coverage reports
 coverage/
 *.lcov

@@ -83,7 +83,14 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
 
       {/* Parent Panel */}
       {parentPanel.length > 0 && (
-        <Box sx={{ mb: 4, width: '100%', maxWidth: '600px' }}>
+        <Box
+          sx={{
+            mb: 4,
+            width: { xs: '90vw', sm: '82vw', md: '75vw' },
+            maxWidth: '720px',
+            margin: '0 auto',
+          }}
+        >
           {parentPanel.slice(-1).map((novel, index) => {
             return (
               <Box key={index} sx={{ mb: 2 }}>

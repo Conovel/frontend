@@ -4,8 +4,13 @@ import App from './App';
 import './index.css';
 import { BrowserRouter } from 'react-router';
 
+// MSWを完全に無効化（コメントアウト）
 const enableMocking = async () => {
-  if (import.meta.env.PROD) return;
+  // MSWを使用しない
+  return;
+
+  // 以下はMSWを有効にする場合のコード（現在は無効）
+  // if (import.meta.env.PROD) return;
   // const { worker } = await import('../src/mock/browser');
   // await worker.start();
 };

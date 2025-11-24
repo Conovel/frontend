@@ -14,6 +14,7 @@ interface SentenceCardProps {
   canEvaluate?: boolean;
   onClick?: () => void;
   onEvaluationSuccess?: () => void;
+  isInteractionDisabled?: boolean;
   getSentenceEvaluation?: (sentenceId: number) => Promise<{
     goodCount: number;
     stayCount: number;
@@ -27,7 +28,8 @@ const SentenceCard = ({
   canEvaluate = true,
   onClick,
   onEvaluationSuccess,
-  getSentenceEvaluation,
+  isInteractionDisabled = false,
+  getSentenceEvaluation: _getSentenceEvaluation,
 }: SentenceCardProps) => {
   const [localGoodCount, setLocalGoodCount] = useState(
     sentence.evaluationGoodCount || 0,
@@ -42,22 +44,35 @@ const SentenceCard = ({
   const avatarText = displayName.trim().charAt(0) || 'U';
   const avatarSrc = sentence.profileIconImage?.trim() || undefined;
 
-  const busyRef = useRef(false); // 再入防止
+  const busyRef = useRef(false); // prevent duplicate submissions
   const abortRef = useRef<AbortController | null>(null);
-  const requestIdRef = useRef<number>(0); // リクエストIDで最新のリクエストのみ処理
+  const requestIdRef = useRef<number>(0); // track latest evaluation request
 
-  // 評価状態を取得
   useEffect(() => {
-    if (sentence.userEvaluation) {
-      setIsGoodEvaluated(sentence.userEvaluation === 'good');
-      setIsStayEvaluated(sentence.userEvaluation === 'stay');
-      return;
+    setLocalGoodCount(sentence.evaluationGoodCount || 0);
+    setLocalStayCount(sentence.evaluationStayCount || 0);
+  }, [
+    sentence.sentenceId,
+    sentence.evaluationGoodCount,
+    sentence.evaluationStayCount,
+  ]);
+
+  useEffect(() => {
+    if (sentence.userEvaluation === 'good') {
+      setIsGoodEvaluated(true);
+      setIsStayEvaluated(false);
+    } else if (sentence.userEvaluation === 'stay') {
+      setIsGoodEvaluated(false);
+      setIsStayEvaluated(true);
+    } else {
+      setIsGoodEvaluated(false);
+      setIsStayEvaluated(false);
     }
-  }, [sentence.sentenceId, getSentenceEvaluation]);
+  }, [sentence.sentenceId, sentence.userEvaluation]);
 
   const evaluationsApi = new EvaluationsApi(axiosConfig);
 
-  // Good/Stay評価ボタンのクリック処理
+  // Handle Good/Stay evaluation button clicks
   const handleEvaluationClick = async (
     evaluationType: 'good' | 'stay',
   ): Promise<void> => {
@@ -114,8 +129,14 @@ const SentenceCard = ({
         fontSize: '0.8rem',
         position: 'relative',
         backgroundColor: '#fff',
-        opacity: !canEvaluate ? 0.6 : 1,
-        cursor: !canEvaluate ? 'not-allowed' : 'pointer',
+        width: '100%',
+        boxSizing: 'border-box',
+        opacity: isInteractionDisabled ? 0.6 : 1,
+        cursor: onClick
+          ? isInteractionDisabled
+            ? 'not-allowed'
+            : 'pointer'
+          : 'default',
       }}
       onClick={() => {
         if (onClick) {
@@ -128,6 +149,7 @@ const SentenceCard = ({
           border: '1px solid #000',
           padding: '1vh 1vw',
           borderRadius: '1vh',
+          boxSizing: 'border-box',
         }}
       >
         {/* 小説のテキストを表示するテキストボックス */}

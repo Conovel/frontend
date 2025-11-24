@@ -3,7 +3,7 @@ import type { AxiosError } from 'axios';
 
 import { UsersApi, AuthApi, type ErrorResponse } from '../api/api';
 import { axiosConfig } from '../axiosConfig';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation, useSearchParams } from 'react-router';
 
 // 型定義
 export interface User {
@@ -45,6 +45,8 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const logout = async () => {
     try {
@@ -94,6 +96,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // 初期化時に現在のユーザー情報を取得
     fetchCurrentUserId();
   }, []);
+
+  useEffect(() => {
+    // OAuth認証後のリダイレクト時にURLパラメータを処理
+    const message = searchParams.get('message');
+    const messageLevel = searchParams.get('messageLevel');
+
+    if (message) {
+      console.log(`[Auth] ${messageLevel?.toUpperCase()}: ${message}`);
+      // メッセージ表示後、URLをクリーンアップ
+      setSearchParams({});
+    }
+  }, [searchParams, setSearchParams]);
+
+  useEffect(() => {
+    // /accountページへの遷移時にユーザー情報を再取得
+    if (location.pathname === '/account' && !currentUser) {
+      fetchCurrentUserId();
+    }
+  }, [location.pathname]);
 
   return (
     <AuthContext.Provider value={{ logout, currentUser, setCurrentUser }}>

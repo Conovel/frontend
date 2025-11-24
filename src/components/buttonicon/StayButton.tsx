@@ -15,7 +15,7 @@ const StayButton: React.FC<StayButtonProps> = ({
 }) => {
   return (
     <div
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
       style={{
         display: 'flex',
         alignItems: 'center',

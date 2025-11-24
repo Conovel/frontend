@@ -25,23 +25,30 @@ const mainBoxStyle = {
   backgroundColor: '#fff',
   justifyContent: 'space-between',
   margin: '2vh auto',
-  height: '25vh',
-  width: '70vw',
+  minHeight: '25vh',
+  width: { xs: '90vw', sm: '82vw', md: '75vw' },
+  maxWidth: '720px',
   alignItems: 'center',
   zIndex: 2,
+  borderRadius: '12px',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+  paddingTop: { xs: '8px', sm: '12px' },
+  paddingBottom: { xs: '8px', sm: '12px' },
 };
 
 const innerBoxStyle = {
   justifyContent: 'center',
   overflow: 'hidden',
   position: 'relative',
-  height: '100%',
+  width: '100%',
+  minHeight: '22vh',
 };
 
 const novelCardBoxStyle = {
   justifyContent: 'center',
   margin: '0 1vw',
-  width: 'calc(100% - 2vw)',
+  width: '100%',
+  position: 'relative' as const,
 };
 
 interface ChildrenPanelProps {
@@ -80,8 +87,11 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       const allCardIds = childrenPanel.map((panel) => panel.sentenceId || 0);
       setExpandedCards(new Set(allCardIds));
     } else {
-      // 評価が行われていない場合はすべてのカードを折りたたみ
-      setExpandedCards(new Set());
+      // 評価済みのカードのみ展開して閲覧できる状態にする
+      const unlockedIds = childrenPanel
+        .filter((panel) => Boolean(panel.userEvaluation))
+        .map((panel) => panel.sentenceId || 0);
+      setExpandedCards(new Set(unlockedIds));
     }
   }, [hasMainPanelEvaluation, childrenPanel]);
 
@@ -91,29 +101,25 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
     }
   };
 
-  const ensureEvaluated = () => {
-    if (!hasMainPanelEvaluation) {
-      setError(
-        'メインパネルで評価を行ってから、続きの投稿をクリックしてください',
-      );
-      return false;
-    }
-    return true;
-  };
-
   const handleCloseError = () => {
     setError(null);
   };
 
-  const renderNovelCard = (panel: Sentence) => {
-    const isExpanded = expandedCards.has(panel.sentenceId || 0);
+  const handleCardClick = (panel: Sentence) => {
+    const isUnlocked = hasMainPanelEvaluation || Boolean(panel.userEvaluation);
+    if (!isUnlocked) {
+      setError(
+        'メインパネルで評価を行ってから、続きの投稿をクリックしてください',
+      );
+      return;
+    }
+    onChildrenClick(panel);
+  };
 
-    const handleCardClick = () => {
-      if (!ensureEvaluated()) {
-        return;
-      }
-      onChildrenClick(panel);
-    };
+  const renderNovelCard = (panel: Sentence) => {
+    const sentenceId = panel.sentenceId || 0;
+    const isExpanded = expandedCards.has(sentenceId);
+    const isUnlocked = hasMainPanelEvaluation || Boolean(panel.userEvaluation);
 
     // Create a modified sentence object with shortened text if not expanded
     const displaySentence = isExpanded
@@ -130,10 +136,12 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
       <Box key={panel.sentenceId} sx={novelCardBoxStyle}>
         <SentenceCard
           sentence={displaySentence}
-          canEvaluate={hasMainPanelEvaluation}
+          canEvaluate={false}
+          isInteractionDisabled={!isUnlocked}
           getSentenceEvaluation={getSentenceEvaluation}
-          onClick={handleCardClick}
+          onClick={() => handleCardClick(panel)}
         />
+        <MosaicOverlay isVisible={!isUnlocked} />
       </Box>
     );
   };
@@ -150,8 +158,6 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   return (
     <Box sx={mainBoxStyle}>
       <Box sx={innerBoxStyle}>
-        {/* 評価が行われていない場合のモザイクオーバーレイ */}
-        <MosaicOverlay isVisible={!hasMainPanelEvaluation} />
         {showCarousel ? (
           <Carousel
             autoPlay={false}

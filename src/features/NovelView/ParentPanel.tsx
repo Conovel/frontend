@@ -26,9 +26,10 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
     <Box
       sx={{
         backgroundColor: 'transparent',
-        margin: '2vh auto',
-        height: '23vh',
-        width: '70vw',
+        margin: '1.5vh auto',
+        width: '100%',
+        maxWidth: '720px',
+        boxSizing: 'border-box',
         alignItems: 'center',
         zIndex: 2,
         display: 'flex',
@@ -40,6 +41,8 @@ const ParentPanel: React.FC<ParentPanelProps> = ({
         key={startIndex}
         sentence={parentPanel}
         onClick={onClick}
+        canEvaluate={false}
+        isInteractionDisabled={false}
         getSentenceEvaluation={getSentenceEvaluation}
       />
     </Box>
