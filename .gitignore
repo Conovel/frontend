@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+*.d.ts
+*.tsbuildinfo
 
 # Editor directories and files
 .vscode/*
@@ -25,3 +27,15 @@ dist-ssr
 
 # env
 .env
+
+# MSW (Mock Service Worker)
+public/mockServiceWorker.js
+
+# Claude Code local settings
+.claude/
+
+# Serena assistant workspace
+.serena/
+
+# Local contributor guide drafts
+AGENTS.md
