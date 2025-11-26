@@ -8,14 +8,17 @@ export const AccountDeleted = () => {
 
   useEffect(() => {
     if (countdown <= 0) {
-      navigate('/');
-      return;
+      // ナビゲーションを次のティックに遅延させて、レンダリング中に発生しないようにする
+      const navigationTimer = setTimeout(() => {
+        navigate('/');
+      }, 0);
+      return () => clearTimeout(navigationTimer);
     }
     const timer = setTimeout(() => {
       setCountdown((prev) => prev - 1);
     }, 1000);
     return () => clearTimeout(timer);
-  }, [countdown, navigate]);
+  }, [countdown]); // navigateは安定した関数なので依存配列から削除
 
   return (
     <Box
