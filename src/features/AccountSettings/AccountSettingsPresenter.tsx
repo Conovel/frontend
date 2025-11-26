@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
@@ -119,6 +119,14 @@ export const AccountSettingsPresenter = ({
   );
   const [isAnonymous, setIsAnonymous] = useState(accountInfo.isAnonymous);
   const [birthYm] = useState(accountInfo.birthYm);
+
+  // accountInfoが変更されたときにpenNameとnickNameを更新
+  useEffect(() => {
+    setPenName(accountInfo.penName);
+    setNickName(accountInfo.nickName);
+    setProfileIconImage(accountInfo.profileIconImage);
+    setIsAnonymous(accountInfo.isAnonymous);
+  }, [accountInfo]);
 
   const handlePenNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPenName(event.target.value);
@@ -290,7 +298,14 @@ export const AccountSettingsPresenter = ({
               )}
               <IconButton
                 sx={{ padding: 0, width: 'fit-content' }}
-                onClick={() => setIsEditingPenName(!isEditingPenName)}
+                onClick={() => {
+                  if (isEditingPenName) {
+                    // 編集モードを終了する前に保存
+                    handleSave();
+                  } else {
+                    setIsEditingPenName(true);
+                  }
+                }}
               >
                 {isEditingPenName ? (
                   <CheckIcon sx={{ color: 'black' }} />
@@ -329,7 +344,14 @@ export const AccountSettingsPresenter = ({
               )}
               <IconButton
                 sx={{ padding: 0, width: 'fit-content' }}
-                onClick={() => setIsEditingNickName(!isEditingNickName)}
+                onClick={() => {
+                  if (isEditingNickName) {
+                    // 編集モードを終了する前に保存
+                    handleSave();
+                  } else {
+                    setIsEditingNickName(true);
+                  }
+                }}
               >
                 {isEditingNickName ? (
                   <CheckIcon sx={{ color: 'black' }} />

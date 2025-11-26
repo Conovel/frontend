@@ -58,7 +58,7 @@ export const AccountSettings: React.FC = () => {
             ? new Date(userData.birthYm + '/01')
             : new Date(),
           isAnonymous: userData.isAnonymous || false,
-          agreedTermsVersion: 1,
+          agreedTermsVersion: userData.agreedTermsVersion || 1,
         };
 
         setAccountInfo(convertedAccountInfo);
@@ -70,6 +70,7 @@ export const AccountSettings: React.FC = () => {
           profileIconImage: convertedAccountInfo.profileIconImage,
           birthYm: convertedAccountInfo.birthYm,
           isAnonymous: convertedAccountInfo.isAnonymous,
+          agreedTermsVersion: convertedAccountInfo.agreedTermsVersion,
         });
       } catch (error) {
         console.error('ユーザー情報の取得に失敗しました:', error);
@@ -80,7 +81,7 @@ export const AccountSettings: React.FC = () => {
     };
 
     fetchUserInfo();
-  }, []);
+  }, [currentUser]); // currentUserを依存配列に追加
 
   if (isLoading) {
     return (
