@@ -7,18 +7,15 @@ export const AccountDeleted = () => {
   const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prevCountdown) => {
-        if (prevCountdown === 1) {
-          clearInterval(timer);
-          navigate('/');
-        }
-        return prevCountdown - 1;
-      });
+    if (countdown <= 0) {
+      navigate('/');
+      return;
+    }
+    const timer = setTimeout(() => {
+      setCountdown((prev) => prev - 1);
     }, 1000);
-
-    return () => clearInterval(timer);
-  }, [navigate]);
+    return () => clearTimeout(timer);
+  }, [countdown, navigate]);
 
   return (
     <Box

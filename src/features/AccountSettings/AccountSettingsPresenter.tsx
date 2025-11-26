@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
@@ -21,7 +21,13 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Alert,
+  CircularProgress,
 } from '@mui/material';
+import { useNavigate } from 'react-router';
+import { UsersApi } from '../../api/api';
+import { axiosConfig } from '../../axiosConfig';
+import { useAuth } from '../../providers/auth';
 
 export interface AccountInfo {
   userId: number;
@@ -89,11 +95,18 @@ export const AccountSettingsPresenter = ({
   accountInfo,
   onClickUpdateAccountInfo,
 }: AccountSettingsPresenterProps) => {
+  const usersApi = useMemo(() => new UsersApi(axiosConfig), []);
+  const { logout, setCurrentUser } = useAuth();
+  const navigate = useNavigate();
+
   const [isOpenDeleteAccountModal, setIsOpenDeleteAccountModal] =
     useState(false); // モーダルの状態を管理
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const toggleDeleteAccountModal = () => {
     setIsOpenDeleteAccountModal(!isOpenDeleteAccountModal); // モーダルの開閉を切り替える
+    setDeleteError(null);
   };
 
   const [isEditingPenName, setIsEditingPenName] = useState(false);
@@ -104,9 +117,33 @@ export const AccountSettingsPresenter = ({
   const [profileIconImage, setProfileIconImage] = useState(
     accountInfo.profileIconImage,
   );
+  const [isAnonymous, setIsAnonymous] = useState(accountInfo.isAnonymous);
+  const [birthYm] = useState(accountInfo.birthYm);
 
   const handlePenNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPenName(event.target.value);
+  };
+
+  const handleDeleteAccount = async () => {
+    if (isDeleting) return;
+    setDeleteError(null);
+    setIsDeleting(true);
+    try {
+      await usersApi.deleteUserByMe(async () => {
+        await logout();
+        navigate('/login');
+      });
+      await logout();
+      setCurrentUser(null);
+      navigate('/accountDeleted');
+    } catch (error) {
+      console.error('アカウント削除に失敗しました:', error);
+      setDeleteError(
+        'アカウント削除に失敗しました。時間をおいて再度お試しください。',
+      );
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const handleNickNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,10 +152,12 @@ export const AccountSettingsPresenter = ({
 
   const handleSave = () => {
     onClickUpdateAccountInfo({
-      ...accountInfo,
       penName,
       nickName,
       profileIconImage,
+      isAnonymous,
+      birthYm,
+      agreedTermsVersion: accountInfo.agreedTermsVersion,
     });
     setIsEditingPenName(false);
     setIsEditingNickName(false);
@@ -314,7 +353,9 @@ export const AccountSettingsPresenter = ({
               hasTooltip
               tooltipText='生年月は一度登録したら変更できません'
             />
-            <Typography>{`${accountInfo.birthYm.getFullYear()}/${accountInfo.birthYm.getMonth() + 1}`}</Typography>
+            <Typography>{`${birthYm.getFullYear()}/${String(
+              birthYm.getMonth() + 1,
+            ).padStart(2, '0')}`}</Typography>
           </Box>
 
           <Box
@@ -330,7 +371,10 @@ export const AccountSettingsPresenter = ({
               hasTooltip
               tooltipText='匿名設定をONにすると投稿は匿名で表示されます'
             />
-            <AnonymousSwitch defaultChecked={accountInfo.isAnonymous} />
+            <AnonymousSwitch
+              checked={isAnonymous}
+              onChange={(e) => setIsAnonymous(e.target.checked)}
+            />
           </Box>
 
           <Box
@@ -373,6 +417,11 @@ export const AccountSettingsPresenter = ({
               <br />
               アカウントを削除した場合、これまでの投稿はすべて匿名になります。
             </DialogContentText>
+            {deleteError && (
+              <Alert severity='error' sx={{ mt: 2 }}>
+                {deleteError}
+              </Alert>
+            )}
           </DialogContent>
           <DialogActions>
             <Button
@@ -384,14 +433,16 @@ export const AccountSettingsPresenter = ({
             </Button>
             <Button
               variant='contained'
-              onClick={() => {
-                // アカウント削除処理をここに追加
-                toggleDeleteAccountModal();
-                window.location.href = '/DeleteAccount';
-              }}
+              onClick={handleDeleteAccount}
+              disabled={isDeleting}
               color='error'
+              startIcon={
+                isDeleting ? (
+                  <CircularProgress color='inherit' size={16} />
+                ) : undefined
+              }
             >
-              削除
+              {isDeleting ? '削除中…' : '削除'}
             </Button>
           </DialogActions>
         </Dialog>

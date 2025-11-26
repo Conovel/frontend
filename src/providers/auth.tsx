@@ -47,6 +47,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const allowMockAuth = import.meta.env.VITE_USE_MOCK_AUTH === 'true';
 
   const logout = async () => {
     try {
@@ -54,6 +55,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (e) {
       console.error('ログアウトAPI呼び出しでエラー:', e);
     }
+    // ローカルの認証情報を明示的にクリア
+    localStorage.removeItem('accessToken');
+    sessionStorage.removeItem('accessToken');
     setCurrentUser(null);
   };
 
@@ -74,7 +78,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const apiError = axiosError.response?.data?.error;
       console.error('ユーザー情報の取得に失敗しました:', apiError ?? error);
 
-      if (import.meta.env.DEV) {
+      if (import.meta.env.DEV && allowMockAuth) {
         const mockUser: User = {
           userId: 1,
           penName: 'テストユーザー',
