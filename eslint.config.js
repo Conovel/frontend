@@ -1,20 +1,20 @@
-import js from '@eslint/js';
-import globals from 'globals';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
-import tseslint from 'typescript-eslint';
+import js from "@eslint/js";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
     ignores: [
-      'dist/**',
-      'public/mockServiceWorker.js',
-      'openapigen/**',
-      'src/api/**',
+      "dist/**",
+      "public/mockServiceWorker.js",
+      "openapigen/**",
+      "src/api/**",
     ],
   },
   {
-    files: ['**/*.{ts,tsx,js,jsx}'],
+    files: ["**/*.{ts,tsx,js,jsx}"],
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     languageOptions: {
       globals: {
@@ -23,32 +23,32 @@ export default tseslint.config(
       },
     },
     plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      "react-hooks": reactHooks,
+      "react-refresh": reactRefresh,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-empty-object-type': 'off',
-      '@typescript-eslint/no-require-imports': 'off',
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
-      'react-hooks/rules-of-hooks': 'warn',
-      'react-refresh/only-export-components': [
-        'warn',
+      "react-hooks/rules-of-hooks": "warn",
+      "react-refresh/only-export-components": [
+        "warn",
         { allowConstantExport: true },
       ],
-      'no-var': 'error',
-      camelcase: 'error',
+      "no-var": "error",
+      camelcase: "error",
     },
   },
   {
-    files: ['**/*.d.ts'],
+    files: ["**/*.d.ts"],
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-empty-object-type': 'off',
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
     },
   },
 );
