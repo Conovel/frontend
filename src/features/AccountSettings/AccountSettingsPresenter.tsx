@@ -190,6 +190,11 @@ export const AccountSettingsPresenter = ({
             onClose={() => setIsModalOpen(false)}
             aria-labelledby='modal-modal-title'
             aria-describedby='modal-modal-description'
+            container={() =>
+              typeof document !== 'undefined'
+                ? document.getElementById('root')
+                : null
+            }
           >
             <Box
               sx={{
