@@ -16,7 +16,7 @@ import {
   ViewMeUser,
 } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useAuth, type User } from '../../providers/auth';
 import { useNavigate } from 'react-router';
 import type { AxiosError } from 'axios';
@@ -81,6 +81,7 @@ export const AccountSettings: React.FC = () => {
   const { currentUser, setCurrentUser } = useAuth();
   const navigate = useNavigate();
   const usersApi = useMemo(() => new UsersApi(axiosConfig), []);
+  const lastFetchedUserIdRef = useRef<number | null>(null);
   const methods = useForm({
     mode: 'onBlur', // TODO：アカウント情報の更新処理次第
     resolver: zodResolver(AccountSettingFormSchema),
@@ -117,6 +118,9 @@ export const AccountSettings: React.FC = () => {
       setIsLoading(false);
       return;
     }
+    if (lastFetchedUserIdRef.current === currentUser.userId) {
+      return;
+    }
     const fetchUserInfo = async () => {
       try {
         setIsLoading(true);
@@ -129,7 +133,10 @@ export const AccountSettings: React.FC = () => {
         const convertedAccountInfo = convertToAccountInfo(userData);
         setAccountInfo(convertedAccountInfo);
         resetFormValues(convertedAccountInfo);
-        setCurrentUser(convertToAuthUser(userData));
+        if (!currentUser) {
+          setCurrentUser(convertToAuthUser(userData));
+        }
+        lastFetchedUserIdRef.current = userData.userId ?? null;
       } catch (error) {
         console.error('ユーザー情報の取得に失敗しました:', error);
         // エラー時はデフォルト値を使用
