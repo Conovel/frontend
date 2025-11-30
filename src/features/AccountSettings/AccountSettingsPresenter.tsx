@@ -111,6 +111,7 @@ export const AccountSettingsPresenter = ({
 
   const [isEditingPenName, setIsEditingPenName] = useState(false);
   const [isEditingNickName, setIsEditingNickName] = useState(false);
+  const [isEditingBirthYm, setIsEditingBirthYm] = useState(false);
   const [penName, setPenName] = useState(accountInfo.penName);
   const [nickName, setNickName] = useState(accountInfo.nickName);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -118,7 +119,7 @@ export const AccountSettingsPresenter = ({
     accountInfo.profileIconImage,
   );
   const [isAnonymous, setIsAnonymous] = useState(accountInfo.isAnonymous);
-  const [birthYm] = useState(accountInfo.birthYm);
+  const [birthYm, setBirthYm] = useState(accountInfo.birthYm);
 
   // accountInfoが変更されたときにpenNameとnickNameを更新
   useEffect(() => {
@@ -126,7 +127,39 @@ export const AccountSettingsPresenter = ({
     setNickName(accountInfo.nickName);
     setProfileIconImage(accountInfo.profileIconImage);
     setIsAnonymous(accountInfo.isAnonymous);
+    setBirthYm(accountInfo.birthYm);
   }, [accountInfo]);
+
+  const formatBirthYm = (date: Date) => {
+    if (!date || Number.isNaN(date.getTime())) return '--/--';
+    return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
+      2,
+      '0',
+    )}`;
+  };
+
+  const formatBirthYmForInput = (date: Date) => {
+    if (!date || Number.isNaN(date.getTime())) return '';
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      '0',
+    )}`;
+  };
+
+  const handleUpdateAccountInfo = (
+    overrides: Partial<AccountSettingFormType> = {},
+  ) => {
+    const payload: AccountSettingFormType = {
+      penName,
+      nickName,
+      profileIconImage,
+      isAnonymous,
+      birthYm,
+      agreedTermsVersion: accountInfo.agreedTermsVersion,
+      ...overrides,
+    };
+    onClickUpdateAccountInfo(payload);
+  };
 
   const handlePenNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPenName(event.target.value);
@@ -159,16 +192,30 @@ export const AccountSettingsPresenter = ({
   };
 
   const handleSave = () => {
-    onClickUpdateAccountInfo({
-      penName,
-      nickName,
-      profileIconImage,
-      isAnonymous,
-      birthYm,
-      agreedTermsVersion: accountInfo.agreedTermsVersion,
-    });
+    handleUpdateAccountInfo();
     setIsEditingPenName(false);
     setIsEditingNickName(false);
+  };
+
+  const handleBirthYmChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    if (!value) return;
+
+    const parsedDate = new Date(`${value}-01`);
+    if (!Number.isNaN(parsedDate.getTime())) {
+      setBirthYm(parsedDate);
+    }
+  };
+
+  const handleSaveBirthYm = () => {
+    if (!birthYm || Number.isNaN(birthYm.getTime())) return;
+    handleUpdateAccountInfo({ birthYm });
+    setIsEditingBirthYm(false);
+  };
+
+  const handleAnonymousChange = (checked: boolean) => {
+    setIsAnonymous(checked);
+    handleUpdateAccountInfo({ isAnonymous: checked });
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -289,7 +336,12 @@ export const AccountSettingsPresenter = ({
                 <TextField
                   value={penName}
                   onChange={handlePenNameChange}
-                  onBlur={handleSave}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      handleSave();
+                    }
+                  }}
                 />
               ) : (
                 <Typography sx={{ wordBreak: 'break-word' }}>
@@ -335,7 +387,12 @@ export const AccountSettingsPresenter = ({
                 <TextField
                   value={nickName}
                   onChange={handleNickNameChange}
-                  onBlur={handleSave}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      handleSave();
+                    }
+                  }}
                 />
               ) : (
                 <Typography sx={{ wordBreak: 'break-word' }}>
@@ -373,11 +430,45 @@ export const AccountSettingsPresenter = ({
             <LabelWithTooltip
               label='生年月'
               hasTooltip
-              tooltipText='生年月は一度登録したら変更できません'
+              tooltipText='生年月は年と月を登録します（後から変更可能です）'
             />
-            <Typography>{`${birthYm.getFullYear()}/${String(
-              birthYm.getMonth() + 1,
-            ).padStart(2, '0')}`}</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
+              {isEditingBirthYm ? (
+                <TextField
+                  type='month'
+                  value={formatBirthYmForInput(birthYm)}
+                  onChange={handleBirthYmChange}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      handleSaveBirthYm();
+                    }
+                  }}
+                  inputProps={{
+                    max: formatBirthYmForInput(new Date()),
+                  }}
+                  sx={{ minWidth: '180px' }}
+                />
+              ) : (
+                <Typography>{formatBirthYm(birthYm)}</Typography>
+              )}
+              <IconButton
+                sx={{ padding: 0, width: 'fit-content' }}
+                onClick={() => {
+                  if (isEditingBirthYm) {
+                    handleSaveBirthYm();
+                  } else {
+                    setIsEditingBirthYm(true);
+                  }
+                }}
+              >
+                {isEditingBirthYm ? (
+                  <CheckIcon sx={{ color: 'black' }} />
+                ) : (
+                  <EditIcon sx={{ color: 'black' }} />
+                )}
+              </IconButton>
+            </Box>
           </Box>
 
           <Box
@@ -395,7 +486,7 @@ export const AccountSettingsPresenter = ({
             />
             <AnonymousSwitch
               checked={isAnonymous}
-              onChange={(e) => setIsAnonymous(e.target.checked)}
+              onChange={(e) => handleAnonymousChange(e.target.checked)}
             />
           </Box>
 

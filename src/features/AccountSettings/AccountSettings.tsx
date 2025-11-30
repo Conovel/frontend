@@ -9,13 +9,19 @@ import { Box, Paper } from '@mui/material';
 import { UsersApi, ViewMeUser, type UpdateUser } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
 import { useEffect, useMemo, useState } from 'react';
-import { useAuth } from '../../providers/auth';
+import { useAuth, type User } from '../../providers/auth';
 import { useNavigate } from 'react-router';
 
 export const AccountSettings: React.FC = () => {
   const { currentUser, setCurrentUser } = useAuth();
   const navigate = useNavigate();
   const usersApi = useMemo(() => new UsersApi(axiosConfig), []);
+  const parseBirthYmToDate = (birthYm?: string | null) => {
+    if (!birthYm) return new Date('1900/01');
+    const normalized = birthYm.replace(/-/g, '/').slice(0, 7);
+    const parsed = new Date(`${normalized}/01`);
+    return Number.isNaN(parsed.getTime()) ? new Date('1900/01') : parsed;
+  };
   const methods = useForm({
     mode: 'onBlur', // TODO：アカウント情報の更新処理次第
     resolver: zodResolver(AccountSettingFormSchema),
@@ -54,9 +60,7 @@ export const AccountSettings: React.FC = () => {
           nickName: userData.nickName || '',
           profileIconImage: userData.profileIconImage || '',
           evaluationGoodCount: userData.evaluationGoodCount || 0,
-          birthYm: userData.birthYm
-            ? new Date(userData.birthYm + '/01')
-            : new Date(),
+          birthYm: parseBirthYmToDate(userData.birthYm),
           isAnonymous: userData.isAnonymous || false,
           agreedTermsVersion: userData.agreedTermsVersion || 1,
         };
@@ -187,30 +191,41 @@ export const AccountSettings: React.FC = () => {
                 penName: input.penName,
                 nickName: input.nickName,
                 isAnonymous: input.isAnonymous,
-                profileIconImage: input.profileIconImage,
+                profileIconImage:
+                  input.profileIconImage && input.profileIconImage.trim() !== ''
+                    ? input.profileIconImage
+                    : undefined,
                 birthYm: formatBirthYm(input.birthYm),
                 agreedTermsVersion: input.agreedTermsVersion ?? 1,
               };
 
               try {
                 setIsLoading(true);
-                await usersApi.updateUserByMe(payload, async () => {
-                  navigate('/login');
-                });
+                await usersApi.updateUserByMe(payload);
 
                 const refreshed = await usersApi.getUserByMe();
                 if (refreshed?.data) {
                   const userData: ViewMeUser = refreshed.data;
-                  setCurrentUser(userData as any);
+                  const updatedUser: User = {
+                    userId: userData.userId || 0,
+                    penName: userData.penName || '',
+                    nickName: userData.nickName || '',
+                    profileIconImage: userData.profileIconImage || '',
+                    evaluationGoodCount: userData.evaluationGoodCount || 0,
+                    createdAt: userData.createdAt || '',
+                    updatedAt: userData.updatedAt || '',
+                    birthYm: userData.birthYm || '',
+                    isAnonymous: userData.isAnonymous ?? false,
+                    agreedTermsVersion: userData.agreedTermsVersion || 1,
+                  };
+                  setCurrentUser(updatedUser);
                   const convertedAccountInfo: AccountInfo = {
                     userId: userData.userId || 0,
                     penName: userData.penName || '',
                     nickName: userData.nickName || '',
                     profileIconImage: userData.profileIconImage || '',
                     evaluationGoodCount: userData.evaluationGoodCount || 0,
-                    birthYm: userData.birthYm
-                      ? new Date(userData.birthYm + '/01')
-                      : new Date(),
+                    birthYm: parseBirthYmToDate(userData.birthYm),
                     isAnonymous: userData.isAnonymous || false,
                     agreedTermsVersion: userData.agreedTermsVersion || 1,
                   };
