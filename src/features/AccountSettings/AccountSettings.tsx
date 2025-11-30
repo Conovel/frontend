@@ -162,13 +162,22 @@ export const AccountSettings: React.FC = () => {
       return;
     }
 
+    const birthYmString = formatBirthYm(input.birthYm);
+    if (!/^\d{4}\/\d{2}$/.test(birthYmString)) {
+      console.error('生年月が不正な形式です:', birthYmString);
+      return;
+    }
+
     const payload: UpdateUser = {
       penName,
       nickName,
       isAnonymous: input.isAnonymous,
       profileIconImage: normalizeProfileIconImage(input.profileIconImage),
-      birthYm: formatBirthYm(input.birthYm),
-      agreedTermsVersion: input.agreedTermsVersion ?? 1,
+      birthYm: birthYmString,
+      agreedTermsVersion: Math.max(
+        1,
+        input.agreedTermsVersion ?? accountInfo.agreedTermsVersion ?? 1,
+      ),
     };
 
     try {
