@@ -45,12 +45,12 @@ const formatBirthYm = (birthYm: Date | string) => {
 };
 
 const normalizeProfileIconImage = (value?: string | null) => {
-  if (!value) return undefined;
+  if (!value) return '';
   const trimmed = value.trim();
-  if (!trimmed) return undefined;
-  if (trimmed.startsWith('data:')) return undefined;
+  if (!trimmed) return '';
+  if (trimmed.startsWith('data:')) return '';
   if (/^https?:\/\//i.test(trimmed)) return trimmed;
-  return undefined;
+  return '';
 };
 
 const convertToAccountInfo = (userData: UserLike): AccountInfo => ({
