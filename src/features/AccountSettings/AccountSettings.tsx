@@ -29,28 +29,29 @@ type UserLike = (ViewMeUser | ApiUser) & {
 
 const parseBirthYmToDate = (birthYm?: string | null) => {
   if (!birthYm) return new Date('1900/01');
-  const normalized = birthYm.replace(/-/g, '/').slice(0, 7);
-  const parsed = new Date(`${normalized}/01`);
+  const digits = birthYm.replace(/\D/g, '').slice(0, 6);
+  if (digits.length < 6) return new Date('1900/01');
+  const year = digits.slice(0, 4);
+  const month = digits.slice(4, 6);
+  const parsed = new Date(`${year}/${month}/01`);
   return Number.isNaN(parsed.getTime()) ? new Date('1900/01') : parsed;
 };
 
-const formatBirthYm = (birthYm: Date | string) => {
+const formatBirthYmForPayload = (birthYm: Date | string) => {
   const toDate =
-    typeof birthYm === 'string'
-      ? new Date(birthYm.replace(/-/g, '/').slice(0, 7) + '/01')
-      : birthYm;
+    typeof birthYm === 'string' ? parseBirthYmToDate(birthYm) : birthYm;
   const year = toDate.getFullYear();
   const month = String(toDate.getMonth() + 1).padStart(2, '0');
-  return `${year}/${month}`;
+  return `${year}${month}`;
 };
 
 const normalizeProfileIconImage = (value?: string | null) => {
-  if (!value) return '';
+  if (!value) return undefined;
   const trimmed = value.trim();
-  if (!trimmed) return '';
-  if (trimmed.startsWith('data:')) return '';
+  if (!trimmed) return undefined;
+  if (trimmed.startsWith('data:')) return undefined;
   if (/^https?:\/\//i.test(trimmed)) return trimmed;
-  return '';
+  return undefined;
 };
 
 const convertToAccountInfo = (userData: UserLike): AccountInfo => ({
@@ -114,13 +115,6 @@ export const AccountSettings: React.FC = () => {
   );
 
   useEffect(() => {
-    if (!currentUser) {
-      setIsLoading(false);
-      return;
-    }
-    if (lastFetchedUserIdRef.current === currentUser.userId) {
-      return;
-    }
     const fetchUserInfo = async () => {
       try {
         setIsLoading(true);
@@ -133,9 +127,7 @@ export const AccountSettings: React.FC = () => {
         const convertedAccountInfo = convertToAccountInfo(userData);
         setAccountInfo(convertedAccountInfo);
         resetFormValues(convertedAccountInfo);
-        if (!currentUser) {
-          setCurrentUser(convertToAuthUser(userData));
-        }
+        setCurrentUser(convertToAuthUser(userData));
         lastFetchedUserIdRef.current = userData.userId ?? null;
       } catch (error) {
         console.error('ユーザー情報の取得に失敗しました:', error);
@@ -146,7 +138,7 @@ export const AccountSettings: React.FC = () => {
     };
 
     fetchUserInfo();
-  }, [currentUser, resetFormValues, setCurrentUser, usersApi]);
+  }, [resetFormValues, setCurrentUser, usersApi]);
 
   const handleUpdateAccountInfo = async (
     input: AccountSettingFormType,
@@ -162,8 +154,8 @@ export const AccountSettings: React.FC = () => {
       return;
     }
 
-    const birthYmString = formatBirthYm(input.birthYm);
-    if (!/^\d{4}\/\d{2}$/.test(birthYmString)) {
+    const birthYmString = formatBirthYmForPayload(input.birthYm);
+    if (!/^\d{6}$/.test(birthYmString)) {
       console.error('生年月が不正な形式です:', birthYmString);
       return;
     }
