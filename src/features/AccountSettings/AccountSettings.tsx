@@ -19,6 +19,7 @@ import { axiosConfig } from '../../axiosConfig';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAuth, type User } from '../../providers/auth';
 import { useNavigate } from 'react-router';
+import type { AxiosError } from 'axios';
 
 type UserLike = (ViewMeUser | ApiUser) & {
   birthYm?: string | null;
@@ -33,10 +34,23 @@ const parseBirthYmToDate = (birthYm?: string | null) => {
   return Number.isNaN(parsed.getTime()) ? new Date('1900/01') : parsed;
 };
 
-const formatBirthYm = (birthYm: Date) => {
-  const year = birthYm.getFullYear();
-  const month = String(birthYm.getMonth() + 1).padStart(2, '0');
+const formatBirthYm = (birthYm: Date | string) => {
+  const toDate =
+    typeof birthYm === 'string'
+      ? new Date(birthYm.replace(/-/g, '/').slice(0, 7) + '/01')
+      : birthYm;
+  const year = toDate.getFullYear();
+  const month = String(toDate.getMonth() + 1).padStart(2, '0');
   return `${year}/${month}`;
+};
+
+const normalizeProfileIconImage = (value?: string | null) => {
+  if (!value) return undefined;
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
+  if (trimmed.startsWith('data:')) return undefined;
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  return undefined;
 };
 
 const convertToAccountInfo = (userData: UserLike): AccountInfo => ({
@@ -145,12 +159,7 @@ export const AccountSettings: React.FC = () => {
       penName,
       nickName,
       isAnonymous: input.isAnonymous,
-      profileIconImage:
-        input.profileIconImage &&
-        input.profileIconImage.trim() !== '' &&
-        !input.profileIconImage.startsWith('data:')
-          ? input.profileIconImage
-          : undefined,
+      profileIconImage: normalizeProfileIconImage(input.profileIconImage),
       birthYm: formatBirthYm(input.birthYm),
       agreedTermsVersion: input.agreedTermsVersion ?? 1,
     };
@@ -165,7 +174,12 @@ export const AccountSettings: React.FC = () => {
         setCurrentUser(convertToAuthUser(response.data));
       }
     } catch (error) {
-      console.error('アカウント情報の更新に失敗しました:', error);
+      const axiosErr = error as AxiosError<any>;
+      console.error('アカウント情報の更新に失敗しました:', {
+        message: axiosErr.message,
+        status: axiosErr.response?.status,
+        data: axiosErr.response?.data,
+      });
     } finally {
       setIsLoading(false);
     }
