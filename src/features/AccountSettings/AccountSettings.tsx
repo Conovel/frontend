@@ -38,18 +38,22 @@ const parseBirthYmToDate = (birthYm?: string | null) => {
 };
 
 const formatBirthYmForPayload = (birthYm: Date | string) => {
-  // Dateの場合はそのまま年月を抜き出す
-  if (birthYm instanceof Date && !Number.isNaN(birthYm.getTime())) {
+  // Dateの場合
+  if (birthYm instanceof Date) {
+    if (Number.isNaN(birthYm.getTime())) return '';
     const year = birthYm.getFullYear();
     const month = String(birthYm.getMonth() + 1).padStart(2, '0');
     return `${year}/${month}`;
   }
 
-  // 文字列の場合は数字だけ抽出し、先頭6桁を年月とみなす
+  // 文字列の場合は数字のみ抽出して6桁に
   const digits = birthYm.toString().replace(/\D/g, '');
   if (digits.length < 6) return '';
   const year = digits.slice(0, 4);
   const month = digits.slice(4, 6);
+  // 月が01-12か検証
+  const monthNum = Number(month);
+  if (monthNum < 1 || monthNum > 12) return '';
   return `${year}/${month}`;
 };
 
@@ -153,31 +157,34 @@ export const AccountSettings: React.FC = () => {
   ): Promise<void> => {
     const penName = input.penName?.trim();
     const nickName = input.nickName?.trim();
+    // 生年月は入力値優先。フォーマットできなければ現在の保持値を使う
+    const birthYmNormalized =
+      formatBirthYmForPayload(input.birthYm) ||
+      formatBirthYmForPayload(accountInfo.birthYm);
     if (!penName || !nickName) {
       console.error('ペンネームとニックネームは必須です');
       return;
     }
-    if (!input.birthYm || Number.isNaN(input.birthYm.getTime())) {
+    if (!birthYmNormalized) {
       console.error('生年月の形式が正しくありません');
       return;
     }
+    // API仕様に合わせてbirthYmはYYYY/MM文字列で送る
+    const birthYm = birthYmNormalized;
 
-    const birthYmString = formatBirthYmForPayload(input.birthYm);
-    if (!/^\d{6}$/.test(birthYmString)) {
-      console.error('生年月が不正な形式です:', birthYmString);
-      return;
-    }
+    // 同意バージョンは必ず1以上
+    const agreedTermsVersion = Math.max(
+      1,
+      input.agreedTermsVersion ?? accountInfo.agreedTermsVersion ?? 1,
+    );
 
     const payload: UpdateUser = {
       penName,
       nickName,
       isAnonymous: input.isAnonymous,
       profileIconImage: normalizeProfileIconImage(input.profileIconImage),
-      birthYm: birthYmString,
-      agreedTermsVersion: Math.max(
-        1,
-        input.agreedTermsVersion ?? accountInfo.agreedTermsVersion ?? 1,
-      ),
+      birthYm,
+      agreedTermsVersion,
     };
 
     try {
