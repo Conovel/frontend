@@ -38,11 +38,19 @@ const parseBirthYmToDate = (birthYm?: string | null) => {
 };
 
 const formatBirthYmForPayload = (birthYm: Date | string) => {
-  const toDate =
-    typeof birthYm === 'string' ? parseBirthYmToDate(birthYm) : birthYm;
-  const year = toDate.getFullYear();
-  const month = String(toDate.getMonth() + 1).padStart(2, '0');
-  return `${year}${month}`;
+  // Dateの場合はそのまま年月を抜き出す
+  if (birthYm instanceof Date && !Number.isNaN(birthYm.getTime())) {
+    const year = birthYm.getFullYear();
+    const month = String(birthYm.getMonth() + 1).padStart(2, '0');
+    return `${year}/${month}`;
+  }
+
+  // 文字列の場合は数字だけ抽出し、先頭6桁を年月とみなす
+  const digits = birthYm.toString().replace(/\D/g, '');
+  if (digits.length < 6) return '';
+  const year = digits.slice(0, 4);
+  const month = digits.slice(4, 6);
+  return `${year}/${month}`;
 };
 
 const normalizeProfileIconImage = (value?: string | null) => {
