@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import type { AxiosError } from 'axios';
 
 import { UsersApi, AuthApi, type ErrorResponse } from '../api/api';
@@ -34,6 +40,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const usersApi = new UsersApi(axiosConfig);
 const authApi = new AuthApi(axiosConfig);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -61,7 +68,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setCurrentUser(null);
   };
 
-  const fetchCurrentUserId = async () => {
+  const fetchCurrentUserId = useCallback(async () => {
     try {
       const response = await usersApi.getUserByMe(async () => {
         // jwt, refresh両方失敗時にはログイン画面へリダイレクト
@@ -94,12 +101,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setCurrentUser(mockUser);
       }
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     // 初期化時に現在のユーザー情報を取得
     fetchCurrentUserId();
-  }, []);
+  }, [fetchCurrentUserId]);
 
   useEffect(() => {
     // OAuth認証後のリダイレクト時にURLパラメータを処理
@@ -118,7 +125,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (location.pathname === '/account' && !currentUser) {
       fetchCurrentUserId();
     }
-  }, [location.pathname]);
+  }, [currentUser, fetchCurrentUserId, location.pathname]);
 
   return (
     <AuthContext.Provider value={{ logout, currentUser, setCurrentUser }}>

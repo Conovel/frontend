@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
@@ -21,13 +21,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Alert,
-  CircularProgress,
 } from '@mui/material';
 import { useNavigate } from 'react-router';
-import { UsersApi } from '../../api/api';
-import { axiosConfig } from '../../axiosConfig';
-import { useAuth } from '../../providers/auth';
 
 export interface AccountInfo {
   userId: number;
@@ -95,18 +90,13 @@ export const AccountSettingsPresenter = ({
   accountInfo,
   onClickUpdateAccountInfo,
 }: AccountSettingsPresenterProps) => {
-  const usersApi = useMemo(() => new UsersApi(axiosConfig), []);
-  const { logout, setCurrentUser } = useAuth();
   const navigate = useNavigate();
 
   const [isOpenDeleteAccountModal, setIsOpenDeleteAccountModal] =
-    useState(false); // モーダルの状態を管理
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
+    useState(false);
 
   const toggleDeleteAccountModal = () => {
-    setIsOpenDeleteAccountModal(!isOpenDeleteAccountModal); // モーダルの開閉を切り替える
-    setDeleteError(null);
+    setIsOpenDeleteAccountModal((prev) => !prev);
   };
 
   const [isEditingPenName, setIsEditingPenName] = useState(false);
@@ -114,14 +104,13 @@ export const AccountSettingsPresenter = ({
   const [isEditingBirthYm, setIsEditingBirthYm] = useState(false);
   const [penName, setPenName] = useState(accountInfo.penName);
   const [nickName, setNickName] = useState(accountInfo.nickName);
+  const [isAnonymous, setIsAnonymous] = useState(accountInfo.isAnonymous);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profileIconImage, setProfileIconImage] = useState(
     accountInfo.profileIconImage,
   );
-  const [isAnonymous, setIsAnonymous] = useState(accountInfo.isAnonymous);
   const [birthYm, setBirthYm] = useState(accountInfo.birthYm);
 
-  // accountInfoが変更されたときにpenNameとnickNameを更新
   useEffect(() => {
     setPenName(accountInfo.penName);
     setNickName(accountInfo.nickName);
@@ -165,28 +154,6 @@ export const AccountSettingsPresenter = ({
     setPenName(event.target.value);
   };
 
-  const handleDeleteAccount = async () => {
-    if (isDeleting) return;
-    setDeleteError(null);
-    setIsDeleting(true);
-    try {
-      await usersApi.deleteUserByMe(async () => {
-        await logout();
-        navigate('/login');
-      });
-      await logout();
-      setCurrentUser(null);
-      navigate('/accountDeleted');
-    } catch (error) {
-      console.error('アカウント削除に失敗しました:', error);
-      setDeleteError(
-        'アカウント削除に失敗しました。時間をおいて再度お試しください。',
-      );
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
   const handleNickNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNickName(event.target.value);
   };
@@ -223,11 +190,18 @@ export const AccountSettingsPresenter = ({
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target?.result) {
-          setProfileIconImage(e.target.result as string);
+          const image = e.target.result as string;
+          setProfileIconImage(image);
+          handleUpdateAccountInfo({ profileIconImage: image });
         }
       };
       reader.readAsDataURL(event.target.files[0]);
     }
+  };
+
+  const handleGoToDeletePolicy = () => {
+    toggleDeleteAccountModal();
+    navigate('/deleteAccount');
   };
 
   return (
@@ -269,6 +243,11 @@ export const AccountSettingsPresenter = ({
             onClose={() => setIsModalOpen(false)}
             aria-labelledby='modal-modal-title'
             aria-describedby='modal-modal-description'
+            container={() =>
+              typeof document !== 'undefined'
+                ? document.getElementById('root')
+                : null
+            }
           >
             <Box
               sx={{
@@ -352,7 +331,6 @@ export const AccountSettingsPresenter = ({
                 sx={{ padding: 0, width: 'fit-content' }}
                 onClick={() => {
                   if (isEditingPenName) {
-                    // 編集モードを終了する前に保存
                     handleSave();
                   } else {
                     setIsEditingPenName(true);
@@ -403,7 +381,6 @@ export const AccountSettingsPresenter = ({
                 sx={{ padding: 0, width: 'fit-content' }}
                 onClick={() => {
                   if (isEditingNickName) {
-                    // 編集モードを終了する前に保存
                     handleSave();
                   } else {
                     setIsEditingNickName(true);
@@ -518,23 +495,17 @@ export const AccountSettingsPresenter = ({
           </Button>
         </Box>
 
-        {/* 削除モーダル */}
+        {/* 削除モーダル（ポリシー確認へ誘導） */}
         <Dialog
           open={isOpenDeleteAccountModal}
           onClose={toggleDeleteAccountModal}
         >
-          <DialogTitle>アカウント削除確認</DialogTitle>
+          <DialogTitle>アカウント削除前の確認</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              本当にアカウントを削除しますか？
-              <br />
-              アカウントを削除した場合、これまでの投稿はすべて匿名になります。
+              アカウント削除にはポリシーへの同意が必要です。
+              同意画面へ進みますか？
             </DialogContentText>
-            {deleteError && (
-              <Alert severity='error' sx={{ mt: 2 }}>
-                {deleteError}
-              </Alert>
-            )}
           </DialogContent>
           <DialogActions>
             <Button
@@ -546,16 +517,10 @@ export const AccountSettingsPresenter = ({
             </Button>
             <Button
               variant='contained'
-              onClick={handleDeleteAccount}
-              disabled={isDeleting}
+              onClick={handleGoToDeletePolicy}
               color='error'
-              startIcon={
-                isDeleting ? (
-                  <CircularProgress color='inherit' size={16} />
-                ) : undefined
-              }
             >
-              {isDeleting ? '削除中…' : '削除'}
+              同意画面へ
             </Button>
           </DialogActions>
         </Dialog>

@@ -16,7 +16,7 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 // サーバー側で一元管理する文データ
 // 初期値は持たず、外部から得るsentenceIdでのみデータを返す
-let sentences: Sentence[] = [];
+const sentences: Sentence[] = [];
 
 let nextSentenceId = Math.max(...Object.keys(sentencesData).map(Number)) + 1;
 

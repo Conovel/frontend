@@ -4,24 +4,69 @@ import {
   AccountSettingsPresenter,
 } from './AccountSettingsPresenter';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AccountSettingFormSchema } from './AccountSettings.schema';
+import {
+  AccountSettingFormSchema,
+  type AccountSettingFormType,
+} from './AccountSettings.schema';
 import { Box, Paper } from '@mui/material';
-import { UsersApi, ViewMeUser, type UpdateUser } from '../../api/api';
+import {
+  UpdateUser,
+  User as ApiUser,
+  UsersApi,
+  ViewMeUser,
+} from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAuth, type User } from '../../providers/auth';
 import { useNavigate } from 'react-router';
+
+type UserLike = (ViewMeUser | ApiUser) & {
+  birthYm?: string | null;
+  isAnonymous?: boolean;
+  agreedTermsVersion?: number;
+};
+
+const parseBirthYmToDate = (birthYm?: string | null) => {
+  if (!birthYm) return new Date('1900/01');
+  const normalized = birthYm.replace(/-/g, '/').slice(0, 7);
+  const parsed = new Date(`${normalized}/01`);
+  return Number.isNaN(parsed.getTime()) ? new Date('1900/01') : parsed;
+};
+
+const formatBirthYm = (birthYm: Date) => {
+  const year = birthYm.getFullYear();
+  const month = String(birthYm.getMonth() + 1).padStart(2, '0');
+  return `${year}/${month}`;
+};
+
+const convertToAccountInfo = (userData: UserLike): AccountInfo => ({
+  userId: userData.userId || 0,
+  penName: userData.penName || '',
+  nickName: userData.nickName || '',
+  profileIconImage: userData.profileIconImage || '',
+  evaluationGoodCount: userData.evaluationGoodCount || 0,
+  birthYm: parseBirthYmToDate(userData.birthYm),
+  isAnonymous: userData.isAnonymous ?? false,
+  agreedTermsVersion: userData.agreedTermsVersion ?? 1,
+});
+
+const convertToAuthUser = (userData: UserLike): User => ({
+  userId: userData.userId || 0,
+  penName: userData.penName || '',
+  nickName: userData.nickName || '',
+  profileIconImage: userData.profileIconImage || '',
+  evaluationGoodCount: userData.evaluationGoodCount || 0,
+  createdAt: userData.createdAt || '',
+  updatedAt: userData.updatedAt || '',
+  birthYm: userData.birthYm || '',
+  isAnonymous: userData.isAnonymous ?? false,
+  agreedTermsVersion: userData.agreedTermsVersion ?? 1,
+});
 
 export const AccountSettings: React.FC = () => {
   const { currentUser, setCurrentUser } = useAuth();
   const navigate = useNavigate();
   const usersApi = useMemo(() => new UsersApi(axiosConfig), []);
-  const parseBirthYmToDate = (birthYm?: string | null) => {
-    if (!birthYm) return new Date('1900/01');
-    const normalized = birthYm.replace(/-/g, '/').slice(0, 7);
-    const parsed = new Date(`${normalized}/01`);
-    return Number.isNaN(parsed.getTime()) ? new Date('1900/01') : parsed;
-  };
   const methods = useForm({
     mode: 'onBlur', // TODO：アカウント情報の更新処理次第
     resolver: zodResolver(AccountSettingFormSchema),
@@ -39,6 +84,20 @@ export const AccountSettings: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
 
+  const resetFormValues = useCallback(
+    (info: AccountInfo) => {
+      methods.reset({
+        penName: info.penName,
+        nickName: info.nickName,
+        profileIconImage: info.profileIconImage,
+        birthYm: info.birthYm,
+        isAnonymous: info.isAnonymous,
+        agreedTermsVersion: info.agreedTermsVersion,
+      });
+    },
+    [methods],
+  );
+
   useEffect(() => {
     if (!currentUser) {
       setIsLoading(false);
@@ -53,29 +112,10 @@ export const AccountSettings: React.FC = () => {
         }
         const userData: ViewMeUser = response.data;
 
-        // APIレスポンスをAccountInfo形式に変換
-        const convertedAccountInfo: AccountInfo = {
-          userId: userData.userId || 0,
-          penName: userData.penName || '',
-          nickName: userData.nickName || '',
-          profileIconImage: userData.profileIconImage || '',
-          evaluationGoodCount: userData.evaluationGoodCount || 0,
-          birthYm: parseBirthYmToDate(userData.birthYm),
-          isAnonymous: userData.isAnonymous || false,
-          agreedTermsVersion: userData.agreedTermsVersion || 1,
-        };
-
+        const convertedAccountInfo = convertToAccountInfo(userData);
         setAccountInfo(convertedAccountInfo);
-
-        // フォームの初期値も設定
-        methods.reset({
-          penName: convertedAccountInfo.penName,
-          nickName: convertedAccountInfo.nickName,
-          profileIconImage: convertedAccountInfo.profileIconImage,
-          birthYm: convertedAccountInfo.birthYm,
-          isAnonymous: convertedAccountInfo.isAnonymous,
-          agreedTermsVersion: convertedAccountInfo.agreedTermsVersion,
-        });
+        resetFormValues(convertedAccountInfo);
+        setCurrentUser(convertToAuthUser(userData));
       } catch (error) {
         console.error('ユーザー情報の取得に失敗しました:', error);
         // エラー時はデフォルト値を使用
@@ -85,7 +125,51 @@ export const AccountSettings: React.FC = () => {
     };
 
     fetchUserInfo();
-  }, [currentUser]); // currentUserを依存配列に追加
+  }, [currentUser, resetFormValues, setCurrentUser, usersApi]);
+
+  const handleUpdateAccountInfo = async (
+    input: AccountSettingFormType,
+  ): Promise<void> => {
+    const penName = input.penName?.trim();
+    const nickName = input.nickName?.trim();
+    if (!penName || !nickName) {
+      console.error('ペンネームとニックネームは必須です');
+      return;
+    }
+    if (!input.birthYm || Number.isNaN(input.birthYm.getTime())) {
+      console.error('生年月の形式が正しくありません');
+      return;
+    }
+
+    const payload: UpdateUser = {
+      penName,
+      nickName,
+      isAnonymous: input.isAnonymous,
+      profileIconImage:
+        input.profileIconImage &&
+        input.profileIconImage.trim() !== '' &&
+        !input.profileIconImage.startsWith('data:')
+          ? input.profileIconImage
+          : undefined,
+      birthYm: formatBirthYm(input.birthYm),
+      agreedTermsVersion: input.agreedTermsVersion ?? 1,
+    };
+
+    try {
+      setIsLoading(true);
+      const response = await usersApi.updateUserByMe(payload);
+      if (response?.data) {
+        const updatedAccountInfo = convertToAccountInfo(response.data);
+        setAccountInfo(updatedAccountInfo);
+        resetFormValues(updatedAccountInfo);
+        setCurrentUser(convertToAuthUser(response.data));
+      }
+    } catch (error) {
+      console.error('アカウント情報の更新に失敗しました:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -180,83 +264,7 @@ export const AccountSettings: React.FC = () => {
             onChangeEditMode={() => {
               // TODO:あとで実装
             }}
-            onClickUpdateAccountInfo={async (input) => {
-              const penName = input.penName?.trim();
-              const nickName = input.nickName?.trim();
-              if (!penName || !nickName) {
-                console.error('ペンネームとニックネームは必須です');
-                return;
-              }
-              if (!input.birthYm || Number.isNaN(input.birthYm.getTime())) {
-                console.error('生年月の形式が正しくありません');
-                return;
-              }
-              const formatBirthYm = (date: Date) =>
-                `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
-                  2,
-                  '0',
-                )}`;
-
-              const payload: UpdateUser = {
-                penName,
-                nickName,
-                isAnonymous: input.isAnonymous,
-                profileIconImage:
-                  input.profileIconImage &&
-                  input.profileIconImage.trim() !== '' &&
-                  !input.profileIconImage.startsWith('data:')
-                    ? input.profileIconImage
-                    : undefined,
-                birthYm: formatBirthYm(input.birthYm),
-                agreedTermsVersion: input.agreedTermsVersion ?? 1,
-              };
-
-              try {
-                setIsLoading(true);
-                await usersApi.updateUserByMe(payload);
-
-                const refreshed = await usersApi.getUserByMe();
-                if (refreshed?.data) {
-                  const userData: ViewMeUser = refreshed.data;
-                  const updatedUser: User = {
-                    userId: userData.userId || 0,
-                    penName: userData.penName || '',
-                    nickName: userData.nickName || '',
-                    profileIconImage: userData.profileIconImage || '',
-                    evaluationGoodCount: userData.evaluationGoodCount || 0,
-                    createdAt: userData.createdAt || '',
-                    updatedAt: userData.updatedAt || '',
-                    birthYm: userData.birthYm || '',
-                    isAnonymous: userData.isAnonymous ?? false,
-                    agreedTermsVersion: userData.agreedTermsVersion || 1,
-                  };
-                  setCurrentUser(updatedUser);
-                  const convertedAccountInfo: AccountInfo = {
-                    userId: userData.userId || 0,
-                    penName: userData.penName || '',
-                    nickName: userData.nickName || '',
-                    profileIconImage: userData.profileIconImage || '',
-                    evaluationGoodCount: userData.evaluationGoodCount || 0,
-                    birthYm: parseBirthYmToDate(userData.birthYm),
-                    isAnonymous: userData.isAnonymous || false,
-                    agreedTermsVersion: userData.agreedTermsVersion || 1,
-                  };
-                  setAccountInfo(convertedAccountInfo);
-                  methods.reset({
-                    penName: convertedAccountInfo.penName,
-                    nickName: convertedAccountInfo.nickName,
-                    profileIconImage: convertedAccountInfo.profileIconImage,
-                    birthYm: convertedAccountInfo.birthYm,
-                    isAnonymous: convertedAccountInfo.isAnonymous,
-                    agreedTermsVersion: convertedAccountInfo.agreedTermsVersion,
-                  });
-                }
-              } catch (error) {
-                console.error('アカウント情報の更新に失敗しました:', error);
-              } finally {
-                setIsLoading(false);
-              }
-            }}
+            onClickUpdateAccountInfo={handleUpdateAccountInfo}
             onClickGoToMyPostedNovels={() => {
               // TODO：あとで実装
             }}

@@ -28,31 +28,22 @@ const loadStoredEvaluatedSentenceIds = (): Set<number> => {
 export const NovelViewContainer = () => {
   // URLパラメータを取得
   const { titleId, sentenceId } = useParams<{
-    titleId: string | undefined;
-    sentenceId: string | undefined;
+    titleId?: string;
+    sentenceId?: string;
   }>();
   const navigate = useNavigate();
 
-  // titleId, sentenceIdが未定義または数字でない場合はエラー
-  if (titleId === undefined || sentenceId === undefined) {
-    console.error(
-      'Error: URLパラメータが不足しています（titleId, sentenceId）',
-    );
-    return (
-      <div>エラー: URLパラメータが不足しています（titleId, sentenceId）</div>
-    );
-  }
-  if (!/^\d+$/.test(titleId) || !/^\d+$/.test(sentenceId)) {
-    console.error(
-      'Error: URLパラメータが不正です（titleId, sentenceId は数字である必要があります）',
-    );
-    return (
-      <div>
-        エラー: URLパラメータが不正です（titleId, sentenceId
-        は数字である必要があります）
-      </div>
-    );
-  }
+  const parsedTitleId = useMemo(() => {
+    if (!titleId || !/^\d+$/.test(titleId)) return null;
+    return parseInt(titleId, 10);
+  }, [titleId]);
+
+  const parsedSentenceId = useMemo(() => {
+    if (!sentenceId || !/^\d+$/.test(sentenceId)) return null;
+    return parseInt(sentenceId, 10);
+  }, [sentenceId]);
+
+  const hasInvalidParams = parsedTitleId === null || parsedSentenceId === null;
 
   // MainPanelの評価状態を追跡
   const [hasMainPanelEvaluation, setHasMainPanelEvaluation] = useState(false);
@@ -95,7 +86,7 @@ export const NovelViewContainer = () => {
   const [childrenPanel, setChildrenPanel] = useState<Sentence[]>([]);
 
   // 現在のsentenceIdと関連するパラレル投稿の管理
-  const currentSentenceIdRef = useRef<number>(parseInt(sentenceId!, 10));
+  const currentSentenceIdRef = useRef<number>(parsedSentenceId ?? 0);
 
   // パラレル投稿管理用の状態
   const currentParallelIndexRef = useRef(0);
@@ -120,6 +111,7 @@ export const NovelViewContainer = () => {
   // 投稿データ取得処理
   const fetchSentenceData = useCallback(
     async (targetId: number) => {
+      if (!targetId) return;
       currentSentenceIdRef.current = targetId;
       try {
         const response = await sentencesApi.getSentenceById(targetId);
@@ -185,9 +177,9 @@ export const NovelViewContainer = () => {
 
   // URLが変更されたときにデータを更新（初回も必ず実行）
   useEffect(() => {
-    const targetId = parseInt(sentenceId!, 10);
-    fetchSentenceData(targetId);
-  }, [sentenceId, fetchSentenceData]);
+    if (parsedSentenceId === null) return;
+    fetchSentenceData(parsedSentenceId);
+  }, [parsedSentenceId, fetchSentenceData]);
 
   // 画面更新用の関数
   const handleRefresh = useCallback(() => {
@@ -223,6 +215,12 @@ export const NovelViewContainer = () => {
       setHasMainPanelEvaluation(false);
     }
   }, [mainPanel, evaluatedVersion]);
+
+  useEffect(() => {
+    if (parsedSentenceId !== null) {
+      currentSentenceIdRef.current = parsedSentenceId;
+    }
+  }, [parsedSentenceId]);
 
   // センテンスの評価状態を取得する関数
   const getSentenceEvaluation = useCallback(async (sentenceId: number) => {
@@ -314,31 +312,32 @@ export const NovelViewContainer = () => {
   }, [parallelSentences, updateChildrenPanelForMain]);
 
   const handlePrevParallel = useCallback(async () => {
-    if (parallelSentences.length > 0 && currentParallelIndexRef.current >= 0) {
-      if (currentParallelIndexRef.current === 0) {
-        // 最初のパラレル投稿の場合は元の投稿に戻る
-        if (originalMainSentence) {
-          setMainPanel([originalMainSentence]);
-          currentParallelIndexRef.current = -1;
-
-          // 元のmainパネルのchildrenデータを取得
-          await updateChildrenPanelForMain(
-            originalMainSentence.sentenceId || 0,
-          );
-        }
-      } else {
-        // それ以外の場合は前のパラレル投稿に移動
-        const prevIndex = currentParallelIndexRef.current - 1;
-        const prevSentence = parallelSentences[prevIndex];
-        currentParallelIndexRef.current = prevIndex;
-
-        // MainPanelの内容を更新（URLは変更しない）
-        setMainPanel([prevSentence]);
-
-        // 新しいmainパネルのchildrenデータを取得
-        await updateChildrenPanelForMain(prevSentence.sentenceId || 0);
-      }
+    if (parallelSentences.length === 0 || currentParallelIndexRef.current < 0) {
+      return;
     }
+
+    if (currentParallelIndexRef.current === 0) {
+      // 最初のパラレル投稿の場合は元の投稿に戻る
+      if (originalMainSentence) {
+        setMainPanel([originalMainSentence]);
+        currentParallelIndexRef.current = -1;
+
+        // 元のmainパネルのchildrenデータを取得
+        await updateChildrenPanelForMain(originalMainSentence.sentenceId || 0);
+      }
+      return;
+    }
+
+    // それ以外の場合は前のパラレル投稿に移動
+    const prevIndex = currentParallelIndexRef.current - 1;
+    const prevSentence = parallelSentences[prevIndex];
+    currentParallelIndexRef.current = prevIndex;
+
+    // MainPanelの内容を更新（URLは変更しない）
+    setMainPanel([prevSentence]);
+
+    // 新しいmainパネルのchildrenデータを取得
+    await updateChildrenPanelForMain(prevSentence.sentenceId || 0);
   }, [parallelSentences, originalMainSentence, updateChildrenPanelForMain]);
 
   // 元のMainPanelに戻る関数
@@ -359,7 +358,7 @@ export const NovelViewContainer = () => {
   const handleParentClick = useCallback(
     (clickedSentence: any) => {
       // ParentPanelの投稿をクリックしたときは、その投稿をmainに移動
-      if (!titleId) {
+      if (!parsedTitleId) {
         console.error('Error: titleIdがありません');
         setMainPanel([]);
         setParentPanel([]);
@@ -369,14 +368,14 @@ export const NovelViewContainer = () => {
         setHasMainPanelEvaluation(false);
         return;
       }
-      navigate(`/novelView/${titleId}/${clickedSentence.sentenceId}`);
+      navigate(`/novelView/${parsedTitleId}/${clickedSentence.sentenceId}`);
     },
-    [navigate, titleId],
+    [navigate, parsedTitleId],
   );
   // MainPanelのナビゲーション処理（コンテンツ内での移動）
   const handleChildrenClick = useCallback(
     (clickedSentence: any) => {
-      if (!titleId) {
+      if (!parsedTitleId) {
         console.error('Error: titleIdがありません');
         setMainPanel([]);
         setParentPanel([]);
@@ -396,12 +395,12 @@ export const NovelViewContainer = () => {
             evaluatedSentenceIdsRef.current.has(clickedSentence.sentenceId),
         );
       }
-      navigate(`/novelView/${titleId}/${clickedSentence.sentenceId}`);
+      navigate(`/novelView/${parsedTitleId}/${clickedSentence.sentenceId}`);
       if (typeof window !== 'undefined') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     },
-    [navigate, titleId],
+    [navigate, parsedTitleId],
   );
 
   const handleMainPanelNavigate = useCallback((_direction: 'prev' | 'next') => {
@@ -425,6 +424,18 @@ export const NovelViewContainer = () => {
     parallelSentences.length > 0 && currentParallelIndexRef.current >= 0;
 
   // デバッグ用のログ出力
+  if (hasInvalidParams) {
+    console.error(
+      'Error: URLパラメータが不正です（titleId, sentenceId は数字である必要があります）',
+    );
+    return (
+      <div>
+        エラー: URLパラメータが不正です（titleId, sentenceId
+        は数字である必要があります）
+      </div>
+    );
+  }
+
   return (
     <NovelViewPresentation
       mainPanel={mainPanel}
