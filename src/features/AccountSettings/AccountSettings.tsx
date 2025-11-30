@@ -181,6 +181,16 @@ export const AccountSettings: React.FC = () => {
               // TODO:あとで実装
             }}
             onClickUpdateAccountInfo={async (input) => {
+              const penName = input.penName?.trim();
+              const nickName = input.nickName?.trim();
+              if (!penName || !nickName) {
+                console.error('ペンネームとニックネームは必須です');
+                return;
+              }
+              if (!input.birthYm || Number.isNaN(input.birthYm.getTime())) {
+                console.error('生年月の形式が正しくありません');
+                return;
+              }
               const formatBirthYm = (date: Date) =>
                 `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
                   2,
@@ -188,11 +198,13 @@ export const AccountSettings: React.FC = () => {
                 )}`;
 
               const payload: UpdateUser = {
-                penName: input.penName,
-                nickName: input.nickName,
+                penName,
+                nickName,
                 isAnonymous: input.isAnonymous,
                 profileIconImage:
-                  input.profileIconImage && input.profileIconImage.trim() !== ''
+                  input.profileIconImage &&
+                  input.profileIconImage.trim() !== '' &&
+                  !input.profileIconImage.startsWith('data:')
                     ? input.profileIconImage
                     : undefined,
                 birthYm: formatBirthYm(input.birthYm),
