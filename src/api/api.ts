@@ -2078,10 +2078,10 @@ export const UsersApiFp = function (configuration?: Configuration) {
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<SentenceIdOnly>
     > {
       const localVarAxiosArgs =
-        await localVarAxiosParamCreator.getViewedLastSentenceByMe(
-          titleId,
-          options,
-        );
+        await localVarAxiosParamCreator.getViewedLastSentenceByMe(titleId, {
+          ...options,
+          withCredentials: true,
+        }); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap['UsersApi.getViewedLastSentenceByMe']?.[
@@ -2367,11 +2367,21 @@ export class UsersApi extends BaseAPI {
    */
   public getViewedLastSentenceByMe(
     titleId: number,
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
     options?: RawAxiosRequestConfig,
   ) {
-    return UsersApiFp(this.configuration)
-      .getViewedLastSentenceByMe(titleId, options)
-      .then((request) => request(this.axios, this.basePath));
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      UsersApiFp(this.configuration)
+        .getViewedLastSentenceByMe(titleId, options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
   /**
