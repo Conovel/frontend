@@ -84,6 +84,14 @@ export const NovelViewContainer = () => {
   const [mainPanel, setMainPanel] = useState<Sentence[]>([]);
   const [parentPanel, setParentPanel] = useState<Sentence[]>([]);
   const [childrenPanel, setChildrenPanel] = useState<Sentence[]>([]);
+  const hasParentEvaluation = useMemo(() => {
+    const parent = parentPanel[0];
+    if (!parent?.sentenceId) return true;
+    return (
+      Boolean(parent.userEvaluation) ||
+      evaluatedSentenceIdsRef.current.has(parent.sentenceId)
+    );
+  }, [parentPanel, evaluatedVersion]);
 
   // 現在のsentenceIdと関連するパラレル投稿の管理
   const currentSentenceIdRef = useRef<number>(parsedSentenceId ?? 0);
@@ -443,6 +451,7 @@ export const NovelViewContainer = () => {
       childrenPanel={childrenPanel}
       startIndexParent={0}
       hasMainPanelEvaluation={hasMainPanelEvaluation}
+      hasParentEvaluation={hasParentEvaluation}
       textCount={mainPanel.length + parentPanel.length + childrenPanel.length} // 実際のデータの総数
       onNextParallel={handleNextParallel}
       onPrevParallel={handlePrevParallel}

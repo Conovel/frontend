@@ -12,6 +12,7 @@ interface NovelViewPresentationProps {
   childrenPanel: Sentence[];
   startIndexParent: number;
   hasMainPanelEvaluation: boolean;
+  hasParentEvaluation: boolean;
   textCount: number;
   onNextParallel: () => void;
   onPrevParallel: () => void;
@@ -39,6 +40,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   childrenPanel,
   startIndexParent,
   hasMainPanelEvaluation,
+  hasParentEvaluation,
   textCount,
   onNextParallel,
   onPrevParallel,
@@ -55,6 +57,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   onChildrenClick,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const canAccessChildren = hasMainPanelEvaluation && hasParentEvaluation;
 
   return (
     <Box
@@ -143,10 +146,16 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         variant='contained'
         color='primary'
         onClick={() => setIsModalOpen(true)}
+        disabled={!canAccessChildren}
         sx={{ mb: 2, zIndex: 2, position: 'relative' }}
       >
         投稿を作成
       </Button>
+      {!canAccessChildren && (
+        <Box sx={{ mb: 3, color: 'text.secondary', fontSize: '0.9rem' }}>
+          親投稿を評価すると続きを投稿・閲覧できます。
+        </Box>
+      )}
 
       <EditPost
         open={isModalOpen}
@@ -163,7 +172,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       <ChildrenPanel
         childrenPanel={childrenPanel}
         mainPanel={mainPanel}
-        hasMainPanelEvaluation={hasMainPanelEvaluation}
+        canAccessChildren={canAccessChildren}
         getSentenceEvaluation={getSentenceEvaluation}
         onChildrenClick={onChildrenClick}
       />
