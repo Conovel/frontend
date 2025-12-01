@@ -120,8 +120,8 @@ export const AccountSettingsPresenter = ({
   }, [accountInfo]);
 
   const formatBirthYm = (date: Date) => {
-    if (!date || Number.isNaN(date.getTime())) return '--/--';
-    return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
+    if (!date || Number.isNaN(date.getTime())) return '------';
+    return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(
       2,
       '0',
     )}`;

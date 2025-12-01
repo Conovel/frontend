@@ -28,13 +28,13 @@ type UserLike = (ViewMeUser | ApiUser) & {
 };
 
 const parseBirthYmToDate = (birthYm?: string | null) => {
-  if (!birthYm) return new Date('1900/01');
+  if (!birthYm) return new Date(1900, 0, 1);
   const digits = birthYm.replace(/\D/g, '').slice(0, 6);
-  if (digits.length < 6) return new Date('1900/01');
+  if (digits.length < 6) return new Date(1900, 0, 1);
   const year = digits.slice(0, 4);
   const month = digits.slice(4, 6);
   const parsed = new Date(`${year}/${month}/01`);
-  return Number.isNaN(parsed.getTime()) ? new Date('1900/01') : parsed;
+  return Number.isNaN(parsed.getTime()) ? new Date(1900, 0, 1) : parsed;
 };
 
 const formatBirthYmForPayload = (birthYm: Date | string) => {
@@ -43,7 +43,7 @@ const formatBirthYmForPayload = (birthYm: Date | string) => {
     if (Number.isNaN(birthYm.getTime())) return '';
     const year = birthYm.getFullYear();
     const month = String(birthYm.getMonth() + 1).padStart(2, '0');
-    return `${year}/${month}`;
+    return `${year}${month}`;
   }
 
   // 文字列の場合は数字のみ抽出して6桁に
@@ -54,7 +54,7 @@ const formatBirthYmForPayload = (birthYm: Date | string) => {
   // 月が01-12か検証
   const monthNum = Number(month);
   if (monthNum < 1 || monthNum > 12) return '';
-  return `${year}/${month}`;
+  return `${year}${month}`;
 };
 
 const normalizeProfileIconImage = (value?: string | null) => {
@@ -106,7 +106,7 @@ export const AccountSettings: React.FC = () => {
     nickName: '',
     profileIconImage: '',
     evaluationGoodCount: 100,
-    birthYm: new Date('1900/01'),
+    birthYm: new Date(1900, 0, 1),
     isAnonymous: false,
     agreedTermsVersion: 1,
   });
@@ -157,20 +157,15 @@ export const AccountSettings: React.FC = () => {
   ): Promise<void> => {
     const penName = input.penName?.trim();
     const nickName = input.nickName?.trim();
-    // 生年月は入力値優先。フォーマットできなければ現在の保持値を使う
-    const birthYmNormalized =
-      formatBirthYmForPayload(input.birthYm) ||
-      formatBirthYmForPayload(accountInfo.birthYm);
     if (!penName || !nickName) {
       console.error('ペンネームとニックネームは必須です');
       return;
     }
-    if (!birthYmNormalized) {
-      console.error('生年月の形式が正しくありません');
-      return;
-    }
-    // API仕様に合わせてbirthYmはYYYY/MM文字列で送る
-    const birthYm = birthYmNormalized;
+    // 生年月は入力値優先。整形できなければ現在保持値、最終的にデフォルトを送る
+    const birthYm =
+      formatBirthYmForPayload(input.birthYm) ||
+      formatBirthYmForPayload(accountInfo.birthYm) ||
+      '190001';
 
     // 同意バージョンは必ず1以上
     const agreedTermsVersion = Math.max(

@@ -29,7 +29,7 @@ const mockUser: ViewMeUser = {
   evaluationGoodCount: 0,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
-  birthYm: '1990/01',
+  birthYm: '199001',
   isAnonymous: false,
   agreedTermsVersion: 1,
 };

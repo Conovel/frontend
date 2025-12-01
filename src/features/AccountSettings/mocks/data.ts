@@ -9,7 +9,7 @@ export const mockUserData: ViewMeUser = {
   evaluationGoodCount: 100,
   createdAt: '2024-01-01T00:00:00Z',
   updatedAt: '2024-01-01T00:00:00Z',
-  birthYm: '1998/02',
+  birthYm: '199802',
   isAnonymous: false,
 };
 

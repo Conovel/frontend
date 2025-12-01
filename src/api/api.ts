@@ -483,7 +483,7 @@ export interface UpdateUser {
    */
   profileIconImage?: string;
   /**
-   * ユーザーの生年月（YYYY/MM）（必須）
+   * ユーザーの生年月（YYYYMM）（必須）
    * @type {string}
    * @memberof UpdateUser
    */
@@ -640,7 +640,7 @@ export interface ViewMeUser {
    */
   updatedAt?: string;
   /**
-   * ユーザーの生年月（YYYY/MM）
+   * ユーザーの生年月（YYYYMM）
    * @type {string}
    * @memberof ViewMeUser
    */
