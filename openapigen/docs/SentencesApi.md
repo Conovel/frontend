@@ -54,7 +54,7 @@ No authorization required
 
 # **postSentence**
 
-> ViewSentence postSentence(postSentence)
+> SentenceIdOnly postSentence(postSentence)
 
 ### Example
 
@@ -77,7 +77,7 @@ const { status, data } = await apiInstance.postSentence(postSentence);
 
 ### Return type
 
-**ViewSentence**
+**SentenceIdOnly**
 
 ### Authorization
 

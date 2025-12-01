@@ -2,13 +2,10 @@
 
 ## Properties
 
-| Name          | Type                                            | Description | Notes                             |
-| ------------- | ----------------------------------------------- | ----------- | --------------------------------- |
-| **error**     | [**ErrorResponseError**](ErrorResponseError.md) |             | [optional] [default to undefined] |
-| **main**      | [**Sentence**](Sentence.md)                     |             | [optional] [default to undefined] |
-| **parent**    | [**Sentence**](Sentence.md)                     |             | [optional] [default to undefined] |
-| **parallels** | [**Array&lt;Sentence&gt;**](Sentence.md)        |             | [optional] [default to undefined] |
-| **children**  | [**Array&lt;Sentence&gt;**](Sentence.md)        |             | [optional] [default to undefined] |
+| Name           | Type                                            | Description    | Notes                             |
+| -------------- | ----------------------------------------------- | -------------- | --------------------------------- |
+| **error**      | [**ErrorResponseError**](ErrorResponseError.md) |                | [optional] [default to undefined] |
+| **sentenceId** | **number**                                      | 投稿の一意のid | [optional] [default to undefined] |
 
 ## Example
 
@@ -17,10 +14,7 @@ import { ConflictSentence } from "./api";
 
 const instance: ConflictSentence = {
   error,
-  main,
-  parent,
-  parallels,
-  children,
+  sentenceId,
 };
 ```
 
