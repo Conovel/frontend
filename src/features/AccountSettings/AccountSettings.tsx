@@ -166,6 +166,10 @@ export const AccountSettings: React.FC = () => {
       formatBirthYmForPayload(input.birthYm) ||
       formatBirthYmForPayload(accountInfo.birthYm) ||
       '190001';
+    // 念のためサニタイズして常に数字6桁を送る
+    const sanitizedBirthYm = birthYm.replace(/\D/g, '').slice(0, 6);
+    const normalizedBirthYm =
+      sanitizedBirthYm.length === 6 ? sanitizedBirthYm : '190001';
 
     // 同意バージョンは必ず1以上
     const agreedTermsVersion = Math.max(
@@ -178,7 +182,7 @@ export const AccountSettings: React.FC = () => {
       nickName,
       isAnonymous: input.isAnonymous,
       profileIconImage: normalizeProfileIconImage(input.profileIconImage),
-      birthYm,
+      birthYm: normalizedBirthYm,
       agreedTermsVersion,
     };
 
