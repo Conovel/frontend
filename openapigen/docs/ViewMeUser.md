@@ -11,7 +11,7 @@
 | **evaluationGoodCount** | **number**  | Good評価の数                 | [optional] [default to undefined] |
 | **createdAt**           | **string**  | ユーザーの作成日時           | [optional] [default to undefined] |
 | **updatedAt**           | **string**  | ユーザーの修正日時           | [optional] [default to undefined] |
-| **birthYm**             | **string**  | ユーザーの生年月（YYYY/MM）  | [optional] [default to undefined] |
+| **birthYm**             | **string**  | ユーザーの生年月（YYYYMM）   | [optional] [default to undefined] |
 | **isAnonymous**         | **boolean** | 匿名設定                     | [optional] [default to undefined] |
 | **agreedTermsVersion**  | **number**  | 同意した利用規約のバージョン | [optional] [default to undefined] |
 
