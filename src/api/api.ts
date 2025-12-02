@@ -1576,7 +1576,7 @@ export const SentencesApiFactory = function (
 export class SentencesApi extends BaseAPI {
   /**
    *
-   * @summary IDで投稿を取得（認証あり）
+   * @summary IDで投稿を取得（認証不要・未ログイン閲覧可）
    * @param {number} sentenceId
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -1584,21 +1584,12 @@ export class SentencesApi extends BaseAPI {
    */
   public getSentenceById(
     sentenceId: number,
-    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    _onFailure?: () => Promise<void>, // 非認証化に合わせて未使用
     options?: RawAxiosRequestConfig,
   ) {
-    // withAuthを一緒に実行（手動で修正）
-    const f = () =>
-      SentencesApiFp(this.configuration)
-        .getSentenceById(sentenceId, options)
-        .then((request) => request(this.axios, this.basePath));
-    const r = createRefreshTokenRequest(
-      this.configuration,
-      this.axios,
-      this.basePath,
-      options,
-    );
-    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
+    return SentencesApiFp(this.configuration)
+      .getSentenceById(sentenceId, options)
+      .then((request) => request(this.axios, this.basePath));
   }
 
   /**
