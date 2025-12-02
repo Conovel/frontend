@@ -5,6 +5,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import SentenceCard from '../../components/novelCard/SentenceCard';
 import type { Sentence } from '../../api/api';
 import { NavigationDirection } from '../../types/types';
+import MosaicOverlay from '../../components/mosaicOverlay/MosaicOverlay';
 
 type SentenceWithOptionalUserName = Sentence & {
   userName?: string;
@@ -29,6 +30,7 @@ interface MainPanelProps {
     isGoodEvaluated: boolean;
     isStayEvaluated: boolean;
   }>;
+  isMasked?: boolean;
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
@@ -45,8 +47,22 @@ const MainPanel: React.FC<MainPanelProps> = ({
   canGoPrev = false,
   onEvaluationSuccess,
   getSentenceEvaluation,
+  isMasked = false,
 }) => {
   const [localStartIndex, setLocalStartIndex] = useState(startIndex);
+
+  const getDisplaySentence = (
+    panel: SentenceWithOptionalUserName,
+  ): SentenceWithOptionalUserName => {
+    if (!isMasked) return panel;
+    const full = panel.sentence || '';
+    if (!full) return panel;
+    const visibleLength = Math.max(1, Math.ceil(full.length * 0.6));
+    return {
+      ...panel,
+      sentence: `${full.slice(0, visibleLength)}...`,
+    };
+  };
 
   const handleNavigation = (direction: NavigationDirection) => {
     if (onNavigate) {
@@ -148,13 +164,17 @@ const MainPanel: React.FC<MainPanelProps> = ({
         {mainPanel
           .slice(currentStartIndex, currentStartIndex + visibleTextCount)
           .map((panel) => {
+            const displayPanel = getDisplaySentence(panel);
             return (
-              <SentenceCard
-                key={panel.sentenceId}
-                sentence={panel}
-                getSentenceEvaluation={getSentenceEvaluation}
-                onEvaluationSuccess={onEvaluationSuccess}
-              />
+              <Box key={panel.sentenceId} sx={{ position: 'relative' }}>
+                <SentenceCard
+                  sentence={displayPanel}
+                  getSentenceEvaluation={getSentenceEvaluation}
+                  onEvaluationSuccess={onEvaluationSuccess}
+                  isInteractionDisabled={isMasked}
+                />
+                <MosaicOverlay isVisible={isMasked} coverHeight='60%' />
+              </Box>
             );
           })}
       </Box>

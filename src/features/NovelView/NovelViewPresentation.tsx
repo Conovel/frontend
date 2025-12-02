@@ -32,6 +32,7 @@ interface NovelViewPresentationProps {
     isStayEvaluated: boolean;
   }>;
   onChildrenClick: (clickedSentence: Sentence) => void;
+  isMainPanelMasked: boolean;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -55,6 +56,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   onPostSuccess,
   getSentenceEvaluation,
   onChildrenClick,
+  isMainPanelMasked,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const canAccessChildren = hasMainPanelEvaluation && hasParentEvaluation;
@@ -138,6 +140,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           canGoPrev={canGoPrev}
           onEvaluationSuccess={onEvaluationSuccess}
           getSentenceEvaluation={getSentenceEvaluation}
+          isMasked={isMainPanelMasked}
         />
       </Box>
 

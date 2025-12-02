@@ -48,6 +48,7 @@ export const NovelViewContainer = () => {
   // MainPanelの評価状態を追跡
   const [hasMainPanelEvaluation, setHasMainPanelEvaluation] = useState(false);
   const [evaluatedVersion, setEvaluatedVersion] = useState(0);
+  const [isMainPanelMasked, setIsMainPanelMasked] = useState(true);
 
   const storedEvaluatedIds = useMemo(
     () => loadStoredEvaluatedSentenceIds(),
@@ -187,6 +188,7 @@ export const NovelViewContainer = () => {
   useEffect(() => {
     if (parsedSentenceId === null) return;
     fetchSentenceData(parsedSentenceId);
+    setIsMainPanelMasked(true);
   }, [parsedSentenceId, fetchSentenceData]);
 
   // 画面更新用の関数
@@ -223,6 +225,10 @@ export const NovelViewContainer = () => {
       setHasMainPanelEvaluation(false);
     }
   }, [mainPanel, evaluatedVersion]);
+
+  useEffect(() => {
+    setIsMainPanelMasked(!hasMainPanelEvaluation);
+  }, [hasMainPanelEvaluation]);
 
   useEffect(() => {
     if (parsedSentenceId !== null) {
@@ -466,6 +472,7 @@ export const NovelViewContainer = () => {
       onPostSuccess={handleRefresh}
       getSentenceEvaluation={getSentenceEvaluation}
       onChildrenClick={handleChildrenClick}
+      isMainPanelMasked={isMainPanelMasked}
     />
   );
 };
