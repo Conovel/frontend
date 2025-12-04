@@ -352,11 +352,17 @@ export const NovelViewContainer = () => {
       const nextSentence = parallelSentences[nextIndex];
       currentParallelIndexRef.current = nextIndex;
 
-      // MainPanelの内容を更新（URLは変更しない）
+      // MainPanelの内容を更新（URLも更新）
       setMainPanel([nextSentence]);
 
       // 新しいmainパネルのchildrenデータを取得
       await updateChildrenPanelForMain(nextSentence.sentenceId || 0);
+      if (parsedTitleId) {
+        navigate(`/novelView/${parsedTitleId}/${nextSentence.sentenceId}`);
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
     } else if (
       parallelSentences.length > 0 &&
       currentParallelIndexRef.current === -1
@@ -368,8 +374,14 @@ export const NovelViewContainer = () => {
 
       // 新しいmainパネルのchildrenデータを取得
       await updateChildrenPanelForMain(firstSentence.sentenceId || 0);
+      if (parsedTitleId) {
+        navigate(`/novelView/${parsedTitleId}/${firstSentence.sentenceId}`);
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
     }
-  }, [parallelSentences, updateChildrenPanelForMain]);
+  }, [navigate, parallelSentences, parsedTitleId, updateChildrenPanelForMain]);
 
   const handlePrevParallel = useCallback(async () => {
     if (parallelSentences.length === 0 || currentParallelIndexRef.current < 0) {
@@ -384,6 +396,14 @@ export const NovelViewContainer = () => {
 
         // 元のmainパネルのchildrenデータを取得
         await updateChildrenPanelForMain(originalMainSentence.sentenceId || 0);
+        if (parsedTitleId) {
+          navigate(
+            `/novelView/${parsedTitleId}/${originalMainSentence.sentenceId}`,
+          );
+          if (typeof window !== 'undefined') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }
       }
       return;
     }
@@ -398,7 +418,19 @@ export const NovelViewContainer = () => {
 
     // 新しいmainパネルのchildrenデータを取得
     await updateChildrenPanelForMain(prevSentence.sentenceId || 0);
-  }, [parallelSentences, originalMainSentence, updateChildrenPanelForMain]);
+    if (parsedTitleId) {
+      navigate(`/novelView/${parsedTitleId}/${prevSentence.sentenceId}`);
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  }, [
+    navigate,
+    originalMainSentence,
+    parallelSentences,
+    parsedTitleId,
+    updateChildrenPanelForMain,
+  ]);
 
   // 元のMainPanelに戻る関数
   const handleBackToOriginal = useCallback(async () => {
@@ -411,8 +443,21 @@ export const NovelViewContainer = () => {
 
       // 元のmainパネルのchildrenデータを取得
       await updateChildrenPanelForMain(originalMainSentence.sentenceId || 0);
+      if (parsedTitleId) {
+        navigate(
+          `/novelView/${parsedTitleId}/${originalMainSentence.sentenceId}`,
+        );
+        if (typeof window !== 'undefined') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
     }
-  }, [originalMainSentence, updateChildrenPanelForMain]);
+  }, [
+    navigate,
+    originalMainSentence,
+    parsedTitleId,
+    updateChildrenPanelForMain,
+  ]);
 
   // ParentPanelがクリックされたときのハンドラー
   const handleParentClick = useCallback(
