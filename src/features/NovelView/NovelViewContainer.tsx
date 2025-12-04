@@ -196,8 +196,25 @@ export const NovelViewContainer = () => {
       };
 
       try {
-        const response = await sentencesApi.getSentenceById(targetId);
-        applyResponse(response?.data);
+        const hasToken =
+          typeof window !== 'undefined' &&
+          Boolean(
+            localStorage.getItem('accessToken') ||
+              sessionStorage.getItem('accessToken'),
+          );
+        if (hasToken) {
+          const response = await sentencesApi.getSentenceById(targetId);
+          applyResponse(response?.data);
+          return;
+        }
+
+        // 未ログイン時は最初から公開APIで取得
+        const publicResponse = await publicSentencesApi.getSentenceById(
+          targetId,
+          undefined,
+          { withCredentials: false },
+        );
+        applyResponse(publicResponse?.data, { forceMask: true });
       } catch (error) {
         const axiosError = error as AxiosError;
         const shouldTryPublic =

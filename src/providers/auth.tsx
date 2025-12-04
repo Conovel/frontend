@@ -69,6 +69,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const fetchCurrentUserId = useCallback(async () => {
+    const hasToken =
+      typeof window !== 'undefined' &&
+      Boolean(
+        localStorage.getItem('accessToken') ||
+          sessionStorage.getItem('accessToken'),
+      );
+    if (!hasToken && !(import.meta.env.DEV && allowMockAuth)) {
+      return;
+    }
     try {
       const response = await usersApi.getUserByMe(async () => {
         // jwt, refresh両方失敗時にはログイン画面へリダイレクト
