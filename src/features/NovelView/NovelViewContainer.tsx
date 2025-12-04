@@ -4,8 +4,18 @@ import { useParams, useNavigate } from 'react-router';
 import { SentencesApi } from '../../api/api';
 import type { Sentence } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
+import { Configuration } from '../../api/configuration';
+import type { AxiosError } from 'axios';
 
 const sentencesApi = new SentencesApi(axiosConfig);
+const publicSentencesApi = new SentencesApi(
+  new Configuration({
+    basePath: import.meta.env.VITE_API_BASE_URL,
+    baseOptions: {
+      withCredentials: false,
+    },
+  }),
+);
 const EVALUATED_STORAGE_KEY = 'novelViewEvaluatedSentenceIds';
 
 const loadStoredEvaluatedSentenceIds = (): Set<number> => {
@@ -104,37 +114,49 @@ export const NovelViewContainer = () => {
     useState<Sentence | null>(null);
 
   // Sentence型への変換
-  const convertToSentence = (apiSentence: any): Sentence => ({
-    sentenceId: apiSentence.sentenceId,
-    sentence: apiSentence.sentence,
-    sentenceUserId: apiSentence.sentenceUserId,
-    sentencePenName: apiSentence.sentencePenName,
-    profileIconImage: apiSentence.profileIconImage || '',
-    evaluationGoodCount: apiSentence.evaluationGoodCount || 0,
-    evaluationStayCount: apiSentence.evaluationStayCount || 0,
-    userEvaluation: apiSentence.userEvaluation || null,
-    createdAt: apiSentence.createdAt,
-    updatedAt: apiSentence.updatedAt,
-  });
+  const convertToSentence = useCallback(
+    (apiSentence: any): Sentence => ({
+      sentenceId: apiSentence.sentenceId,
+      sentence: apiSentence.sentence,
+      sentenceUserId: apiSentence.sentenceUserId,
+      sentencePenName: apiSentence.sentencePenName,
+      profileIconImage: apiSentence.profileIconImage || '',
+      evaluationGoodCount: apiSentence.evaluationGoodCount || 0,
+      evaluationStayCount: apiSentence.evaluationStayCount || 0,
+      userEvaluation: apiSentence.userEvaluation || null,
+      createdAt: apiSentence.createdAt,
+      updatedAt: apiSentence.updatedAt,
+    }),
+    [],
+  );
 
   // 投稿データ取得処理
   const fetchSentenceData = useCallback(
     async (targetId: number) => {
       if (!targetId) return;
       currentSentenceIdRef.current = targetId;
-      try {
-        const response = await sentencesApi.getSentenceById(targetId);
-        if (!response || !response.data) {
+
+      const applyResponse = (data: any, { forceMask = false } = {}) => {
+        if (!data?.main) {
           throw new Error('No data received from API');
         }
-        const data = response.data;
 
         if (data.main) setMainPanel([convertToSentence(data.main)]);
+        else setMainPanel([]);
         if (data.parent) setParentPanel([convertToSentence(data.parent)]);
         else setParentPanel([]);
-        if (data.parallels && data.parallels.length > 0)
-          setParallelSentences(data.parallels.map(convertToSentence));
-        else setParallelSentences([]);
+        if (data.parallels && data.parallels.length > 0) {
+          const parallels = data.parallels.map(convertToSentence);
+          setParallelSentences(parallels);
+          const currentIndex = parallels.findIndex(
+            (p: Sentence) => p.sentenceId === targetId,
+          );
+          currentParallelIndexRef.current =
+            currentIndex >= 0 ? currentIndex : -1;
+        } else {
+          setParallelSentences([]);
+          currentParallelIndexRef.current = -1;
+        }
         if (data.children && data.children.length > 0)
           setChildrenPanel(data.children.map(convertToSentence));
         else setChildrenPanel([]);
@@ -142,14 +164,6 @@ export const NovelViewContainer = () => {
         if (data.main) {
           const currentMainSentence = convertToSentence(data.main);
           setOriginalMainSentence(currentMainSentence);
-          if (data.parallels) {
-            const parallels = data.parallels.map(convertToSentence);
-            const currentIndex = parallels.findIndex(
-              (p: Sentence) => p.sentenceId === targetId,
-            );
-            currentParallelIndexRef.current =
-              currentIndex >= 0 ? currentIndex : -1;
-          }
 
           if (data.main.userEvaluation && data.main.sentenceId) {
             markSentenceAsEvaluated(data.main.sentenceId);
@@ -171,8 +185,40 @@ export const NovelViewContainer = () => {
               }
             });
           }
+        } else {
+          setOriginalMainSentence(null);
         }
+
+        if (forceMask) {
+          setHasMainPanelEvaluation(false);
+          setIsMainPanelMasked(true);
+        }
+      };
+
+      try {
+        const response = await sentencesApi.getSentenceById(targetId);
+        applyResponse(response?.data);
       } catch (error) {
+        const axiosError = error as AxiosError;
+        const shouldTryPublic =
+          axiosError.response?.status === 401 ||
+          axiosError.response === undefined;
+        if (shouldTryPublic) {
+          try {
+            const response = await publicSentencesApi.getSentenceById(
+              targetId,
+              undefined,
+              { withCredentials: false },
+            );
+            applyResponse(response?.data, { forceMask: true });
+            return;
+          } catch (publicError) {
+            console.error(
+              'Error fetching sentence data (public):',
+              publicError,
+            );
+          }
+        }
         console.error('Error fetching sentence data:', error);
         setMainPanel([]);
         setParentPanel([]);
@@ -181,7 +227,7 @@ export const NovelViewContainer = () => {
         setOriginalMainSentence(null);
       }
     },
-    [markSentenceAsEvaluated],
+    [convertToSentence, markSentenceAsEvaluated],
   );
 
   // URLが変更されたときにデータを更新（初回も必ず実行）
