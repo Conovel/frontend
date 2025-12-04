@@ -1469,10 +1469,7 @@ export const SentencesApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.getSentenceById(
         sentenceId,
-        {
-          ...options,
-          withCredentials: true,
-        },
+        options,
       ); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
