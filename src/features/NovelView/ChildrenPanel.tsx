@@ -138,69 +138,56 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   const showCarousel = childrenPanel && childrenPanel.length > 0;
   const showNavigation = childrenPanel.length > 1;
 
+  if (!showCarousel) return null;
+
   return (
     <Box sx={mainBoxStyle}>
       <Box sx={innerBoxStyle}>
-        {showCarousel ? (
-          <Carousel
-            autoPlay={false}
-            index={activeIndex}
-            onChange={handleCarouselChange}
-            fullHeightHover={false}
-            navButtonsProps={{
-              style: carouselNavButtonStyle,
-            }}
-            navButtonsWrapperProps={{
-              style: {
-                position: 'absolute',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                zIndex: 10,
-              },
-            }}
-            NextIcon={<KeyboardArrowRightIcon />}
-            PrevIcon={<KeyboardArrowLeftIcon />}
-            navButtonsAlwaysVisible={showNavigation}
-            navButtonsAlwaysInvisible={!showNavigation}
-            indicators={showNavigation}
-            indicatorIconButtonProps={{
-              style: {
-                padding: '5px',
-                color: '#BDBDBD',
-                margin: '0 2px',
-              },
-            }}
-            activeIndicatorIconButtonProps={{
-              style: {
-                color: '#1976d2',
-              },
-            }}
-            indicatorContainerProps={{
-              style: {
-                position: 'absolute',
-                bottom: '10px',
-                zIndex: 15,
-                textAlign: 'center',
-                width: '100%',
-              },
-            }}
-          >
-            {childrenPanel.map(renderNovelCard)}
-          </Carousel>
-        ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-              color: 'text.secondary',
-              fontSize: '0.875rem',
-            }}
-          >
-            まだ続きの投稿がありません
-          </Box>
-        )}
+        <Carousel
+          autoPlay={false}
+          index={activeIndex}
+          onChange={handleCarouselChange}
+          fullHeightHover={false}
+          navButtonsProps={{
+            style: carouselNavButtonStyle,
+          }}
+          navButtonsWrapperProps={{
+            style: {
+              position: 'absolute',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 10,
+            },
+          }}
+          NextIcon={<KeyboardArrowRightIcon />}
+          PrevIcon={<KeyboardArrowLeftIcon />}
+          navButtonsAlwaysVisible={showNavigation}
+          navButtonsAlwaysInvisible={!showNavigation}
+          indicators={showNavigation}
+          indicatorIconButtonProps={{
+            style: {
+              padding: '5px',
+              color: '#BDBDBD',
+              margin: '0 2px',
+            },
+          }}
+          activeIndicatorIconButtonProps={{
+            style: {
+              color: '#1976d2',
+            },
+          }}
+          indicatorContainerProps={{
+            style: {
+              position: 'absolute',
+              bottom: '10px',
+              zIndex: 15,
+              textAlign: 'center',
+              width: '100%',
+            },
+          }}
+        >
+          {childrenPanel.map(renderNovelCard)}
+        </Carousel>
       </Box>
 
       <EditPost
