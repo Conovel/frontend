@@ -1469,7 +1469,11 @@ export const SentencesApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.getSentenceById(
         sentenceId,
-        options,
+        // options,
+        {
+          ...options,
+          withCredentials: true,
+        },
       ); // 認証時にクッキーを送る（手動で修正）
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
@@ -1573,7 +1577,7 @@ export const SentencesApiFactory = function (
 export class SentencesApi extends BaseAPI {
   /**
    *
-   * @summary IDで投稿を取得（認証不要・未ログイン閲覧可）
+   * @summary IDで投稿を取得（認証あり）
    * @param {number} sentenceId
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -1581,12 +1585,25 @@ export class SentencesApi extends BaseAPI {
    */
   public getSentenceById(
     sentenceId: number,
-    _onFailure?: () => Promise<void>, // 非認証化に合わせて未使用
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
     options?: RawAxiosRequestConfig,
   ) {
-    return SentencesApiFp(this.configuration)
-      .getSentenceById(sentenceId, options)
-      .then((request) => request(this.axios, this.basePath));
+    // return SentencesApiFp(this.configuration)
+    //   .getSentenceById(sentenceId, options)
+    //   .then((request) => request(this.axios, this.basePath));
+    
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      SentencesApiFp(this.configuration)
+        .getSentenceById(sentenceId, options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
   }
 
   /**
