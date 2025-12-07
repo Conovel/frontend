@@ -9,7 +9,7 @@ import type { AxiosError } from 'axios';
 
 import { UsersApi, AuthApi, type ErrorResponse } from '../api/api';
 import { axiosConfig } from '../axiosConfig';
-import { useNavigate, useLocation, useSearchParams } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 
 // 型定義
 export interface User {
@@ -52,7 +52,6 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const navigate = useNavigate();
-  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const allowMockAuth = import.meta.env.VITE_USE_MOCK_AUTH === 'true';
 
@@ -69,15 +68,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const fetchCurrentUserId = useCallback(async () => {
-    const hasToken =
-      typeof window !== 'undefined' &&
-      Boolean(
-        localStorage.getItem('accessToken') ||
-          sessionStorage.getItem('accessToken'),
-      );
-    if (!hasToken && !(import.meta.env.DEV && allowMockAuth)) {
-      return;
-    }
     try {
       const response = await usersApi.getUserByMe(async () => {
         // jwt, refresh両方失敗時にはログイン画面へリダイレクト
@@ -113,9 +103,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [navigate]);
 
   useEffect(() => {
-    // 初期化時に現在のユーザー情報を取得
+    // 初回マウント時（リロード時）のみユーザー情報を取得
     fetchCurrentUserId();
-  }, [fetchCurrentUserId]);
+  }, []);
 
   useEffect(() => {
     // OAuth認証後のリダイレクト時にURLパラメータを処理
@@ -128,13 +118,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setSearchParams({});
     }
   }, [searchParams, setSearchParams]);
-
-  useEffect(() => {
-    // /accountページへの遷移時にユーザー情報を再取得
-    if (location.pathname === '/account' && !currentUser) {
-      fetchCurrentUserId();
-    }
-  }, [currentUser, fetchCurrentUserId, location.pathname]);
 
   return (
     <AuthContext.Provider value={{ logout, currentUser, setCurrentUser }}>
