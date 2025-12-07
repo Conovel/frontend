@@ -51,19 +51,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
 }) => {
   const [localStartIndex, setLocalStartIndex] = useState(startIndex);
 
-  const getDisplaySentence = (
-    panel: SentenceWithOptionalUserName,
-  ): SentenceWithOptionalUserName => {
-    if (!isMasked) return panel;
-    const full = panel.sentence || '';
-    if (!full) return panel;
-    const visibleLength = Math.max(1, Math.ceil(full.length * 0.6));
-    return {
-      ...panel,
-      sentence: `${full.slice(0, visibleLength)}...`,
-    };
-  };
-
   const handleNavigation = (direction: NavigationDirection) => {
     if (onNavigate) {
       onNavigate(direction);
@@ -164,11 +151,10 @@ const MainPanel: React.FC<MainPanelProps> = ({
         {mainPanel
           .slice(currentStartIndex, currentStartIndex + visibleTextCount)
           .map((panel) => {
-            const displayPanel = getDisplaySentence(panel);
             return (
               <Box key={panel.sentenceId} sx={{ position: 'relative' }}>
                 <SentenceCard
-                  sentence={displayPanel}
+                  sentence={panel}
                   getSentenceEvaluation={getSentenceEvaluation}
                   onEvaluationSuccess={onEvaluationSuccess}
                   isInteractionDisabled={isMasked}
