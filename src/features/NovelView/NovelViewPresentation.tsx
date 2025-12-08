@@ -5,7 +5,7 @@ import MainPanel from './MainPanel';
 import ChildrenPanel from './ChildrenPanel';
 import type { Sentence } from '../../api/api';
 import { EditPost } from '../EditPost';
-
+import { useAuth } from '../../providers/auth';
 interface NovelViewPresentationProps {
   mainPanel: Sentence[];
   parentPanel: Sentence[];
@@ -59,7 +59,10 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   isMainPanelMasked,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { currentUser } = useAuth();
+  const hasCurrentUser = currentUser?.userId;
   const canAccessChildren = hasMainPanelEvaluation && hasParentEvaluation;
+  const restricted = !hasCurrentUser || !canAccessChildren;
 
   return (
     <Box
@@ -149,14 +152,15 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         variant='contained'
         color='primary'
         onClick={() => setIsModalOpen(true)}
-        disabled={!canAccessChildren}
+        disabled={restricted}
         sx={{ mb: 2, zIndex: 2, position: 'relative' }}
       >
         投稿を作成
       </Button>
-      {!canAccessChildren && (
+      {restricted && (
         <Box sx={{ mb: 3, color: 'text.secondary', fontSize: '0.9rem' }}>
-          親投稿を評価すると続きを投稿・閲覧できます。
+          {!hasCurrentUser ? 'ログインすると続きを投稿・閲覧できます。' :
+          '親投稿を評価すると続きを投稿・閲覧できます。'}
         </Box>
       )}
 
