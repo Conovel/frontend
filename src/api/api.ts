@@ -59,29 +59,11 @@ export interface ConflictSentence {
    */
   error?: ErrorResponseError;
   /**
-   *
-   * @type {Sentence}
+   * 投稿の一意のid
+   * @type {number}
    * @memberof ConflictSentence
    */
-  main?: Sentence;
-  /**
-   *
-   * @type {Sentence}
-   * @memberof ConflictSentence
-   */
-  parent?: Sentence;
-  /**
-   *
-   * @type {Array<Sentence>}
-   * @memberof ConflictSentence
-   */
-  parallels?: Array<Sentence>;
-  /**
-   *
-   * @type {Array<Sentence>}
-   * @memberof ConflictSentence
-   */
-  children?: Array<Sentence>;
+  sentenceId?: number;
 }
 /**
  *
@@ -452,6 +434,19 @@ export const SentenceUserEvaluationEnum = {
 export type SentenceUserEvaluationEnum =
   (typeof SentenceUserEvaluationEnum)[keyof typeof SentenceUserEvaluationEnum];
 
+/**
+ *
+ * @export
+ * @interface SentenceIdOnly
+ */
+export interface SentenceIdOnly {
+  /**
+   * 投稿の一意のid
+   * @type {number}
+   * @memberof SentenceIdOnly
+   */
+  sentenceId?: number;
+}
 /**
  *
  * @export
@@ -1499,7 +1494,7 @@ export const SentencesApiFp = function (configuration?: Configuration) {
       postSentence: PostSentence,
       options?: RawAxiosRequestConfig,
     ): Promise<
-      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<ViewSentence>
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<SentenceIdOnly>
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.postSentence(
         postSentence,
@@ -1560,7 +1555,7 @@ export const SentencesApiFactory = function (
     postSentence(
       postSentence: PostSentence,
       options?: RawAxiosRequestConfig,
-    ): AxiosPromise<ViewSentence> {
+    ): AxiosPromise<SentenceIdOnly> {
       return localVarFp
         .postSentence(postSentence, options)
         .then((request) => request(axios, basePath));
@@ -1814,6 +1809,52 @@ export const UsersApiAxiosParamCreator = function (
     },
     /**
      *
+     * @summary 小説の中で自分自身が最後に閲覧した投稿のIDを取得（認証あり）
+     * @param {number} titleId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getViewedLastSentenceByMe: async (
+      titleId: number,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'titleId' is not null or undefined
+      assertParamExists('getViewedLastSentenceByMe', 'titleId', titleId);
+      const localVarPath = `/users/me/viewedLastSentence/{titleId}`.replace(
+        `{${'titleId'}}`,
+        encodeURIComponent(String(titleId)),
+      );
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'GET',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
      * @summary 自分自身が閲覧している小説リストを取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2030,6 +2071,37 @@ export const UsersApiFp = function (configuration?: Configuration) {
     },
     /**
      *
+     * @summary 小説の中で自分自身が最後に閲覧した投稿のIDを取得（認証あり）
+     * @param {number} titleId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getViewedLastSentenceByMe(
+      titleId: number,
+      options?: RawAxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<SentenceIdOnly>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.getViewedLastSentenceByMe(titleId, {
+          ...options,
+          withCredentials: true,
+        }); // 認証時にクッキーを送る（手動で修正）
+      const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+      const localVarOperationServerBasePath =
+        operationServerMap['UsersApi.getViewedLastSentenceByMe']?.[
+          localVarOperationServerIndex
+        ]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, localVarOperationServerBasePath || basePath);
+    },
+    /**
+     *
      * @summary 自分自身が閲覧している小説リストを取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2161,6 +2233,21 @@ export const UsersApiFactory = function (
     },
     /**
      *
+     * @summary 小説の中で自分自身が最後に閲覧した投稿のIDを取得（認証あり）
+     * @param {number} titleId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getViewedLastSentenceByMe(
+      titleId: number,
+      options?: RawAxiosRequestConfig,
+    ): AxiosPromise<SentenceIdOnly> {
+      return localVarFp
+        .getViewedLastSentenceByMe(titleId, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     *
      * @summary 自分自身が閲覧している小説リストを取得（認証あり）
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2265,6 +2352,33 @@ export class UsersApi extends BaseAPI {
     const f = () =>
       UsersApiFp(this.configuration)
         .getUserByMe(options)
+        .then((request) => request(this.axios, this.basePath));
+    const r = createRefreshTokenRequest(
+      this.configuration,
+      this.axios,
+      this.basePath,
+      options,
+    );
+    return withAuth(f, r, onFailure ?? (() => Promise.resolve()));
+  }
+
+  /**
+   *
+   * @summary 小説の中で自分自身が最後に閲覧した投稿のIDを取得（認証あり）
+   * @param {number} titleId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApi
+   */
+  public getViewedLastSentenceByMe(
+    titleId: number,
+    onFailure?: () => Promise<void>, // 認証失敗時の処理（手動で修正）
+    options?: RawAxiosRequestConfig,
+  ) {
+    // withAuthを一緒に実行（手動で修正）
+    const f = () =>
+      UsersApiFp(this.configuration)
+        .getViewedLastSentenceByMe(titleId, options)
         .then((request) => request(this.axios, this.basePath));
     const r = createRefreshTokenRequest(
       this.configuration,
