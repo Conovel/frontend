@@ -34,6 +34,7 @@ interface NovelViewPresentationProps {
   }>;
   onChildrenClick: (clickedSentence: Sentence) => void;
   isMainPanelMasked: boolean;
+  viewedLastSentencePath: string | null;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -58,6 +59,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   getSentenceEvaluation,
   onChildrenClick,
   isMainPanelMasked,
+  viewedLastSentencePath,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { currentUser } = useAuth();
@@ -169,7 +171,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
             component={RouterLink}
             variant='contained'
             color='primary'
-            to='/login'
+            to={!hasCurrentUser ? '/login' : viewedLastSentencePath!}
           >
             続きを読む
           </Button>

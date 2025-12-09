@@ -1,13 +1,15 @@
 import NovelViewPresentation from './NovelViewPresentation';
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { SentencesApi } from '../../api/api';
-import type { Sentence } from '../../api/api';
+import { SentencesApi, UsersApi } from '../../api/api';
+import type { Sentence, SentenceIdOnly } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
 import { Configuration } from '../../api/configuration';
 import type { AxiosError } from 'axios';
 
 const sentencesApi = new SentencesApi(axiosConfig);
+const usersApi = new UsersApi(axiosConfig);
+
 const publicSentencesApi = new SentencesApi(
   new Configuration({
     basePath: import.meta.env.VITE_API_BASE_URL,
@@ -253,6 +255,31 @@ export const NovelViewContainer = () => {
     fetchSentenceData(parsedSentenceId);
     setIsMainPanelMasked(true);
   }, [parsedSentenceId, fetchSentenceData]);
+
+  // 最後に自分が閲覧したセンテンス
+  const [viewedLastSentence, setViewedLastSentence] =
+    useState<SentenceIdOnly | null>(null);
+  // 最後に自分が閲覧したセンテンスを取得
+  const fetchViewedLastSentence = useCallback(
+    async (parsedTitleId: number | null) => {
+      if (!parsedTitleId) {
+        setViewedLastSentence(null);
+        return;
+      }
+      try {
+        const res = await usersApi.getViewedLastSentenceByMe(parsedTitleId);
+        setViewedLastSentence(res?.data ?? null);
+      } catch (e) {
+        setViewedLastSentence(null);
+      }
+    },
+    [usersApi],
+  );
+
+  // titleIdが変わったときに最後に閲覧したセンテンスを取得
+  useEffect(() => {
+    fetchViewedLastSentence(parsedTitleId);
+  }, [parsedTitleId, fetchViewedLastSentence]);
 
   // 画面更新用の関数
   const handleRefresh = useCallback(() => {
@@ -558,6 +585,9 @@ export const NovelViewContainer = () => {
     );
   }
 
+  // viewedLastSentencePathを組み立て
+  const viewedLastSentencePath = `/novelView/${parsedTitleId!}/${viewedLastSentence?.sentenceId ?? 1}`;
+
   return (
     <NovelViewPresentation
       mainPanel={mainPanel}
@@ -581,6 +611,7 @@ export const NovelViewContainer = () => {
       getSentenceEvaluation={getSentenceEvaluation}
       onChildrenClick={handleChildrenClick}
       isMainPanelMasked={isMainPanelMasked}
+      viewedLastSentencePath={viewedLastSentencePath}
     />
   );
 };

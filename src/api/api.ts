@@ -1586,7 +1586,7 @@ export class SentencesApi extends BaseAPI {
     // return SentencesApiFp(this.configuration)
     //   .getSentenceById(sentenceId, options)
     //   .then((request) => request(this.axios, this.basePath));
-    
+
     // withAuthを一緒に実行（手動で修正）
     const f = () =>
       SentencesApiFp(this.configuration)
