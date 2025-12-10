@@ -518,8 +518,9 @@ export const NovelViewContainer = () => {
         return;
       }
       navigate(`/novelView/${parsedTitleId}/${clickedSentence.sentenceId}`);
+      fetchViewedLastSentence(parsedTitleId);
     },
-    [navigate, parsedTitleId],
+    [navigate, parsedTitleId, fetchViewedLastSentence],
   );
   // MainPanelのナビゲーション処理（コンテンツ内での移動）
   const handleChildrenClick = useCallback(
@@ -545,11 +546,12 @@ export const NovelViewContainer = () => {
         );
       }
       navigate(`/novelView/${parsedTitleId}/${clickedSentence.sentenceId}`);
+      fetchViewedLastSentence(parsedTitleId);
       if (typeof window !== 'undefined') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     },
-    [navigate, parsedTitleId],
+    [navigate, parsedTitleId, fetchViewedLastSentence],
   );
 
   const handleMainPanelNavigate = useCallback((_direction: 'prev' | 'next') => {
@@ -585,8 +587,11 @@ export const NovelViewContainer = () => {
     );
   }
 
-  // viewedLastSentencePathを組み立て
-  const viewedLastSentencePath = `/novelView/${parsedTitleId!}/${viewedLastSentence?.sentenceId ?? 1}`;
+  // viewedLastSentencePathを常に最新に保つ
+  const viewedLastSentencePath = useMemo(
+    () => `/novelView/${parsedTitleId!}/${viewedLastSentence?.sentenceId ?? 1}`,
+    [parsedTitleId, viewedLastSentence],
+  );
 
   return (
     <NovelViewPresentation
