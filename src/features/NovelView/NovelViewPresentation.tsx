@@ -18,7 +18,14 @@ interface NovelViewPresentationProps {
   onNextParallel: () => void;
   onPrevParallel: () => void;
   hasParallels: boolean;
-  onParentClick: (clickedSentence: Sentence) => void;
+  onParentClick: (
+    clickedSentence: Sentence,
+    opts: {
+      hasCurrentUser: boolean;
+      canAccessChildren: boolean;
+      viewedLastSentencePath: string;
+    }
+  ) => void;
   onMainPanelNavigate: (direction: 'prev' | 'next') => void;
   onBackToOriginal: () => void;
   isInParallelMode: boolean;
@@ -109,7 +116,13 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
                   parentPanel={novel}
                   startIndex={startIndexParent}
                   textCount={textCount}
-                  onClick={() => onParentClick(novel)}
+                  onClick={() =>
+                    onParentClick(novel, {
+                      hasCurrentUser: !!hasCurrentUser,
+                      canAccessChildren: !!canAccessChildren,
+                      viewedLastSentencePath: viewedLastSentencePath!,
+                    })
+                  }
                   getSentenceEvaluation={getSentenceEvaluation}
                 />
               </Box>

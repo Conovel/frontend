@@ -505,8 +505,18 @@ export const NovelViewContainer = () => {
 
   // ParentPanelがクリックされたときのハンドラー
   const handleParentClick = useCallback(
-    (clickedSentence: any) => {
-      // ParentPanelの投稿をクリックしたときは、その投稿をmainに移動
+    (
+      clickedSentence: any,
+      {
+        hasCurrentUser,
+        canAccessChildren,
+        viewedLastSentencePath,
+      }: {
+        hasCurrentUser: boolean;
+        canAccessChildren: boolean;
+        viewedLastSentencePath: string;
+      }
+    ) => {
       if (!parsedTitleId) {
         console.error('Error: titleIdがありません');
         setMainPanel([]);
@@ -515,6 +525,14 @@ export const NovelViewContainer = () => {
         setParallelSentences([]);
         setOriginalMainSentence(null);
         setHasMainPanelEvaluation(false);
+        return;
+      }
+      if (!hasCurrentUser) {
+        navigate('/login');
+        return;
+      }
+      if (!canAccessChildren) {
+        navigate(viewedLastSentencePath);
         return;
       }
       navigate(`/novelView/${parsedTitleId}/${clickedSentence.sentenceId}`);
