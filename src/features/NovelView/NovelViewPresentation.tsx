@@ -6,7 +6,6 @@ import MainPanel from './MainPanel';
 import ChildrenPanel from './ChildrenPanel';
 import type { Sentence } from '../../api/api';
 import { EditPost } from '../EditPost';
-import { useAuth } from '../../providers/auth';
 interface NovelViewPresentationProps {
   mainPanel: Sentence[];
   parentPanel: Sentence[];
@@ -18,14 +17,7 @@ interface NovelViewPresentationProps {
   onNextParallel: () => void;
   onPrevParallel: () => void;
   hasParallels: boolean;
-  onParentClick: (
-    clickedSentence: Sentence,
-    opts: {
-      hasCurrentUser: boolean;
-      canAccessChildren: boolean;
-      viewedLastSentencePath: string;
-    }
-  ) => void;
+  onParentClick: (clickedSentence: Sentence) => void;
   onMainPanelNavigate: (direction: 'prev' | 'next') => void;
   onBackToOriginal: () => void;
   isInParallelMode: boolean;
@@ -42,6 +34,7 @@ interface NovelViewPresentationProps {
   onChildrenClick: (clickedSentence: Sentence) => void;
   isMainPanelMasked: boolean;
   viewedLastSentencePath: string | null;
+  hasCurrentUser: boolean;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -67,10 +60,9 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   onChildrenClick,
   isMainPanelMasked,
   viewedLastSentencePath,
+  hasCurrentUser,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { currentUser } = useAuth();
-  const hasCurrentUser = currentUser?.userId;
   const canAccessChildren = hasMainPanelEvaluation && hasParentEvaluation;
   const restricted = !hasCurrentUser || !canAccessChildren;
 
@@ -116,13 +108,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
                   parentPanel={novel}
                   startIndex={startIndexParent}
                   textCount={textCount}
-                  onClick={() =>
-                    onParentClick(novel, {
-                      hasCurrentUser: !!hasCurrentUser,
-                      canAccessChildren: !!canAccessChildren,
-                      viewedLastSentencePath: viewedLastSentencePath!,
-                    })
-                  }
+                  onClick={() => onParentClick(novel)}
                   getSentenceEvaluation={getSentenceEvaluation}
                 />
               </Box>

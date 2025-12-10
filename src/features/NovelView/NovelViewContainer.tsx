@@ -1,3 +1,4 @@
+
 import NovelViewPresentation from './NovelViewPresentation';
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router';
@@ -6,6 +7,7 @@ import type { Sentence, SentenceIdOnly } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
 import { Configuration } from '../../api/configuration';
 import type { AxiosError } from 'axios';
+import { useAuth } from '../../providers/auth';
 
 const sentencesApi = new SentencesApi(axiosConfig);
 const usersApi = new UsersApi(axiosConfig);
@@ -38,6 +40,9 @@ const loadStoredEvaluatedSentenceIds = (): Set<number> => {
 };
 
 export const NovelViewContainer = () => {
+  // ユーザー認証判定をContainer側で集約
+  const { currentUser } = useAuth();
+  const hasCurrentUser = !!currentUser?.userId;
   // URLパラメータを取得
   const { titleId, sentenceId } = useParams<{
     titleId?: string;
@@ -259,6 +264,11 @@ export const NovelViewContainer = () => {
   // 最後に自分が閲覧したセンテンス
   const [viewedLastSentence, setViewedLastSentence] =
     useState<SentenceIdOnly | null>(null);
+  // viewedLastSentencePathを常に最新に保つ
+  const viewedLastSentencePath = useMemo(
+    () => `/novelView/${parsedTitleId!}/${viewedLastSentence?.sentenceId ?? 1}`,
+    [parsedTitleId, viewedLastSentence],
+  );
   // 最後に自分が閲覧したセンテンスを取得
   const fetchViewedLastSentence = useCallback(
     async (parsedTitleId: number | null) => {
@@ -505,18 +515,8 @@ export const NovelViewContainer = () => {
 
   // ParentPanelがクリックされたときのハンドラー
   const handleParentClick = useCallback(
-    (
-      clickedSentence: any,
-      {
-        hasCurrentUser,
-        canAccessChildren,
-        viewedLastSentencePath,
-      }: {
-        hasCurrentUser: boolean;
-        canAccessChildren: boolean;
-        viewedLastSentencePath: string;
-      }
-    ) => {
+    (clickedSentence: any) => {
+      const canAccessChildren = hasMainPanelEvaluation && hasParentEvaluation;
       if (!parsedTitleId) {
         console.error('Error: titleIdがありません');
         setMainPanel([]);
@@ -538,7 +538,7 @@ export const NovelViewContainer = () => {
       navigate(`/novelView/${parsedTitleId}/${clickedSentence.sentenceId}`);
       fetchViewedLastSentence(parsedTitleId);
     },
-    [navigate, parsedTitleId, fetchViewedLastSentence],
+    [navigate, parsedTitleId, fetchViewedLastSentence, hasCurrentUser, hasMainPanelEvaluation, hasParentEvaluation, viewedLastSentencePath],
   );
   // MainPanelのナビゲーション処理（コンテンツ内での移動）
   const handleChildrenClick = useCallback(
@@ -605,11 +605,6 @@ export const NovelViewContainer = () => {
     );
   }
 
-  // viewedLastSentencePathを常に最新に保つ
-  const viewedLastSentencePath = useMemo(
-    () => `/novelView/${parsedTitleId!}/${viewedLastSentence?.sentenceId ?? 1}`,
-    [parsedTitleId, viewedLastSentence],
-  );
 
   return (
     <NovelViewPresentation
@@ -635,6 +630,7 @@ export const NovelViewContainer = () => {
       onChildrenClick={handleChildrenClick}
       isMainPanelMasked={isMainPanelMasked}
       viewedLastSentencePath={viewedLastSentencePath}
+      hasCurrentUser={hasCurrentUser}
     />
   );
 };
