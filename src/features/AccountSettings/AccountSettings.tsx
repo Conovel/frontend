@@ -61,8 +61,9 @@ const normalizeProfileIconImage = (value?: string | null) => {
   if (!value) return undefined;
   const trimmed = value.trim();
   if (!trimmed) return undefined;
-  if (trimmed.startsWith('data:')) return undefined;
-  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  // data: URLとhttp(s) URLの両方を許可
+  if (trimmed.startsWith('data:') || /^https?:\/\//i.test(trimmed))
+    return trimmed;
   return undefined;
 };
 

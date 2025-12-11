@@ -115,7 +115,7 @@ export const DeleteAccount = () => {
         </Box>
       </Box>
       {/* モーダルの追加 */}
-      <Modal open={isOpenModal} onClose={toggleModal}>
+      <Modal open={isOpenModal} onClose={toggleModal} sx={{ zIndex: 2100 }}>
         <Box
           sx={{
             position: 'absolute',

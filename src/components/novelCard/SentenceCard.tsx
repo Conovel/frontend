@@ -159,13 +159,25 @@ const SentenceCard = ({
             height: '20vh',
           }}
         >
-          <Avatar
-            sx={{ width: 24, height: 24, zIndex: 2 }}
-            src={avatarSrc}
-            alt={displayName || 'User avatar'}
-          >
-            {avatarText}
-          </Avatar>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Avatar
+              sx={{ width: 24, height: 24, zIndex: 2 }}
+              src={avatarSrc}
+              alt={displayName || 'User avatar'}
+            >
+              {avatarText}
+            </Avatar>
+            {displayName && (
+              <Typography
+                sx={{
+                  fontSize: '0.75rem',
+                  color: '#666',
+                }}
+              >
+                {displayName}
+              </Typography>
+            )}
+          </Box>
           <Typography
             sx={{
               marginTop: '0.5vh',
