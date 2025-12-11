@@ -4,12 +4,8 @@ const basePath = import.meta.env.VITE_API_BASE_URL;
 
 // モック環境での認証トークン設定
 const getAuthToken = () => {
-  // 開発環境では認証をスキップ（バックエンドで認証をスキップするため）
-  if (import.meta.env.DEV) {
-    return ''; // 空文字を返す
-  }
-  // 本番環境では実際のトークンを取得
-  return localStorage.getItem('accessToken') || '';
+  const token = localStorage.getItem('accessToken');
+  return token || '';
 };
 
 export const axiosConfig = new Configuration({

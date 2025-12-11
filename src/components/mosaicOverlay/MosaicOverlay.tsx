@@ -3,9 +3,13 @@ import { Box } from '@mui/material';
 
 interface MosaicOverlayProps {
   isVisible: boolean;
+  coverHeight?: string;
 }
 
-const MosaicOverlay: React.FC<MosaicOverlayProps> = ({ isVisible }) => {
+const MosaicOverlay: React.FC<MosaicOverlayProps> = ({
+  isVisible,
+  coverHeight = '50%',
+}) => {
   if (!isVisible) return null;
 
   return (
@@ -15,7 +19,7 @@ const MosaicOverlay: React.FC<MosaicOverlayProps> = ({ isVisible }) => {
         bottom: 0,
         left: 0,
         right: 0,
-        height: '50%',
+        height: coverHeight,
         background: `
           linear-gradient(
             to bottom,

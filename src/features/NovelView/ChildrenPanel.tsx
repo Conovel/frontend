@@ -54,7 +54,7 @@ const novelCardBoxStyle = {
 interface ChildrenPanelProps {
   childrenPanel: Sentence[];
   mainPanel: Sentence[];
-  hasMainPanelEvaluation: boolean;
+  canAccessChildren: boolean;
   getSentenceEvaluation: (sentenceId: number) => Promise<{
     goodCount: number;
     stayCount: number;
@@ -67,33 +67,17 @@ interface ChildrenPanelProps {
 const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   childrenPanel,
   mainPanel,
-  hasMainPanelEvaluation,
+  canAccessChildren,
   getSentenceEvaluation,
   onChildrenClick,
 }) => {
   const [isEditPostOpen, setIsEditPostOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setActiveIndex(0);
   }, [childrenPanel.length]);
-
-  // 評価状態に応じてカードの展開状態を制御する
-  useEffect(() => {
-    if (hasMainPanelEvaluation) {
-      // 評価が行われた場合はすべてのカードを展開
-      const allCardIds = childrenPanel.map((panel) => panel.sentenceId || 0);
-      setExpandedCards(new Set(allCardIds));
-    } else {
-      // 評価済みのカードのみ展開して閲覧できる状態にする
-      const unlockedIds = childrenPanel
-        .filter((panel) => Boolean(panel.userEvaluation))
-        .map((panel) => panel.sentenceId || 0);
-      setExpandedCards(new Set(unlockedIds));
-    }
-  }, [hasMainPanelEvaluation, childrenPanel]);
 
   const handleCarouselChange = (now?: number) => {
     if (now !== undefined) {
@@ -106,10 +90,9 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   };
 
   const handleCardClick = (panel: Sentence) => {
-    const isUnlocked = hasMainPanelEvaluation || Boolean(panel.userEvaluation);
-    if (!isUnlocked) {
+    if (!canAccessChildren) {
       setError(
-        'メインパネルで評価を行ってから、続きの投稿をクリックしてください',
+        '先に親投稿を評価してください。評価後に続きの投稿を閲覧できます。',
       );
       return;
     }
@@ -117,19 +100,19 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   };
 
   const renderNovelCard = (panel: Sentence) => {
-    const sentenceId = panel.sentenceId || 0;
-    const isExpanded = expandedCards.has(sentenceId);
-    const isUnlocked = hasMainPanelEvaluation || Boolean(panel.userEvaluation);
+    const isUnlocked = canAccessChildren;
 
-    // Create a modified sentence object with shortened text if not expanded
-    const displaySentence = isExpanded
+    // ロック時は本文の60%だけ表示する
+    const displaySentence = isUnlocked
       ? panel
       : {
           ...panel,
-          sentence:
-            (panel.sentence || '').length > 50
-              ? `${(panel.sentence || '').substring(0, 50)}...`
-              : panel.sentence || '',
+          sentence: (() => {
+            const full = panel.sentence || '';
+            if (!full) return '';
+            const visibleLength = Math.max(1, Math.ceil(full.length * 0.6));
+            return `${full.slice(0, visibleLength)}...`;
+          })(),
         };
 
     return (
@@ -155,69 +138,56 @@ const ChildrenPanel: React.FC<ChildrenPanelProps> = ({
   const showCarousel = childrenPanel && childrenPanel.length > 0;
   const showNavigation = childrenPanel.length > 1;
 
+  if (!showCarousel) return null;
+
   return (
     <Box sx={mainBoxStyle}>
       <Box sx={innerBoxStyle}>
-        {showCarousel ? (
-          <Carousel
-            autoPlay={false}
-            index={activeIndex}
-            onChange={handleCarouselChange}
-            fullHeightHover={false}
-            navButtonsProps={{
-              style: carouselNavButtonStyle,
-            }}
-            navButtonsWrapperProps={{
-              style: {
-                position: 'absolute',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                zIndex: 10,
-              },
-            }}
-            NextIcon={<KeyboardArrowRightIcon />}
-            PrevIcon={<KeyboardArrowLeftIcon />}
-            navButtonsAlwaysVisible={showNavigation}
-            navButtonsAlwaysInvisible={!showNavigation}
-            indicators={showNavigation}
-            indicatorIconButtonProps={{
-              style: {
-                padding: '5px',
-                color: '#BDBDBD',
-                margin: '0 2px',
-              },
-            }}
-            activeIndicatorIconButtonProps={{
-              style: {
-                color: '#1976d2',
-              },
-            }}
-            indicatorContainerProps={{
-              style: {
-                position: 'absolute',
-                bottom: '10px',
-                zIndex: 15,
-                textAlign: 'center',
-                width: '100%',
-              },
-            }}
-          >
-            {childrenPanel.map(renderNovelCard)}
-          </Carousel>
-        ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-              color: 'text.secondary',
-              fontSize: '0.875rem',
-            }}
-          >
-            まだ続きの投稿がありません
-          </Box>
-        )}
+        <Carousel
+          autoPlay={false}
+          index={activeIndex}
+          onChange={handleCarouselChange}
+          fullHeightHover={false}
+          navButtonsProps={{
+            style: carouselNavButtonStyle,
+          }}
+          navButtonsWrapperProps={{
+            style: {
+              position: 'absolute',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 10,
+            },
+          }}
+          NextIcon={<KeyboardArrowRightIcon />}
+          PrevIcon={<KeyboardArrowLeftIcon />}
+          navButtonsAlwaysVisible={showNavigation}
+          navButtonsAlwaysInvisible={!showNavigation}
+          indicators={showNavigation}
+          indicatorIconButtonProps={{
+            style: {
+              padding: '5px',
+              color: '#BDBDBD',
+              margin: '0 2px',
+            },
+          }}
+          activeIndicatorIconButtonProps={{
+            style: {
+              color: '#1976d2',
+            },
+          }}
+          indicatorContainerProps={{
+            style: {
+              position: 'absolute',
+              bottom: '10px',
+              zIndex: 15,
+              textAlign: 'center',
+              width: '100%',
+            },
+          }}
+        >
+          {childrenPanel.map(renderNovelCard)}
+        </Carousel>
       </Box>
 
       <EditPost

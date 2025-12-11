@@ -5,6 +5,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import SentenceCard from '../../components/novelCard/SentenceCard';
 import type { Sentence } from '../../api/api';
 import { NavigationDirection } from '../../types/types';
+import MosaicOverlay from '../../components/mosaicOverlay/MosaicOverlay';
 
 type SentenceWithOptionalUserName = Sentence & {
   userName?: string;
@@ -29,6 +30,7 @@ interface MainPanelProps {
     isGoodEvaluated: boolean;
     isStayEvaluated: boolean;
   }>;
+  isMasked?: boolean;
 }
 
 const MainPanel: React.FC<MainPanelProps> = ({
@@ -45,6 +47,7 @@ const MainPanel: React.FC<MainPanelProps> = ({
   canGoPrev = false,
   onEvaluationSuccess,
   getSentenceEvaluation,
+  isMasked = false,
 }) => {
   const [localStartIndex, setLocalStartIndex] = useState(startIndex);
 
@@ -149,12 +152,15 @@ const MainPanel: React.FC<MainPanelProps> = ({
           .slice(currentStartIndex, currentStartIndex + visibleTextCount)
           .map((panel) => {
             return (
-              <SentenceCard
-                key={panel.sentenceId}
-                sentence={panel}
-                getSentenceEvaluation={getSentenceEvaluation}
-                onEvaluationSuccess={onEvaluationSuccess}
-              />
+              <Box key={panel.sentenceId} sx={{ position: 'relative' }}>
+                <SentenceCard
+                  sentence={panel}
+                  getSentenceEvaluation={getSentenceEvaluation}
+                  onEvaluationSuccess={onEvaluationSuccess}
+                  isInteractionDisabled={isMasked}
+                />
+                <MosaicOverlay isVisible={isMasked} coverHeight='60%' />
+              </Box>
             );
           })}
       </Box>

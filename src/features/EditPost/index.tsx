@@ -18,7 +18,7 @@ import { axiosConfig } from '../../axiosConfig';
 interface EditPostProps {
   open: boolean;
   onClose: () => void;
-  onPostSuccess: () => void;
+  onPostSuccess: (newSentenceId: number) => void;
   mainText: string;
   sentenceId: number;
   parentUpdatedAt: string;
@@ -77,7 +77,13 @@ export const EditPost: React.FC<EditPostProps> = ({
         // 成功時の処理
         setShowSuccessMessage(true);
         reset(); // フォームをリセット
-        onPostSuccess(); // 親コンポーネントに成功を通知
+        const newSentenceId = response.data?.sentenceId;
+        if (typeof newSentenceId === 'number') {
+          onPostSuccess(newSentenceId); // 新規投稿idを親に通知
+        } else {
+          setErrorMessage('APIレスポンスに新規投稿IDが含まれていません。');
+          return;
+        }
         onClose(); // モーダルを閉じる
       } else {
         throw new Error('APIレスポンスが成功ステータスではありません');

@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router';
 import { Box, Button } from '@mui/material';
 import ParentPanel from './ParentPanel';
 import MainPanel from './MainPanel';
 import ChildrenPanel from './ChildrenPanel';
 import type { Sentence } from '../../api/api';
 import { EditPost } from '../EditPost';
-
 interface NovelViewPresentationProps {
   mainPanel: Sentence[];
   parentPanel: Sentence[];
   childrenPanel: Sentence[];
   startIndexParent: number;
   hasMainPanelEvaluation: boolean;
+  hasParentEvaluation: boolean;
   textCount: number;
   onNextParallel: () => void;
   onPrevParallel: () => void;
@@ -23,7 +24,7 @@ interface NovelViewPresentationProps {
   canGoNext: boolean;
   canGoPrev: boolean;
   onEvaluationSuccess: () => void;
-  onPostSuccess: () => void;
+  onPostSuccess: (newSentenceId: number) => void;
   getSentenceEvaluation: (sentenceId: number) => Promise<{
     goodCount: number;
     stayCount: number;
@@ -31,6 +32,9 @@ interface NovelViewPresentationProps {
     isStayEvaluated: boolean;
   }>;
   onChildrenClick: (clickedSentence: Sentence) => void;
+  isMainPanelMasked: boolean;
+  viewedLastSentencePath: string | null;
+  hasCurrentUser: boolean;
 }
 
 const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
@@ -39,6 +43,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   childrenPanel,
   startIndexParent,
   hasMainPanelEvaluation,
+  hasParentEvaluation,
   textCount,
   onNextParallel,
   onPrevParallel,
@@ -53,8 +58,13 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   onPostSuccess,
   getSentenceEvaluation,
   onChildrenClick,
+  isMainPanelMasked,
+  viewedLastSentencePath,
+  hasCurrentUser,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const canAccessChildren = hasMainPanelEvaluation && hasParentEvaluation;
+  const restricted = !hasCurrentUser || !canAccessChildren;
 
   return (
     <Box
@@ -135,6 +145,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
           canGoPrev={canGoPrev}
           onEvaluationSuccess={onEvaluationSuccess}
           getSentenceEvaluation={getSentenceEvaluation}
+          isMasked={isMainPanelMasked}
         />
       </Box>
 
@@ -143,10 +154,28 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         variant='contained'
         color='primary'
         onClick={() => setIsModalOpen(true)}
+        disabled={restricted}
         sx={{ mb: 2, zIndex: 2, position: 'relative' }}
       >
         投稿を作成
       </Button>
+      {restricted && (
+        <>
+          <Box sx={{ mb: 3, color: 'text.secondary', fontSize: '0.9rem' }}>
+            {!hasCurrentUser
+              ? 'ログインすると続きを投稿・閲覧できます。'
+              : '親投稿を評価すると続きを投稿・閲覧できます。'}
+          </Box>
+          <Button
+            component={RouterLink}
+            variant='contained'
+            color='primary'
+            to={!hasCurrentUser ? '/login' : viewedLastSentencePath!}
+          >
+            続きを読む
+          </Button>
+        </>
+      )}
 
       <EditPost
         open={isModalOpen}
@@ -163,7 +192,7 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
       <ChildrenPanel
         childrenPanel={childrenPanel}
         mainPanel={mainPanel}
-        hasMainPanelEvaluation={hasMainPanelEvaluation}
+        canAccessChildren={canAccessChildren}
         getSentenceEvaluation={getSentenceEvaluation}
         onChildrenClick={onChildrenClick}
       />
