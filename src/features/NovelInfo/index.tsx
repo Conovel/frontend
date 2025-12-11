@@ -12,6 +12,17 @@ import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { NovelDetail, NovelsApi } from '../../api/api';
 import { axiosConfig } from '../../axiosConfig';
+import { Chips } from '../../components/chips';
+
+const formatDate = (dateString?: string): string => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return dateString;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}/${month}/${day}`;
+};
 
 interface NovelInfoProps {
   open: boolean;
@@ -158,9 +169,9 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
                 sx={{
                   width: 24,
                   height: 24,
-                  backgroundColor: 'white',
+                  bgcolor: 'grey.400',
                 }}
-                src={novel.profileIconImage}
+                src={novel.profileIconImage?.trim() || undefined}
               >
                 {novel.authorPenName?.charAt(0) || 'A'}
               </Avatar>
@@ -168,7 +179,7 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
             </Box>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1.5 }}>
               {novel.titleGenres?.map((genre, index) => (
-                <Box key={index}>{genre}</Box>
+                <Chips key={index} label={genre} />
               ))}
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 1 }}>
@@ -178,7 +189,7 @@ export const NovelInfo = ({ open, onClose, titleId }: NovelInfoProps) => {
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
                 <AccessTimeFilledIcon />
-                {novel.updatedAt}
+                {formatDate(novel.updatedAt)}
               </Typography>
               <Typography sx={{ display: 'flex', alignItems: 'center' }}>
                 <EditNoteIcon />
