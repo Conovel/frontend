@@ -24,7 +24,7 @@ interface NovelViewPresentationProps {
   canGoNext: boolean;
   canGoPrev: boolean;
   onEvaluationSuccess: () => void;
-  onPostSuccess: () => void;
+  onPostSuccess: (newSentenceId: number) => void;
   getSentenceEvaluation: (sentenceId: number) => Promise<{
     goodCount: number;
     stayCount: number;

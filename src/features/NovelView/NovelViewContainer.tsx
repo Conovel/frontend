@@ -1,4 +1,3 @@
-
 import NovelViewPresentation from './NovelViewPresentation';
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router';
@@ -291,10 +290,15 @@ export const NovelViewContainer = () => {
     fetchViewedLastSentence(parsedTitleId);
   }, [parsedTitleId, fetchViewedLastSentence]);
 
-  // 画面更新用の関数
-  const handleRefresh = useCallback(() => {
-    fetchSentenceData(currentSentenceIdRef.current);
-  }, [fetchSentenceData]);
+  // 投稿成功時: 新規投稿idでfetchし、遷移も行う
+  const handlePostSuccess = useCallback(
+    (newSentenceId: number) => {
+      if (!parsedTitleId || !newSentenceId) return;
+      fetchSentenceData(newSentenceId);
+      navigate(`/novelView/${parsedTitleId}/${newSentenceId}`);
+    },
+    [fetchSentenceData, navigate, parsedTitleId],
+  );
 
   // 評価成功時の処理
   const handleEvaluationSuccess = useCallback(() => {
@@ -538,7 +542,15 @@ export const NovelViewContainer = () => {
       navigate(`/novelView/${parsedTitleId}/${clickedSentence.sentenceId}`);
       fetchViewedLastSentence(parsedTitleId);
     },
-    [navigate, parsedTitleId, fetchViewedLastSentence, hasCurrentUser, hasMainPanelEvaluation, hasParentEvaluation, viewedLastSentencePath],
+    [
+      navigate,
+      parsedTitleId,
+      fetchViewedLastSentence,
+      hasCurrentUser,
+      hasMainPanelEvaluation,
+      hasParentEvaluation,
+      viewedLastSentencePath,
+    ],
   );
   // MainPanelのナビゲーション処理（コンテンツ内での移動）
   const handleChildrenClick = useCallback(
@@ -605,7 +617,6 @@ export const NovelViewContainer = () => {
     );
   }
 
-
   return (
     <NovelViewPresentation
       mainPanel={mainPanel}
@@ -625,7 +636,7 @@ export const NovelViewContainer = () => {
       canGoNext={canGoNext}
       canGoPrev={canGoPrev}
       onEvaluationSuccess={handleEvaluationSuccess}
-      onPostSuccess={handleRefresh}
+      onPostSuccess={handlePostSuccess}
       getSentenceEvaluation={getSentenceEvaluation}
       onChildrenClick={handleChildrenClick}
       isMainPanelMasked={isMainPanelMasked}
