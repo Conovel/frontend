@@ -197,7 +197,11 @@ export const NovelViewContainer = () => {
 
         if (forceMask) {
           setHasMainPanelEvaluation(false);
-          setIsMainPanelMasked(true);
+          if (hasParentEvaluation) {
+            setIsMainPanelMasked(false);
+          } else {
+            setIsMainPanelMasked(true);
+          }
         }
       };
 
@@ -303,36 +307,31 @@ export const NovelViewContainer = () => {
   // 評価成功時の処理
   const handleEvaluationSuccess = useCallback(() => {
     const currentMainSentenceId = mainPanel[0]?.sentenceId;
-    markSentenceAsEvaluated(currentMainSentenceId);
-    setHasMainPanelEvaluation(true);
-    if (currentMainSentenceId) {
+    if (typeof currentMainSentenceId === 'number') {
+      markSentenceAsEvaluated(currentMainSentenceId);
+      setHasMainPanelEvaluation(true);
       fetchSentenceData(currentMainSentenceId);
     }
   }, [fetchSentenceData, mainPanel, markSentenceAsEvaluated]);
 
+  // mainの評価状態はマスク制御に使わない（親投稿のみで制御）
   useEffect(() => {
     const currentMainSentence = mainPanel[0];
     if (!currentMainSentence) {
       setHasMainPanelEvaluation(false);
       return;
     }
-    if (currentMainSentence.userEvaluation) {
-      setHasMainPanelEvaluation(true);
-      return;
-    }
-    if (
-      currentMainSentence.sentenceId &&
-      evaluatedSentenceIdsRef.current.has(currentMainSentence.sentenceId)
-    ) {
-      setHasMainPanelEvaluation(true);
-    } else {
-      setHasMainPanelEvaluation(false);
-    }
+    // mainの評価状態はUI表示等で使う場合のみ
+    setHasMainPanelEvaluation(
+      Boolean(currentMainSentence.userEvaluation) ||
+        (typeof currentMainSentence.sentenceId === 'number' &&
+          evaluatedSentenceIdsRef.current.has(currentMainSentence.sentenceId)),
+    );
   }, [mainPanel, evaluatedVersion]);
 
   useEffect(() => {
-    setIsMainPanelMasked(!hasMainPanelEvaluation);
-  }, [hasMainPanelEvaluation]);
+    setIsMainPanelMasked(!hasParentEvaluation);
+  }, [hasParentEvaluation]);
 
   useEffect(() => {
     if (parsedSentenceId !== null) {
