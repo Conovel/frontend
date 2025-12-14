@@ -18,7 +18,7 @@ export const AccountDeleted = () => {
       setCountdown((prev) => prev - 1);
     }, 1000);
     return () => clearTimeout(timer);
-  }, [countdown]); // navigateは安定した関数なので依存配列から削除
+  }, [countdown, navigate]);
 
   return (
     <Box
