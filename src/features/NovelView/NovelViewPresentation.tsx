@@ -176,22 +176,24 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         >
           投稿を作成
         </Button>
+
         {restricted && (
-          <>
-            <Box sx={{ mb: 3, color: 'text.secondary', fontSize: '0.9rem' }}>
-              {!hasCurrentUser
-                ? 'ログインすると続きを投稿・閲覧できます。'
-                : '親投稿を評価すると続きを投稿・閲覧できます。'}
-            </Box>
-            <Button
-              component={RouterLink}
-              variant='contained'
-              color='primary'
-              to={!hasCurrentUser ? '/login' : viewedLastSentencePath!}
-            >
-              続きを読む
-            </Button>
-          </>
+          <Box sx={{ mb: 3, color: 'text.secondary', fontSize: '0.9rem' }}>
+            {!hasCurrentUser
+              ? 'ログインすると続きを投稿・閲覧できます。'
+              : '評価すると続きを投稿・閲覧できます。'}
+          </Box>
+        )}
+
+        {!hasCurrentUser && (
+          <Button
+            component={RouterLink}
+            variant='contained'
+            color='primary'
+            to='/login'
+          >
+            続きを読む
+          </Button>
         )}
 
         <EditPost
