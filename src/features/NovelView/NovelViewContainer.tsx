@@ -136,7 +136,7 @@ export const NovelViewContainer = () => {
           typeof window !== 'undefined' &&
           Boolean(
             localStorage.getItem('accessToken') ||
-              sessionStorage.getItem('accessToken'),
+            sessionStorage.getItem('accessToken'),
           );
         if (hasToken) {
           const response = await sentencesApi.getSentenceById(targetId);

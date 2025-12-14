@@ -6,6 +6,7 @@ import NovelCardContainer from '../../components/novelCard/container';
 import { convertNovelListResponse } from './convert';
 import { axiosConfig } from '../../axiosConfig';
 import { fallbackNovelListData } from './mocks/data';
+import { OGP } from '../../components/ogp';
 
 const novelsApi = new NovelsApi(axiosConfig);
 
@@ -33,6 +34,11 @@ const NovelList = () => {
 
   return (
     <>
+      <OGP
+        title='小説一覧'
+        description='Conovelで公開されている小説の一覧です。気になる小説を見つけて、続きを書いてみましょう。'
+        url='/'
+      />
       <Grid container spacing={2}>
         {responseNovels.map((novel) => (
           <Grid item xs={12} sm={6} md={4} key={novel.titleId}>

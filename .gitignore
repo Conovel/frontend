@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+*.d.ts
+*.tsbuildinfo
 
 # Editor directories and files
 .vscode/*
@@ -52,3 +54,6 @@ coverage/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Local contributor guide drafts
+AGENTS.md

@@ -20,6 +20,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useAuth, type User } from '../../providers/auth';
 import { useNavigate } from 'react-router';
 import type { AxiosError } from 'axios';
+import { OGP } from '../../components/ogp';
 
 type UserLike = (ViewMeUser | ApiUser) & {
   birthYm?: string | null;
@@ -277,47 +278,54 @@ export const AccountSettings: React.FC = () => {
   }
 
   return (
-    <Box
-      sx={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: {
-          xs: '16px', // 450px未満での余白
-          sm: '16px calc((100% - 450px) / 2)', // 450px以上での余白
-        },
-      }}
-    >
-      <Paper
-        elevation={2}
+    <>
+      <OGP
+        title='アカウント設定'
+        description='Conovelのアカウント設定ページです。プロフィールや各種設定を変更できます。'
+        url='/account'
+      />
+      <Box
         sx={{
-          padding: '24px',
-          borderRadius: '8px',
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: {
+            xs: '16px', // 450px未満での余白
+            sm: '16px calc((100% - 450px) / 2)', // 450px以上での余白
+          },
         }}
       >
-        <FormProvider {...methods}>
-          <AccountSettingsPresenter
-            accountInfo={accountInfo}
-            isEdit={false}
-            onChangeEditMode={() => {
-              // TODO:あとで実装
-            }}
-            onClickUpdateAccountInfo={handleUpdateAccountInfo}
-            onClickGoToMyPostedNovels={() => {
-              // TODO：あとで実装
-            }}
-            onClickGoToMyReadingNovels={() => {
-              // TODO：あとで実装
-            }}
-            onClickOpenDeleteAccountModal={() => {
-              // TODO：あとで実装
-            }}
-            isOpenDeleteAccountModal={false}
-            onCloseDeleteAccountModal={() => {
-              // TODO：あとで実装
-            }}
-          />
-        </FormProvider>
-      </Paper>
-    </Box>
+        <Paper
+          elevation={2}
+          sx={{
+            padding: '24px',
+            borderRadius: '8px',
+          }}
+        >
+          <FormProvider {...methods}>
+            <AccountSettingsPresenter
+              accountInfo={accountInfo}
+              isEdit={false}
+              onChangeEditMode={() => {
+                // TODO:あとで実装
+              }}
+              onClickUpdateAccountInfo={handleUpdateAccountInfo}
+              onClickGoToMyPostedNovels={() => {
+                // TODO：あとで実装
+              }}
+              onClickGoToMyReadingNovels={() => {
+                // TODO：あとで実装
+              }}
+              onClickOpenDeleteAccountModal={() => {
+                // TODO：あとで実装
+              }}
+              isOpenDeleteAccountModal={false}
+              onCloseDeleteAccountModal={() => {
+                // TODO：あとで実装
+              }}
+            />
+          </FormProvider>
+        </Paper>
+      </Box>
+    </>
   );
 };
