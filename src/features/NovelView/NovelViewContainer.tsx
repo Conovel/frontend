@@ -180,7 +180,7 @@ export const NovelViewContainer = () => {
         setOriginalMainSentence(null);
       }
     },
-    [convertToSentence],
+    [convertToSentence, hasParentEvaluation],
   );
 
   // URLが変更されたときにデータを更新（初回も必ず実行）
