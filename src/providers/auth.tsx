@@ -104,6 +104,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     // 初回マウント時（リロード時）のみユーザー情報を取得
+    // fetchCurrentUserIdはリロード時のみ実行したいため、依存配列には含めていません（exhaustive-deps無視）
     fetchCurrentUserId();
   }, []);
 
