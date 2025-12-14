@@ -556,7 +556,6 @@ export const NovelViewContainer = () => {
       getSentenceEvaluation={getSentenceEvaluation}
       onChildrenClick={handleChildrenClick}
       isMainPanelMasked={isMainPanelMasked}
-      viewedLastSentencePath={viewedLastSentencePath}
       hasCurrentUser={hasCurrentUser}
     />
   );

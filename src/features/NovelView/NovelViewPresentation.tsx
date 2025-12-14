@@ -34,7 +34,6 @@ interface NovelViewPresentationProps {
   }>;
   onChildrenClick: (clickedSentence: Sentence) => void;
   isMainPanelMasked: boolean;
-  viewedLastSentencePath: string | null;
   hasCurrentUser: boolean;
 }
 
@@ -60,7 +59,6 @@ const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
   getSentenceEvaluation,
   onChildrenClick,
   isMainPanelMasked,
-  viewedLastSentencePath,
   hasCurrentUser,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
