@@ -3,16 +3,42 @@ import LaunchIcon from '@mui/icons-material/Launch';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CloseIcon from '@mui/icons-material/Close';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { UsersApi } from '../../api/api';
+import { axiosConfig } from '../../axiosConfig';
+import { useAuth } from '../../providers/auth';
 
 export const DeleteAccount = () => {
   const navigate = useNavigate();
+  const { logout, setCurrentUser } = useAuth();
+  const usersApi = useMemo(() => new UsersApi(axiosConfig), []);
+
   const [isOpenModal, setIsOpenModal] = useState(false); // モーダルの開閉状態を管理
   const [isChecked, setIsChecked] = useState(false); // チェックボックスの状態を管理
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleDeleteAccount = () => {
-    navigate('/accountDeleted');
+  const handleDeleteAccount = async () => {
+    if (!isChecked || isDeleting) return;
+    setError(null);
+    setIsDeleting(true);
+    try {
+      await usersApi.deleteUserByMe(async () => {
+        await logout();
+        navigate('/login');
+      });
+      await logout();
+      setCurrentUser(null);
+      navigate('/accountDeleted');
+    } catch (err) {
+      console.error('アカウント削除に失敗しました:', err);
+      setError(
+        'アカウント削除に失敗しました。時間をおいて再度お試しください。',
+      );
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const handleGoBack = () => {
@@ -40,6 +66,11 @@ export const DeleteAccount = () => {
       <Typography variant='h4' sx={{ marginBottom: '2vh' }}>
         アカウントの削除
       </Typography>
+      {error && (
+        <Typography color='error' sx={{ mb: 2 }}>
+          {error}
+        </Typography>
+      )}
       <Typography variant='body1' sx={{ marginBottom: '2vh' }}>
         アカウントの削除を行った場合、
         <br />
@@ -84,7 +115,7 @@ export const DeleteAccount = () => {
         </Box>
       </Box>
       {/* モーダルの追加 */}
-      <Modal open={isOpenModal} onClose={toggleModal}>
+      <Modal open={isOpenModal} onClose={toggleModal} sx={{ zIndex: 2100 }}>
         <Box
           sx={{
             position: 'absolute',
@@ -152,6 +183,7 @@ export const DeleteAccount = () => {
           size='large'
           variant='contained'
           onClick={handleDeleteAccount}
+          disabled={!isChecked || isDeleting} // チェックボックスがチェックされていないときは非活性
           sx={{
             backgroundColor: '#F24726',
             '&:hover': {
@@ -160,9 +192,8 @@ export const DeleteAccount = () => {
             color: 'white',
             width: '100%',
           }} // 赤色塗りつぶし
-          disabled={!isChecked} // チェックボックスがチェックされていないときは非活性
         >
-          アカウント削除
+          {isDeleting ? '削除中…' : 'アカウント削除'}
         </Button>
         <Button
           size='large'

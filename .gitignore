@@ -28,14 +28,32 @@ dist-ssr
 # env
 .env
 
-# MSW (Mock Service Worker)
+# TypeScript build files
+*.d.ts
+*.tsbuildinfo
+
+# MSW generated files
 public/mockServiceWorker.js
 
-# Claude Code local settings
-.claude/
+# Coverage reports
+coverage/
+*.lcov
 
-# Serena assistant workspace
+# AI assistant settings
+.claude/
 .serena/
+
+# Editor generated files
+.vscode/settings.json
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Local contributor guide drafts
 AGENTS.md

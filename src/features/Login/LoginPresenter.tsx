@@ -6,12 +6,35 @@ import React from 'react';
 import ToastSnackbar from '../../components/toastSnackbar';
 
 export const LoginPresenter = () => {
-  const authBaseUrl = import.meta.env.VITE_AUTH_BASE_URL;
+  const authBaseUrl =
+    import.meta.env.VITE_AUTH_BASE_URL || import.meta.env.VITE_API_BASE_URL;
   const { currentUser, logout } = useAuth();
+
+  const buildGoogleAuthUrl = () => {
+    if (!authBaseUrl || authBaseUrl === 'dummy') {
+      console.error(
+        'VITE_AUTH_BASE_URL is not configured. Set it to the backend origin hosting /auth/google_oauth2.',
+      );
+      return null;
+    }
+
+    if (!/^https?:\/\//i.test(authBaseUrl)) {
+      console.error(
+        `VITE_AUTH_BASE_URL must be an absolute URL (got "${authBaseUrl}").`,
+      );
+      return null;
+    }
+
+    const normalizedBase = authBaseUrl.replace(/\/+$/, '');
+    return `${normalizedBase}/auth/google_oauth2`;
+  };
 
   const handleGoogleAuth = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    window.location.href = `${authBaseUrl}/auth/google_oauth2`;
+    const googleAuthUrl = buildGoogleAuthUrl();
+    if (!googleAuthUrl) return;
+
+    window.location.href = googleAuthUrl;
   };
 
   return (

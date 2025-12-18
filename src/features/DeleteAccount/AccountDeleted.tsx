@@ -7,18 +7,18 @@ export const AccountDeleted = () => {
   const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prevCountdown) => {
-        if (prevCountdown === 1) {
-          clearInterval(timer);
-          navigate('/');
-        }
-        return prevCountdown - 1;
-      });
+    if (countdown <= 0) {
+      // ナビゲーションを次のティックに遅延させて、レンダリング中に発生しないようにする
+      const navigationTimer = setTimeout(() => {
+        navigate('/');
+      }, 0);
+      return () => clearTimeout(navigationTimer);
+    }
+    const timer = setTimeout(() => {
+      setCountdown((prev) => prev - 1);
     }, 1000);
-
-    return () => clearInterval(timer);
-  }, [navigate]);
+    return () => clearTimeout(timer);
+  }, [countdown, navigate]);
 
   return (
     <Box

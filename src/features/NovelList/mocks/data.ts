@@ -1,24 +1,81 @@
-import { NovelDetail } from '../../../api';
+import { NovelListItem } from '../../../api/api';
 
-export const novels: NovelDetail[] = [
+export const novels: NovelListItem[] = [
   {
-    mainCopy: '目を覚ますとエンジニアに転生していた',
-    overview:
-      '雪山で目を覚ますとエンジニアに転生していた.雪山ながら密林からガジェットを取り寄せて悠々生活・快適ライフを送っている',
+    titleId: 1,
     title:
       '山暮らし聖女の異世界スローライフ～聖女召喚された私，偽物だとして雪山に廃棄されるも，目が覚めるとエンジニアに転生していたことにより本当の「聖女」になる～',
-    isFamous: true,
-    isNew: true,
-    profileIconImage: '/static/images/avatar/1.jpg',
     authorPenName: 'Remy Sharp',
-    titleGenres: ['人気', '新着'],
-    readerCount: 100,
     updatedAt: '2024/08/20',
-    sentenceUserCount: 150,
-    sentenceHierarchyCount: 1000,
     createdAt: new Date().toISOString(),
+    profileIconImage: '/static/images/avatar/1.jpg',
+  },
+];
+
+// NovelList用のモックデータ（src/types/types.tsのNovelListItem型に合わせる）
+export const mockNovelListData: NovelListItem[] = [
+  {
     titleId: 1,
+    title: 'サンプル小説1',
+    famousSentenceText: 'これはサンプル小説1の名言です。',
     authorUserId: 1,
-    evaluationGoodCount: 0,
+    authorPenName: '作者1',
+    profileIconImage: '/path/to/avatar1.jpg',
+    titleGenres: ['ファンタジー', '冒険'],
+    isNew: true,
+    isFamous: true,
+    viewCount: 100,
+    evaluationGoodCount: 50,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
+  },
+  {
+    titleId: 2,
+    title: 'サンプル小説2',
+    famousSentenceText: 'これはサンプル小説2の名言です。',
+    authorUserId: 2,
+    authorPenName: '作者2',
+    profileIconImage: '/path/to/avatar2.jpg',
+    titleGenres: ['SF', 'アクション'],
+    isNew: true,
+    isFamous: false,
+    viewCount: 50,
+    evaluationGoodCount: 25,
+    createdAt: '2024-01-02T00:00:00Z',
+    updatedAt: '2024-01-02T00:00:00Z',
+  },
+];
+
+// エラー時のフォールバックデータ
+export const fallbackNovelListData: NovelListItem[] = [
+  {
+    titleId: 1,
+    title: 'サンプル小説1',
+    famousSentenceText: 'これはサンプル小説1の名言です。',
+    authorUserId: 1,
+    authorPenName: '作者1',
+    profileIconImage: '/path/to/avatar1.jpg',
+    titleGenres: ['ファンタジー', '冒険'],
+    isNew: true,
+    isFamous: true,
+    viewCount: 100,
+    evaluationGoodCount: 50,
+    createdAt: '2024-03-20T00:00:00Z',
+    updatedAt: '2024-03-20T00:00:00Z',
+  },
+  {
+    titleId: 2,
+    title: 'サンプル小説2',
+    famousSentenceText: 'これはサンプル小説2の名言です。',
+    authorUserId: 2,
+    authorPenName: '作者2',
+    profileIconImage: '/path/to/avatar2.jpg',
+    titleGenres: ['SF', 'アクション'],
+    isNew: true,
+    isFamous: false,
+    viewCount: 50,
+    evaluationGoodCount: 25,
+    createdAt: '2024-03-20T00:00:00Z',
+    updatedAt: '2024-03-20T00:00:00Z',
   },
 ];

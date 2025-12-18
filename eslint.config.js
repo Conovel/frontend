@@ -1,44 +1,41 @@
 import js from "@eslint/js";
-import prettier from "eslint-config-prettier";
 import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
-import { ESLint } from "eslint";
-import tseslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
+import tseslint from "typescript-eslint";
 
-export default new ESLint({
-  baseConfig: {
-    ignores: ["dist"],
-    extends: [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:react/recommended",
-      "plugin:react-hooks/recommended",
-      "plugin:react-refresh/recommended",
-      "prettier", // ここに追加済み
+export default tseslint.config(
+  {
+    ignores: [
+      "dist/**",
+      "public/mockServiceWorker.js",
+      "openapigen/**",
+      "src/api/**",
     ],
-    files: ["**/*.{ts,tsx}"],
-    parser: tsParser,
-    parserOptions: {
-      ecmaVersion: 2020,
-      sourceType: "module",
-      ecmaFeatures: {
-        jsx: true,
-      },
-    },
-    settings: {
-      react: {
-        version: "detect",
+  },
+  {
+    files: ["**/*.{ts,tsx,js,jsx}"],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
       },
     },
     plugins: {
-      "@typescript-eslint": tseslint,
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
+      "react-hooks/rules-of-hooks": "warn",
       "react-refresh/only-export-components": [
         "warn",
         { allowConstantExport: true },
@@ -47,4 +44,11 @@ export default new ESLint({
       camelcase: "error",
     },
   },
-});
+  {
+    files: ["**/*.d.ts"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
+    },
+  },
+);

@@ -1,8 +1,11 @@
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
-import { NovelListItem, NovelsApi } from '../../api/api';
+import { NovelsApi } from '../../api/api';
+import type { NovelListItem } from '../../api/api';
 import NovelCardContainer from '../../components/novelCard/container';
+import { convertNovelListResponse } from './convert';
 import { axiosConfig } from '../../axiosConfig';
+import { fallbackNovelListData } from './mocks/data';
 import { OGP } from '../../components/ogp';
 
 const novelsApi = new NovelsApi(axiosConfig);
@@ -15,10 +18,14 @@ const NovelList = () => {
       try {
         const response = await novelsApi.getNovels();
 
-        setResponseNovels(response.data);
+        const convertedResponse: NovelListItem[] = convertNovelListResponse(
+          response.data,
+        );
+        setResponseNovels(convertedResponse);
       } catch (error) {
-        // TODO: エラー時の対応について要検討（エラーがわかるような画面にするかなど）
-        console.error('Error fetching sentences:', error);
+        console.error('Error fetching novels:', error);
+        // エラー時はフォールバックデータを表示
+        setResponseNovels(fallbackNovelListData);
       }
     };
 
@@ -35,12 +42,7 @@ const NovelList = () => {
       <Grid container spacing={2}>
         {responseNovels.map((novel) => (
           <Grid item xs={12} sm={6} md={4} key={novel.titleId}>
-            <NovelCardContainer
-              novel={novel}
-              onClick={() => {
-                // TODO：不要なonClick削除する
-              }}
-            />
+            <NovelCardContainer novel={novel} />
           </Grid>
         ))}
       </Grid>

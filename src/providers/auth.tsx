@@ -1,8 +1,15 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import type { AxiosError } from 'axios';
 
-import { UsersApi, AuthApi } from '../api/api';
+import { UsersApi, AuthApi, type ErrorResponse } from '../api/api';
 import { axiosConfig } from '../axiosConfig';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 
 // 型定義
 export interface User {
@@ -33,6 +40,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const usersApi = new UsersApi(axiosConfig);
 const authApi = new AuthApi(axiosConfig);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -44,6 +52,8 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const allowMockAuth = import.meta.env.VITE_USE_MOCK_AUTH === 'true';
 
   const logout = async () => {
     try {
@@ -51,26 +61,64 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (e) {
       console.error('ログアウトAPI呼び出しでエラー:', e);
     }
+    // ローカルの認証情報を明示的にクリア
+    localStorage.removeItem('accessToken');
+    sessionStorage.removeItem('accessToken');
     setCurrentUser(null);
   };
 
-  const fetchCurrentUserId = async () => {
-    const response = await usersApi.getUserByMe(async () => {
-      // jwt, refresh両方失敗時にはlgin画面へリダイレクト
-      navigate('/login');
-    });
+  const fetchCurrentUserId = useCallback(async () => {
+    try {
+      const response = await usersApi.getUserByMe(async () => {
+        // jwt, refresh両方失敗時にはログイン画面へリダイレクト
+        navigate('/login');
+      });
 
-    // 認証成功時には現在のユーザー情報を設定
-    if (response?.data?.userId) {
-      setCurrentUser(response.data as User);
-      return;
+      // 認証成功時には現在のユーザー情報を設定
+      if (response?.data?.userId) {
+        setCurrentUser(response.data as User);
+        return;
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const apiError = axiosError.response?.data?.error;
+      console.error('ユーザー情報の取得に失敗しました:', apiError ?? error);
+
+      if (import.meta.env.DEV && allowMockAuth) {
+        const mockUser: User = {
+          userId: 1,
+          penName: 'テストユーザー',
+          nickName: 'テスト',
+          profileIconImage: '/path/to/avatar.jpg',
+          evaluationGoodCount: 0,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          birthYm: '199001',
+          isAnonymous: false,
+          agreedTermsVersion: 1,
+        };
+        setCurrentUser(mockUser);
+      }
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
-    // 初期化時に現在のユーザー情報を取得
+    // 初回マウント時（リロード時）のみユーザー情報を取得
+    // fetchCurrentUserIdはリロード時のみ実行したいため、依存配列には含めていません（exhaustive-deps無視）
     fetchCurrentUserId();
   }, []);
+
+  useEffect(() => {
+    // OAuth認証後のリダイレクト時にURLパラメータを処理
+    const message = searchParams.get('message');
+    const messageLevel = searchParams.get('messageLevel');
+
+    if (message) {
+      console.log(`[Auth] ${messageLevel?.toUpperCase()}: ${message}`);
+      // メッセージ表示後、URLをクリーンアップ
+      setSearchParams({});
+    }
+  }, [searchParams, setSearchParams]);
 
   return (
     <AuthContext.Provider value={{ logout, currentUser, setCurrentUser }}>

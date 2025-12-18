@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
@@ -22,6 +22,7 @@ import {
   DialogContentText,
   DialogActions,
 } from '@mui/material';
+import { useNavigate } from 'react-router';
 
 export interface AccountInfo {
   userId: number;
@@ -89,21 +90,65 @@ export const AccountSettingsPresenter = ({
   accountInfo,
   onClickUpdateAccountInfo,
 }: AccountSettingsPresenterProps) => {
+  const navigate = useNavigate();
+
   const [isOpenDeleteAccountModal, setIsOpenDeleteAccountModal] =
-    useState(false); // モーダルの状態を管理
+    useState(false);
 
   const toggleDeleteAccountModal = () => {
-    setIsOpenDeleteAccountModal(!isOpenDeleteAccountModal); // モーダルの開閉を切り替える
+    setIsOpenDeleteAccountModal((prev) => !prev);
   };
 
   const [isEditingPenName, setIsEditingPenName] = useState(false);
   const [isEditingNickName, setIsEditingNickName] = useState(false);
+  const [isEditingBirthYm, setIsEditingBirthYm] = useState(false);
   const [penName, setPenName] = useState(accountInfo.penName);
   const [nickName, setNickName] = useState(accountInfo.nickName);
+  const [isAnonymous, setIsAnonymous] = useState(accountInfo.isAnonymous);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profileIconImage, setProfileIconImage] = useState(
     accountInfo.profileIconImage,
   );
+  const [birthYm, setBirthYm] = useState(accountInfo.birthYm);
+
+  useEffect(() => {
+    setPenName(accountInfo.penName);
+    setNickName(accountInfo.nickName);
+    setProfileIconImage(accountInfo.profileIconImage);
+    setIsAnonymous(accountInfo.isAnonymous);
+    setBirthYm(accountInfo.birthYm);
+  }, [accountInfo]);
+
+  const formatBirthYm = (date: Date) => {
+    if (!date || Number.isNaN(date.getTime())) return '------';
+    return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(
+      2,
+      '0',
+    )}`;
+  };
+
+  const formatBirthYmForInput = (date: Date) => {
+    if (!date || Number.isNaN(date.getTime())) return '';
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      '0',
+    )}`;
+  };
+
+  const handleUpdateAccountInfo = (
+    overrides: Partial<AccountSettingFormType> = {},
+  ) => {
+    const payload: AccountSettingFormType = {
+      penName,
+      nickName,
+      profileIconImage,
+      isAnonymous,
+      birthYm,
+      agreedTermsVersion: accountInfo.agreedTermsVersion,
+      ...overrides,
+    };
+    onClickUpdateAccountInfo(payload);
+  };
 
   const handlePenNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPenName(event.target.value);
@@ -114,14 +159,30 @@ export const AccountSettingsPresenter = ({
   };
 
   const handleSave = () => {
-    onClickUpdateAccountInfo({
-      ...accountInfo,
-      penName,
-      nickName,
-      profileIconImage,
-    });
+    handleUpdateAccountInfo();
     setIsEditingPenName(false);
     setIsEditingNickName(false);
+  };
+
+  const handleBirthYmChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    if (!value) return;
+
+    const parsedDate = new Date(`${value}-01`);
+    if (!Number.isNaN(parsedDate.getTime())) {
+      setBirthYm(parsedDate);
+    }
+  };
+
+  const handleSaveBirthYm = () => {
+    if (!birthYm || Number.isNaN(birthYm.getTime())) return;
+    handleUpdateAccountInfo({ birthYm });
+    setIsEditingBirthYm(false);
+  };
+
+  const handleAnonymousChange = (checked: boolean) => {
+    setIsAnonymous(checked);
+    handleUpdateAccountInfo({ isAnonymous: checked });
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,11 +190,18 @@ export const AccountSettingsPresenter = ({
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target?.result) {
-          setProfileIconImage(e.target.result as string);
+          const image = e.target.result as string;
+          setProfileIconImage(image);
+          handleUpdateAccountInfo({ profileIconImage: image });
         }
       };
       reader.readAsDataURL(event.target.files[0]);
     }
+  };
+
+  const handleGoToDeletePolicy = () => {
+    toggleDeleteAccountModal();
+    navigate('/deleteAccount');
   };
 
   return (
@@ -175,6 +243,11 @@ export const AccountSettingsPresenter = ({
             onClose={() => setIsModalOpen(false)}
             aria-labelledby='modal-modal-title'
             aria-describedby='modal-modal-description'
+            container={() =>
+              typeof document !== 'undefined'
+                ? document.getElementById('root')
+                : null
+            }
           >
             <Box
               sx={{
@@ -242,7 +315,12 @@ export const AccountSettingsPresenter = ({
                 <TextField
                   value={penName}
                   onChange={handlePenNameChange}
-                  onBlur={handleSave}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      handleSave();
+                    }
+                  }}
                 />
               ) : (
                 <Typography sx={{ wordBreak: 'break-word' }}>
@@ -251,7 +329,13 @@ export const AccountSettingsPresenter = ({
               )}
               <IconButton
                 sx={{ padding: 0, width: 'fit-content' }}
-                onClick={() => setIsEditingPenName(!isEditingPenName)}
+                onClick={() => {
+                  if (isEditingPenName) {
+                    handleSave();
+                  } else {
+                    setIsEditingPenName(true);
+                  }
+                }}
               >
                 {isEditingPenName ? (
                   <CheckIcon sx={{ color: 'black' }} />
@@ -281,7 +365,12 @@ export const AccountSettingsPresenter = ({
                 <TextField
                   value={nickName}
                   onChange={handleNickNameChange}
-                  onBlur={handleSave}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      handleSave();
+                    }
+                  }}
                 />
               ) : (
                 <Typography sx={{ wordBreak: 'break-word' }}>
@@ -290,7 +379,13 @@ export const AccountSettingsPresenter = ({
               )}
               <IconButton
                 sx={{ padding: 0, width: 'fit-content' }}
-                onClick={() => setIsEditingNickName(!isEditingNickName)}
+                onClick={() => {
+                  if (isEditingNickName) {
+                    handleSave();
+                  } else {
+                    setIsEditingNickName(true);
+                  }
+                }}
               >
                 {isEditingNickName ? (
                   <CheckIcon sx={{ color: 'black' }} />
@@ -312,9 +407,45 @@ export const AccountSettingsPresenter = ({
             <LabelWithTooltip
               label='生年月'
               hasTooltip
-              tooltipText='生年月は一度登録したら変更できません'
+              tooltipText='生年月は年と月を登録します（後から変更可能です）'
             />
-            <Typography>{`${accountInfo.birthYm.getFullYear()}/${accountInfo.birthYm.getMonth() + 1}`}</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
+              {isEditingBirthYm ? (
+                <TextField
+                  type='month'
+                  value={formatBirthYmForInput(birthYm)}
+                  onChange={handleBirthYmChange}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      handleSaveBirthYm();
+                    }
+                  }}
+                  inputProps={{
+                    max: formatBirthYmForInput(new Date()),
+                  }}
+                  sx={{ minWidth: '180px' }}
+                />
+              ) : (
+                <Typography>{formatBirthYm(birthYm)}</Typography>
+              )}
+              <IconButton
+                sx={{ padding: 0, width: 'fit-content' }}
+                onClick={() => {
+                  if (isEditingBirthYm) {
+                    handleSaveBirthYm();
+                  } else {
+                    setIsEditingBirthYm(true);
+                  }
+                }}
+              >
+                {isEditingBirthYm ? (
+                  <CheckIcon sx={{ color: 'black' }} />
+                ) : (
+                  <EditIcon sx={{ color: 'black' }} />
+                )}
+              </IconButton>
+            </Box>
           </Box>
 
           <Box
@@ -330,7 +461,10 @@ export const AccountSettingsPresenter = ({
               hasTooltip
               tooltipText='匿名設定をONにすると投稿は匿名で表示されます'
             />
-            <AnonymousSwitch defaultChecked={accountInfo.isAnonymous} />
+            <AnonymousSwitch
+              checked={isAnonymous}
+              onChange={(e) => handleAnonymousChange(e.target.checked)}
+            />
           </Box>
 
           <Box
@@ -361,17 +495,16 @@ export const AccountSettingsPresenter = ({
           </Button>
         </Box>
 
-        {/* 削除モーダル */}
+        {/* 削除モーダル（ポリシー確認へ誘導） */}
         <Dialog
           open={isOpenDeleteAccountModal}
           onClose={toggleDeleteAccountModal}
         >
-          <DialogTitle>アカウント削除確認</DialogTitle>
+          <DialogTitle>アカウント削除前の確認</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              本当にアカウントを削除しますか？
-              <br />
-              アカウントを削除した場合、これまでの投稿はすべて匿名になります。
+              アカウント削除にはポリシーへの同意が必要です。
+              同意画面へ進みますか？
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -384,14 +517,10 @@ export const AccountSettingsPresenter = ({
             </Button>
             <Button
               variant='contained'
-              onClick={() => {
-                // アカウント削除処理をここに追加
-                toggleDeleteAccountModal();
-                window.location.href = '/DeleteAccount';
-              }}
+              onClick={handleGoToDeletePolicy}
               color='error'
             >
-              削除
+              同意画面へ
             </Button>
           </DialogActions>
         </Dialog>

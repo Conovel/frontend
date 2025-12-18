@@ -1,77 +1,72 @@
-import React from 'react';
-import { Box, Container } from '@mui/material';
+import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router';
+import { Box, Button } from '@mui/material';
 import ParentPanel from './ParentPanel';
-import ChildrenPanel from './ChildrenPanel';
 import MainPanel from './MainPanel';
-import { mockContainerData } from './mocks/data';
-import { Sentence } from '../../api/api';
+import ChildrenPanel from './ChildrenPanel';
+import type { Sentence } from '../../api/api';
+import { EditPost } from '../EditPost';
 import { OGP } from '../../components/ogp';
-
 interface NovelViewPresentationProps {
   mainPanel: Sentence[];
   parentPanel: Sentence[];
   childrenPanel: Sentence[];
-  start_index_parent: number;
-  setStart_index_parent: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_count_parent: number;
-  setEvaluation_good_count_parent: React.Dispatch<React.SetStateAction<number>>;
-  comment_count_parent: number;
-  setComment_count_parent: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count_parent: number;
-  setEvaluation_stay_count_parent: React.Dispatch<React.SetStateAction<number>>;
-  start_index_children: number;
-  setStart_index_children: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_count_children: number;
-  setEvaluation_good_count_children: React.Dispatch<
-    React.SetStateAction<number>
-  >;
-  comment_count_children: number;
-  setComment_count_children: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count_children: number;
-  setEvaluation_stay_count_children: React.Dispatch<
-    React.SetStateAction<number>
-  >;
-  start_index_main?: number;
-  setStart_index_main?: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_good_count_main: number;
-  setEvaluation_good_count_main: React.Dispatch<React.SetStateAction<number>>;
-  comment_count_main: number;
-  setComment_count_main: React.Dispatch<React.SetStateAction<number>>;
-  evaluation_stay_count_main: number;
-  setEvaluation_stay_count_main: React.Dispatch<React.SetStateAction<number>>;
+  startIndexParent: number;
+  hasMainPanelEvaluation: boolean;
+  hasParentEvaluation: boolean;
   textCount: number;
+  onNextParallel: () => void;
+  onPrevParallel: () => void;
+  hasParallels: boolean;
+  onParentClick: (clickedSentence: Sentence) => void;
+  onMainPanelNavigate: (direction: 'prev' | 'next') => void;
+  onBackToOriginal: () => void;
+  isInParallelMode: boolean;
+  canGoNext: boolean;
+  canGoPrev: boolean;
+  onEvaluationSuccess: () => void;
+  onPostSuccess: (newSentenceId: number) => void;
+  getSentenceEvaluation: (sentenceId: number) => Promise<{
+    goodCount: number;
+    stayCount: number;
+    isGoodEvaluated: boolean;
+    isStayEvaluated: boolean;
+  }>;
+  onChildrenClick: (clickedSentence: Sentence) => void;
+  isMainPanelMasked: boolean;
+  hasCurrentUser: boolean;
 }
 
-export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
-  start_index_parent,
-  setStart_index_parent,
-  comment_count_parent,
-  setComment_count_parent,
-  evaluation_stay_count_parent,
-  setEvaluation_stay_count_parent,
-  start_index_children,
-  setStart_index_children,
-  evaluation_good_count_parent,
-  setEvaluation_good_count_parent,
-  evaluation_good_count_children,
-  setEvaluation_good_count_children,
-  comment_count_children,
-  setComment_count_children,
-  evaluation_stay_count_children,
-  setEvaluation_stay_count_children,
-  evaluation_good_count_main,
-  setEvaluation_good_count_main,
-  comment_count_main,
-  setComment_count_main,
-  evaluation_stay_count_main,
-  setEvaluation_stay_count_main,
+const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
+  mainPanel,
+  parentPanel,
+  childrenPanel,
+  startIndexParent,
+  hasMainPanelEvaluation,
+  hasParentEvaluation,
+  textCount,
+  onNextParallel,
+  onPrevParallel,
+  hasParallels,
+  onParentClick,
+  onMainPanelNavigate,
+  onBackToOriginal,
+  isInParallelMode,
+  canGoNext,
+  canGoPrev,
+  onEvaluationSuccess,
+  onPostSuccess,
+  getSentenceEvaluation,
+  onChildrenClick,
+  isMainPanelMasked,
+  hasCurrentUser,
 }) => {
-  const parentTextCount = 10;
-  const childrenTextCount = 10;
-  const visibleTextCount = 3;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const canAccessChildren = hasMainPanelEvaluation && hasParentEvaluation;
+  const restricted = !hasCurrentUser || !canAccessChildren;
 
   // OGP用のデータを準備
-  const mainSentence = mockContainerData.main[0];
+  const mainSentence = mainPanel[0];
   const novelTitle = `${mainSentence?.sentencePenName || ''}の投稿`;
   const sentencePreview = mainSentence?.sentence
     ? mainSentence.sentence.substring(0, 100) +
@@ -87,82 +82,140 @@ export const NovelViewPresentation: React.FC<NovelViewPresentationProps> = ({
         url={`/novelView`}
         type='article'
       />
-      <Container sx={{ position: 'relative', alignItems: 'center' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          minHeight: '100vh',
+          backgroundColor: '#f5f5f5',
+          position: 'relative',
+          pt: 0,
+          pb: 16,
+        }}
+      >
         <Box
           sx={{
             position: 'absolute',
-            top: '10vh',
-            bottom: '5vh',
             left: '50%',
+            top: 0,
+            bottom: 0,
             width: '2px',
-            backgroundColor: '#000',
-            zIndex: 1,
+            backgroundColor: '#e0e0e0',
+            zIndex: 0,
           }}
-        ></Box>
+        />
+
+        {/* Parent Panel */}
+        {parentPanel.length > 0 && (
+          <Box
+            sx={{
+              mb: 4,
+              width: { xs: '90vw', sm: '82vw', md: '75vw' },
+              maxWidth: '720px',
+              margin: '0 auto',
+            }}
+          >
+            {parentPanel.slice(-1).map((novel, index) => {
+              return (
+                <Box key={index} sx={{ mb: 2 }}>
+                  <ParentPanel
+                    parentPanel={novel}
+                    startIndex={startIndexParent}
+                    textCount={textCount}
+                    onClick={() => onParentClick(novel)}
+                    getSentenceEvaluation={getSentenceEvaluation}
+                  />
+                </Box>
+              );
+            })}
+          </Box>
+        )}
+
+        {/* Main Panel */}
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '20px',
+            mb: 4,
+            width: '100%',
+            maxWidth: {
+              xs: '95vw', // スマホ
+              sm: '90vw', // タブレット
+              md: '800px', // デスクトップ
+            },
+            position: 'relative',
+            margin: '0 auto',
           }}
         >
-          {mockContainerData.parent.map((NovelProps, index) => (
-            <ParentPanel
-              key={index}
-              parentPanel={NovelProps}
-              startIndex={start_index_parent}
-              setStartIndex={setStart_index_parent}
-              visibleTextCount={visibleTextCount}
-              textCount={parentTextCount}
-              evaluation_good_count={evaluation_good_count_parent}
-              setEvaluation_good_count={setEvaluation_good_count_parent}
-              comment_count={comment_count_parent}
-              setComment_count={setComment_count_parent}
-              evaluation_stay_count={evaluation_stay_count_parent}
-              setEvaluation_stay_count={setEvaluation_stay_count_parent}
-            />
-          ))}
           <MainPanel
-            mainPanel={mockContainerData.main[0]}
-            evaluation_good_count={evaluation_good_count_main}
-            setEvaluation_good_count={setEvaluation_good_count_main}
-            comment_count={comment_count_main}
-            setComment_count={setComment_count_main}
-            evaluation_stay_count={evaluation_stay_count_main}
-            setEvaluation_stay_count={setEvaluation_stay_count_main}
-          />
-          <ChildrenPanel
-            mainPanel={[]}
-            childrenPanel={[]}
-            setChildrenPanel={() => {}}
-            setMainPanel={() => {}}
-            novel={{
-              updatedAt: new Date().toISOString(),
-              sentence: '',
-              sentenceId: 0,
-              sentenceUserId: 0,
-              sentencePenName: '',
-              profileIconImage: '',
-              evaluationGoodCount: 0,
-              evaluationStayCount: 0,
-              createdAt: new Date().toISOString(),
-            }}
-            onClick={() => {}}
-            textIndex={0}
-            startIndex={start_index_children}
-            setStartIndex={setStart_index_children}
-            visibleTextCount={visibleTextCount}
-            textCount={childrenTextCount}
-            evaluation_good_count={evaluation_good_count_children}
-            setEvaluation_good_count={setEvaluation_good_count_children}
-            comment_count={comment_count_children}
-            setComment_count={setComment_count_children}
-            evaluation_stay_count={evaluation_stay_count_children}
-            setEvaluation_stay_count={setEvaluation_stay_count_children}
+            mainPanel={mainPanel}
+            startIndex={0}
+            visibleTextCount={1}
+            onNavigate={hasParallels ? (onMainPanelNavigate as any) : undefined}
+            hasParallels={hasParallels}
+            onPrevParallel={onPrevParallel}
+            onNextParallel={onNextParallel}
+            onBackToOriginal={onBackToOriginal}
+            isInParallelMode={isInParallelMode}
+            canGoNext={canGoNext}
+            canGoPrev={canGoPrev}
+            onEvaluationSuccess={onEvaluationSuccess}
+            getSentenceEvaluation={getSentenceEvaluation}
+            isMasked={isMainPanelMasked}
           />
         </Box>
-      </Container>
+
+        {/* 統合された投稿ボタン */}
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={() => setIsModalOpen(true)}
+          disabled={restricted}
+          sx={{ mb: 2, zIndex: 2, position: 'relative' }}
+        >
+          投稿を作成
+        </Button>
+
+        {restricted && (
+          <Box sx={{ mb: 3, color: 'text.secondary', fontSize: '0.9rem' }}>
+            {!hasCurrentUser
+              ? 'ログインすると続きを投稿・閲覧できます。'
+              : '評価すると続きを投稿・閲覧できます。'}
+          </Box>
+        )}
+
+        {!hasCurrentUser && (
+          <Button
+            component={RouterLink}
+            variant='contained'
+            color='primary'
+            to='/login'
+          >
+            続きを読む
+          </Button>
+        )}
+
+        <EditPost
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onPostSuccess={onPostSuccess}
+          mainText={mainPanel[0]?.sentence || ''}
+          sentenceId={mainPanel[0]?.sentenceId || 0}
+          parentUpdatedAt={mainPanel[0]?.updatedAt || ''}
+        />
+
+        {/* Children Panel */}
+        <Box sx={{ width: '100%', maxWidth: '600px' }}></Box>
+
+        <ChildrenPanel
+          childrenPanel={childrenPanel}
+          mainPanel={mainPanel}
+          canAccessChildren={canAccessChildren}
+          getSentenceEvaluation={getSentenceEvaluation}
+          onChildrenClick={onChildrenClick}
+        />
+      </Box>
     </>
   );
 };
+
+export default NovelViewPresentation;
